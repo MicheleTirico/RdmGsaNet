@@ -1,8 +1,8 @@
 // petite modif
 package hp_RdmGsaNet_pr03;
 
-import hp_RdmGsaNet_pr02.layoutGs.disMorp;
-import hp_RdmGsaNet_pr03.layoutGsGrid.type;
+
+
 
 final class Run  {
 
@@ -29,7 +29,7 @@ final class Run  {
 		SeedInh.setRandomSeedInh(3);
 		
 		// run GsLayout
-		layoutGsGrid GsLayer = new layoutGsGrid(type.grid4, GsGridSize, disMorp.random )
+	//	layoutGsGrid GsLayer = new layoutGsGrid(type.grid4, GsGridSize, disMorp.random )
 
 		
 		

@@ -1,4 +1,4 @@
-package hp_RdmGsaNet_pr03;
+package RdmGsaNet_pr03;
 
 import java.util.Random;
 

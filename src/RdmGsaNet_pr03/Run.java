@@ -1,5 +1,7 @@
 // petite modif
-package hp_RdmGsaNet_pr03;
+
+// a
+package RdmGsaNet_pr03;
 
 
 

@@ -1,9 +1,14 @@
 package RdmGsaNet_pr03;
 
+/* 
+ * in this abstract class we implemented all methods in common for each layoutGs... classes
+ */
+
 import java.util.Random;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+
 
 public  class layoutGsAbs extends startValuesGs implements layoutGs {
 
@@ -28,6 +33,7 @@ public  class layoutGsAbs extends startValuesGs implements layoutGs {
 			}
 		}
 	
+	// must move to VizGs class
 	public void showValueMorp(Graph graph) {
 		for (Node n:graph.getEachNode()) { 
 			float act, inh;
@@ -38,12 +44,13 @@ public  class layoutGsAbs extends startValuesGs implements layoutGs {
 			}
 		}
 	
-	public static void showGraph(Graph graph) {
-		graph.display();	
-	}
+	
+	
 
-	public void setupTypelayout() {
-		// TODO Auto-generated method stub
+	
+	
+	public void setupTypelayout(typeLayout type) {
+
 		
 	}
 	

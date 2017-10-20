@@ -1,15 +1,15 @@
-// petite modif
-// aa
-// a
-
-
-//sssss
 package RdmGsaNet_pr03;
 
 
+import RdmGsaNet_pr03.layoutGs.typeLayout;
+import RdmGsaNet_pr03.layoutGsGrid.type;
 
+/*
+ * the main class, where on the top we define all parameters and characteristics of model.
+ * after that, we call methods to setup layout, run simulation, exported results and visualization.
+ */
 
-final class Run  {
+final class Run {
 
 	public static void main(String[] args) {
 		
@@ -33,8 +33,28 @@ final class Run  {
 		SeedAct.setRandomSeedAct(3);
 		SeedInh.setRandomSeedInh(3);
 		
-		// run GsLayout
-	//	layoutGsGrid GsLayer = new layoutGsGrid(type.grid4, GsGridSize, disMorp.random )
+		
+		
+		// setup Grid parameters
+		
+		String typeGrid = "grid4";
+		
+		
+		// setup GsLayout => create GsLayer
+		layoutGsGrid GsLayer; 		// create layer 0 for reaction diffusion
+		
+		layoutGs.setupTypelayout(typeLayout.grid);
+		
+		
+		
+		
+
+		
+		
+//		GsLayer = new layoutGsGrid(type.grid4, GsGridSize, disMorp.random );
+		
+//		viz.vizGsGraph(GsLayer);
+		
 
 		
 		

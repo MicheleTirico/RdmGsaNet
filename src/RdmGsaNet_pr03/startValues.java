@@ -1,5 +1,5 @@
 package RdmGsaNet_pr03;
 
-public interface Viz {
+public interface startValues {
 
 }

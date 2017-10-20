@@ -1,6 +1,11 @@
 package RdmGsaNet_pr03;
 
-public class startValuesGs  {
+/* 
+ * setup start values and methods to encapsulate the parameters. 
+ * in order to set starter values in a range, in methods we proposed a test.
+ */
+
+public class startValuesGs implements startValues  {
 	
 	// started Gs parameters
 	private static double 
@@ -12,7 +17,7 @@ public class startValuesGs  {
 	
 	// layoutGs
 	private static int 
-	layoutGsGridSize ,			// size of grid of layout Gs
+	layoutGsGridSize ,		// size of grid of layout Gs
 	RandomSeedAct ,			// seed to create a random value if distribution of activator in Gslayout is random
 	RandomSeedInh			// seed to create a random value if distribution of inhibitor in Gslayout is random
 	;
@@ -68,5 +73,4 @@ public class startValuesGs  {
 		}
 	}
 	
-	// print all values
 }

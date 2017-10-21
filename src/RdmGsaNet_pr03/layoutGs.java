@@ -9,17 +9,24 @@ public interface layoutGs {
 	// declaration of static parameters
 	public Graph GsGraph = new SingleGraph("GsGraph");
 	
-	
+//-------------------------------------------------------------------------------------------------------
 	// parameters of GsLayer
-	public enum typeLayout { grid, random, gis }
+	
+	// type layout
+	private enum typeLayout { grid, random, gis }
 
-	public enum disMorp {homogeneus, random }
+	//  enumerate distribution of morhogens
+	private enum disMorp {homogeneus, random }
 	
+//-------------------------------------------------------------------------------------------------------
+	// set and get
+	// Grid layout
+	public void setGsGridLayout (String x) { x = typeLayout; }
+	public int getGsGridLayout () { return typeLayout; }
 	
-	
-	
-	
-	
+	// distribution Morphogens
+	public void setDisMorp (String x) { x = disMorp; }
+	public int getdisMorp () { return disMorp; }
 	
 	
 

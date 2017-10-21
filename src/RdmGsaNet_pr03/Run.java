@@ -37,7 +37,8 @@ final class Run {
 		
 		// setup Grid parameters
 		
-		String typeGrid = "grid4";
+		layoutGs.setGsGridLayout(typeLayout.grid4);
+		layoutGs.setDisMorp(disMorp.homogeneus);
 		
 		
 		// setup GsLayout => create GsLayer

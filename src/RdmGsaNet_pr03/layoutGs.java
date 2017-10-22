@@ -3,7 +3,6 @@ package RdmGsaNet_pr03;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 
-
 public interface layoutGs {
 	
 	// declaration of static parameters
@@ -13,20 +12,21 @@ public interface layoutGs {
 	// parameters of GsLayer
 	
 	// type layout
-	private enum typeLayout { grid, random, gis }
+	public enum typeLayout { grid, random, gis }
 
+	
 	//  enumerate distribution of morhogens
-	private enum disMorp {homogeneus, random }
+	public enum disMorp {homogeneus, random }
 	
 //-------------------------------------------------------------------------------------------------------
 	// set and get
 	// Grid layout
-	public void setGsGridLayout (String x) { x = typeLayout; }
-	public int getGsGridLayout () { return typeLayout; }
+//	public void setGsGridLayout (String x) { x = typeLayout; }
+//	public int getGsGridLayout () { return typeLayout; }
 	
 	// distribution Morphogens
-	public void setDisMorp (String x) { x = disMorp; }
-	public int getdisMorp () { return disMorp; }
+//	public void setDisMorp (String x) { x = disMorp; }
+//	public int getdisMorp () { return disMorp; }
 	
 	
 

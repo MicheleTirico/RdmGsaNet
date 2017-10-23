@@ -18,14 +18,12 @@ public class startValues {
 			setupGs SeedInh = new setupGs();
 			
 			setupGs typelayout = new setupGs();
-			setupGs disMorph = new setupGs();
-			
-			
+			setupGs disMorph = new setupGs(); 
 			
 		// declare variables only Gs layout GRID
 			setupGs GsGridSize = new setupGs();
+			setupGs GsGridType = new setupGs();	
 			
-
 //----------------------------------------------------------------------------------------------------------------
 	// SET VARIABLES 
 			
@@ -35,20 +33,35 @@ public class startValues {
 			Di.setDi(0.1);
 			Da.setDa(0.4);
 			
-			SeedAct.setRandomSeedAct(3);
+			SeedAct.setRandomSeedAct(2);
 			SeedInh.setRandomSeedInh(3);
 			
-			
-			typelayout.setTypeLayout( "grid" );
-			disMorph.setDisMorp("random");
-			
+		// set common parameters	
+			typelayout.setTypeLayout( "grid" );		// choose among : grid , random , gis
+			disMorph.setDisMorp("random");			// choose among : random , homogeneus	
 			
 		// set variables only Gs layout GRID
 			GsGridSize.setGsGridSize(20);
-		
-		
-		
-			
+			GsGridType.setGsGridType("grid8");		// choose among : grid4 , grid8			
 	}
 
+//----------------------------------------------------------------------------------------------------------------
+	// SET GSALGO	
+	public static void setGsAlgo() {
+		
+		// declare GsAlgo type
+			setupGs reactionType = new setupGs();
+			setupGs diffusionType = new setupGs();
+		
+		// set type reaction and diffusion
+			reactionType.setReactionType("ai2");	// choose among : ai2, linear
+			diffusionType.setDiffusionType("fick");	// choose among : fick, perimeter, weight
+	
+	}
+	
+		
+		
+	
+	
+			
 }

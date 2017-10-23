@@ -1,12 +1,10 @@
 package RdmGsaNet_pr04;
-
-
 /*
  * the main class, where on the top we define all parameters and characteristics of model.
  * after that, we call methods to setup layout, run simulation, exported results and visualization.
  */
 
-public class Run {	
+public class Run implements GsAlgo {	
 
 	public static void main(String[] args) {
 		
@@ -14,40 +12,22 @@ public class Run {
 		startValues.setVar();
 		
 		// CREATE LAYER GS
+		setupGsGrid GsLayer = new setupGsGrid();
+		GsLayer.setGrid();
+		GsLayer.setupDisMorp();	
 		
-		
+		// 	LAYERS' VISUALIZATION 
+	//	GsLayer.GsViz();
+	//	GsLayer.GsMorpViz();
+	
 		// CREATE LAYER NET
 		
 		// GS ALGO
+		startValues.setGsAlgo();
+		
 		
 		//......
-		
-		
-		
-		
-		// setup Grid parameters
-		
-//		layoutGs.setGsGridLayout(layoutGs.typeLayout.grid);
-//		layoutGs.setDisMorp(disMorp.homogeneus);
-		
-		
-		// setup GsLayout => create GsLayer
-//		layoutGsGrid GsLayer; 		// create layer 0 for reaction diffusion
-		
-//		layoutGs.setupTypelayout(typeLayout.grid);
-		
-		
-		
-		
 
-		
-		
-//		GsLayer = new layoutGsGrid(type.grid4, GsGridSize, disMorp.random );
-		
-//		viz.vizGsGraph(GsLayer);
-		
-
-		
 		
 		
 		

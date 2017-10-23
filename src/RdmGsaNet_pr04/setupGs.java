@@ -34,7 +34,7 @@ public class setupGs   {
 	private String disMorp;
 	
 	// started paramethers for Gs Grid
-	private int GsGridSize;
+	private static int GsGridSize;
 
 	
 	
@@ -42,7 +42,7 @@ public class setupGs   {
 	// SET AND GET
 	// diffusion
 	public void setDi(double x) { testRangeParam(Di, x, 0, 1); }
-	public double getDi() { return Di; }
+	public static double getDi() { return Di; }
 	
 	public void setDa(double x) { testRangeParam(Da, x, 0, 1); }
 	public double getDa() { return Da; }
@@ -78,7 +78,7 @@ public class setupGs   {
 		public void setGsGridSize (int x) { x = GsGridSize;
 			// set max and min values, riprendere quello di start values
 		}
-		public int getGsGridSize () { return GsGridSize; }
+		 public static int getGsGridSize () { return GsGridSize; }
 
 
 //-----------------------------------------------------------------------------------------------------------

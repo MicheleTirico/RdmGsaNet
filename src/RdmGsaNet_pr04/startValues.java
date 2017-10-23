@@ -1,7 +1,5 @@
 package RdmGsaNet_pr04;
 
-import RdmGsaNet_pr04.setupGsGrid.typeGrid;
-
 public class startValues {
 	
 	// started objects
@@ -47,8 +45,9 @@ public class startValues {
 			
 		// set variables only Gs layout GRID
 			GsGridSize.setGsGridSize(20);
-			
-			
+		
+		
+		
 			
 	}
 

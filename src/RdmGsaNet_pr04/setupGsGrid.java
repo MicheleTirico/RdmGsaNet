@@ -7,16 +7,22 @@ import org.graphstream.graph.implementations.SingleGraph;
 
 public class setupGsGrid {
 	
-
+	// DECLARE VARIABLES
 	public enum typeGrid { grid4 , grid8 }			// type layout
 	private typeGrid type ;
 	
 	// declare size of Grid, declared in setupGs
-	int size  ;
-	public static int gino ;
+	static int size = setupGs.getGsGridSize();
+	
+	
+			;
+	
+//	gino.getGsGridSize();
+	
+	
+	
 	// Gs Graph initialization
 	public Graph GsGraph = new SingleGraph("GsGraph");
-
 	
 	
 //----------------------------------------------------------------------------------------------------------------

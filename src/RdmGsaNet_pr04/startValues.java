@@ -1,6 +1,6 @@
 package RdmGsaNet_pr04;
 
-public class startValues {
+public interface startValues {
 	
 	// started objects
 	
@@ -54,8 +54,13 @@ public class startValues {
 			setupGs diffusionType = new setupGs();
 		
 		// set type reaction and diffusion
-			reactionType.setReactionType("ai2");	// choose among : ai2, linear
-			diffusionType.setDiffusionType("fick");	// choose among : fick, perimeter, weight
+			reactionType.setReactionType("ai");			// choose among : ai2, linear
+			diffusionType.setDiffusionType("fick");		// choose among : fick, perimeter, weight
+			
+		// parameters of simulation 
+			setupGs stopSim = new setupGs();
+			
+			stopSim.setStopSim(10);
 	
 	}
 	

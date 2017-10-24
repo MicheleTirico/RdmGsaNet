@@ -11,7 +11,7 @@ import org.graphstream.graph.implementations.SingleGraph;
  * in order to set starter values in a range, in methods we proposed a test.
  */
 
-public class setupGs   {
+public class setupGs {
 	
 	// started Gs parameters
 	private static double 
@@ -32,7 +32,7 @@ public class setupGs   {
 
 	// type layout
 	private static enum typeLayout { grid, random, gis }
-	private String typeLayout;
+	private static String typeLayout;
 	 
 	//  enumerate distribution of morhogens
 	private static enum disMorp {homogeneus, random }
@@ -56,6 +56,8 @@ public class setupGs   {
 	
 	private static enum diffusionType { fick, perimeter, weigth }
 	private static String diffusionType;
+	
+	private static int stopSim;
 	
 //-----------------------------------------------------------------------------------------------------------------
 	// SET AND GET
@@ -113,7 +115,10 @@ public class setupGs   {
 	//Diffusion type
 		public void setDiffusionType (String x) { diffusionType = x ; }
 		public static String getDiffusionType () { return diffusionType ; }
-
+		
+	// Step Simulation
+		public void setStopSim ( int x ) { stopSim = x ; }
+		public static int getStopSim () { return stopSim ; }
 
 //-----------------------------------------------------------------------------------------------------------
 	// METHODS FOR GET AND SET

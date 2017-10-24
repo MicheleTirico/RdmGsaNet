@@ -1,10 +1,10 @@
 package RdmGsaNet_pr04;
 
-public interface gsAlgo {
+public interface gsAlgo  {
 	
 	// 	VARIABLES
 	final String reactionType = setupGs.getReactionType();
-	final String diffusionType = setupGs.getDiffusionType();
+//	final String diffusionType = setupGs.getDiffusionType();
 	
 	final double kill = setupGs.getKill();
 	final double feed = setupGs.getFeed();
@@ -12,18 +12,75 @@ public interface gsAlgo {
 	final double Di = setupGs.getDi();
 	
 	public enum morp {activator, inhibitor }
-	public enum interaction {reaction , diffusion, incoming, outcoming}
+	public enum interaction {reaction , diffusion, ext }
 	
-	 
-	
-	
+	final int stopSim = setupGs.getStopSim();
 	
 	
+	
+	//STATIC METHODS
+	public static void gsAlgoMain () {
+		
+		/* for each nodes, compute act and ihn
+		 * define equation
+		 	act = act(-1) + gsAlgoComp(diffusion) + sAlgoComp(reaction) + sAlgoComp(ext)
+			ihn = ihn(-1) + gsAlgoComp(diffusion) + sAlgoComp(reaction) + sAlgoComp(ext) 
+		 
+	
+		for step <= stopSim
+			get each node
+			act = act(-1) + equation
+			ihn = ihn(-1) + equation
+		*/
+		
+		
+		double act;
+		double act_1 = 1;
+		double R = gsAlgoComp();
+		double D = 1;
+		double E = 1;
+		
+		act = act_1 + R + D + E ;
+		
+		
+		
+		for (int i = 0 ; i < stopSim ; i++ ) {
+			
+			
+		}
+	}
+	
+	
+	// COMMON METHODS
+	
+	// to initializate started values for each interaction
+	public void gsAlgoInit( morp x , interaction y );
+	
+	// to compute the value of interaction
+	public void gsAlgoComp( interaction x );
+	
+	// to return the value of morphogen
+	public void getValueMorp( morp x );
+	
+	// to return the value of interaction
+	public void getValueInter( interaction x );
+
+
+
+	
+	
+	
+	
+}	
+	/*
 	
 	// METHODS
 	public static void gsAlgoMain () {
+		
+		
+		
 		gsAlgoReaction act = new gsAlgoReaction();
-		act.gsAlgoCalcMorp( x );
+	//	act.gsAlgoCalcMorp( x );
 		
 		
 	}
@@ -35,8 +92,9 @@ public interface gsAlgo {
 	
 	public void gsAlgoExpMorp() ;
 	
-	public void getValue(double x);
+	public void getValue(morp x);
 
 
 
 }
+*/

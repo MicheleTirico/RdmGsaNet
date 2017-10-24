@@ -1,3 +1,4 @@
+
 package RdmGsaNet_pr04;
 /*
  * the main class, where on the top we define all parameters and characteristics of model.
@@ -18,13 +19,16 @@ public class Run  {
 		
 		// 	LAYERS' VISUALIZATION 
 	//	GsLayer.GsViz();
-	//	GsLayer.GsMorpViz();
+		GsLayer.GsMorpViz();
 	
 		// CREATE LAYER NET
 		
 		// GS ALGO
 		startValues.setGsAlgo();
-		gsAlgo.gsAlgoMain();
+	
+		
+		
+	
 		
 		
 		

@@ -1,59 +1,69 @@
 package RdmGsaNet_pr04;
 
+
+
+
 public class gsAlgoReaction implements gsAlgo {
 	
-	private String reactionType = gsAlgo.reactionType;
-	private double rea;
-	
-	
-	
-	
-	
-	
-	
-	public double gsAlgoCalcMorp(morp y) {
-		double partValue = 10;
-		String type = reactionType;
-		switch (type) {
-		case "ai2":
-			
-			break;
 
-		case "linear" :
-			
-			break;
-		}
+
 	
-		return partValue;
+	public void gsAlgoInit( morp x , interaction y ) {
+		final String interaction = reactionType ;
+		
+		
+		
+
+	
+	
 		
 	}
 
+	@Override
+	public void gsAlgoComp( interaction x ) {
+		
+		
+			
+			switch (reactionType) {
+			case "ai2":
+				reactionAi2 ();
+				break;
 
+			case "linear" :
+				reactionLinear() ;
+				break;
+			}
+		
 	
+		
+	}
 
 	@Override
-	public void gsAlgoExpMorp() {
+	public void getValueMorp(morp x) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
-
 	@Override
-	public void gsAlgoInter(interaction x) {
-		
-		
-		
-	}
-
-
-
-
-	@Override
-	public void getValue(double x) {
+	public void getValueInter(interaction x) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+	
+	
+	// method to compute reaction 
+	private void reactionAi2 () {
+		double Rai2 ;
+		
+
+	}
+	
+	private void reactionLinear () {
+		
+	}
+	
+
 
 }

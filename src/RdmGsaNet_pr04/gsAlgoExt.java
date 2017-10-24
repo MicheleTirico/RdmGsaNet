@@ -1,8 +1,7 @@
 package RdmGsaNet_pr04;
 
 
-
-public class gsAlgoDiffusion implements gsAlgo {
+public class gsAlgoExt implements gsAlgo {
 
 	@Override
 	public void gsAlgoInit( morp x , interaction y ) {
@@ -27,12 +26,5 @@ public class gsAlgoDiffusion implements gsAlgo {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-	
-
-	
-
 
 }

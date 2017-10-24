@@ -4,7 +4,7 @@ package RdmGsaNet_pr04;
  * after that, we call methods to setup layout, run simulation, exported results and visualization.
  */
 
-public class Run implements GsAlgo {	
+public class Run  {	
 
 	public static void main(String[] args) {
 		
@@ -24,6 +24,9 @@ public class Run implements GsAlgo {
 		
 		// GS ALGO
 		startValues.setGsAlgo();
+		gsAlgo.gsAlgoMain();
+		
+		
 		
 		
 		//......

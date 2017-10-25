@@ -1,9 +1,7 @@
 
 package RdmGsaNet_pr05;
 
-import RdmGsaNet_pr05.gsAlgo.diffusionType;
-import RdmGsaNet_pr05.gsAlgo.extType;
-import RdmGsaNet_pr05.gsAlgo.reactionType;
+import org.graphstream.graph.Graph;
 
 /*
  * the main class, where on the top we define all parameters and characteristics of model.
@@ -12,7 +10,6 @@ import RdmGsaNet_pr05.gsAlgo.reactionType;
 
 public class Run  {	
 
-	
 	public static void main(String[] args) {
 		
 		// SETUP VARIABLES
@@ -20,20 +17,22 @@ public class Run  {
 		
 		// CREATE LAYER GS
 		setupGsGrid gsLayer = new setupGsGrid();
-//		gsLayer.setGrid();
-//		gsLayer.setupDisMorp();	
+		gsLayer.setGrid();
+		gsLayer.setupDisMorp();	
 		
 		// 	LAYERS' VISUALIZATION 
-	//	gsLayer.GsViz();
-		gsLayer.GsMorpViz();
+//		gsLayer.GsViz();
+//		gsLayer.GsMorpViz();
 	
 		// CREATE LAYER NET
 		
 		// GS ALGO
 		startValues.setGsAlgo();
-	
-		gsAlgo.gsAlgoMain(reactionType.ai2, diffusionType.D1, extType.E1);
-	
+
+		gsAlgo.gsAlgoInit(true);
+		
+		
+		gsAlgo.gsAlgoMain(gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);
 		
 		
 	

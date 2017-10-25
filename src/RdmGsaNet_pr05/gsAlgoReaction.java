@@ -1,9 +1,11 @@
 package RdmGsaNet_pr05;
 
+import org.graphstream.graph.Graph;
+
 public class gsAlgoReaction implements gsAlgo {
 	
 	// variables
-	public enum reactionType {ai2, linear }
+	//public enum reactionType {ai2, linear }
 	reactionType type;
 
 	// costructor
@@ -38,11 +40,9 @@ public class gsAlgoReaction implements gsAlgo {
 	}
 
 
-	@Override
-	public void gsInit(boolean x) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void gsInit(boolean x) {	
+		}
+
 
 
 	@Override

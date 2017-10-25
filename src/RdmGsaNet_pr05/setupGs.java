@@ -119,6 +119,9 @@ public class setupGs {
 	// Step Simulation
 		public void setStopSim ( int x ) { stopSim = x ; }
 		public static int getStopSim () { return stopSim ; }
+		
+	// get graph
+		public static Graph getGraph (Graph graph ) { return graph; }
 
 //-----------------------------------------------------------------------------------------------------------
 	// METHODS FOR GET AND SET

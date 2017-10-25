@@ -1,13 +1,18 @@
 package RdmGsaNet_pr05;
 
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
+
 public interface gsAlgo   {
 	
-	public enum morp {activator, inhibitor }
+	public enum morphogen {activator, inhibitor }
 	public enum interaction {reaction , diffusion, ext }
 	
 	public enum reactionType {ai2, linear }
-	public enum diffusionType {D1, D2}
-	public enum extType {E1, E2}
+	public enum diffusionType {fick, perimeter, weigth }
+	public enum extType {gsModel, test}
+	
+	public static Graph GsGraphAlgo = new SingleGraph("GsGraphAlgo");
 	
 	
 	
@@ -18,20 +23,18 @@ public interface gsAlgo   {
 	and started parameters
 	*/
 	public double gsCompute(
-			//interaction i, 
 			double x, 
 			double y) ;
 	
 	public static void gsAlgoMain (reactionType r, diffusionType d, extType e) {
 		
 		double stopSim = setupGs.getStopSim();
-	//	double reaction ;
 		int step;
 		
 		// define equations
 		double act = 0, inh = 0;
 		
-		double reaction = gsAlgoReaction.gsComputeReaction(gsAlgoReaction.reactionType.ai2, act, inh);
+		double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
 		
 		
 		
@@ -44,6 +47,7 @@ public interface gsAlgo   {
 			
 			
 		}
+		
 		
 		
 		/* for each nodes, compute act and ihn
@@ -62,5 +66,21 @@ public interface gsAlgo   {
 	}
 
 	
+	public static void gsAlgoInit (boolean x) {
+		
+		if (x = true ) {
+			// true = keep the initial parameters of RdmGsaNet
+			System.out.println("GsNet initial parameters");
+
+			Graph graph =setupGs.getGraph(setupGs.GsGraph);
+		
+		}
+		
+		else {
+			
+		}
+
+		
+	}
 	
 }

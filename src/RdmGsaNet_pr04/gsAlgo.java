@@ -35,18 +35,20 @@ public interface gsAlgo  {
 		
 		
 		double act;
-		double act_1 = 1;
-		double R = gsAlgoComp();
+		double actOld = 1;
+		double R = 1;
 		double D = 1;
 		double E = 1;
 		
-		act = act_1 + R + D + E ;
+		act = actOld + R + D + E ;
 		
 		
 		
-		for (int i = 0 ; i < stopSim ; i++ ) {
+		for (int step = 0 ; step < stopSim ; step++ ) {
 			
 			
+			
+			step = step + 1 ;
 		}
 	}
 	

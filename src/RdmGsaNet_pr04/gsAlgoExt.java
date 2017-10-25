@@ -10,12 +10,6 @@ public class gsAlgoExt implements gsAlgo {
 	}
 
 	@Override
-	public void gsAlgoComp( morp x , interaction y ) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void getValueMorp(morp x) {
 		// TODO Auto-generated method stub
 		
@@ -23,6 +17,12 @@ public class gsAlgoExt implements gsAlgo {
 
 	@Override
 	public void getValueInter(interaction x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void gsAlgoComp(interaction x) {
 		// TODO Auto-generated method stub
 		
 	}

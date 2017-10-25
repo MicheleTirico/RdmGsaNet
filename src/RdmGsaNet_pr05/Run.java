@@ -12,6 +12,7 @@ import RdmGsaNet_pr05.gsAlgo.reactionType;
 
 public class Run  {	
 
+	
 	public static void main(String[] args) {
 		
 		// SETUP VARIABLES
@@ -19,8 +20,8 @@ public class Run  {
 		
 		// CREATE LAYER GS
 		setupGsGrid gsLayer = new setupGsGrid();
-		gsLayer.setGrid();
-		gsLayer.setupDisMorp();	
+//		gsLayer.setGrid();
+//		gsLayer.setupDisMorp();	
 		
 		// 	LAYERS' VISUALIZATION 
 	//	gsLayer.GsViz();
@@ -30,10 +31,8 @@ public class Run  {
 		
 		// GS ALGO
 		startValues.setGsAlgo();
-		gsAlgoReaction reaction = new gsAlgoReaction();
-		reaction.gsInit(false);
-	gsAlgo.gsAlgoMain(reactionType.linear, diffusionType.D1, extType.E1);
 	
+		gsAlgo.gsAlgoMain(reactionType.ai2, diffusionType.D1, extType.E1);
 	
 		
 		

@@ -1,7 +1,5 @@
 package RdmGsaNet_pr05;
 
-import RdmGsaNet_pr05.gsAlgo.reactionType;
-
 public class gsAlgoExt implements gsAlgo {
 
 	// variables
@@ -43,17 +41,5 @@ public class gsAlgoExt implements gsAlgo {
 			return ext;
 		}
 	
-	
-	@Override
-	public void gsInit(boolean x) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public double gsCompute(double x, double y) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 }

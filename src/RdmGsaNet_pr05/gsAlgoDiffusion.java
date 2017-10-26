@@ -45,17 +45,7 @@ public class gsAlgoDiffusion implements gsAlgo {
 		}
 
 
-		@Override
-		public void gsInit(boolean x) {
-			}
-
-
-		@Override
-		public double gsCompute(double x, double y) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		
+//------------------------------------------------------------------------------------------------------		
 		// methods to define reaction type
 		
 		// classical reaction from Gray Scott model

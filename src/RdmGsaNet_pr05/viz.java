@@ -15,7 +15,7 @@ public class viz extends setupGs {
 	public void GsMorpViz() {
 		Graph graph = GsGraph;
 		for (Node n:graph.getEachNode()) { 
-			float act, inh;
+			double act, inh;
 			act = n.getAttribute("GsAct");
 			inh = n.getAttribute("GsInh");
 			System.out.println("id node "+n.getId()+" GsAct = "+act);

@@ -2,6 +2,7 @@
 package RdmGsaNet_pr05;
 
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 
 /*
  * the main class, where on the top we define all parameters and characteristics of model.
@@ -28,8 +29,10 @@ public class Run  {
 		
 		// GS ALGO
 		startValues.setGsAlgo();
+	
 
 //		gsAlgo.gsAlgoInit(true);
+		
 		
 		
 		gsAlgo.gsAlgoMain(gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);

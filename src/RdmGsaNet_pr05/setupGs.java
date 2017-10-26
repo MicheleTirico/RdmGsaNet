@@ -147,12 +147,12 @@ public class setupGs {
 		Graph graph = GsGraph;
 		String DisMorp = getDisMorp ();
 		
-		System.out.println(DisMorp);
+
 		
 		switch (DisMorp) {		
 		case "homogeneus" :
-			System.out.println("distribution homogeneus");
-			float x = 0;
+			double x = 2;
+			System.out.println("distribution homogeneus " + x );
 			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , x  ) ;}
 			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , x  ) ;}
 			break;
@@ -161,8 +161,8 @@ public class setupGs {
 			System.out.println("distribution random");
 			Random act = new Random(getRandomSeedAct() );
 			Random inh = new Random(getRandomSeedInh() );
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , act.nextFloat()   ) ;}
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , inh.nextFloat()   ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , act.nextDouble()   ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , inh.nextDouble()   ) ;}
 			break;
 			}
 		}		

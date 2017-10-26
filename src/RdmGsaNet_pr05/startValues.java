@@ -38,11 +38,11 @@ public interface startValues {
 			
 		// set common parameters	
 			typelayout.setTypeLayout( "grid" );		// choose among : grid , random , gis
-			disMorph.setDisMorp("random");			// choose among : random , homogeneus	
+			disMorph.setDisMorp("homogeneus");			// choose among : random , homogeneus	
 			
 		// set variables only Gs layout GRID
-			GsGridSize.setGsGridSize(20);
-			GsGridType.setGsGridType("grid8");		// choose among : grid4 , grid8			
+			GsGridSize.setGsGridSize(2);
+			GsGridType.setGsGridType("grid4");		// choose among : grid4 , grid8			
 	}
 
 //----------------------------------------------------------------------------------------------------------------
@@ -50,17 +50,17 @@ public interface startValues {
 	public static void setGsAlgo() {
 		
 		// declare GsAlgo type
-			setupGs reactionType = new setupGs();
-			setupGs diffusionType = new setupGs();
+	//		setupGs reactionType = new setupGs();
+//			setupGs diffusionType = new setupGs();
 		
 		// set type reaction and diffusion
-			reactionType.setReactionType("ai");			// choose among : ai2, linear
-			diffusionType.setDiffusionType("fick");		// choose among : fick, perimeter, weight
+//			reactionType.setReactionType("ai");			// choose among : ai2, linear
+//			diffusionType.setDiffusionType("fick");		// choose among : fick, perimeter, weight
 			
 		// parameters of simulation 
 			setupGs stopSim = new setupGs();
 			
-			stopSim.setStopSim(10);
+			stopSim.setStopSim( 3 );
 	
 	}
 	

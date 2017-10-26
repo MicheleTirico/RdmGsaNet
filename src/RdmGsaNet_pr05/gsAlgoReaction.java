@@ -1,6 +1,5 @@
 package RdmGsaNet_pr05;
 
-import org.graphstream.graph.Graph;
 
 public class gsAlgoReaction implements gsAlgo {
 	
@@ -40,17 +39,8 @@ public class gsAlgoReaction implements gsAlgo {
 	}
 
 
-	public void gsInit(boolean x) {	
-		}
 
 
-
-	@Override
-	public double gsCompute(double x, double y) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	// methods to define reaction type
 	
 	// classical reaction from Gray Scott model

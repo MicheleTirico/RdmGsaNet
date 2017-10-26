@@ -1,6 +1,7 @@
 package RdmGsaNet_pr05;
 
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
 public interface gsAlgo   {
@@ -12,13 +13,13 @@ public interface gsAlgo   {
 	public enum diffusionType {fick, perimeter, weigth }
 	public enum extType {gsModel, test}
 	
-	public static Graph GsGraphAlgo = new SingleGraph("GsGraphAlgo");
+	//public static Graph GsGraphAlgo = new SingleGraph("GsGraphAlgo");
 	
 	
 	
 	// methods
 
-	public void gsInit(boolean x) ;
+	
 	/*methods that is used before static method. In gsInit we identify the stream of information 
 	and started parameters
 	*/
@@ -29,35 +30,147 @@ public interface gsAlgo   {
 	public static void gsAlgoMain (reactionType r, diffusionType d, extType e) {
 		
 		int stopSim = setupGs.getStopSim();
-		int step;
+		int step ;
+	 
 		
 		// define equations
-		double act = 0, inh = 0;
-		double feed = setupGs.getFeed();
-		double kill = setupGs.getKill();
+	//	double act = 0, inh = 0;
+	//	double feed = setupGs.getFeed();
+	//	double kill = setupGs.getKill();
 		
 		
-		double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
-		double diffusion = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick);
-		double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.activator,feed, kill, act, inh ) ;
-		double extKill = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.inhibitor,feed, kill, act, inh ) ;
-		
-		
-		
-		
+	//	double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
+	//	double diffusion = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick);
+	//	double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.activator,feed, kill, act, inh ) ;
+	//	double extKill = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.inhibitor,feed, kill, act, inh ) ;
+
 		// loop
 		
-		for (step = 0 ; step >= stopSim ; step++ ) {
+		Graph graph = setupGs.getGraph( setupGs.GsGraph );
+		for(  Node n : graph.getEachNode () ) { }
+		
+		
+		for ( step = 1 ; step <= stopSim ;  step++  ) {
+
+			System.out.println(step);
 			
+			for(  Node n : graph.getEachNode () ) {
 			
+			double act = n.getAttribute("GsAct");
+			double inh = n.getAttribute("GsInh");
+			
+			 System.out.println(act);
+			
+			double actOld = act;
+			double inhOld = inh;
+			
+			double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
+			
+			act = reaction;
+			System.out.println(act);
+			
+		
 			
 		}
+		}
 	}
-		public double gsCompute(
-				double x, 
-				double y) ;
+}
 		
 		
+		/*
+		
+		do { 
+			step = 0;
+			
+			
+		
+			step = 1; 
+		}
+		
+		
+		while ( step <= stopSim );  {
+			
+			System.out.println(step);
+			Graph graph = setupGs.getGraph( setupGs.GsGraph );
+			for(  Node n : graph.getEachNode () ) {
+				
+		
+				
+				double act = n.getAttribute("GsAct");
+				double inh = n.getAttribute("GsInh");
+		
+				
+				System.out.println(act);
+				
+				double actOld = act;
+				double inhOld = inh;
+				
+				double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
+				
+				act = reaction;
+				System.out.println(act);
+			
+		
+				
+				System.out.println(n.getId());
+				}
+			
+			
+			step++;
+		}
+		
+	
+		/*
+		
+		for (step = 0 ; step >= stopSim ; step++ ) {
+			System.out.println(step);
+			Graph graph = setupGs.getGraph( setupGs.GsGraph );
+		//	Node.getDegree();
+			for ( Node n : graph.getEachNode () ) { 
+				
+				double act = graph.getAttribute("GsAct");
+				System.out.println(act);
+				System.out.println(step);
+			//	graph.display();
+			
+			}
+			for(Node n:graph) {
+				System.out.println(n.getId());
+			}
+			
+			/*
+			
+			double act = 0 ; // valore da getatribute node
+			double inh = 0 ; // valore da getatribute node
+			
+			
+			double actOld = act;
+			double inhOld = inh;
+			
+			double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
+			double diffusion = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick);
+			double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.activator,feed, kill, act, inh ) ;
+			double extKill = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.inhibitor,feed, kill, act, inh ) ;
+			
+			act = reaction ;
+			
+			*/
+			
+	
+			
+		
+
+
+		
+		
+		
+		
+//		for (step = 0 ; step >= stopSim ; step++ ) {	}
+		
+		
+		
+	
+	
 		/* for each nodes, compute act and ihn
 		 * define equation
 		 	act = act(-1) + gsAlgoComp(diffusion) + sAlgoComp(reaction) + sAlgoComp(ext)
@@ -70,8 +183,8 @@ public interface gsAlgo   {
 			ihn = ihn(-1) + equation
 		*/
 		
-		
-	}
+	
+	
 
 /*
 	public static void gsAlgoInit (boolean x) { }

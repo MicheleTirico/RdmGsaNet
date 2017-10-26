@@ -29,7 +29,7 @@ public class Run  {
 		// GS ALGO
 		startValues.setGsAlgo();
 
-		gsAlgo.gsAlgoInit(true);
+//		gsAlgo.gsAlgoInit(true);
 		
 		
 		gsAlgo.gsAlgoMain(gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);

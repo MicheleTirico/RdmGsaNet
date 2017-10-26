@@ -23,25 +23,21 @@ public class gsAlgoDiffusion implements gsAlgo {
 		}
 
 		
-		public static double gsComputeDiffusion( reactionType type ) {
-		
+		public static double gsComputeDiffusion( diffusionType type ) {
 			double diffusion;
-			
 			switch (type) {
-			
-				case ai2: {
+				case fick: {
 					diffusion = fick (  ) ;
 					break;
 				}
 			
-				case linear : {
-					diffusion = perimeter (  ) ;
-					break;
-				}
+				case perimeter : { diffusion = perimeter ( ) ; break; }
+				
+				case weigth : { diffusion = weigth ( ) ; break; }
 			
 				default: {
 					diffusion = 0;
-					System.out.println("diffusion Type not defined");
+					System.out.println("diffusion type not defined");
 				}
 			}
 			
@@ -67,12 +63,15 @@ public class gsAlgoDiffusion implements gsAlgo {
 			return  0;
 		}
 		
-		// reaction not defined
+		// diffusion not defined
 		private static double perimeter (  ) {
 			return 0 ;
 		}
 
-		
+		// diffusion not defined
+		private static double weigth (  ) {
+			return 0 ;
+		}
 
 
 

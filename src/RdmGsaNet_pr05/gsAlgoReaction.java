@@ -13,20 +13,20 @@ public class gsAlgoReaction implements gsAlgo {
 		this.type = type;
 	}
 
-	
-	public static double gsComputeReaction( reactionType type, double x, double y ) {
+	// methods
+	public static double gsComputeReaction( reactionType type, double act, double inh ) {
 	
 		double reaction;
 		
 		switch (type) {
 		
 			case ai2: {
-				reaction = ai2 ( x , y ) ;
+				reaction = ai2 ( act , inh ) ;
 				break;
 			}
 		
 			case linear : {
-				reaction = linear ( x , y ) ;
+				reaction = linear ( act , inh ) ;
 				break;
 			}
 		
@@ -54,13 +54,13 @@ public class gsAlgoReaction implements gsAlgo {
 	// methods to define reaction type
 	
 	// classical reaction from Gray Scott model
-	private static double ai2 ( double x , double y ) {
-		return  x * ( y * y ) ;
+	private static double ai2 ( double act , double inh ) {
+		return  act * ( inh * inh ) ;
 	}
 	
 	// reaction not defined
-	private static double linear ( double x , double y ) {
-		return x + y ;
+	private static double linear ( double act , double inh ) {
+		return act + inh ;
 	}
 
 	

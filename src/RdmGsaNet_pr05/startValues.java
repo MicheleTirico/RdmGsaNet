@@ -33,12 +33,12 @@ public interface startValues {
 			Di.setDi(0.1);
 			Da.setDa(0.4);
 			
-			SeedAct.setRandomSeedAct(2);
-			SeedInh.setRandomSeedInh(3);
+			SeedAct.setRandomSeedAct(123);
+			SeedInh.setRandomSeedInh(2222);
 			
 		// set common parameters	
 			typelayout.setTypeLayout( "grid" );		// choose among : grid , random , gis
-			disMorph.setDisMorp("homogeneus");			// choose among : random , homogeneus	
+			disMorph.setDisMorp("random");			// choose among : random , homogeneus	
 			
 		// set variables only Gs layout GRID
 			GsGridSize.setGsGridSize(2);
@@ -60,7 +60,7 @@ public interface startValues {
 		// parameters of simulation 
 			setupGs stopSim = new setupGs();
 			
-			stopSim.setStopSim( 3 );
+			stopSim.setStopSim( 2 );
 	
 	}
 	

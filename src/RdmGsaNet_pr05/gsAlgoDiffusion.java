@@ -23,11 +23,11 @@ public class gsAlgoDiffusion implements gsAlgo {
 		}
 
 		
-		public static double gsComputeDiffusion( diffusionType type ) {
+		public static double gsComputeDiffusion( diffusionType type , double speed ) {
 			double diffusion;
 			switch (type) {
 				case fick: {
-					diffusion = fick (  ) ;
+					diffusion = speed * fick (  ) ;
 					break;
 				}
 			

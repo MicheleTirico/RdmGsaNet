@@ -23,7 +23,7 @@ public class Run  {
 		
 		// 	LAYERS' VISUALIZATION 
 //		gsLayer.GsViz();
-//		gsLayer.GsMorpViz();
+		gsLayer.GsMorpViz();
 	
 		// CREATE LAYER NET
 		

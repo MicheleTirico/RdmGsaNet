@@ -2,7 +2,6 @@ package RdmGsaNet_pr05;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
 
 public interface gsAlgo   {
 	
@@ -31,6 +30,9 @@ public interface gsAlgo   {
 		
 		int stopSim = setupGs.getStopSim();
 		int step ;
+		double Da = setupGs.getDa() ;
+		double Di = setupGs.getDi() ;
+		
 	 
 		
 		// define equations
@@ -47,7 +49,114 @@ public interface gsAlgo   {
 		// loop
 		
 		Graph graph = setupGs.getGraph( setupGs.GsGraph );
-		for(  Node n : graph.getEachNode () ) { }
+		for ( step = 1 ; step <= stopSim ;  step++  ) {
+
+			System.out.println(step);
+			
+			for(  Node n : graph.getEachNode () ) {
+				
+				double OldAct, OldInh;
+				
+				double act = n.getAttribute( "GsAct" ) ; 
+				double inh = n.getAttribute( "GsInh") ; 
+				
+				OldAct = act; 
+				OldInh = inh;
+				
+				double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, OldAct, OldInh);
+				
+				double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da);
+				double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Di);
+				
+				
+				
+				act = act + diffusionAct + reaction;
+				inh = inh + diffusionInh - reaction;
+				
+				n.setAttribute( "GsAct" , act ) ;
+				n.setAttribute( "GsInh" , inh ) ;
+				
+				System.out.println( act ) ;
+				System.out.println( inh );
+			
+			
+			
+			
+			
+			
+			}}}}
+		
+		/*
+		for ( step = 1 ; step <= stopSim ;  step++  ) {
+
+			System.out.println(step);
+			
+			for(  Node n : graph.getEachNode () ) {
+				if ( step == 1 ) {
+
+					double act = n.getAttribute("GsAct");
+					double inh = n.getAttribute("GsInh");
+					
+				}
+				else {
+				
+					
+			
+			 System.out.println(act);
+			
+			double actOld = act;
+			double inhOld = inh;
+			
+			double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
+			
+			act = reaction;
+			System.out.println(act);
+				}
+			}
+		}
+	}
+}
+
+		
+		
+		
+		
+		/*	
+		do { 
+			step = 1 ;
+			
+			for(  Node n : graph.getEachNode () ) {
+				double act  , inh;
+
+				
+				act = n.getAttribute("GsAct");
+				inh = n.getAttribute("GsInh");
+				
+				System.out.println(act);
+			 
+			}
+			step = 2 ;
+		}
+
+		while ( step <= stopSim) ; {
+			
+			double actOld;
+			
+			actOld = act;
+//			double inhOld = inh;
+			
+//			double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act, inh);
+			
+//			act = reaction;
+//			System.out.println(act);		
+			
+		}
+		System.out.println(act);		
+	
+	}
+}
+		
+		/*
 		
 		
 		for ( step = 1 ; step <= stopSim ;  step++  ) {

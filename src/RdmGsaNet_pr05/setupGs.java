@@ -152,17 +152,23 @@ public class setupGs {
 		switch (DisMorp) {		
 		case "homogeneus" :
 			double x = 2;
+			
 			System.out.println("distribution homogeneus " + x );
+			
 			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , x  ) ;}
 			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , x  ) ;}
+			
 			break;
 			
 		case "random" :
 			System.out.println("distribution random");
-			Random act = new Random(getRandomSeedAct() );
-			Random inh = new Random(getRandomSeedInh() );
+			
+			Random act = new Random( getRandomSeedAct() );
+			Random inh = new Random( getRandomSeedInh() );
+			
 			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , act.nextDouble()   ) ;}
 			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , inh.nextDouble()   ) ;}
+			
 			break;
 			}
 		}		

@@ -60,7 +60,7 @@ public interface startValues {
 		// parameters of simulation 
 			setupGs stopSim = new setupGs();
 			
-			stopSim.setStopSim( 2 );
+			stopSim.setStopSim( 3 );
 	
 	}
 	

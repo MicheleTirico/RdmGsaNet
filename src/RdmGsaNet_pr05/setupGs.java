@@ -151,7 +151,7 @@ public class setupGs {
 		
 		switch (DisMorp) {		
 		case "homogeneus" :
-			double x = 2;
+			double x = 0.5;
 			
 			System.out.println("distribution homogeneus " + x );
 			

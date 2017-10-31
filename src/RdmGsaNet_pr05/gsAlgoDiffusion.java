@@ -23,11 +23,11 @@ public class gsAlgoDiffusion implements gsAlgo {
 		}
 
 		
-		public static double gsComputeDiffusion( diffusionType type , double speed ) {
+		public static double gsComputeDiffusion( diffusionType type , double speed , Graph graph) {
 			double diffusion;
 			switch (type) {
 				case fick: {
-					diffusion = speed * fick (  ) ;
+					diffusion = speed * fick ( graph ) ;
 					break;
 				}
 			
@@ -49,7 +49,18 @@ public class gsAlgoDiffusion implements gsAlgo {
 		// methods to define reaction type
 		
 		// classical reaction from Gray Scott model
-		private static double fick (  ) {
+		private static double fick (  Graph graph  ) {
+			for ( Node n : graph.getEachNode() ) {
+				
+				
+			}
+			
+				
+			
+			
+			
+			
+			
 			return  0;
 		}
 		

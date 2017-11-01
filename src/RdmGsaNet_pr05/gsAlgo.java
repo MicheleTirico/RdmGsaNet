@@ -36,6 +36,8 @@ import scala.collection.parallel.ParIterableLike.Foreach;
 			// simulation
 			for (step = 1 ; step <= stopSim; step++) {
 				
+			//	System.out.println(step);
+				
 				// start parameters from setup
 				if ( step == 1) {
 					
@@ -49,7 +51,7 @@ import scala.collection.parallel.ParIterableLike.Foreach;
 					}
 				}	
 				
-				// set parameters from previus step 
+				// set parameters from previous step 
 				else {
 					for ( Node n : graph.getEachNode() ) {
 						ArrayList<Double> ArList0 = mapMorp1.get(n.getId());
@@ -58,6 +60,7 @@ import scala.collection.parallel.ParIterableLike.Foreach;
 					}
 				}
 				
+				// loop
 				for ( Node n : graph.getEachNode() ) {
 					
 					ArrayList ArList0 = mapMorp0.get(n.getId()) ; 
@@ -67,7 +70,7 @@ import scala.collection.parallel.ParIterableLike.Foreach;
 					
 					double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act0, inh0);
 					
-					double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da, graph);
+					double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da, graph, "GsAct");
 //					double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Di);
 //					double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.activator,feed, kill, act, inh ) ;
 //					double extKill = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.inhibitor,feed, kill, act, inh ) ;
@@ -86,12 +89,23 @@ import scala.collection.parallel.ParIterableLike.Foreach;
 				
 					mapMorp1.put(n.getId(), ArList1 );	
 				}
-
-//				System.out.println(mapMorp0);
-//				System.out.println(mapMorp1);
+								
+				// set map1 to graph	
+				for ( Node n : graph.getEachNode() ) {
+					
+					ArrayList ArList1 = mapMorp1.get(n.getId()) ; 
+					
+					double act1 = (double) ArList1.get(0);
+					double inh1 = (double) ArList1.get(1);
+					
+					n.setAttribute( "GsAct", act1);
+					n.setAttribute( "GsInh", inh1);		
+				}
+				
 			}
-		}	
+		}
 	}
+	
 		
 		/*
 		

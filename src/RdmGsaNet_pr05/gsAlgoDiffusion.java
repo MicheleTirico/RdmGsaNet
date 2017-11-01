@@ -9,7 +9,6 @@ import org.graphstream.graph.implementations.SingleGraph;
 public class gsAlgoDiffusion implements gsAlgo {
 			
 		// variables
-		//public enum reactionType {ai2, linear }
 		diffusionType type;
 //		morphogen morp;
 		
@@ -23,11 +22,11 @@ public class gsAlgoDiffusion implements gsAlgo {
 		}
 
 		
-		public static double gsComputeDiffusion( diffusionType type , double speed , Graph graph) {
+		public static double gsComputeDiffusion( diffusionType type , double speed , Graph graph, String morp) {
 			double diffusion;
 			switch (type) {
 				case fick: {
-					diffusion = speed * fick ( graph ) ;
+					diffusion = speed * fick ( graph, morp ) ;
 					break;
 				}
 			
@@ -49,8 +48,11 @@ public class gsAlgoDiffusion implements gsAlgo {
 		// methods to define reaction type
 		
 		// classical reaction from Gray Scott model
-		private static double fick (  Graph graph  ) {
+		private static double fick (  Graph graph, String morp ) {
 			for ( Node n : graph.getEachNode() ) {
+				
+				graph.getAttribute(morp);
+				
 				
 				
 			}

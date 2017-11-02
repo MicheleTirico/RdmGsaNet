@@ -41,7 +41,7 @@ public interface startValues {
 			disMorph.setDisMorp("random");			// choose among : random , homogeneus	
 			
 		// set variables only Gs layout GRID
-			GsGridSize.setGsGridSize(2);
+			GsGridSize.setGsGridSize(1);
 			GsGridType.setGsGridType("grid4");		// choose among : grid4 , grid8			
 	}
 
@@ -60,7 +60,7 @@ public interface startValues {
 		// parameters of simulation 
 			setupGs stopSim = new setupGs();
 			
-			stopSim.setStopSim( 3 );
+			stopSim.setStopSim( 1 );
 	
 	}
 	

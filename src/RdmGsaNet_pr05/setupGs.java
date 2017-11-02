@@ -63,10 +63,10 @@ public class setupGs {
 	// SET AND GET
 		
 	// diffusion
-		public void setDi(double x) { testRangeParam(Di, x, 0, 1); }
+		public void setDi(double x) { Di = x ; } // aggiustare il test
 		public static double getDi() { return Di; }
 	
-		public void setDa(double x) { testRangeParam(Da, x, 0, 1); }
+		public void setDa(double x) { Da = x  ;}
 		public static double getDa() { return Da; }
 	
 	// kill rate
@@ -129,6 +129,7 @@ public class setupGs {
 		public void testRangeParam(double var, double test, double min, double max) {
 			if (test >= min && test <= max ) {
 				var = test;	
+				
 			}
 	
 			else  { 

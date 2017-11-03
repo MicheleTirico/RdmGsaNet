@@ -63,18 +63,18 @@ public class setupGs {
 	// SET AND GET
 		
 	// diffusion
-		public void setDi(double x) { Di = x ; } // aggiustare il test
+		public void setDi(double x) { Di = testRangeParam(Da, x, 0, 1) ; } 
 		public static double getDi() { return Di; }
 	
-		public void setDa(double x) { Da = x  ;}
+		public void setDa(double x) { Da = testRangeParam(Da, x, 0, 1) ;}
 		public static double getDa() { return Da; }
 	
 	// kill rate
-		public void setKill(double x) { testRangeParam(kill, x, 0, 1); }
+		public void setKill(double x) { kill = testRangeParam(kill, x, 0, 1) ;}
 		public static double getKill() { return kill; }
 	
 	// feed rate
-		public void setFeed(double x) { testRangeParam(feed, x, 0, 1); }
+		public void setFeed(double x) {feed =  testRangeParam(feed, x, 0, 1); }
 		public static double getFeed() { return feed; }
 	
 	// seed for random act and inh
@@ -126,15 +126,16 @@ public class setupGs {
 //-----------------------------------------------------------------------------------------------------------
 	// METHODS FOR GET AND SET
 	//test and set each parameters
-		public void testRangeParam(double var, double test, double min, double max) {
+		public double testRangeParam(double var, double test, double min, double max) {
 			if (test >= min && test <= max ) {
-				var = test;	
+				return test;
 				
 			}
 	
 			else  { 
 				System.out.println("value not in range"); 
 			}
+			return 0;
 		}
 	
 	

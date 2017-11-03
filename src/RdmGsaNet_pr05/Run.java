@@ -1,9 +1,6 @@
 
 package RdmGsaNet_pr05;
 
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-
 /*
  * the main class, where on the top we define all parameters and characteristics of model.
  * after that, we call methods to setup layout, run simulation, exported results and visualization.
@@ -23,19 +20,31 @@ public class Run  {
 		
 		// 	LAYERS' VISUALIZATION 
 //		gsLayer.GsViz();
-		gsLayer.GsMorpViz();
+//		gsLayer.GsMorpViz();
 	
 		// CREATE LAYER NET
+		setupNetLayer netLayer = new setupNetLayer( new setupNetSeed() ) ;
+		
+		netLayer.createLayer();
+		
+
+		netLayer.InitLayer(2, setupNet.start.center);
+		
+		setupNet.netGraph.display();
+		
+		
+		
+		
 		
 		// GS ALGO
-		startValues.setGsAlgo();
+//		startValues.setGsAlgo();
 	
 
 //		gsAlgo.gsAlgoInit(true);
 		
 		
 		
-		gsAlgo.gsAlgoMain(gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);
+	//	gsAlgo.gsAlgoMain(gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);
 		
 		
 	

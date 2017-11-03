@@ -26,6 +26,8 @@ import org.graphstream.graph.Node;
 		int stopSim = setupGs.getStopSim();		
 		double Da = setupGs.getDa() ;
 		double Di = setupGs.getDi() ;
+		double feed = setupGs.getFeed();
+		double kill = setupGs.getKill();
 		
 		// call graph Gs 
 		Graph graph = setupGs.getGraph( setupGs.GsGraph );
@@ -34,7 +36,7 @@ import org.graphstream.graph.Node;
 		
 			// simulation
 			for (int step = 1 ; step <= stopSim; step++) {	
-					System.out.println(step);
+//					System.out.println(step);
 				
 				// start parameters from setup
 				if ( step == 1) {
@@ -66,6 +68,7 @@ import org.graphstream.graph.Node;
 					
 					Node n = iterNode.next();
 					String id = n.getId();
+//					System.out.println("node id " + id);
 					
 					ArrayList ArList0 = mapMorp0.get(n.getId()) ; 
 					
@@ -74,18 +77,26 @@ import org.graphstream.graph.Node;
 					
 					double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act0, inh0);
 					
-					double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da , graph, "GsAct", id);
-					double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Di, graph, "GsInh", id);
-//					double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.activator,feed, kill, act, inh ) ;
-//					double extKill = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.inhibitor,feed, kill, act, inh ) ;
+					double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da , graph, "GsAct", id) ;
+					double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Di , graph, "GsInh", id) ;
 					
-//					System.out.println(Da);
-//					System.out.println(diffusionAct);
-//					double act1 = act0  + reaction;
-//					double inh1 = inh0  - reaction;
+					double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel,morphogen.activator , feed, kill , act0 , inh0 ) ;
+					double extKill = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.inhibitor , feed, kill , act0 , inh0 ) ;
 					
-					double act1 = act0 + diffusionAct + reaction;
-					double inh1 = inh0 + diffusionInh - reaction;
+//					System.out.println("Da " + Da);
+//					System.out.println("Di " + Di);
+//					System.out.println("feed " + feed);
+//					System.out.println("kill " + kill);
+					
+//					System.out.println();
+//					System.out.println("reaction " + reaction);
+//					System.out.println("diffusionAct " + diffusionAct);
+//					System.out.println("diffusionInh " + diffusionInh);
+//					System.out.println("extfeed " + extFeed);
+//					System.out.println("extkill " + extKill);
+					
+					double act1 = act0 + diffusionAct - reaction + extFeed ;
+					double inh1 = inh0 + diffusionInh + reaction - extKill ;
 					
 					// set act and inh in map1
 					ArrayList<Double> ArList1 = new ArrayList<Double>() ;
@@ -94,8 +105,7 @@ import org.graphstream.graph.Node;
 					ArList1.add( inh1 );
 				
 					mapMorp1.put(n.getId(), ArList1 );		
-				}
-				
+				}		
 								
 				// set map1 to graph	
 				for ( Node n : graph.getEachNode() ) {

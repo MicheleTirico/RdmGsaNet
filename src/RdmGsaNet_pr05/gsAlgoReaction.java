@@ -1,10 +1,8 @@
 package RdmGsaNet_pr05;
 
-
 public class gsAlgoReaction implements gsAlgo {
 	
 	// variables
-	//public enum reactionType {ai2, linear }
 	reactionType type;
 
 	// costructor
@@ -52,10 +50,4 @@ public class gsAlgoReaction implements gsAlgo {
 	private static double linear ( double act , double inh ) {
 		return act + inh ;
 	}
-
-	
-
-
-
-
 }

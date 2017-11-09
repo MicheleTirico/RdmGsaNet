@@ -8,12 +8,13 @@ public interface setupNet {
 	Graph netGraph = new SingleGraph("netGraph");
 	
 //	public enum typeNet { grid ,seed , gis}
-	public enum start{ center , random, border }
+	public enum layout{ center , random , border }
 	
 	void setupNetCreate ();
 	
-	void setupNetInit(int size , start startPoint ) ;
+	void setupNetInit(int size , layout type ) ;
 
+	void setupNetSetGs(Graph graph) ;
 	
 
 }

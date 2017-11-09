@@ -1,5 +1,8 @@
 
-package RdmGsaNet_pr05;
+package RdmGsaNet_pr06;
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 
 /*
  * the main class, where on the top we define all parameters and characteristics of model.
@@ -23,18 +26,20 @@ public class Run  {
 //		gsLayer.GsMorpViz();
 	
 		// CREATE LAYER NET
-		setupNetLayer netLayer = new setupNetLayer( new setupNetSeed() ) ;
+		layerNet netlayer = new layerNet( new setupNetSeed ()) ;
 		
-//		netLayer.createLayer();
+//		netlayer.changeLayer(new setupNetRandom ());
+		netlayer.createLayer();
 		
-	
-
-		netLayer.InitLayer(2, setupNet.layout.center);
+		netlayer.setupGsNetLink( 20, setupNetInter.meanPointPlace.border);
 		
-	setupNet.netGraph.display();
+		Graph gs = setupGs.getGraph(setupGs.GsGraph);
 		
-		
-		
+		for (Node n : gs.getEachNode()) {
+			Object x = n.getAttribute("con" ) ;
+			System.out.println(x);
+			
+		}
 		
 		
 		// GS ALGO

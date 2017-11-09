@@ -4,10 +4,9 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
-//public class setupNetLayer {
 public class setupNetLayer {	
 	  
-    private setupNet.start startPoint; 
+//    private setupNet.layout typeLayout; 
 	private setupNet type;
 	
 	public setupNetLayer ( setupNet type ) {
@@ -22,16 +21,19 @@ public class setupNetLayer {
 		type.setupNetCreate();
 	}
 	
-	public void InitLayer (int size , setupNet.start startPoint ) {
-		type.setupNetInit( size , startPoint);
+	public void InitLayer (int size , setupNet.layout typeLayout) {
+		type.setupNetInit( size , typeLayout);
 		
 		// define all operation in common for each type net
-		setDefaultConnection(setupNet.netGraph , 0);	
+		setDefaultConnection(setupNet.netGraph , 1);	
 	}
 	
 //-----------------------------------------------------------------------------------------------------	
 	// PRIVATE METHODS 
-	private void setDefaultConnection (Graph graph, int connection) {
+	public static void setDefaultConnection (Graph graph, int connection) {
+		if (connection != 0 && connection != 1) {
+			System.out.println("value connection not in in range"); 
+		}
 		
 		// add attribute to know if netGraph node is connected to gsGraph node
 			// conn = 0 -> node not connect

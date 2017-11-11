@@ -1,4 +1,4 @@
-package RdmGsaNet_pr06;
+package RdmGsaNet_pr07;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-	public interface gsAlgo   {
+	public class gsAlgo   {
 		
 		// declare enum type
 		public enum morphogen {activator, inhibitor }
@@ -18,22 +18,37 @@ import org.graphstream.graph.Node;
 		public enum diffusionType {fick, perimeter, weigth }
 		public enum extType {gsModel, test}
 		
-		// declare new maps / map (key, double, double) = id node, act, inh
-		Map<String, ArrayList> mapMorp0 = new HashMap<String, ArrayList>();
-		Map<String, ArrayList> mapMorp1 = new HashMap<String, ArrayList>();
+		public enum DisMorpType {homo, random }
+		
+		 // declare new maps / map (key, double, double) = id node, act, inh
+		static Map<String, ArrayList> mapMorp0 = new HashMap<String, ArrayList>();
+		static Map<String, ArrayList> mapMorp1 = new HashMap<String, ArrayList>();
 		
 		// call setup variables
-//		int stopSim = setupGs.getStopSim();		
-		double Da = setupGs.getDa() ;
-		double Di = setupGs.getDi() ;
-		double feed = setupGs.getFeed();
-		double kill = setupGs.getKill();
+	//	int stopSim = setupGs.getStopSim();		
+		static double Da  ;
+		static double Di  ;
+		static double feed ;
+		static double kill ;
+		
+		static Graph graph = layerGs.getGraph(layerGs.gsGraph);
+
 		
 		// call graph Gs 
-		Graph graph = setupGs.getGraph( setupGs.GsGraph );
 		
+		public gsAlgo( double Da, double Di, double kill, double feed ) {
+			this.Da = Da ;
+			this.Di = Di ;
+			this.kill = kill ;
+			this.feed = feed ;
+		}
+		
+		public static void setupAlgoValues (double Da, double Di, double kill, double feed) {	
+			// setup values	
+		}
+				
 		public static void gsAlgoMain (int stopSim, reactionType r, diffusionType d, extType e) {
-		
+					
 			// simulation
 			for (int step = 1 ; step <= stopSim; step++) {	
 //					System.out.println(step);
@@ -119,8 +134,8 @@ import org.graphstream.graph.Node;
 					n.setAttribute( "GsInh", inh1);	
 										
 				}
-				System.out.println(mapMorp0);
-				System.out.println(mapMorp1);
+				System.out.println("mapMorp0 " + mapMorp0);
+				System.out.println("mapMorp1 " + mapMorp1);
 			}
 		}
 	}

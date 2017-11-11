@@ -1,4 +1,4 @@
-package RdmGsaNet_pr06;
+package RdmGsaNet_pr07;
 
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.GridGenerator;
@@ -23,7 +23,7 @@ public class setupNetSeed implements setupNetInter{
 	public void setGsAtr(Graph graph, meanPointPlace point) {
 		
 		setupNetInter.setDefaultConnectionNode (graph, 0 );
-		int gridSize = setupGs.getGsGridSize();
+		int gridSize = setupGsGrid.getGsGridSize();
 		
 //		System.out.println(point);
 

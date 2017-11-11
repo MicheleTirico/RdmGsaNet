@@ -1,10 +1,9 @@
-package RdmGsaNet_pr06;
+package RdmGsaNet_pr07;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.SingleGraph;
-
 
 public interface setupNetInter {
 	
@@ -27,7 +26,7 @@ public interface setupNetInter {
 // COMMON METHODS
 	public static void createLayer( )  {
 		
-		Graph gsGraph = setupGs.getGraph(setupGs.GsGraph);
+		Graph gsGraph = layerGs.getGraph(layerGs.gsGraph);
 		Graph netGraph = new SingleGraph("netGraph") ;
 		
 //		Graph gsGraph = setupGs.getGraph(gsGraph) ;	

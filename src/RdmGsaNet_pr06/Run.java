@@ -1,6 +1,7 @@
 
 package RdmGsaNet_pr06;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
@@ -31,13 +32,16 @@ public class Run  {
 //		netlayer.changeLayer(new setupNetRandom ());
 		netlayer.createLayer();
 		
-		netlayer.setupGsNetLink( 20, setupNetInter.meanPointPlace.border);
+		netlayer.setupGsNetLink( setupNetInter.meanPointPlace.border);
 		
 		Graph gs = setupGs.getGraph(setupGs.GsGraph);
 		
 		for (Node n : gs.getEachNode()) {
 			Object x = n.getAttribute("con" ) ;
 			System.out.println(x);
+		}
+		
+		for (Edge e : gs.getEachEdge()) {
 			
 		}
 		
@@ -48,9 +52,9 @@ public class Run  {
 
 //		gsAlgo.gsAlgoInit(true);
 		
+//		gsAlgo.DisMorp (homo o random);
 		
-		
-	//	gsAlgo.gsAlgoMain(gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);
+		gsAlgo.gsAlgoMain(2, gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);
 		
 		
 	

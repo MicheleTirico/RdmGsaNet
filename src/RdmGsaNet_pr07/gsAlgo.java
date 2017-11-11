@@ -32,9 +32,6 @@ import org.graphstream.graph.Node;
 		static double kill ;
 		
 		static Graph graph = layerGs.getGraph(layerGs.gsGraph);
-
-		
-		// call graph Gs 
 		
 		public gsAlgo( double Da, double Di, double kill, double feed ) {
 			this.Da = Da ;

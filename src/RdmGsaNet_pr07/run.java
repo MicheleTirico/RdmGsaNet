@@ -34,7 +34,7 @@ public class run {
 		gsAlgo values = new gsAlgo(0.4, 0.1, 0.5, 0.8);
 		
 		// run simulation gsAlgo
-		gsAlgo.gsAlgoMain( 1 , gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);
+		gsAlgo.gsAlgoMain( 5 , gsAlgo.reactionType.ai2, gsAlgo.diffusionType.fick, gsAlgo.extType.gsModel);
 
 		layerNet netLayer = new layerNet(new setupNetSeed () ) ;
 		
@@ -44,6 +44,9 @@ public class run {
 		
 //		for ( Node n : gsGraph.getEachNode()) { Object a = n.getAttribute("GsAct") ; System.out.println( a ); }
 		
+		growthNet growthNet = new growthNet(new growthNetNear()) ;
+		
+		growthNet.runGrowth();
 	}
 
 

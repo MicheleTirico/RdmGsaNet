@@ -16,15 +16,23 @@ public class simulation {
 
 //		for ( Node n : graph.getEachNode() ) {	double x = n.getAttribute( "GsAct" ) ;	System.out.println(x);	}
 		
+		/* Map to update values of morphogens ( id node ( String ) , morphogens ( list ) )
+			mapMorp0 = values of morp before each step
+			mapMorp1 = values of morp after each step
+		*/
 		Map<String, ArrayList<Double>> mapMorp0 = new HashMap<String, ArrayList<Double>>();
 		Map<String, ArrayList<Double>> mapMorp1 = new HashMap<String, ArrayList<Double>>();
 		
+		// start simulation, we define the last step in class run
 		for (int step = 1 ; step <= stopSim; step++) {	//	System.out.println(step);
 
+			// method to handle first step
 			firstStep (step, mapMorp0 , mapMorp1, graph);	//	System.out.println(mapMorp0);
-
+			
+			// run gs algo to all nodes
 			gsAlgo.gsAlgoMain( mapMorp0, mapMorp1 );
-		
+			
+			// define rules to growth network
 			growthNet.growth(step);
 		}
 	}

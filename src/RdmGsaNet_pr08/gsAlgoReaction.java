@@ -3,20 +3,18 @@ package RdmGsaNet_pr08;
 public class gsAlgoReaction {
 	
 	// variables
-	gsAlgo.reactionType type;
+	private gsAlgo.reactionType type;
 
-	// costructor
+	// constructor ( define type of reaction )
 	public gsAlgoReaction ( gsAlgo.reactionType type) {
 		this.type = type;
 	}
 
-	// methods
+	// method to compute raction
 	public static double gsComputeReaction( gsAlgo.reactionType type, double act, double inh ) {
-	
 		double reaction;
 		
-		switch (type) {
-		
+		switch (type) {	
 			case ai2: {
 				reaction = ai2 ( act , inh ) ;
 				break;
@@ -27,18 +25,12 @@ public class gsAlgoReaction {
 				break;
 			}
 		
-			default: {
-				reaction = 0;
-				System.out.println("reaction Type not defined");
-			}
-		}
-		
+			default: {	reaction = 0;	System.out.println("reaction Type not defined");	}
+		}	
 		return reaction;
 	}
 
-
-
-
+//-----------------------------------------------------------------------------------------------------------------------------------
 	// methods to define reaction type
 	
 	// classical reaction from Gray Scott model

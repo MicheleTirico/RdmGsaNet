@@ -17,10 +17,9 @@ public class layerGs {
 	// COSTRUCTOR 
 	public layerGs (setupGsInter layout) {
 		this.layout = layout ;
-		
 	}
 	
-	// method to change gs layout
+	// method to change gs layout ( never used ) 
 	public void changeLayer ( setupGsInter layout) {
 		this.layout = layout ;
 	}
@@ -30,7 +29,7 @@ public class layerGs {
 		layout.createLayerGs () ;
 	}
 			
-	// methods
+	// methods to define characteristics of layer gs
 	public void setupDisMorp ( setupGsInter.disMorpType type , int randomSeedAct, int randomSeedInh, double homoVal ) {
 		
 		Graph graph = gsGraph;
@@ -38,17 +37,16 @@ public class layerGs {
 		switch (type) {		
 	
 		case homo :
-			double x = homoVal;
 			
-			System.out.println("distribution homogeneus " + x );
+			System.out.println("distribution homogeneus " + homoVal );
 			
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , x  ) ;}
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , x  ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , homoVal  ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , homoVal  ) ;}
 			
 			break;
 			
 		case random :
-			System.out.println("distribution random");
+			System.out.println("distribution random = " + "randomSeedAct = " + randomSeedAct + " randomSeedInh = " + randomSeedInh );
 			
 			Random act = new Random( randomSeedAct );
 			Random inh = new Random( randomSeedInh );
@@ -59,7 +57,7 @@ public class layerGs {
 			break;
 			}
 		}
-		
+//----------------------------------------------------------------------------------------------------------------------------------		
 	// get graph
 	public static Graph getGraph (Graph graph ) { return graph; }
 

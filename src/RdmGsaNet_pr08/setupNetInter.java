@@ -23,7 +23,7 @@ public interface setupNetInter {
 	//method for setupGsNetLink
 	void setNetAtr() ;
 	
-// COMMON METHODS
+// COMMON METHODS 
 	public static void createLayer( )  {
 		
 		Graph gsGraph = layerGs.getGraph(layerGs.gsGraph);

@@ -7,6 +7,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 public class layerNet {	
 	
 	// COSTANTS
+	// initialization of graph net
 	Graph netGraph = new SingleGraph("netGraph");
 	Graph gsGraph = layerGs.getGraph(layerGs.gsGraph);
 	
@@ -26,7 +27,7 @@ public class layerNet {
 	}
 	
 	public void setupGsNetLink(setupNetInter.meanPointPlace point) {
-		setupNetInter.meanPointPlace x = point;
+//		setupNetInter.meanPointPlace x = point;
 		layout.setGsAtr(gsGraph, point );
 		layout.setNetAtr();
 	}

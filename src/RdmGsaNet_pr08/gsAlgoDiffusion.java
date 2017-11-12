@@ -18,14 +18,13 @@ public class gsAlgoDiffusion  {
 		gsAlgo.diffusionType type;
 		gsAlgo.morphogen morp;
 		
-		// call map from gsAlgo
-
-		// costructor
+		// constructor ( define type of diffusion and morphogen )
 		public gsAlgoDiffusion (gsAlgo.diffusionType type,  gsAlgo.morphogen morp ) {
 			this.type = type;
 			this.morp = morp;
 		}
 		
+		// this method return the value of diffusion. 
 		public static double gsComputeDiffusion( gsAlgo.diffusionType type , double speed , Graph graph, String morp, String id, Map mapMorp0 ) {
 			double diffusion;			
 			
@@ -34,20 +33,19 @@ public class gsAlgoDiffusion  {
 					diffusion = speed * fick ( graph, morp, id, mapMorp0 ) ;
 					break;
 				}
-			
+				// diffusion not yet developed 
 				case perimeter : { diffusion = perimeter ( ) ; break; }
 				case weigth : { diffusion = weigth ( ) ; break; }
 			
 				default: { System.out.println("diffusion type not defined") ; diffusion = 0; }
-			}
-			
+			}	
 			return diffusion;
 		}
 
 //------------------------------------------------------------------------------------------------------		
-		// methods to define reaction type
+		// methods to define diffusion type
 		
-		// classical reaction from Gray Scott model
+		// classical diffusion, equilibrium of mass
 		private static double fick (  Graph graph, String morp , String id , Map mapMorp0) {
 			
 			// local variables
@@ -82,9 +80,10 @@ public class gsAlgoDiffusion  {
 				ArrayList<Double> neigList0 = (ArrayList) mapMorp0.get(neig.getId()) ;
 				
 				d0Neig =  neigList0.get(morpInt);	//	System.out.println("d0Neig " + d0Neig);
-				sumNeig = sumNeig + d0Neig;			//	System.out.println(neig.getId() + "  " +neigList0);				String a = neig.getId() ;		System.out.println(a);
-			}										//			System.out.println("sumNeig " + sumNeig);
+				sumNeig = sumNeig + d0Neig;			//	System.out.println(neig.getId() + "  " +neigList0);	String a = neig.getId() ;		System.out.println(a);
+			}										//	System.out.println("sumNeig " + sumNeig);
 			
+			// compute fick's diffusion
 			diffusion = degree * d0 - sumNeig ;		//	System.out.println(diffusion);
 			return diffusion ;
 		}

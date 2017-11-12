@@ -23,9 +23,7 @@ public class setupNetSeed implements setupNetInter{
 	public void setGsAtr(Graph graph, meanPointPlace point) {
 		
 		setupNetInter.setDefaultConnectionNode (graph, 0 );
-		int gridSize = setupGsGrid.getGsGridSize();
-		
-//		System.out.println(point);
+		int gridSize = setupGsGrid.getGsGridSize();				//		System.out.println(point);
 
 		switch (point) {
 		case random: { 
@@ -42,9 +40,7 @@ public class setupNetSeed implements setupNetInter{
 		}
 
 		case center: {
-
-			int idCenter = (int)  Math.floor(gridSize / 2) ;
-			
+			int idCenter = (int)  Math.floor(gridSize / 2) ;			
 			String idString = convertIdToString(idCenter, idCenter) ; 
 			
 			Node seed = graph.getNode(idString);	
@@ -53,8 +49,7 @@ public class setupNetSeed implements setupNetInter{
 			break;			
 		}
 		
-		case border : {
-			
+		case border : {	
 			int randomDir = (int) Math.round( Math.random() );
 			String idString = null;
 			
@@ -65,9 +60,8 @@ public class setupNetSeed implements setupNetInter{
 			if (randomDir == 1) {
 				int random = (int) ( Math.random() * gridSize );
 				idString = convertIdToString( 0 , random) ;
-			}
+			}													//			System.out.println(idString);
 			
-//			System.out.println(idString);
 			Node seed = graph.getNode(idString);	
 			seed.setAttribute("con", 1);
 			
@@ -77,13 +71,10 @@ public class setupNetSeed implements setupNetInter{
 	}
 
 	public void setNetAtr() {
-		
-		
 	}
 
 //-----------------------------------------------------------------------------------------------------	
 	// PRIVATE METHODS 
-
 	private String convertIdToString( int x , int y ) {
 		
 		String idString = (String) (x + "_" + y);

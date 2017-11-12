@@ -6,26 +6,28 @@ import org.graphstream.graph.Graph;
 
 public class setupGsGrid implements setupGsInter {
 	
-	public static int size ;
-	private gsGridType type;
+	private static int size ;
+	private static gsGridType type;
 		
 	public setupGsGrid (int size, gsGridType type ) {
 		this.size = size ;
 		this.type = type ;
 	}
 
-	@Override
 	public void createLayerGs() {
+		// in this method ( initialized in interface setupGsInter ) we create the graph gs for the layer gs.
 		
-//		System.out.println(size);
-//		System.out.println(type);
+//		System.out.println(size);	System.out.println(type);
 		
+		// create boolean switch to choice grid type ( degree 4 or 8 )
 		boolean typebol;
 		if (type == gsGridType.grid4) { typebol = false ; }
 		else { typebol = true ;	}
 	
+		// call graph of layer gs
 		Graph graph = layerGs.getGraph( layerGs.gsGraph );
 			
+		// generate graph
 		Generator GsGen = new GridGenerator(typebol , false);
 		GsGen.addSink(graph);
 		GsGen.begin();

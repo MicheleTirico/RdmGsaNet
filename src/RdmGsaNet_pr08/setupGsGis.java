@@ -1,5 +1,6 @@
 package RdmGsaNet_pr08;
 
+// class not yet developed.   
 public class setupGsGis implements setupGsInter {
 
 	@Override

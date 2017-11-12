@@ -18,24 +18,23 @@ public interface setupNetInter {
 	void createLayerNet ();
 	
 	//method for setupGsNetLink
-	void setGsAtr(Graph graph, meanPointPlace peppe) ;
+	void setGsAtr(Graph graph, meanPointPlace point) ;
 	
 	//method for setupGsNetLink
 	void setNetAtr() ;
-	
-// COMMON METHODS 
+
+//--------------------------------------------------------------------------------------------------------------------------------
+// COMMON METHODS
+	/*
 	public static void createLayer( )  {
-		
 		Graph gsGraph = layerGs.getGraph(layerGs.gsGraph);
-		Graph netGraph = new SingleGraph("netGraph") ;
-		
+		Graph netGraph = new SingleGraph("netGraph") ;	
 //		Graph gsGraph = setupGs.getGraph(gsGraph) ;	
 	}
-	
-	// PRIVATE METHODS 
-	
+	*/
+
 	// method to add for each node of gsGraph a default value of connection to NetGraph		
-	static void setDefaultConnectionNode (Graph graph, int connection) {
+	public static void setDefaultConnectionNode (Graph graph, int connection) {
 		
 			// add attribute to know if netGraph node is connected to gsGraph node
 			// conn = 0 -> node not connect
@@ -49,8 +48,8 @@ public interface setupNetInter {
 		}
 	}
 			
-		// method to add for each edge of gsGraph a default value of connection to NetGraph	
-	static void setDefaultLinkEdge (Graph graph, int connection) {
+	// method to add for each edge of gsGraph a default value of connection to NetGraph	
+	public static void setDefaultLinkEdge (Graph graph, int connection) {
 		if ( connection != 0 && connection != 1 ) {
 			System.out.println("value connection edge not in in range"); 
 		}

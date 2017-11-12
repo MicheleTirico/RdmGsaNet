@@ -8,16 +8,14 @@ import org.graphstream.graph.Node;
 import java.lang.Math;
 import java.util.Random;
 
-public class setupNetSeed implements setupNetInter{
+public class setupNetSeed implements setupNetInter {
 		
 	meanPointPlace point ;
 
-	public void setupNetCreate() {
-		System.out.println("hello seed");		
-	}
-	
+	// create layer Net 
 	public void createLayerNet() {	
-		setupNetInter.createLayer( );
+		System.out.println("hello seed");		
+		
 	}
 
 	public void setGsAtr(Graph graph, meanPointPlace point) {

@@ -15,7 +15,7 @@ public class run {
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;
 	
-	// initializate simulation, composed by gsAlgo and growthNet
+	// Initialization object simulation, composed by gsAlgo and growthNet
 	static simulation run = new simulation() ;
 	
 	// initialization of rules to evolving Net
@@ -47,7 +47,7 @@ public class run {
 		// method to change type of layer ( not used)
 //		netLayer.changeLayer(new setupNetRandom() ) ;
 		netLayer.setupGsNetLink( setupNetInter.meanPointPlace.center);
-
+		netLayer.createLayer();
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// RUN simulation
 			// runSim ( Max step to stop simulation )

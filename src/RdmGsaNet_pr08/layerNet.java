@@ -17,17 +17,20 @@ public class layerNet {
 	public layerNet (setupNetInter layout ) {
 		this.layout = layout ;
 	}
-	
+	// method to change layer setup
 	public void changeLayer ( setupNetInter layout) {
 		this.layout = layout ;
 	}
 	
+	// method to create layer Net
 	public void createLayer () {
 		layout.createLayerNet ();	
 	}
 	
+	// methood that call 2 other methods ( both methods are declared but not implemented in interface setupNetInter ) : 
+		// setGsAtr : add to each node of gs graph an attribute that means we have like between gs and net graph
+		// setNetAtr : add attributes to graph net in order to have connection with gs graph
 	public void setupGsNetLink(setupNetInter.meanPointPlace point) {
-//		setupNetInter.meanPointPlace x = point;
 		layout.setGsAtr(gsGraph, point );
 		layout.setNetAtr();
 	}

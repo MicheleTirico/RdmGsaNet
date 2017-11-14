@@ -64,7 +64,7 @@ public class gsAlgoDiffusion  {
 			
 			// define morhogen 
 			int morpInt;
-			if (morp == "GsAct")	{	morpInt = 0 ;	}
+			if (morp == "gsAct")	{	morpInt = 0 ;	}
 			else 					{	morpInt = 1 ;	}			//	System.out.println(morp);
 			
 			// degree

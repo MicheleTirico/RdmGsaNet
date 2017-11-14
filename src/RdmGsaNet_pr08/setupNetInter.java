@@ -21,7 +21,7 @@ public interface setupNetInter {
 	void setGsAtr(Graph graph, meanPointPlace point) ;
 	
 	//method for setupGsNetLink
-	void setNetAtr() ;
+	void setNetAtr( Graph graph ) ;
 
 //--------------------------------------------------------------------------------------------------------------------------------
 // COMMON METHODS
@@ -57,4 +57,5 @@ public interface setupNetInter {
 			for ( Edge e : graph.getEachEdge() ) { e.addAttribute("con", connection ); }	
 		}
 	}
+
 }

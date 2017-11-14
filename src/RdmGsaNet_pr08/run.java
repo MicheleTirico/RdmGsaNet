@@ -1,5 +1,7 @@
 package RdmGsaNet_pr08;
 
+import java.util.Collection;
+
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
@@ -12,6 +14,9 @@ public class run {
 	// call gs graph ( to test code , not important )
 	static Graph gsGraph = layerGs.getGraph(layerGs.gsGraph) ;
 	
+	// call NET graph ( to test code , not important )
+	static Graph netGraph = layerNet.getGraph(layerNet.netGraph) ;
+	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;
 	
@@ -19,7 +24,8 @@ public class run {
 	static simulation run = new simulation() ;
 	
 	// initialization of rules to evolving Net
-	static growthNet growthNet = new growthNet(new growthNetNear()) ;
+	static generateNetNode generateNetNode = new generateNetNode (new generateNodeThreshold( 0.5 , 0.5 )) ;
+	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear()) ;
 		
 	public static void main(String[] args) {
 
@@ -48,12 +54,15 @@ public class run {
 //		netLayer.changeLayer(new setupNetRandom() ) ;
 		netLayer.setupGsNetLink( setupNetInter.meanPointPlace.center);
 		netLayer.createLayer();
+		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// RUN simulation
 			// runSim ( Max step to stop simulation )
-		run.runSim( 5 );
+		run.runSim( 10 );
 		
-
+//		gsGraph.display();
+//		for ( Node n : gsGraph.getEachNode()) {	 int a = n.getAttribute("con");  System.out.println(a);		}
+		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// EXPORT VALUES
 

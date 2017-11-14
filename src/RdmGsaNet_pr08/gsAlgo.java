@@ -12,7 +12,7 @@ import org.graphstream.graph.Node;
 		
 		// declare enum type
 		public enum morphogen {activator, inhibitor }
-		public enum interaction {reaction , diffusion, ext }
+//		public enum interaction {reaction , diffusion, ext }
 		
 		public enum reactionType {ai2, linear }
 		public enum diffusionType {fick, perimeter, weigth }
@@ -104,8 +104,8 @@ import org.graphstream.graph.Node;
 				double act1 = (double) ArList1.get(0);
 				double inh1 = (double) ArList1.get(1);
 					
-				n.setAttribute( "GsAct", act1);
-				n.setAttribute( "GsInh", inh1);	
+				n.setAttribute( "gsAct", act1);
+				n.setAttribute( "gsInh", inh1);	
 										
 			}
 //	System.out.println("mapMorp0 " + mapMorp0);	System.out.println("mapMorp1 " + mapMorp1);

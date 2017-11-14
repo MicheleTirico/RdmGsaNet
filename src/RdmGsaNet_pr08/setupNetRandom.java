@@ -18,7 +18,7 @@ public class setupNetRandom implements setupNetInter {
 	}
 
 	@Override
-	public void setNetAtr() {
+	public void setNetAtr( Graph graph ) {
 		// TODO Auto-generated method stub
 		
 	}

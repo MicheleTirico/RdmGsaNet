@@ -68,7 +68,18 @@ public class setupNetSeed implements setupNetInter {
 		}
 	}
 
-	public void setNetAtr() {
+	public void setNetAtr( Graph graph ) {
+		Graph netGraph = layerNet.getGraph( layerNet.netGraph) ;
+		
+		for ( Node n : netGraph.getEachNode() ) {
+			
+			// add con
+			n.addAttribute("con", 0);
+			
+			// id GS
+			n.addAttribute("idGs", 0);
+			
+		}
 	}
 
 //-----------------------------------------------------------------------------------------------------	
@@ -78,6 +89,7 @@ public class setupNetSeed implements setupNetInter {
 		String idString = (String) (x + "_" + y);
 		return idString;
 	}
+
 
 
 

@@ -40,23 +40,24 @@ public class layerGs {
 			
 			System.out.println("distribution homogeneus " + homoVal );
 			
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , homoVal  ) ;}
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , homoVal  ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsAct" , homoVal  ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsInh" , homoVal  ) ;}
 			
 			break;
 			
 		case random :
-			System.out.println("distribution random = " + "randomSeedAct = " + randomSeedAct + " randomSeedInh = " + randomSeedInh );
+			System.out.println("distribution random / " + "randomSeedAct = " + randomSeedAct + " randomSeedInh = " + randomSeedInh );
 			
 			Random act = new Random( randomSeedAct );
 			Random inh = new Random( randomSeedInh );
 			
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsAct" , act.nextDouble()   ) ;}
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("GsInh" , inh.nextDouble()   ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsAct" , act.nextDouble()   ) ;}
+			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsInh" , inh.nextDouble()   ) ;}
 			
 			break;
 			}
 		}
+	
 //----------------------------------------------------------------------------------------------------------------------------------		
 	// get graph
 	public static Graph getGraph (Graph graph ) { return graph; }

@@ -28,11 +28,11 @@ public class setupGsGrid implements setupGsInter {
 		Graph graph = layerGs.getGraph( layerGs.gsGraph );
 			
 		// generate graph
-		Generator GsGen = new GridGenerator(typebol , false);
-		GsGen.addSink(graph);
-		GsGen.begin();
-		for(int i = 0 ; i < size ; i++) { 	GsGen.nextEvents(); 	}
-		GsGen.end();
+		Generator gsGen = new GridGenerator(typebol , false);
+		gsGen.addSink(graph);
+		gsGen.begin();
+		for(int i = 0 ; i < size ; i++) { 	gsGen.nextEvents(); 	}
+		gsGen.end();
 	}
 	
 	public static int getGsGridSize () { return size; }

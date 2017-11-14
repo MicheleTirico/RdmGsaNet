@@ -8,7 +8,7 @@ public class layerNet {
 	
 	// COSTANTS
 	// initialization of graph net
-	Graph netGraph = new SingleGraph("netGraph");
+	static Graph netGraph = new SingleGraph("netGraph");
 	Graph gsGraph = layerGs.getGraph(layerGs.gsGraph);
 	
 	private setupNetInter layout;
@@ -32,12 +32,14 @@ public class layerNet {
 		// setNetAtr : add attributes to graph net in order to have connection with gs graph
 	public void setupGsNetLink(setupNetInter.meanPointPlace point) {
 		layout.setGsAtr(gsGraph, point );
-		layout.setNetAtr();
+		layout.setNetAtr(netGraph ) ;
 	}
+	
 		
 //-----------------------------------------------------------------------------------------------------	
 	
-	
+	// get graph
+		public static Graph getGraph (Graph graph ) { return graph; }
 
 	
 	

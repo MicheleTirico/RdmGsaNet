@@ -11,8 +11,11 @@ public class simulation {
 	
 	public void  runSim (int stopSim ) {		
 		
-		Graph graph = layerGs.getGraph(layerGs.gsGraph) ;
-		growthNet growthNet = run.growthNet ;
+		Graph gsGraph = layerGs.getGraph(layerGs.gsGraph) ;
+		Graph netGraph = layerNet.getGraph(layerNet.netGraph) ;
+		
+		generateNetEdge genNetEd = run.generateNetEdge ;
+		generateNetNode genNetNo = run.generateNetNode ;
 
 //		for ( Node n : graph.getEachNode() ) {	double x = n.getAttribute( "GsAct" ) ;	System.out.println(x);	}
 		
@@ -24,16 +27,25 @@ public class simulation {
 		Map<String, ArrayList<Double>> mapMorp1 = new HashMap<String, ArrayList<Double>>();
 		
 		// start simulation, we define the last step in class run
-		for (int step = 1 ; step <= stopSim; step++) {	//	System.out.println(step);
+		for (int step = 1 ; step <= stopSim; step++) {	
+			
+			System.out.println(step);
 
 			// method to handle first step
-			firstStep (step, mapMorp0 , mapMorp1, graph);	//	System.out.println(mapMorp0);
+			firstStep (step, mapMorp0 , mapMorp1, gsGraph);	// System.out.println(mapMorp0);
 			
 			// run gs algo to all nodes
 			gsAlgo.gsAlgoMain( mapMorp0, mapMorp1 );
 			
 			// define rules to growth network
-			growthNet.growth(step);
+			genNetNo.generateNode( gsGraph , step);
+			
+			genNetEd.generateEdge(step);
+			
+			for ( Node n : gsGraph.getEachNode() ) {	
+			int a = n.getAttribute("con") ;
+			System.out.println(a);
+			}
 		}
 	}
 		
@@ -41,14 +53,14 @@ public class simulation {
 	/* define first step of simulation 
 	 	* if we have first step, we keep values from Gs graph
 	 	* else we keep values from mapMorp0  		*/
-	private static void firstStep (int step , Map mapMorp0 , Map mapMorp1, Graph graph ) {
+	private static void firstStep (int step , Map<String, ArrayList<Double>> mapMorp0 , Map<String, ArrayList<Double>> mapMorp1, Graph graph ) {
 		if ( step == 1) {
 			
 			for ( Node n : graph.getEachNode() ) {
 				ArrayList<Double> ArList0 = new ArrayList<Double>() ;
 		
-				ArList0.add( (double) n.getAttribute( "GsAct" ) );
-				ArList0.add( (double) n.getAttribute( "GsInh" ) );
+				ArList0.add( (double) n.getAttribute( "gsAct" ) );
+				ArList0.add( (double) n.getAttribute( "gsInh" ) );
 				
 				mapMorp0.put(n.getId(), ArList0 );	
 			}

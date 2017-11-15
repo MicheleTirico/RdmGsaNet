@@ -9,7 +9,12 @@ public class setupGsGis implements setupGsInter {
 		
 	}
 
-			
-	
+	@Override
+	public void setCoordinate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

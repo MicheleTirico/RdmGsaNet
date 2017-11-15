@@ -10,6 +10,10 @@ import org.graphstream.graph.Node;
 
 	public class gsAlgo {
 		
+		private static Graph gsGraph = layerGs.getGraph();
+		private static Map<String, ArrayList<Double>> mapMorp0 = simulation.getmapMorp0(); 
+		private static Map<String, ArrayList<Double>> mapMorp1 = simulation.getmapMorp1(); 
+		
 		// declare enum type
 		public enum morphogen {activator, inhibitor }
 //		public enum interaction {reaction , diffusion, ext }
@@ -38,12 +42,10 @@ import org.graphstream.graph.Node;
 			this.feed = feed ;
 		}
 		
-		public static void gsAlgoMain ( Map<String, ArrayList<Double>> mapMorp0, Map<String, ArrayList<Double>> mapMorp1) {
-			
-			Graph graph = layerGs.getGraph(layerGs.gsGraph);
+		public static void gsAlgoMain (boolean print ) {	
 	
 			//declare iterator to go over each node
-			Iterator<Node> iterNode = graph.iterator();
+			Iterator<Node> iterNode = gsGraph.iterator();
 
 			// start iterator loop
 			while (iterNode.hasNext()) {
@@ -62,8 +64,8 @@ import org.graphstream.graph.Node;
 				double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act0, inh0);
 				
 				// compute diffusion
-				double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da , graph, "GsAct", id, mapMorp0 ) ;
-				double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Di , graph, "GsInh", id, mapMorp0 ) ;
+				double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da , gsGraph, "GsAct", id, mapMorp0 ) ;
+				double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Di , gsGraph, "GsInh", id, mapMorp0 ) ;
 					
 				// compute external values
 				double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.activator , feed, kill , act0 , inh0 ) ;
@@ -97,7 +99,7 @@ import org.graphstream.graph.Node;
 			}		
 								
 			// after each step, we update map1 in gs graph
-			for ( Node n : graph.getEachNode() ) {
+			for ( Node n : gsGraph.getEachNode() ) {
 					
 				ArrayList ArList1 = (ArrayList) mapMorp1.get(n.getId()) ; 
 					
@@ -106,9 +108,15 @@ import org.graphstream.graph.Node;
 					
 				n.setAttribute( "gsAct", act1);
 				n.setAttribute( "gsInh", inh1);	
-										
 			}
-//	System.out.println("mapMorp0 " + mapMorp0);	System.out.println("mapMorp1 " + mapMorp1);
+			
+			if (print == true) {	printGsAlgo ();		}
+		}
+		
+		// print results
+		private static void printGsAlgo () {
+			System.out.println("mapMorp0 " + mapMorp0);	
+			System.out.println("mapMorp1 " + mapMorp1);
 		}
 	}
 	

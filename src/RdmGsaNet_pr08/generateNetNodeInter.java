@@ -7,7 +7,13 @@ public interface generateNetNodeInter {
 	// COSTANTS
 	public enum generateNodeType { threshold , moran , delta }
 	
-	public void generateNodeRule ( Graph graph , int step ) ;
+	public void generateNodeRule ( int step ) ;
+	
+	
+	// common methods
+	public static void setCoordinate () {
+		
+	}
 
 	
 }

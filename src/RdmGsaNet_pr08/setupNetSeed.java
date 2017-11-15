@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class setupNetSeed implements setupNetInter {
 		
+	private static Graph gsGraph = layerGs.getGraph() ;
+	private static Graph netGraph = layerNet.getGraph() ;
 	meanPointPlace point ;
 
 	// create layer Net 
@@ -18,9 +20,9 @@ public class setupNetSeed implements setupNetInter {
 		
 	}
 
-	public void setGsAtr(Graph graph, meanPointPlace point) {
+	public void setGsAtr( meanPointPlace point) {
 		
-		setupNetInter.setDefaultConnectionNode (graph, 0 );
+//		setupNetInter.setDefaultConnectionNode (graph, 0 );
 		int gridSize = setupGsGrid.getGsGridSize();				//		System.out.println(point);
 
 		switch (point) {
@@ -31,7 +33,7 @@ public class setupNetSeed implements setupNetInter {
 			
 			String idString = convertIdToString(randomX , randomY) ;
 			
-			Node seed = graph.getNode(idString);
+			Node seed = gsGraph.getNode(idString);
 			seed.setAttribute("con", 1);
 			
 			break;
@@ -41,7 +43,7 @@ public class setupNetSeed implements setupNetInter {
 			int idCenter = (int)  Math.floor(gridSize / 2) ;			
 			String idString = convertIdToString(idCenter, idCenter) ; 
 			
-			Node seed = graph.getNode(idString);	
+			Node seed = gsGraph.getNode(idString);	
 			seed.setAttribute("con", 1);
 			
 			break;			
@@ -60,7 +62,7 @@ public class setupNetSeed implements setupNetInter {
 				idString = convertIdToString( 0 , random) ;
 			}													//			System.out.println(idString);
 			
-			Node seed = graph.getNode(idString);	
+			Node seed = gsGraph.getNode(idString);	
 			seed.setAttribute("con", 1);
 			
 			break;
@@ -69,17 +71,8 @@ public class setupNetSeed implements setupNetInter {
 	}
 
 	public void setNetAtr( Graph graph ) {
-		Graph netGraph = layerNet.getGraph( layerNet.netGraph) ;
+
 		
-		for ( Node n : netGraph.getEachNode() ) {
-			
-			// add con
-			n.addAttribute("con", 0);
-			
-			// id GS
-			n.addAttribute("idGs", 0);
-			
-		}
 	}
 
 //-----------------------------------------------------------------------------------------------------	

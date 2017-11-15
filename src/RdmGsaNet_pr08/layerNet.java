@@ -7,9 +7,9 @@ import org.graphstream.graph.implementations.SingleGraph;
 public class layerNet {	
 	
 	// COSTANTS
-	// initialization of graph net
-	static Graph netGraph = new SingleGraph("netGraph");
-	Graph gsGraph = layerGs.getGraph(layerGs.gsGraph);
+	// initialization graph net
+	private static Graph netGraph = new SingleGraph("netGraph");
+	private static Graph gsGraph = layerGs.getGraph();
 	
 	private setupNetInter layout;
 	
@@ -17,29 +17,38 @@ public class layerNet {
 	public layerNet (setupNetInter layout ) {
 		this.layout = layout ;
 	}
+	
 	// method to change layer setup
 	public void changeLayer ( setupNetInter layout) {
 		this.layout = layout ;
 	}
 	
 	// method to create layer Net
-	public void createLayer () {
+	public void createLayer (boolean setDefaultAtr) {
 		layout.createLayerNet ();	
+		if (setDefaultAtr == true ) { setDefaultAtr () ; }
 	}
 	
 	// methood that call 2 other methods ( both methods are declared but not implemented in interface setupNetInter ) : 
 		// setGsAtr : add to each node of gs graph an attribute that means we have like between gs and net graph
 		// setNetAtr : add attributes to graph net in order to have connection with gs graph
 	public void setupGsNetLink(setupNetInter.meanPointPlace point) {
-		layout.setGsAtr(gsGraph, point );
-		layout.setNetAtr(netGraph ) ;
+		layout.setGsAtr ( point ) ; 
+		layout.setNetAtr ( netGraph ) ;
 	}
-	
+	 
 		
 //-----------------------------------------------------------------------------------------------------	
-	
+
+	private void setDefaultAtr ( ) {
+		for ( Node n : netGraph.getEachNode() ) {
+			n.addAttribute( "idGs" , 0 );
+			n.addAttribute( "con" , 0 );
+		}
+	}
+
 	// get graph
-		public static Graph getGraph (Graph graph ) { return graph; }
+	public static Graph getGraph ( ) { return netGraph; }
 
 	
 	

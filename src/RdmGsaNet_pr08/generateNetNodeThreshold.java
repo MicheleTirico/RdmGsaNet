@@ -9,21 +9,19 @@ import org.graphstream.graph.Node;
  * than a fixed threshold
  */
 
-public class generateNodeThreshold implements generateNetNodeInter {
+public class generateNetNodeThreshold implements generateNetNodeInter {
 	
 	// COSTANTS AND VARIABLES
-	private double  thAct , thInh ; 
-	
+	private double  thAct , thInh ;
+	private Graph gsGraph = layerGs.getGraph();
 	
 	// COSTRUCTOR
-	public generateNodeThreshold (double thAct , double thInh) {
+	public generateNetNodeThreshold (double thAct , double thInh) {
 		this.thAct = thAct ;
 		this.thInh = thInh ;
 	}
 
-	public void generateNodeRule(Graph gsGraph, int step) {
-		
-//		System.out.println(thAct);
+	public void generateNodeRule( int step) {			//	System.out.println(thAct);
 		
 		// iterator
 		Iterator<Node> iterNode = gsGraph.getNodeIterator();
@@ -33,12 +31,9 @@ public class generateNodeThreshold implements generateNetNodeInter {
 			Node n = iterNode.next();
 			
 			double act = n.getAttribute("gsAct") ;	
-			double inh = n.getAttribute("gsInh") ;				//			
-//			System.out.println("idNode " + n.getId() + " gsAct " + act);
-//			System.out.println("idNode " + n.getId() + " gsInh " + inh);
+			double inh = n.getAttribute("gsInh") ;		//	System.out.println("idNode " + n.getId() + " gsAct " + act); //	System.out.println("idNode " + n.getId() + " gsInh " + inh);
 	 
-			if ( act >= thAct && inh >= thInh) {
-				System.out.println(n.getId());
+			if ( act >= thAct && inh >= thInh ) {	//	System.out.println(n.getId());
 				
 				// get attribute "con" to node , in order to see new connection between layers
 				n.setAttribute( "con", 1 );

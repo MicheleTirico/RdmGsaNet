@@ -18,7 +18,7 @@ public interface setupNetInter {
 	void createLayerNet ();
 	
 	//method for setupGsNetLink
-	void setGsAtr(Graph graph, meanPointPlace point) ;
+	void setGsAtr( meanPointPlace point ) ;
 	
 	//method for setupGsNetLink
 	void setNetAtr( Graph graph ) ;
@@ -31,7 +31,7 @@ public interface setupNetInter {
 		Graph netGraph = new SingleGraph("netGraph") ;	
 //		Graph gsGraph = setupGs.getGraph(gsGraph) ;	
 	}
-	*/
+
 
 	// method to add for each node of gsGraph a default value of connection to NetGraph		
 	public static void setDefaultConnectionNode (Graph graph, int connection) {
@@ -57,5 +57,6 @@ public interface setupNetInter {
 			for ( Edge e : graph.getEachEdge() ) { e.addAttribute("con", connection ); }	
 		}
 	}
+		*/
 
 }

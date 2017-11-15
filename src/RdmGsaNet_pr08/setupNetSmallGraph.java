@@ -3,7 +3,7 @@ package RdmGsaNet_pr08;
 import org.graphstream.graph.Graph;
 
 //class not yet developed. 
-public class setupNetRandom implements setupNetInter {
+public class setupNetSmallGraph implements setupNetInter {
 
 	@Override
 	public void createLayerNet() {
@@ -12,7 +12,7 @@ public class setupNetRandom implements setupNetInter {
 	}
 
 	@Override
-	public void setGsAtr(Graph graph, meanPointPlace point) {
+	public void setGsAtr( meanPointPlace point) {
 		// TODO Auto-generated method stub
 		
 	}

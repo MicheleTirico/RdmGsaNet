@@ -5,26 +5,26 @@ import java.util.Collection;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-public class run {
+public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 		// setupGsGrid ( graph size , type of grid ( degree 4 or 8 ) )
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 2 , setupGsInter.gsGridType.grid4) ) ;
-	
-	// call gs graph ( to test code , not important )
-	static Graph gsGraph = layerGs.getGraph(layerGs.gsGraph) ;
-	
-	// call NET graph ( to test code , not important )
-	static Graph netGraph = layerNet.getGraph(layerNet.netGraph) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 30 , setupGsInter.gsGridType.grid4) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;
+		
+	// call gs graph ( to test code , not important )
+	static Graph gsGraph = layerGs.getGraph() ;
+	
+	// call NET graph ( to test code , not important )
+	static Graph netGraph = layerNet.getGraph() ;
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	static simulation run = new simulation() ;
 	
 	// initialization of rules to evolving Net
-	static generateNetNode generateNetNode = new generateNetNode (new generateNodeThreshold( 0.5 , 0.5 )) ;
+	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeThreshold( 0.2 , 0.2 )) ;
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear()) ;
 		
 	public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class run {
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// GENERATE LAYER GS
 		// method to generate the graph gs
-		gsLayer.createLayer();
+		gsLayer.createLayer ( false , true ) ;
 		
 		// setup values of distribution of gs morphogens
 			// setupDisMorp (type of distribution, random seed act (only random) , random seed inh (only random) , values (only homo) ) 
@@ -53,15 +53,15 @@ public class run {
 		// method to change type of layer ( not used)
 //		netLayer.changeLayer(new setupNetRandom() ) ;
 		netLayer.setupGsNetLink( setupNetInter.meanPointPlace.center);
-		netLayer.createLayer();
+		netLayer.createLayer(true);
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// RUN simulation
 			// runSim ( Max step to stop simulation )
-		run.runSim( 10 );
+		run.runSim( 5 );
+	
+//		for ( Node n : gsGraph.getEachNode() ) {	 ;		}
 		
-//		gsGraph.display();
-//		for ( Node n : gsGraph.getEachNode()) {	 int a = n.getAttribute("con");  System.out.println(a);		}
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// EXPORT VALUES
@@ -69,7 +69,7 @@ public class run {
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
-		
-		
+//		gsGraph.display(false);
+		netGraph.display(false);
 	}
 }

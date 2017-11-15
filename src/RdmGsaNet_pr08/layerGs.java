@@ -12,7 +12,7 @@ public class layerGs {
 	private setupGsInter layout ;
 	
 	// create graph of reaction diffusion layer
-	public static Graph gsGraph = new SingleGraph("gsGraph");
+	private static Graph gsGraph = new SingleGraph("gsGraph");
 	
 	// COSTRUCTOR 
 	public layerGs (setupGsInter layout) {
@@ -25,14 +25,16 @@ public class layerGs {
 	}
 	
 	// method to create layer gs
-	public void createLayer () {
-		layout.createLayerGs () ;
+	public void createLayer ( boolean setCoordinate, boolean setDefaultAtr ) {
+		layout.createLayerGs () ; 
+		if (setCoordinate == true ) { layout.setCoordinate () ; }
+		if (setDefaultAtr == true ) { setDefaultAtr () ; }
 	}
 			
 	// methods to define characteristics of layer gs
 	public void setupDisMorp ( setupGsInter.disMorpType type , int randomSeedAct, int randomSeedInh, double homoVal ) {
 		
-		Graph graph = gsGraph;
+	//	Graph graph = gsGraph;
 		
 		switch (type) {		
 	
@@ -40,8 +42,8 @@ public class layerGs {
 			
 			System.out.println("distribution homogeneus " + homoVal );
 			
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsAct" , homoVal  ) ;}
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsInh" , homoVal  ) ;}
+			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsAct" , homoVal  ) ;}
+			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsInh" , homoVal  ) ;}
 			
 			break;
 			
@@ -51,16 +53,29 @@ public class layerGs {
 			Random act = new Random( randomSeedAct );
 			Random inh = new Random( randomSeedInh );
 			
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsAct" , act.nextDouble()   ) ;}
-			for ( Node n:graph.getEachNode() ) { n.setAttribute("gsInh" , inh.nextDouble()   ) ;}
+			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsAct" , act.nextDouble()   ) ;}
+			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsInh" , inh.nextDouble()   ) ;}
 			
 			break;
 			}
 		}
 	
 //----------------------------------------------------------------------------------------------------------------------------------		
+	private void setDefaultAtr ( ) {
+		
+		for ( Node n : gsGraph.getEachNode() ) {
+			n.addAttribute( "idNet" , 0 );
+			n.addAttribute( "gsAct" , 0 );
+			n.addAttribute( "gsInh" , 0 );
+			n.addAttribute( "con" , 0 );
+		}
+	}
+	
+	
+	
+	
 	// get graph
-	public static Graph getGraph (Graph graph ) { return graph; }
+	public static Graph getGraph ( ) { return gsGraph; }
 
 	}
 

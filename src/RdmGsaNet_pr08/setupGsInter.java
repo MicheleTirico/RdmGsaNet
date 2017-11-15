@@ -11,7 +11,9 @@ public interface setupGsInter {
 
 	
 	// METHODS
-	void createLayerGs();
+	void createLayerGs() ;
+	
+	void setCoordinate() ;
 	
 	// PRIVATE METHODS
 	

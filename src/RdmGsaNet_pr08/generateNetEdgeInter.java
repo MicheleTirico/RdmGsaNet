@@ -6,5 +6,8 @@ public interface generateNetEdgeInter {
 	public enum generateEdgeType { near , preferentialAttachment  }
 	
 	
-	public void generateEdgeRule (int step);
+	// METHODS
+	public void generateEdgeRule ( int step ) ;
+	
+	public void removeEdgeRule ( int step ) ;
 }

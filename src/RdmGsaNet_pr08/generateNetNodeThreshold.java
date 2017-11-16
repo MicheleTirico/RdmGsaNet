@@ -43,6 +43,12 @@ public class generateNetNodeThreshold implements generateNetNodeInter {
 		}
 
 		
+	}
+
+	@Override
+	public void removeNodeRule(int step) {
+		// TODO Auto-generated method stub
+		
 	}	
 
 	

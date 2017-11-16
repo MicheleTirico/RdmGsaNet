@@ -9,11 +9,8 @@ public interface generateNetNodeInter {
 	
 	public void generateNodeRule ( int step ) ;
 	
+	public void removeNodeRule (int step ) ;
 	
-	// common methods
-	public static void setCoordinate () {
-		
-	}
 
-	
+
 }

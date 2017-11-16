@@ -23,9 +23,12 @@ public class main {
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	static simulation run = new simulation() ;
 	
-	// initialization of rules to evolving Net
+	// initialization of rules to evolving Net	
+		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeThreshold( 0.2 , 0.2 )) ;
-	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear()) ;
+	
+		// generateNetEdgeNear ( max radius of search )
+	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5)) ;
 		
 	public static void main(String[] args) {
 
@@ -52,7 +55,7 @@ public class main {
 		// CREATE LAYER NET
 		// method to change type of layer ( not used)
 //		netLayer.changeLayer(new setupNetRandom() ) ;
-		netLayer.setupGsNetLink( setupNetInter.meanPointPlace.center);
+		netLayer.setupGsNetLink( setupNetInter.meanPointPlace.center );
 		netLayer.createLayer(true);
 		
 //-------------------------------------------------------------------------------------------------------------------------------		

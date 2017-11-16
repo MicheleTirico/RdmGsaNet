@@ -8,7 +8,7 @@ import java.util.Map;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-	public class gsAlgo {
+	public class gsAlgo { 
 		
 		private static Graph gsGraph = layerGs.getGraph();
 		private static Map<String, ArrayList<Double>> mapMorp0 = simulation.getmapMorp0(); 

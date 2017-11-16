@@ -14,7 +14,7 @@ public class simulation {
 	
 	// LIST
 	// list of net nodes id
-	
+	 
 	
 	/* 	MAP FOR GS
  		Map to update values of morphogens ( id node ( String ) , morphogens ( list ) )
@@ -54,7 +54,7 @@ public class simulation {
 			firstStep (step );	// System.out.println(mapMorp0);
 			
 			// run gs algo to all nodes
-			gsAlgo.gsAlgoMain( false );
+			gsAlgo.gsAlgoMain( true );
 			
 			// define rules to growth network
 //			System.out.println("generateNode");

@@ -5,16 +5,17 @@ import org.graphstream.graph.Node;
 public class generateNetEdgePrefer implements generateNetEdgeInter {
 
 	@Override
-	public void generateEdgeRule(int step) {
+	public void generateEdgeRule(double step) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeEdgeRule(int step) {
+	public void removeEdgeRule(double step) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 	

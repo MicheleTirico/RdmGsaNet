@@ -37,19 +37,16 @@ public class generateNetNodeThreshold implements generateNetNodeInter {
 				
 				// get attribute "con" to node , in order to see new connection between layers
 				n.setAttribute( "con", 1 );
-			}
-			
-			
-		}
-
-		
+			}	
+		}	
 	}
 
 	@Override
 	public void removeNodeRule(int step) {
 		// TODO Auto-generated method stub
 		
-	}	
+	}
+
 
 	
 	

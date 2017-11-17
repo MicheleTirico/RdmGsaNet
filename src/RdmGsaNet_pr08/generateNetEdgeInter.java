@@ -7,7 +7,7 @@ public interface generateNetEdgeInter {
 	
 	
 	// METHODS
-	public void generateEdgeRule ( int step ) ;
-	
-	public void removeEdgeRule ( int step ) ;
+	public void generateEdgeRule ( double step ) ;
+
+	void removeEdgeRule(double step);
 }

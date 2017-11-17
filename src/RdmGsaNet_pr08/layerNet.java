@@ -38,15 +38,15 @@ public class layerNet {
 	}
 	 
 		
-//-----------------------------------------------------------------------------------------------------	
-
+// PRIVATE METHODS-----------------------------------------------------------------------------------------------------	
+	// method to set default values to network
 	private void setDefaultAtr ( ) {
 		for ( Node n : netGraph.getEachNode() ) {
 			n.addAttribute( "idGs" , 0 );
 			n.addAttribute( "con" , 0 );
 		}
 	}
-
+// Get Methods -----------------------------------------------------------------------------------------------------	
 	// get graph
 	public static Graph getGraph ( ) { return netGraph; }
 

@@ -14,8 +14,9 @@ public class generateNetNode {
 	
 	// VARIABLES 
 	// map
-	private static Map < Double , ArrayList<String> > mapStepIdGsCon = simulation.getMapStepIdGsCon() ;
-	private static Map < Double , ArrayList<String> > mapStepNewNodeIdGs = simulation.getMapStepNewNodeIdGs() ;
+	private static Map < Double , ArrayList<String> > mapStepIdNet = simulation.getMapStepIdNet() ;
+	private static Map < Double , ArrayList<String> > mapStepNewNodeId = simulation.getMapStepNewNodeId() ;
+//	private static Map < Double , ArrayList<String> > mapStepNewNodeIdNet = simulation.GetMapStepNewNodeIdNet() ;
 	
 	// graph
 	private static Graph gsGraph = layerGs.getGraph();
@@ -35,7 +36,7 @@ public class generateNetNode {
 		identifyGsNodeCon ( step ) ;  
 		createNodeNet (step ) ;
 	
-	}
+	} 
 
 //--------------------------------------------------------------------------------------------------------------------
 	// PRIVATE METHODS		
@@ -65,8 +66,7 @@ public class generateNetNode {
 				}
 			
 			// add local list to map, in order to create a map with each nodes connected at each step
-			mapStepIdGsCon.put((double) step, listIdCon) ;
-//			System.out.println(mapStepIdGsCon)	;
+			mapStepIdNet.put((double) step, listIdCon) ;	//			System.out.println(mapStepIdGsCon)	;
 
 	}
 	
@@ -74,11 +74,11 @@ public class generateNetNode {
 	private ArrayList<String> returnNewNodes (double step ) {
 		
 		// create new list of values at step 0 and at step of return
-		ArrayList<String> oldNodes = mapStepIdGsCon.get( (double) (step - 1) ) ;	
-		ArrayList<String> AllNodes = mapStepIdGsCon.get( (double) step  ) ;
+		ArrayList<String> oldNodes = mapStepIdNet.get( (double) (step - 1) ) ;	
+		ArrayList<String> AllNodes = mapStepIdNet.get( (double) step  ) ;
 		
 		//Initialized new empty list of new nodes and list list of nodes in common for step 0 and 1 
-		ArrayList<String> newNodes = new ArrayList<String> () ;
+		ArrayList<String> newNodesId = new ArrayList<String> () ;
 		ArrayList<String> commonNodes = new ArrayList<String> (  AllNodes ) ;
 	
 		// try to add all nodes of step 0 to common list
@@ -88,19 +88,21 @@ public class generateNetNode {
 				}
 		
 		// try to add all nodes of step 0 to new nodes
-		try { newNodes.addAll( oldNodes );	}
+		try { newNodesId.addAll( oldNodes );	}
 			catch ( java.lang.NullPointerException e ) {	
 				//
 				}
 		
-		// calcule new nodes
-		newNodes.addAll( AllNodes ); 
-		newNodes.removeAll(commonNodes);
+		// return new nodes
+		newNodesId.addAll( AllNodes ); 
+		newNodesId.removeAll(commonNodes);
 		
 		// create a map of list of new nodes for each step
-		mapStepNewNodeIdGs.put( step,  newNodes ) ;
-		
-		return newNodes ;
+		if ( step == 1 ) 	{ mapStepNewNodeId.put( step , mapStepIdNet.get( (double) (step )    )) ; }
+		else				{
+		mapStepNewNodeId.put( step ,  newNodesId ) ;
+		}
+		return newNodesId ;
 	}
 	
 	// method to create new nodes in net layer, add attributes and set XYZ coordinates from gsLayer
@@ -113,7 +115,7 @@ public class generateNetNode {
 		ArrayList<String> listCreateNode ;
 		
 		// switch step 
-		if ( step == 1.0 )  {	listCreateNode =  mapStepIdGsCon.get(1.0);		}
+		if ( step == 1.0 )  {	listCreateNode =  mapStepIdNet.get(1.0);		}
 		else 				{	listCreateNode = newNodes;	}		//		System.out.println("listCreateNode " + listCreateNode);
 	
 		// loop for each node in list new nodes
@@ -132,12 +134,12 @@ public class generateNetNode {
 			
 			// set xyz coordinate
 			double [] gsNodeConXYZ = GraphPosLengthUtils.nodePosition(gsNode) ;	// System.out.println("gsX " + gsNodeConXYZ [0] + " gsY " + gsNodeConXYZ [1]);
-			netNode.setAttribute( "xyz" , gsNodeConXYZ[0] , gsNodeConXYZ[1] , gsNodeConXYZ[2] );
+			netNode.setAttribute( "xyz" , gsNodeConXYZ[0] , gsNodeConXYZ[1] , gsNodeConXYZ[2] );		
 		}
 	}
 	
 		
-		
+		 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------	
 	// get method
 	public static generateNetNode getGenerateNode () { return growth ; }

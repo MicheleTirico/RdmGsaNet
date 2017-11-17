@@ -5,15 +5,18 @@ import java.util.Collection;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import RdmGsaNet_pr08.generateNetEdgeNear.whichNode;
+
 public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 		// setupGsGrid ( graph size , type of grid ( degree 4 or 8 ) )
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 30 , setupGsInter.gsGridType.grid4) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid4) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;
 		
+	
 	// call gs graph ( to test code , not important )
 	static Graph gsGraph = layerGs.getGraph() ;
 	
@@ -28,7 +31,7 @@ public class main {
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeThreshold( 0.2 , 0.2 )) ;
 	
 		// generateNetEdgeNear ( max radius of search )
-	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5)) ;
+	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , whichNode.all )) ;
 		
 	public static void main(String[] args) {
 
@@ -61,9 +64,9 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// RUN simulation
 			// runSim ( Max step to stop simulation )
-		run.runSim( 5 );
+		run.runSim( 3 );
 	
-//		for ( Node n : gsGraph.getEachNode() ) {	 ;		}
+//		for ( Node n : netGraph.getEachNode() ) {	Object a = n.getId() ; System.out.println(a);		}
 		
 		
 //-------------------------------------------------------------------------------------------------------------------------------		

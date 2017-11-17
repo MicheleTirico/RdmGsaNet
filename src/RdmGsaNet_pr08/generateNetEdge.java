@@ -9,8 +9,8 @@ public class generateNetEdge {
 		this.type = type ;
 	}
 	
-	public void generateEdge (int step) {
-		type.generateEdgeRule (step) ;
+	public void generateEdge ( double step ) {
+		type.generateEdgeRule ( step ) ;
 	}
 
 //--------------------------------------------------------------------------------------------------------------------

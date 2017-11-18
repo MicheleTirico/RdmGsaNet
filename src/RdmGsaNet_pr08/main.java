@@ -11,11 +11,10 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 		// setupGsGrid ( graph size , type of grid ( degree 4 or 8 ) )
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid4) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
-	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;
-		
+	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
 	
 	// call gs graph ( to test code , not important )
 	static Graph gsGraph = layerGs.getGraph() ;
@@ -76,6 +75,9 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 //		gsGraph.display(false);
-		netGraph.display(false);
+//	
+//		netGraph.display(false);
 	}
+	
+	
 }

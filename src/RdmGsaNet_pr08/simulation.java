@@ -9,10 +9,17 @@ import java.util.Map;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import RdmGsaNetViz.graphViz;
+
 public class simulation {	
 	
 	private static Graph gsGraph = layerGs.getGraph() ;
-	private static Graph netGraph = layerNet.getGraph() ;
+	private static Graph netGraph = layerNet.getGraph() ; 
+	
+// MAP OF GRAPH
+	
+	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
+	
 	
 // LIST FOR ID
 	// list of gsId
@@ -75,6 +82,12 @@ public class simulation {
 //			mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					
 			System.out.println( mapStepNewNodeId);
 			
+			// update map graph
+			updateMapGraph( mapStepNetGraph , step, netGraph);
+//			System.out.println(mapStepNetGraph);
+			
+			graphViz.main(gsGraph);
+			
 		}
 	}
 		
@@ -121,6 +134,11 @@ public class simulation {
 		for ( Node n : graph.getEachNode()) {list.add(n.getId()) ; }	//	System.out.println(list);			
 		return list;	
 	}
+	// MAP GRAPH -----------------------------------------------------------------------------------------------------------------	
+
+	private static void updateMapGraph ( Map<Double , Graph > map, double step , Graph graph ) {
+		map.put(step, graph);	
+	}
 	
 // GET METHODS -----------------------------------------------------------------------------------------------------------------
 	// get methods
@@ -128,5 +146,5 @@ public class simulation {
 	public static Map<String, ArrayList<Double>> getmapMorp1 ()				{ return mapMorp1 ; } 
 	public static Map<Double, ArrayList<String>> getMapStepIdNet () 		{ return mapStepIdNet ; }  
 	public static Map<Double, ArrayList<String>> getMapStepNewNodeId  () 	{ return mapStepNewNodeId  ; }  
-//	public static Map<Double, ArrayList<String>> GetMapStepNewNodeIdNet () 	{ return mapStepNewNodeIdNet  ; }  
+	public static Map<Double, Graph>			 getMapStepNetGraph	() 		{ return mapStepNetGraph  ; }  
 }

@@ -32,18 +32,16 @@ public class layerGs {
 	}
 			
 	// methods to define characteristics of layer gs
-	public void setupDisMorp ( setupGsInter.disMorpType type , int randomSeedAct, int randomSeedInh, double homoVal ) {
-		
-	//	Graph graph = gsGraph;
+	public void setupDisMorp ( setupGsInter.disMorpType type , int randomSeedAct, int randomSeedInh, double homoValAct , double homoValInh) {
 		
 		switch (type) {		
 	
 		case homo :
 			
-			System.out.println("distribution homogeneus " + homoVal );
+			System.out.println("distribution homogeneus / Act = " + homoValAct + " Inh = " + homoValInh );
 			
-			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsAct" , homoVal  ) ;}
-			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsInh" , homoVal  ) ;}
+			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsAct" , homoValAct  ) ;}
+			for ( Node n:gsGraph.getEachNode() ) { n.setAttribute("gsInh" , homoValInh  ) ;}
 			
 			break;
 			

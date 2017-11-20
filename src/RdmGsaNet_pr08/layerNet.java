@@ -32,7 +32,8 @@ public class layerNet {
 	// methood that call 2 other methods ( both methods are declared but not implemented in interface setupNetInter ) : 
 		// setGsAtr : add to each node of gs graph an attribute that means we have like between gs and net graph
 		// setNetAtr : add attributes to graph net in order to have connection with gs graph
-	public void setupGsNetLink(setupNetInter.meanPointPlace point) {
+	public void setupGsNetLink(setupNetSeed.meanPointPlace point) {
+		
 		layout.setGsAtr ( point ) ; 
 		layout.setNetAtr ( netGraph ) ;
 	}

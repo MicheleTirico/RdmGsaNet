@@ -53,7 +53,7 @@ public class simulation {
 		//	CARREFUL : mapStepIdNet = mapStepIdGsCon
 //	private static Map < Double , ArrayList<String> > mapStepIdNet = new HashMap <Double , ArrayList<String> > ()  ;
 	
-	public void  runSim (int stopSim ) {
+	public void  runSim (int stopSim, boolean printMorp , boolean genNode, boolean genEdge ) {
 		
 		
 		generateNetEdge genNetEd = main.generateNetEdge ;
@@ -71,22 +71,20 @@ public class simulation {
 			gsAlgo.gsAlgoMain( false );
 			
 			// define rules to growth network
-//			System.out.println("generateNode");
-			genNetNo.generateNode( step );
+			if ( genNode == true) { genNetNo.generateNode( step ); }
 			
-//			System.out.println("generateEdge");
-			genNetEd.generateEdge( step );
+			if ( genEdge == true) {genNetEd.generateEdge( step ); }
 
 			// create list and map
 			listIdNet = createListId ( netGraph );
 //			mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					
-			System.out.println( mapStepNewNodeId);
+
 			
 			// update map graph
 			updateMapGraph( mapStepNetGraph , step, netGraph);
 //			System.out.println(mapStepNetGraph);
-			
-			graphViz.main(gsGraph);
+
+			if ( printMorp == true) { System.out.println(mapMorp1); }
 			
 		}
 	}

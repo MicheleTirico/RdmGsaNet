@@ -12,12 +12,15 @@ public class setupNetSeed implements setupNetInter {
 		
 	private static Graph gsGraph = layerGs.getGraph() ;
 	private static Graph netGraph = layerNet.getGraph() ;
+	
+	public enum meanPointPlace {center, random , border }
 	meanPointPlace point ;
 
+	public setupNetSeed ( meanPointPlace point ) {	this.point = point ;	}
+	
 	// create layer Net 
 	public void createLayerNet() {	
-		System.out.println("hello seed");		
-		
+		System.out.println("hello seed");				
 	}
 
 	public void setGsAtr( meanPointPlace point) {
@@ -82,6 +85,8 @@ public class setupNetSeed implements setupNetInter {
 		String idString = (String) (x + "_" + y);
 		return idString;
 	}
+
+	
 
 
 

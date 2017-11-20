@@ -18,34 +18,64 @@ public class graphViz {
 	
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 
+	// set default parameters of gsGraph
+	static String styleDefaultbackground = setStyleDefaulBackground ( "white" ) ;
+	static String styleDefaultNode = setStyleDefaultNode ("circle" , 10 , "red" ) ;
+	static String styleDefaultEdge = setStyleDefaultEdge (1 , "black") ;
+	
 	static Viewer viewer ;
 	
 	public static void main( Graph graph ) {
 		
-//		System.out.println(mapStepNetGraph);	
-//		viewer.disableAutoLayout();
-
-		// background style
-//		graph.addAttribute("ui.stylesheet", "graph { fill-color : red ; }");
+		// default style
+		gsGraph.addAttribute("ui.stylesheet", styleDefaultbackground + styleDefaultNode + styleDefaultEdge );
 		
-		// node style
-		String styleNode = "	Node node#1_1  {		shape: box;	size: 15px, 20px;				fill-mode: plain;   /* Default.          */				fill-color: red;    /* Default is black. */stroke-mode: plain; /* Default is none.  */				stroke-color: blue; /* Default is black. */} ";
+		// set quality viz
+		graph.addAttribute("ui.quality");
+	    graph.addAttribute("ui.antialias");
 		
-		graph.addAttribute("ui.stylesheet", styleNode);
-		
-		
-		// remove style
-//		graph.removeAttribute("ui.stylesheet");
-		
-		// viz
-		viewer = graph.display(false) ;
-	
-	
-	
+		viewer = gsGraph.display(false);
 	
 	}
 	
-// Methods
+// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------------
+	
+// set default style of edge
+	private static String setStyleDefaultEdge (int sizeXY , String color ) {
+		String styleSheetEdge =
+	    		"edge {"+
+	    				" size: "		+ sizeXY +	"px;	"+
+	    				" fill-color: "	+ color	 + " ;		"+
+	    				" fill-mode: 	dyn-plain;	"+
+	    		"}" ;
+		return styleSheetEdge ;
+	}
+	
+// set default style of node
+	private static String setStyleDefaultNode (String shape , int sizeXY , String color) {
+		String styleSheetNode =
+				"node {	"+
+						" shape: " 		+ shape 	+ "; "+
+	    				" size: " 		+ sizeXY	+ "px; "+
+	    				" fill-color: "	+ color		+ "; "+
+	    		"}";
+		return styleSheetNode;	
+	}
+	
+// set default style of background
+	private static String setStyleDefaulBackground (String color) {
+		String backgroundStyle = 
+				"graph {"+
+						" fill-color:" + color + "; }";
+		return backgroundStyle ;
+	}
+	
+	
+	
+	
+	
+	
+
 	
 
 }

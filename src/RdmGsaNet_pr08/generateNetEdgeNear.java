@@ -78,6 +78,7 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 			createEdge(n1, idNear, netGraph);	
 		}
 	}
+	
 // remove edge
 	@Override
 	public void removeEdgeRule( double step) {

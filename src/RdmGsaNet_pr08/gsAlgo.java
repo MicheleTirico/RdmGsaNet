@@ -84,8 +84,8 @@ import org.graphstream.graph.Node;
 //				System.out.println("extkill " + extKill);
 				
 				// compute new act and inh values for each node  
-				double act1 = act0 + diffusionAct - reaction + extFeed ;
-				double inh1 = inh0 + diffusionInh + reaction - extKill ;
+				double act1 = act0 - diffusionAct - reaction + extFeed ;
+				double inh1 = inh0 - diffusionInh + reaction - extKill ;
 					
 				// create a list of values act an inh
 				ArrayList<Double> ArList1 = new ArrayList<Double>() ;
@@ -115,7 +115,7 @@ import org.graphstream.graph.Node;
 		
 		// print results
 		private static void printGsAlgo () {
-			System.out.println("mapMorp0 " + mapMorp0);	
+//			System.out.println("mapMorp0 " + mapMorp0);	
 			System.out.println("mapMorp1 " + mapMorp1);
 		}
 	}

@@ -11,6 +11,9 @@ public class layerNet {
 	private static Graph netGraph = new SingleGraph("netGraph");
 	private static Graph gsGraph = layerGs.getGraph();
 	
+	public enum meanPointPlace { center , random , border }
+	meanPointPlace point ;
+	
 	private setupNetInter layout;
 	
 	// COSTRUCTOR
@@ -24,20 +27,23 @@ public class layerNet {
 	}
 	
 	// method to create layer Net
-	public void createLayer (boolean setDefaultAtr) {
-		layout.createLayerNet ();	
-		if (setDefaultAtr == true ) { setDefaultAtr () ; }
+	public void createLayer ( boolean createMeanPoint , meanPointPlace point , boolean setSeedMorp , double seedAct , double seedInh , boolean setSeedMorpInGs ) {
+		
+		// set default values of net graph
+		setDefaultAtr () ;
+		
+		// setup parameter of first point in netGraph 
+		if ( createMeanPoint == true ) {layout.setMeanPoint ( point ) ; }
+		
+		// create mean point in netLayer
+		layout.createLayerNet ();
+		
+		// set morphogens in netGraph
+		if (setSeedMorp == true ) { setSeedMorp (  seedAct ,  seedInh ); }
+	
+		if ( setSeedMorpInGs = true ) { setSeedMorpInGs ( ) ; }
 	}
 	
-	// methood that call 2 other methods ( both methods are declared but not implemented in interface setupNetInter ) : 
-		// setGsAtr : add to each node of gs graph an attribute that means we have like between gs and net graph
-		// setNetAtr : add attributes to graph net in order to have connection with gs graph
-	public void setupGsNetLink(setupNetSeed.meanPointPlace point) {
-		
-		layout.setGsAtr ( point ) ; 
-		layout.setNetAtr ( netGraph ) ;
-	}
-	 
 		
 // PRIVATE METHODS-----------------------------------------------------------------------------------------------------	
 	// method to set default values to network
@@ -47,6 +53,33 @@ public class layerNet {
 			n.addAttribute( "con" , 0 );
 		}
 	}
+	
+	// method to add morp seed to net
+	private void setSeedMorp ( double seedAct , double seedInh ) {
+		
+		// ask mean nodes ad add seed attributes of morphogens
+		for ( Node nNet : netGraph.getEachNode()) {
+			nNet.addAttribute( "seedAct" , seedAct );
+			nNet.addAttribute( "seedInh" , seedInh );
+		}	
+	}
+	
+	private void setSeedMorpInGs () {
+		for ( Node nNet : netGraph.getEachNode()) {
+			
+			String idNet = nNet.getId() ;
+			double seedAct = nNet.getAttribute( "seedAct" );
+			double seedInh = nNet.getAttribute( "seedInh" );
+ 			
+			Node nGs = gsGraph.getNode( idNet );
+			nGs.setAttribute("gsAct", seedAct );
+			nGs.setAttribute("gsInh", seedInh );
+		}
+		
+		
+		
+	}
+	
 // Get Methods -----------------------------------------------------------------------------------------------------	
 	// get graph
 	public static Graph getGraph ( ) { return netGraph; }

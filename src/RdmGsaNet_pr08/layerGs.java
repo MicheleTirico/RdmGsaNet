@@ -68,10 +68,7 @@ public class layerGs {
 			n.addAttribute( "con" , 0 );
 		}
 	}
-	
-	
-	
-	
+
 	// get graph
 	public static Graph getGraph ( ) { return gsGraph; }
 

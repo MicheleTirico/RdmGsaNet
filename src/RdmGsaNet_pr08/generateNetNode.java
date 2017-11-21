@@ -122,7 +122,9 @@ public class generateNetNode {
 		for ( String id : listCreateNode) {
 			
 			// create new node
-			netGraph.addNode(id) ;
+				// try if node not exist, create new node , else continue
+			try 													{	netGraph.addNode(id) ;  } 
+			catch (org.graphstream.graph.IdAlreadyInUseException e) {	continue;				}
 			
 			// get nodes
 			Node gsNode = gsGraph.getNode(id);

@@ -5,6 +5,8 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.SingleGraph;
 
+import RdmGsaNet_pr08.layerNet.meanPointPlace;
+
 public interface setupNetInter {
 	
 	// COSTANTS
@@ -16,12 +18,14 @@ public interface setupNetInter {
 
 	// method for createLayer
 	void createLayerNet ();
+
+	void setMeanPoint(meanPointPlace point);
 	
-	//method for setupGsNetLink
-	void setGsAtr( setupNetSeed.meanPointPlace point ) ;
+
+	 
+
+
 	
-	//method for setupGsNetLink
-	void setNetAtr( Graph graph ) ;
 
 
 }

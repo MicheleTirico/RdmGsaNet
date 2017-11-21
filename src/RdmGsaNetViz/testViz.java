@@ -14,16 +14,16 @@ public class testViz {
 	
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 
-	public static void main( Graph graph ) {
-		displayColor (gsGraph, "gsAct");
+	public static void main( Graph graph, String morp ) {
+		displayColor1 (gsGraph, morp);
 	}
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------------
-	public static void displayColor (Graph graph , String morp) {
+	public static void displayColor1 (Graph graph , String morp) {
 		
-		graph.addAttribute("ui.stylesheet", styleSheet);
-		graph.addAttribute("ui.quality");
-	    graph.addAttribute("ui.antialias");
+		graph.addAttribute("ui.stylesheet", styleSheet6col);
+//		graph.addAttribute("ui.quality");
+//	    graph.addAttribute("ui.antialias");
 
 		
 		for ( Node n : graph.getEachNode()) {
@@ -33,17 +33,82 @@ public class testViz {
 		}	
 	}
 	
+public static void displayColor2 (Graph graph , double th ) {
+		
+		graph.addAttribute("ui.stylesheet", styleSheet4col);
+//		graph.addAttribute("ui.quality");
+//	    graph.addAttribute("ui.antialias");
+
+		
+		for ( Node n : graph.getEachNode()) {
+			double act = n.getAttribute("gsAct");
+			double inh = n.getAttribute("gsInh");
+
+			double val = 0; 
+			if ( act <= 0.1 && inh <= 0.1) {	 val =  	0.2		;	}
+			if ( act >= 0.8 && inh <= 0.2) {	 val =  	0.4		;	}
+			if ( act <= 0.2 && inh >= 0.8) {	 val =  	0.6		;	}
+			if ( act >= 0.9 && inh >= 0.9) {	 val =  	0.8		;	}
+			
+			double color = val; 
+			n.setAttribute("ui.color", color);
+		}	
+	}
+
+public static void displayColor3 (Graph graph , double th ) {
 	
+	graph.addAttribute("ui.stylesheet", styleSheet3col);
+//	graph.addAttribute("ui.quality");
+//    graph.addAttribute("ui.antialias");
+
 	
-	protected static String styleSheet =
+	for ( Node n : graph.getEachNode()) {
+		double act = n.getAttribute("gsAct");
+		double inh = n.getAttribute("gsInh");
+
+		double val = 0; 
+		if ( act <= 0.1 && inh <= 0.1) {	 val =  	0.2		;	}
+
+		if ( act >= 0.9 && inh >= 0.9) {	 val =  	0.6		;	}
+		
+		else 							{	 val =  	0.4		;	}
+		
+		double color = val; 
+		n.setAttribute("ui.color", color);
+	}	
+}
+	
+	protected static String styleSheet4col =
 			"node {"+
 					"	size: 3px;"+
-					"	fill-color: yellow , green , red ; "+
+					"	fill-color: red, yellow, green, blue; "+
 					"	fill-mode: dyn-plain;"+
 					"}"+
 					"edge {"+
-					"	size: 0.2px;"+
-					"	fill-color: #444;"+
+					"	size: 0.1px;"+
+					"	fill-color: white;"+
+					"}";
+	
+	protected static String styleSheet6col =
+			"node {"+
+					"	size: 6px;"+
+					"	fill-color: #ff0000	, #ffff00, #bfff00, #00bfff; "+
+					"	fill-mode: dyn-plain;"+
+					"}"+
+					"edge {"+
+					"	size: 0.1px;"+
+					"	fill-color: white;"+
+					"}";
+		
+	protected static String styleSheet3col =
+			"node {"+
+					"	size: 5px;"+
+					"	fill-color: red, yellow, green ; "+
+					"	fill-mode: dyn-plain;"+
+					"}"+
+					"edge {"+
+					"	size: 0.1px;"+
+					"	fill-color: white;"+
 					"}";
 		
 

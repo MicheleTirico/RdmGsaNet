@@ -31,8 +31,23 @@ import org.graphstream.graph.Node;
 		static double feed ;
 		static double kill ;
 		
+		// handle NaN
+		static boolean handleNaN ;
+		static double setIfNaN ;
+		
+		// handle minVal
+		static double minVal ;
+		static boolean handleMinMaxVal ;
+		
+		// handle MaxVal
+		static double maxVal ;
+		
 		// set parameters in constructor
-		public gsAlgo( reactionType r, diffusionType d, extType e, double Da, double Di, double kill, double feed ) {
+		public gsAlgo( reactionType r, diffusionType d, extType e, double Da, double Di, double kill, double feed , 
+				boolean handleNaN , double setIfNaN, 
+				boolean handleMinMaxVal , 
+				double minVal , double maxVal
+				) {
 			this.r = r ;
 			this.d = d ;
 			this.e = e ;
@@ -40,6 +55,11 @@ import org.graphstream.graph.Node;
 			this.Di = Di ;
 			this.kill = kill ;
 			this.feed = feed ;
+			this.handleNaN = handleNaN ;
+			this.setIfNaN = setIfNaN ;
+			this.handleMinMaxVal = handleMinMaxVal ;
+			this.minVal = minVal ;
+			this.maxVal = maxVal ;
 		}
 		
 		public static void gsAlgoMain (boolean print ) {	
@@ -84,9 +104,24 @@ import org.graphstream.graph.Node;
 //				System.out.println("extkill " + extKill);
 				
 				// compute new act and inh values for each node  
-				double act1 = act0 - diffusionAct - reaction + extFeed ;
-				double inh1 = inh0 - diffusionInh + reaction - extKill ;
+				double act1 = act0 - ( + diffusionAct - reaction + extFeed ) ;
+				double inh1 = inh0 - ( + diffusionInh + reaction - extKill ) ;
+				
+				
+				if ( handleNaN == true ) { 
+					if ( Double.isNaN(act1) ) 	{	act1 = setIfNaN ;	}
+					if ( Double.isNaN(inh1) )	{	inh1 = setIfNaN ;	}
+				}
+				
+				if ( handleMinMaxVal == true ) { 
+					if ( act1 < minVal )  	{	act1 = minVal ;	}
+					if ( act1 >= 1  )  		{	act1 = maxVal ;	}
 					
+					if ( inh1 < minVal )	{	inh1 = minVal ;	}
+					if ( inh1 >= 1  )  		{	inh1 = maxVal ;	}
+				}
+
+				
 				// create a list of values act an inh
 				ArrayList<Double> ArList1 = new ArrayList<Double>() ;
 				

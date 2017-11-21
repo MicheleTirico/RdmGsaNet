@@ -49,11 +49,11 @@ public class gsAlgoDiffusion  {
 		private static double fick (  Graph graph, String morp , String id , Map mapMorp0) {
 			
 			// local variables
-			double diffusion = 0;
-			double d0 = 0 ;
-			double d0Neig = 0 ;
+			double diffusion ;
+			double d0 ;
+			double d0Neig  ;
 			double sumNeig = 0 ;
-			int degree = 0 ;
+			int degree  ;
 			
 			// iterator
 			Node n = graph.getNode(id);

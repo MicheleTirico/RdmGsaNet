@@ -21,7 +21,7 @@ public class testViz {
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------------
 	public static void displayColor1 (Graph graph , String morp) {
 		
-		graph.addAttribute("ui.stylesheet", styleSheet6col);
+		graph.addAttribute("ui.stylesheet", styleSheet3col);
 //		graph.addAttribute("ui.quality");
 //	    graph.addAttribute("ui.antialias");
 
@@ -33,7 +33,7 @@ public class testViz {
 		}	
 	}
 	
-public static void displayColor2 (Graph graph , double th ) {
+public static void displayColor2 (Graph graph ) {
 		
 		graph.addAttribute("ui.stylesheet", styleSheet4col);
 //		graph.addAttribute("ui.quality");
@@ -45,10 +45,10 @@ public static void displayColor2 (Graph graph , double th ) {
 			double inh = n.getAttribute("gsInh");
 
 			double val = 0; 
-			if ( act <= 0.1 && inh <= 0.1) {	 val =  	0.2		;	}
-			if ( act >= 0.8 && inh <= 0.2) {	 val =  	0.4		;	}
-			if ( act <= 0.2 && inh >= 0.8) {	 val =  	0.6		;	}
-			if ( act >= 0.9 && inh >= 0.9) {	 val =  	0.8		;	}
+			if ( act <= 0.1 && inh <= 0.1) {	 val =  	.2		;	}
+			if ( act >= 0.9 && inh <= 0.1) {	 val =  	.4		;	}
+			if ( act <= 0.1 && inh >= 0.9) {	 val =  	.6		;	}
+			if ( act >= 0.9 && inh >= 0.9) {	 val =  	.8		;	}
 			
 			double color = val; 
 			n.setAttribute("ui.color", color);
@@ -68,9 +68,7 @@ public static void displayColor3 (Graph graph , double th ) {
 
 		double val = 0; 
 		if ( act <= 0.1 && inh <= 0.1) {	 val =  	0.2		;	}
-
-		if ( act >= 0.9 && inh >= 0.9) {	 val =  	0.6		;	}
-		
+		if ( act >= 0.9 && inh >= 0.9) {	 val =  	0.6		;	}		
 		else 							{	 val =  	0.4		;	}
 		
 		double color = val; 
@@ -91,7 +89,7 @@ public static void displayColor3 (Graph graph , double th ) {
 	
 	protected static String styleSheet6col =
 			"node {"+
-					"	size: 6px;"+
+					"	size: 3px;"+
 					"	fill-color: #ff0000	, #ffff00, #bfff00, #00bfff; "+
 					"	fill-mode: dyn-plain;"+
 					"}"+
@@ -102,7 +100,7 @@ public static void displayColor3 (Graph graph , double th ) {
 		
 	protected static String styleSheet3col =
 			"node {"+
-					"	size: 5px;"+
+					"	size: 3px;"+
 					"	fill-color: red, yellow, green ; "+
 					"	fill-mode: dyn-plain;"+
 					"}"+

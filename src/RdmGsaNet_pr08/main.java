@@ -5,13 +5,14 @@ import java.util.Collection;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.testViz;
 
 public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 		// setupGsGrid ( graph size , type of grid ( degree 4 or 8 ) )
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid4 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -49,14 +50,23 @@ public class main {
 		
 //-------------------------------------------------------------------------------------------------------------------------------
 		// SETUP START VALUES LAYER GS
-			// gsAlgo ( reaction , diffusion, ext, Da , Di , kill , feed )
+			/*	gsAlgo ( 	enum	reactionType 
+			 * 				enum	diffusionType 
+			 * 				enum	extType 
+			 * 				Da , Di , feed , kill 
+			 * 				bol 	HandleNaN		= if true, set default value when act or inh is over NaN 
+			 * 				double	setIfNaN		= defalt value if act or inh is NaN 
+			 * 				bol		handleMinMaxVal	= if true, set value for values over the range
+			*  				double	minVal			= default value if morph < minVal, set minVal
+			*  				double	mmaxVal			= default value if morph > maxVal, set maxVal
+			*/
 		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.fick , gsAlgo.extType.gsModel , 
-									1,			//Da
-									0.5 , 		//Di
-									0.062 , 		//kill
-									0.03 ,		//feed
-									true,  1E-20 ,
-									true , 1E-20 , 1 ) ;
+				/* Da 	*/			0.6,			
+				/* Di 	*/			0.2, 		
+				/* feed */			0.05 , 	
+				/* kill */			0.07 ,		
+									true ,  1E-5 ,
+									true , 1E-5 , 1 ) ;
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// CREATE LAYER NET
@@ -72,7 +82,7 @@ public class main {
 		 * 				 double	seedInh			=	inh value for seed node		
 		 * 				 bol	setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
 		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 0 , 1 , false); 
+		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , false); 
  		
 //		for ( Node nNet : netGraph.getEachNode() )//	 {		System.out.println(n.getId());			double act = n.getAttribute("seedAct");			double inh = n.getAttribute("seedInh");//			System.out.println ( act ) ;//			System.out.println ( inh ) ;	}
 //			for ( Node nGs : gsGraph.getEachNode() ) {			double inh = nGs.getAttribute("gsInh");//			System.out.println ( n.getId() + "    " + inh ) ;}
@@ -84,10 +94,10 @@ public class main {
 		 * 				bol		genNode		= generate nodes in layer net
 		 * 				bol		genEdge		= generate edges in layer net
 		 *				) 	*/		
-		run.runSim( 50
-				, false , false , false  );
+		run.runSim( 100 , false , false , false  );
 		
 		System.out.println(simulation.getmapMorp1());
+	
 	
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// EXPORT VALUES
@@ -96,9 +106,15 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
-
-		testViz.displayColor3(gsGraph, 0.5);
+		setupViz.Viz4Color(gsGraph);
+		
+//		setupViz.Vizmorp(gsGraph, "gsInh");
+//		testViz.displayColor2(gsGraph );
+//		testViz.displayColor1(gsGraph, "gsAct");
+//		testViz.displayColor1(gsGraph, "gsInh");
 		gsGraph.display(false) ;
+		
+
 		
 //		netGraph.display(false);
 	}

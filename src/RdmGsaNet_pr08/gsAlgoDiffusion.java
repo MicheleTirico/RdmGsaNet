@@ -58,7 +58,7 @@ public class gsAlgoDiffusion  {
 			// iterator
 			Node n = graph.getNode(id);
 			Iterator<Node> iter = n.getNeighborNodeIterator() ;		//	System.out.println("id " + n);
-			
+			 
 			// list mapMorp0
 			ArrayList d0list0 = (ArrayList) mapMorp0.get(id) ;		//	System.out.println(list0);
 			

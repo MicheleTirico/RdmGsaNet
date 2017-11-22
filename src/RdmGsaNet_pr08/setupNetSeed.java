@@ -14,7 +14,7 @@ public class setupNetSeed implements setupNetInter {
 		
 	private static Graph gsGraph = layerGs.getGraph() ;
 	private static Graph netGraph = layerNet.getGraph() ;
-	
+	 
 	// create layer Net 
 	public void createLayerNet() {	
 		System.out.println("hello seed");	

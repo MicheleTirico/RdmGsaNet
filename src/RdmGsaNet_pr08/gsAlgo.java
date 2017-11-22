@@ -43,7 +43,7 @@ import org.graphstream.graph.Node;
 		static double maxVal ;
 		
 		// set parameters in constructor
-		public gsAlgo( reactionType r, diffusionType d, extType e, double Da, double Di, double kill, double feed , 
+		public gsAlgo( reactionType r, diffusionType d, extType e, double Da, double Di, double feed ,  double kill, 
 				boolean handleNaN , double setIfNaN, 
 				boolean handleMinMaxVal , 
 				double minVal , double maxVal
@@ -104,8 +104,8 @@ import org.graphstream.graph.Node;
 //				System.out.println("extkill " + extKill);
 				
 				// compute new act and inh values for each node  
-				double act1 = act0 - ( + diffusionAct - reaction + extFeed ) ;
-				double inh1 = inh0 - ( + diffusionInh + reaction - extKill ) ;
+				double act1 = act0 + ( - diffusionAct - reaction + extFeed ) ;
+				double inh1 = inh0 + ( - diffusionInh + reaction - extKill ) ;
 				
 				
 				if ( handleNaN == true ) { 

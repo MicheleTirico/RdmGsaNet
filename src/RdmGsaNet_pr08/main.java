@@ -1,18 +1,22 @@
 package RdmGsaNet_pr08;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.stream.file.FileSinkImages.OutputType;
 
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.testViz;
 
 public class main {
 	
-	// create reaction diffusion layer ( gs = Gray Scott )
-		// setupGsGrid ( graph size , type of grid ( degree 4 or 8 ) )
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid8 ) ) ;
+	/* create reaction diffusion layer ( gs = Gray Scott )
+	* setupGsGrid 	->	int size		=	graph size , 
+	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
+	*/
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 150 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -33,7 +37,7 @@ public class main {
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
 		
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// GENERATE LAYER GS
@@ -64,8 +68,8 @@ public class main {
 				/* Da 	*/			0.6,			
 				/* Di 	*/			0.2, 		
 				/* feed */			0.05 , 	
-				/* kill */			0.07 ,		
-									true ,  1E-5 ,
+				/* kill */			0.05 ,		
+									true , 1E-5 ,
 									true , 1E-5 , 1 ) ;
 
 //-------------------------------------------------------------------------------------------------------------------------------		
@@ -108,15 +112,25 @@ public class main {
 
 		setupViz.Viz4Color(gsGraph);
 		
-//		setupViz.Vizmorp(gsGraph, "gsInh");
+		setupViz.Vizmorp(gsGraph, "gsAct");
 //		testViz.displayColor2(gsGraph );
 //		testViz.displayColor1(gsGraph, "gsAct");
 //		testViz.displayColor1(gsGraph, "gsInh");
 		gsGraph.display(false) ;
 		
-
 		
-//		netGraph.display(false);
+// get images
+		String nameFile = 	"test"		+
+							"_Sim_"		+ simulation.getStopSim()   +
+							"_Size_"	+ setupGsGrid.getGsGridSize() +
+							"_Da_"		+ gsAlgo.getDa() +
+							"_Di_" 		+ gsAlgo.getDi() + 
+							"_F_" 		+ gsAlgo.getFeed() +
+							"_K_" 		+ gsAlgo.getKill() +
+							".png";
+		
+//		setupViz.testFileSink(gsGraph, "C:\\Users\\Michele TIRICO\\Desktop\\prove" , nameFile );
+
 	}
 	
 	

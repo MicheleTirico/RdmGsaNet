@@ -19,7 +19,8 @@ public class simulation {
 // MAP OF GRAPH
 	
 	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
-	
+	private static int stopSim ;
+	private static int finalStep;
 	
 // LIST FOR ID
 	// list of gsId
@@ -55,12 +56,12 @@ public class simulation {
 	
 	public void  runSim (int stopSim, boolean printMorp , boolean genNode, boolean genEdge ) {
 		
-		
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
 		
+		int step;
 		// start simulation, we define the last step in class run
-		for ( int step = 1 ; step <= stopSim ; step++ ) {	
+		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
 			System.out.println("step " + step);
 
@@ -87,6 +88,8 @@ public class simulation {
 			if ( printMorp == true) { System.out.println(mapMorp1); }
 			
 		}
+		
+		finalStep = step - 1 ;
 	}
 		
 // PRIVATE METHODS --------------------------------------------------------------------------------------------------------------
@@ -144,5 +147,7 @@ public class simulation {
 	public static Map<String, ArrayList<Double>> getmapMorp1 ()				{ return mapMorp1 ; } 
 	public static Map<Double, ArrayList<String>> getMapStepIdNet () 		{ return mapStepIdNet ; }  
 	public static Map<Double, ArrayList<String>> getMapStepNewNodeId  () 	{ return mapStepNewNodeId  ; }  
-	public static Map<Double, Graph>			 getMapStepNetGraph	() 		{ return mapStepNetGraph  ; }  
+	public static Map<Double, Graph>			 getMapStepNetGraph	() 		{ return mapStepNetGraph  ; }
+	
+	public static int getStopSim() { return finalStep ; } 
 }

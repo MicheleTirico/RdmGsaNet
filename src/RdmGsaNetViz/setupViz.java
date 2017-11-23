@@ -1,20 +1,35 @@
 package RdmGsaNetViz;
+import java.io.IOException;
 import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.stream.file.FileSinkImages;
+import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
+import org.graphstream.stream.file.FileSinkImages.OutputType;
+import org.graphstream.stream.file.FileSinkImages.Resolutions;
 
 import RdmGsaNet_pr08.*;
 
 public class setupViz {
 
-
-	
 	static Graph gsGraph = layerGs.getGraph();
 	static Graph netGraph = layerNet.getGraph();
 		
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 
+	// method to return a screenshot
+	public static void getScreenshot ( Graph graph, String file ) {
+		graph.addAttribute("ui.screeshot", file );
+	}
+	
+	// method to return an image 
+	public static void  testFileSink (Graph graph ,String folder, String name ) throws IOException {
+		FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);	
+		 pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT ); 
+		 pic.writeAll(graph, folder +"/"+ name);
+	}
+	
 	public static void Viz4Color( Graph graph ) {
 		
 		graph.addAttribute("ui.stylesheet", setViz4Color ( ) );
@@ -36,8 +51,12 @@ public class setupViz {
 		}
 	}
 
-private static String setViz4Color () {
-	return  "node {"+
+
+	
+	
+	
+	private static String setViz4Color () {
+		return  "node {"+
 			"	size: 4px;"+
 			"	fill-color: grey, red, yellow, green, blue; "+
 			"	fill-mode: dyn-plain;"+
@@ -50,17 +69,13 @@ private static String setViz4Color () {
 
 	public static void Vizmorp( Graph graph , String morp ) {
 	
-	graph.addAttribute("ui.stylesheet", setVizMorp ( morp ) );
+		graph.addAttribute("ui.stylesheet", setVizMorp ( morp ) );
 	
-	for ( Node n : graph.getEachNode()) {
-		
-		double color = n.getAttribute(morp);	
-		
-	
-		
-		n.addAttribute("ui.color", color );
+		for ( Node n : graph.getEachNode()) {		
+			double color = n.getAttribute(morp);	
+			n.addAttribute("ui.color", color );
+			}
 		}
-	}
 	
 	private static String setVizMorp ( String morp ) {
 		String colorRange ;
@@ -86,38 +101,5 @@ private static String setViz4Color () {
 // PRIVATE METHODS -----------------------------------------------------------------------------------------------
 		
 
-// set viz 
-	
-	
-	
-	/*
-	 * 	private static String setNodeStyle ( int size, String color) {
 
-		return "node {"+
-						"	size: "		 + size		+ "px	;"+
-						"	fill-color: "+ color	+ "  	;"+
-						"	fill-mode: dyn-plain;"+
-						"}";	
-	}
-// set node viz
-	public static void setNodeViz (int size, String colors ) {
-		styleSheetNode =  
-				"node {"+
-						"	size: "		 + size		+ "px	;"+
-						"	fill-color: "+ colors	+ "  	;"+
-						"	fill-mode: dyn-plain;"+
-						"}";			
-	}
-
-// set edge viz
-	public static void setEdgeViz (int size, String colors ) {
-		styleSheetEdge = 
-				"edge {"+
-						"	size: "		 + size		+ "px	;"+
-						"	fill-color: "+ colors	+ "  	;"+
-						"}" ;
-	}
-	
-	
-	 */
 	}

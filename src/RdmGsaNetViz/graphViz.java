@@ -19,7 +19,7 @@ public class graphViz {
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 
 	// set default parameters of gsGraph
-	static String styleDefaultbackground = setStyleDefaulBackground ( "white" ) ;
+	static String styleDefaultBackground = setStyleDefaulBackground ( "white" ) ;
 	static String styleDefaultNode = setStyleDefaultNode ("circle" , 10 , "red" ) ;
 	static String styleDefaultEdge = setStyleDefaultEdge (1 , "black") ;
 	
@@ -28,7 +28,7 @@ public class graphViz {
 	public static void main( Graph graph ) {
 		
 		// default style
-		gsGraph.addAttribute("ui.stylesheet", styleDefaultbackground + styleDefaultNode + styleDefaultEdge );
+		gsGraph.addAttribute("ui.stylesheet", styleDefaultBackground + styleDefaultNode + styleDefaultEdge );
 		
 		// set quality viz
 		graph.addAttribute("ui.quality");

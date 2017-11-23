@@ -23,24 +23,24 @@ import org.graphstream.graph.Node;
 		public enum extType {gsModel, test}
 	
 		// declare variables
-		static reactionType r ;
-		static diffusionType d ;
-		static extType e ;
-		static double Da  ;
-		static double Di  ;
-		static double feed ;
-		static double kill ;
+		private static reactionType r ;
+		private static diffusionType d ;
+		private static extType e ;
+		private static double Da  ;
+		private static double Di  ;
+		private static double feed ;
+		private static double kill ;
 		
 		// handle NaN
-		static boolean handleNaN ;
-		static double setIfNaN ;
+		private static boolean handleNaN ;
+		private static double setIfNaN ;
 		
 		// handle minVal
-		static double minVal ;
-		static boolean handleMinMaxVal ;
+		private static double minVal ;
+		private static boolean handleMinMaxVal ;
 		
 		// handle MaxVal
-		static double maxVal ;
+		private static double maxVal ;
 		
 		// set parameters in constructor
 		public gsAlgo( reactionType r, diffusionType d, extType e, double Da, double Di, double feed ,  double kill, 
@@ -153,6 +153,15 @@ import org.graphstream.graph.Node;
 //			System.out.println("mapMorp0 " + mapMorp0);	
 			System.out.println("mapMorp1 " + mapMorp1);
 		}
+// GET METHODS ----------------------------------------------------------------------------------------
+		public static double getDa() { return Da ; } 
+		public static double getDi() { return Di ; } 
+		public static double getFeed() { return feed ; } 
+		public static double getKill() { return kill ; } 
+	
+	
+	
+	
 	}
 	
 	

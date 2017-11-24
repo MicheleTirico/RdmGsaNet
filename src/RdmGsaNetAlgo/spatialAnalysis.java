@@ -47,7 +47,7 @@ public class spatialAnalysis {
 		System.out.println("lisa");
 		
 		// create matrix ( external method )
-		int [][] gino = Toolkit.getAdjacencyMatrix(gsGraph);
+		int [][] gino = Toolkit.getAdjacencyMatrix(netGraph);
 //		System.out.println(gino);
 		
 		// get variables

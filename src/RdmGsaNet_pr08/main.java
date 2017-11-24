@@ -7,6 +7,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkImages.OutputType;
 
+import RdmGsaNetAlgo.spatialAnalysis;
+import RdmGsaNetAlgo.spatialAnalysis.spatialAutoCor;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.testViz;
 
@@ -98,10 +100,12 @@ public class main {
 		 * 				bol		genNode		= generate nodes in layer net
 		 * 				bol		genEdge		= generate edges in layer net
 		 *				) 	*/		
-		run.runSim( 100 , false , false , false  );
+		run.runSim( 1 , false , false , false  );
 		
-		System.out.println(simulation.getmapMorp1());
+//		System.out.println(simulation.getmapMorp1());
 	
+		spatialAnalysis.spatialAutoCor(spatialAutoCor.lisa);
+//		spatialAnalysis.SignalAutoCor();
 	
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// EXPORT VALUES
@@ -116,7 +120,7 @@ public class main {
 //		testViz.displayColor2(gsGraph );
 //		testViz.displayColor1(gsGraph, "gsAct");
 //		testViz.displayColor1(gsGraph, "gsInh");
-		gsGraph.display(false) ;
+//		gsGraph.display(false) ;
 		
 		
 // get images

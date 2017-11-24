@@ -17,7 +17,6 @@ public class simulation {
 	private static Graph netGraph = layerNet.getGraph() ; 
 	
 // MAP OF GRAPH
-	
 	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
 	private static int stopSim ;
 	private static int finalStep;

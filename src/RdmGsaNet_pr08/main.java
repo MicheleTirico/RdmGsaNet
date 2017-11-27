@@ -7,8 +7,9 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkImages.OutputType;
 
-import RdmGsaNetAlgo.spatialAnalysis;
-import RdmGsaNetAlgo.spatialAnalysis.spatialAutoCor;
+import RdmGsaNetAlgo.gsMorpAnalysis;
+import RdmGsaNetAlgo.gsMorpAnalysis.spatialAutoCor;
+import RdmGsaNetAlgo.gsMorpSpatialAutoCor;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.testViz;
 
@@ -18,7 +19,7 @@ public class main {
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
 	*/
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 150 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 4 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -104,7 +105,9 @@ public class main {
 		
 //		System.out.println(simulation.getmapMorp1());
 	
-		spatialAnalysis.spatialAutoCor(spatialAutoCor.lisa);
+		gsMorpAnalysis.spatialAutoCor(spatialAutoCor.lisa, gsGraph, gsMorpAnalysis.morphogen.activator , 2, 
+				gsMorpSpatialAutoCor.distanceMatrixType.topo );
+		 
 //		spatialAnalysis.SignalAutoCor();
 	
 //-------------------------------------------------------------------------------------------------------------------------------		

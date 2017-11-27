@@ -59,7 +59,7 @@ import org.graphstream.graph.Node;
 			this.setIfNaN = setIfNaN ;
 			this.handleMinMaxVal = handleMinMaxVal ;
 			this.minVal = minVal ;
-			this.maxVal = maxVal ;
+			this.maxVal = maxVal ; 
 		}
 		
 		public static void gsAlgoMain (boolean print ) {	

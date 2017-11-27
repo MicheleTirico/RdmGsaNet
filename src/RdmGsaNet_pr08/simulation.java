@@ -149,4 +149,5 @@ public class simulation {
 	public static Map<Double, Graph>			 getMapStepNetGraph	() 		{ return mapStepNetGraph  ; }
 	
 	public static int getStopSim() { return finalStep ; } 
+	public static ArrayList<String> getListIdGs () { return listIdGs ; }
 }

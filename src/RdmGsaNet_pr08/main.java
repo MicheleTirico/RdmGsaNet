@@ -19,7 +19,7 @@ public class main {
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
 	*/
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 4 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 2 , setupGsInter.gsGridType.grid4 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -105,11 +105,9 @@ public class main {
 		
 //		System.out.println(simulation.getmapMorp1());
 	
-		gsMorpAnalysis.spatialAutoCor(spatialAutoCor.lisa, gsGraph, gsMorpAnalysis.morphogen.activator , 2, 
-				gsMorpSpatialAutoCor.distanceMatrixType.topo );
+		gsMorpAnalysis.spatialAutoCorLisaLocalMoran( gsGraph, gsMorpAnalysis.morphogen.activator , 1, 	gsMorpSpatialAutoCor.distanceMatrixType.topo );
 		 
-//		spatialAnalysis.SignalAutoCor();
-	
+
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// EXPORT VALUES
 

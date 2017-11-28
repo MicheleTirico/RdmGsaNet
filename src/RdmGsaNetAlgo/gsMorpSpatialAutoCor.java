@@ -10,12 +10,15 @@ import java.util.OptionalDouble;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.graphicGraph.StyleGroupSet.ZIndex;
 
 public class gsMorpSpatialAutoCor extends gsMorpAnalysis {
 	
 	public static enum distanceMatrixType { topo , weight }
 	public static distanceMatrixType type ;
-	 
+	
+	private static double zi;
+	private static double sumWijZj ;
 	
 	public static double[][] getMatrixLisa ( Graph graph ,  double[][] distanceMatrix  ) {
 		
@@ -76,7 +79,7 @@ public class gsMorpSpatialAutoCor extends gsMorpAnalysis {
 	public static  double getMeanInRad ( Graph graph, Map < String, Double> mapIdMorpInRad  ) {
 		double meanInRad   ;
 			
-		ArrayList<Double> values = new ArrayList<Double> ( mapIdMorpInRad.values() );//		System.out.println(values);		
+		ArrayList<Double> values = new ArrayList<Double> ( mapIdMorpInRad.values() );					//	System.out.println(values);		
 		meanInRad = values	.stream()
 							.mapToDouble(val -> val)
 							.average()
@@ -88,51 +91,41 @@ public class gsMorpSpatialAutoCor extends gsMorpAnalysis {
 	public static int getNodeInRadNumb ( Graph graph ,  ArrayList<String> nodeInRadId )  {
 		int nodeInRadNumb = nodeInRadId.size() ;
 		return nodeInRadNumb ;
-	};
+	}
 	
 	public static double getLisaVal ( 	Graph graph , Node n, ArrayList < String > nodeInRadId , Map < String, Double> mapIdMorpInRad, 
 										int nodeInRadNumb , double meanInRad, double m2 , 
 										double [][] matrixLisa , ArrayList<String> listIdGs ) {
 		
-		String idNode = n.getId();					//	System.out.println(idNode);
-		double xi = mapIdMorpInRad.get(idNode);		//	System.out.println(xi);	//	System.out.println(meanInRad);
-		double zi = xi - meanInRad;					//	System.out.println(zi);
+		String idNode = n.getId();																		//	System.out.println(idNode);
+		double xi = mapIdMorpInRad.get(idNode);															//	System.out.println("xi " +xi);	
+		zi = xi - meanInRad;																			//	System.out.println("zi " + zi);
+	
 		
-		double sumWijZj = 0 ;
+		sumWijZj = 0 ;
 		
 		for ( String idInRad : nodeInRadId ) {
-
-			double xj = mapIdMorpInRad.get(idInRad) ; 
-			double zj = xj - meanInRad ;
 			
-			double valMatrixLisa = matrixLisa[listIdGs.indexOf(idInRad)][listIdGs.indexOf(idNode)];
+			double xj = mapIdMorpInRad.get(idInRad) ;													//	System.out.println("meanInRad " + meanInRad);
+		
+			double zj = xj - meanInRad ;																//	System.out.println("idNode "  +idInRad + " / xj " + xj);	//		System.out.println("zj " + zj);
 			
-			sumWijZj = sumWijZj + zj * valMatrixLisa ;
+			double valMatrixLisa = matrixLisa[listIdGs.indexOf(idInRad)][listIdGs.indexOf(idNode)];		//	System.out.println("valMatrixLisa " + valMatrixLisa);
 			
+			double newSum = zj * valMatrixLisa ;														//	System.out.println("newSum " + newSum );
 			
-		}
-	
-	
-	
+			sumWijZj = sumWijZj + newSum ;																//	System.out.println("sumWijZj " + sumWijZj );
 		
-		
-		
-		
+		}																								//	System.out.println("sumWijZj " + sumWijZj );
 		double lisaVal = ( zi / m2 ) * sumWijZj ;
-		
-		
-		
-		
-		
-		
+	
 		return lisaVal ;
 	}
 	
 	public static double getM2 ( Graph graph ,morphogen MorpType,  Map<String , ArrayList<Double >> mapMorp1 ) {
 		
 		int morp = 0 ;
-		int countNodes = graph.getNodeCount(); 
-		
+		int countNodes = graph.getNodeCount(); 	
 		ArrayList<Double> values = new ArrayList<Double>();
 		
 		switch (MorpType) {
@@ -151,16 +144,12 @@ public class gsMorpSpatialAutoCor extends gsMorpAnalysis {
 		
 		double sumValues = values	.stream()
 									.mapToDouble(val -> val)
-									.sum();//		System.out.println(meanInRad);
+									.sum();																//	System.out.println(meanInRad);
 		
 		double m2 = sumValues / countNodes  ;
 		
 		return m2;		
 	}
-	
-	
-	
-	
 	
 // METHODS ---------------------------------------------------------------------------------------------------
 	public static double[][] getDistanceMatrix ( Graph graph, distanceMatrixType type ) {
@@ -180,6 +169,10 @@ public class gsMorpSpatialAutoCor extends gsMorpAnalysis {
 		
 		return distanceMatrix;
 	}
+	
+// get variables 
+	public static double getZi () 		{ return zi ; 		}
+	public static double getSumWijZj () { return sumWijZj ; }
 	
 	
 	

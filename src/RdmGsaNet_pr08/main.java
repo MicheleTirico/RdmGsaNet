@@ -1,25 +1,34 @@
 package RdmGsaNet_pr08;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.stream.file.FileSinkDGS;
 import org.graphstream.stream.file.FileSinkImages.OutputType;
 
-import RdmGsaNetAlgo.gsMorpAnalysis;
-import RdmGsaNetAlgo.gsMorpAnalysis.spatialAutoCor;
-import RdmGsaNetAlgo.gsMorpSpatialAutoCor;
+import RdmGsaNetAlgo.morpAnalysis;
+import RdmGsaNetAlgo.morpAnalysis.spatialAutoCor;
+import RdmGsaNetAlgo.morpSpatialAutoCor;
+import RdmGsaNetExport.expGraph;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.testViz;
 
 public class main {
 	
+	
+	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
+	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
+	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
+	
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
 	*/
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 2 , setupGsInter.gsGridType.grid4 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 150 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -100,17 +109,19 @@ public class main {
 		 * 				bol		printMorp	= true = print mapMorp1 ,
 		 * 				bol		genNode		= generate nodes in layer net
 		 * 				bol		genEdge		= generate edges in layer net
+		 * 				bol		gsGraphExp	= if true, export the gsGraph in .dgs format at each step 
 		 *				) 	*/		
-		run.runSim( 1 , false , false , false  );
+		run.runSim( 150 , false , false , false , false  );
 		
 //		System.out.println(simulation.getmapMorp1());
 	
-		gsMorpAnalysis.spatialAutoCorLisaLocalMoran( gsGraph, gsMorpAnalysis.morphogen.activator , 1, 	gsMorpSpatialAutoCor.distanceMatrixType.topo );
-		 
-
+//		morpAnalysis.spatialAutoCorLisaLocalMoran( gsGraph, morpAnalysis.morphogen.activator , 1, 	morpSpatialAutoCor.distanceMatrixType.topo );
+//		morpAnalysis.SignalAutoCor(gsGraph, mapMorp1, mapStepNetGraph); 
+	
 //-------------------------------------------------------------------------------------------------------------------------------		
-		// EXPORT VALUES
-
+		
+		
+		
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
@@ -125,7 +136,7 @@ public class main {
 		
 		
 // get images
-		String nameFile = 	"test"		+
+		String nameFileIm =	"immage"	+
 							"_Sim_"		+ simulation.getStopSim()   +
 							"_Size_"	+ setupGsGrid.getGsGridSize() +
 							"_Da_"		+ gsAlgo.getDa() +
@@ -134,9 +145,28 @@ public class main {
 							"_K_" 		+ gsAlgo.getKill() +
 							".png";
 		
-//		setupViz.testFileSink(gsGraph, "C:\\Users\\Michele TIRICO\\Desktop\\prove" , nameFile );
-
+		setupViz.testFileSink(gsGraph, "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\", nameFileIm );
 	}
+//-------------------------------------------------------------------------------------------------------------------------------		
+
+	// EXPORT VALUES
+		
+	// export graph at each step
+	private static String nameFileExp =	"export"	+
+										"_Sim_"		+ simulation.getStopSim()   +
+										"_Size_"	+ setupGsGrid.getGsGridSize() +
+										"_Da_"		+ gsAlgo.getDa() +
+										"_Di_" 		+ gsAlgo.getDi() + 
+										"_F_" 		+ gsAlgo.getFeed() +
+										"_K_" 		+ gsAlgo.getKill()  ;
+							
+				
+	private static String dossierExp	= "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\";
+	private static String filePathExp 	= dossierExp + nameFileExp ;
+	
+	public static String getNameFileExp() { return nameFileExp ; }
+	public static String getDossierExp () { return dossierExp ; }
+	public static String getFilePathExp () { return filePathExp ; }
 	
 	
 }

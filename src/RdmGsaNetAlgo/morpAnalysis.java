@@ -11,14 +11,14 @@ import org.graphstream.graph.Node;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
-import RdmGsaNetAlgo.gsMorpSpatialAutoCor.distanceMatrixType;
+import RdmGsaNetAlgo.morpSpatialAutoCor.distanceMatrixType;
 
 import static org.graphstream.algorithm.Toolkit.*;
 
 import RdmGsaNet_pr08.*;
 import graphstream_dev.*;
 
-public class gsMorpAnalysis {
+public class morpAnalysis {
 	
 	private static Graph gsGraph = layerGs.getGraph();
 	private static Graph netGraph = layerNet.getGraph();
@@ -37,8 +37,7 @@ public class gsMorpAnalysis {
 	
 // SPATIAL AUTO CORRELATION LISA LOCAL MORAN  ---------------------------------------------------------------------------------------------------------------------------	
 	
-	public static void spatialAutoCorLisaLocalMoran (	Graph graph , morphogen MorpType , double radius , 
-														gsMorpSpatialAutoCor.distanceMatrixType type) {
+	public static void spatialAutoCorLisaLocalMoran (	Graph graph , morphogen MorpType , double radius , morpSpatialAutoCor.distanceMatrixType type) {
 		System.out.println("lisa");
 		String morp  ;
 		if (MorpType == morphogen.activator ) 	{ morp = "Act" ; }
@@ -48,24 +47,24 @@ public class gsMorpAnalysis {
 		String corScatterPlotAtr = "gsScatter" + morp ;
 		
 		// get distance matrix
-		double [][] distanceMatrix = gsMorpSpatialAutoCor.getDistanceMatrix(graph, type) ;
+		double [][] distanceMatrix = morpSpatialAutoCor.getDistanceMatrix(graph, type) ;
 		System.out.println("finish calcule " + "distanceMatrix" );
 		
 		// get matrix Lisa ( Wij )
-		matrixLisa = gsMorpSpatialAutoCor.getMatrixLisa(gsGraph, distanceMatrix) ;
+		matrixLisa = morpSpatialAutoCor.getMatrixLisa(gsGraph, distanceMatrix) ;
 //		graphstream_dev_toolkit.runTest.printMatrix2dDouble(matrixLisa);
 		System.out.println("finish calcule " + "matrixLisa" );
 	
-		double m2 = gsMorpSpatialAutoCor.getM2(graph, MorpType, mapMorp1);
+		double m2 = morpSpatialAutoCor.getM2(graph, MorpType, mapMorp1);
 		System.out.println( "m2 " + m2);
 		
 		for ( Node n : graph.getEachNode() ) {			//	System.out.println(n.getId());
 			
-			ArrayList < String > nodeInRadId = gsMorpSpatialAutoCor.getNodeInRadId(graph, n, radius, type , listIdGs);
-			Map < String, Double> mapIdMorpInRad = gsMorpSpatialAutoCor.getMapIdMorpInRad(graph, morphogen.activator , nodeInRadId);
+			ArrayList < String > nodeInRadId = morpSpatialAutoCor.getNodeInRadId(graph, n, radius, type , listIdGs);
+			Map < String, Double> mapIdMorpInRad = morpSpatialAutoCor.getMapIdMorpInRad(graph, morphogen.activator , nodeInRadId);
 					
-			int nodeInRadNumb = gsMorpSpatialAutoCor.getNodeInRadNumb(graph, nodeInRadId);
-			double meanInRad  = gsMorpSpatialAutoCor.getMeanInRad(graph, mapIdMorpInRad );
+			int nodeInRadNumb = morpSpatialAutoCor.getNodeInRadNumb(graph, nodeInRadId);
+			double meanInRad  = morpSpatialAutoCor.getMeanInRad(graph, mapIdMorpInRad );
 			
 			System.out.println("\n"+"id node " + n.getId());
 //			System.out.println("nodeInRadNumb " + nodeInRadNumb);
@@ -73,7 +72,7 @@ public class gsMorpAnalysis {
 //			System.out.println( "nodeInRadId" + nodeInRadId);
 //			System.out.println( "mapIdMorpInRad " + mapIdMorpInRad);
 			
-			double lisaValue = gsMorpSpatialAutoCor.getLisaVal(graph, n, nodeInRadId, mapIdMorpInRad,nodeInRadNumb, meanInRad, m2, matrixLisa, listIdGs);	
+			double lisaValue = morpSpatialAutoCor.getLisaVal(graph, n, nodeInRadId, mapIdMorpInRad,nodeInRadNumb, meanInRad, m2, matrixLisa, listIdGs);	
 //			System.out.println( "lisa value "+ lisaValue);
 			
 			setCorValInGraph(graph, lisaValue, corAttributeStr);
@@ -81,8 +80,8 @@ public class gsMorpAnalysis {
 //			System.out.println( "lisa " + lisa );
 			
 			// set scatterplot val
-			double zi = gsMorpSpatialAutoCor.getZi();
-			double sumWijZj = gsMorpSpatialAutoCor.getSumWijZj();
+			double zi = morpSpatialAutoCor.getZi();
+			double sumWijZj = morpSpatialAutoCor.getSumWijZj();
 //			System.out.println( "zi " + zi );
 //			System.out.println( "sumWijZj " + sumWijZj );
 			
@@ -113,12 +112,18 @@ public class gsMorpAnalysis {
 	}
 	
 // SIGNAL PROCESSING AUTO CORRELATION -------------------------------------------------------------------------------------------------------------------------------
-	public static void SignalAutoCor () {
+	public static void SignalAutoCor ( Graph graph0 , Graph graph1 ) {
 		System.out.println("Auto correlation signal processing");
+			
+		Map<String , Double> mapIdNodeSPAC = morpSignProCor.getMapSPACval(graph0, graph1, morphogen.activator);
+
 	}
+	
 // SIGNAL PROCESSING CROSS CORRELATION -------------------------------------------------------------------------------------------------------------------------------	
-	public static void SignalCrossCor () {
+	public static void SignalCrossCor (Graph graph0 , Graph graph1 ) {
 		System.out.println("Cross correlation signal processing");
+		
+		Map<String , Double> mapIdNodeSPCC = morpSignProCor.getMapSPCCval(graph0, graph1 );
 	}
 
 // SPATIAL AUTO CORRELATION MORAN  -----------------------------------------------------------------------------------------------------------------------------------	

@@ -1,5 +1,6 @@
 package RdmGsaNet_pr08;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,17 +10,19 @@ import java.util.Map;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import RdmGsaNetExport.expGraph;
 import RdmGsaNetViz.graphViz;
 
 public class simulation {	
 	
 	private static Graph gsGraph = layerGs.getGraph() ;
 	private static Graph netGraph = layerNet.getGraph() ; 
-	
-// MAP OF GRAPH
-	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
 	private static int stopSim ;
 	private static int finalStep;
+	private static int step;
+// MAP OF GRAPH
+	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
+
 	
 // LIST FOR ID
 	// list of gsId
@@ -53,12 +56,11 @@ public class simulation {
 		//	CARREFUL : mapStepIdNet = mapStepIdGsCon
 //	private static Map < Double , ArrayList<String> > mapStepIdNet = new HashMap <Double , ArrayList<String> > ()  ;
 	
-	public void  runSim (int stopSim, boolean printMorp , boolean genNode, boolean genEdge ) {
+	public void  runSim (int stopSim, boolean printMorp , boolean genNode, boolean genEdge , boolean gsGraphExp ) throws IOException {
 		
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
 		
-		int step;
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
@@ -79,12 +81,19 @@ public class simulation {
 			listIdNet = createListId ( netGraph );
 //			mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					
 
-			
 			// update map graph
 			updateMapGraph( mapStepNetGraph , step, netGraph);
 //			System.out.println(mapStepNetGraph);
 
+			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }
+			
+			// export values
+		
+			String dossierExp = main.getDossierExp();
+			String nameFileExp = main.getNameFileExp();
+			
+			if ( gsGraphExp == true) { expGraph.writeGraphEachStepDgs(gsGraph, dossierExp, nameFileExp, step); }
 			
 		}
 		
@@ -150,4 +159,5 @@ public class simulation {
 	
 	public static int getStopSim() { return finalStep ; } 
 	public static ArrayList<String> getListIdGs () { return listIdGs ; }
+	public static int getStep () { return step ; }
 }

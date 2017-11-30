@@ -82,16 +82,6 @@ public class morpSignProCor {
 	}
 	
 
-	public static void testSignProc (  Map<Double , Graph > mapStepNetGraph ) {
-		
-		int step = 1 ;
-		Graph stepGraph = mapStepNetGraph.get(step) ; 
-		
-		for ( Node n : stepGraph.getEachNode()) {
-			
-			double act = n.getAttribute("gsAct");
-			System.out.print(act);
-		
-		}
-	}
+
+	
 }

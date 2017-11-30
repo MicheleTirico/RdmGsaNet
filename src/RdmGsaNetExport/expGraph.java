@@ -3,6 +3,7 @@ package RdmGsaNetExport;
 import java.io.IOException;
 
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
 import org.graphstream.stream.file.FileSourceDGS;
 
@@ -31,6 +32,22 @@ public class expGraph {
 		while( source.nextEvents() ){	}
 		source.end();
 
+	}
+	
+	public static Graph getGRaphDgs (  String dossierExp , String nameFileExp) throws IOException {
+		
+		Graph graph = new SingleGraph("graph") ;
+	
+		String filePath = dossierExp + nameFileExp + typeFileExp;
+		FileSourceDGS source = new FileSourceDGS();
+		
+		source.addSink( graph );
+		source.begin(filePath);
+		
+		while( source.nextEvents() ){	}
+		source.end();
+		
+		return graph;
 	}
 	
 	

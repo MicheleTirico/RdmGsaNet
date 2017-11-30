@@ -67,12 +67,12 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------
 		// SETUP START VALUES LAYER GS
 			/*	gsAlgo ( 	enum	reactionType 
-			 * 				enum	diffusionType 
-			 * 				enum	extType 
-			 * 				Da , Di , feed , kill 
-			 * 				bol 	HandleNaN		= if true, set default value when act or inh is over NaN 
-			 * 				double	setIfNaN		= defalt value if act or inh is NaN 
-			 * 				bol		handleMinMaxVal	= if true, set value for values over the range
+			* 				enum	diffusionType 
+			* 				enum	extType 
+			* 				Da , Di , feed , kill 
+			* 				bol 	HandleNaN		= if true, set default value when act or inh is over NaN 
+			* 				double	setIfNaN		= defalt value if act or inh is NaN 
+			* 				bol		handleMinMaxVal	= if true, set value for values over the range
 			*  				double	minVal			= default value if morph < minVal, set minVal
 			*  				double	mmaxVal			= default value if morph > maxVal, set maxVal
 			*/
@@ -117,8 +117,6 @@ public class main {
 	
 //		morpAnalysis.spatialAutoCorLisaLocalMoran( gsGraph, morpAnalysis.morphogen.activator , 1, 	morpSpatialAutoCor.distanceMatrixType.topo );
 //		morpAnalysis.SignalAutoCor(gsGraph, mapMorp1, mapStepNetGraph); 
-	
-//-------------------------------------------------------------------------------------------------------------------------------		
 		
 		
 		
@@ -164,9 +162,9 @@ public class main {
 	private static String dossierExp	= "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\";
 	private static String filePathExp 	= dossierExp + nameFileExp ;
 	
-	public static String getNameFileExp() { return nameFileExp ; }
-	public static String getDossierExp () { return dossierExp ; }
-	public static String getFilePathExp () { return filePathExp ; }
+	public static String getNameFileExp() 	{ return nameFileExp ; }
+	public static String getDossierExp () 	{ return dossierExp ; }
+	public static String getFilePathExp () 	{ return filePathExp ; }
 	
 	
 }

@@ -144,7 +144,6 @@ public class simulation {
 		return list;	
 	}
 	// MAP GRAPH -----------------------------------------------------------------------------------------------------------------	
-
 	private static void updateMapGraph ( Map<Double , Graph > map, double step , Graph graph ) {
 		map.put(step, graph);	
 	}

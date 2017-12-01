@@ -17,9 +17,9 @@ public class valAnalysis {
 	public enum analysisType { average , max , min }
 
 	
-	public static Map<Double,ArrayList<Double>>  getMapStepValMorp ( String dossierExp , String nameFileExp ,analysisType type ) throws IOException {
+	public static Map<Integer,ArrayList<Double>>  getMapStepValMorp ( String dossierExp , String nameFileExp ,analysisType type ) throws IOException {
 		
-		Map< Double , ArrayList<Double>> mapStepValMorp = new HashMap< Double , ArrayList < Double >> ( ) ;
+		Map< Integer , ArrayList<Double>> mapStepValMorp = new HashMap< Integer , ArrayList < Double >> ( ) ;
 		
 		// iter dossier
 		File path = new File(dossierExp);
@@ -73,8 +73,8 @@ public class valAnalysis {
 				arrayVal.add(actVal);
 				arrayVal.add(inhVal);
 				
-				mapStepValMorp.put((double) i, arrayVal) ;  
-				}	//	System.out.println(mapStepMeanMorp);
+				mapStepValMorp.put( i, arrayVal) ;  
+				}	//	System.out.println(mapStepValMorp);
 		    }
 		return mapStepValMorp;
 		}

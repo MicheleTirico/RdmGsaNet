@@ -12,10 +12,9 @@ import org.graphstream.graph.Graph;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.expValues;
 
-public class valAnalysis {
+public class stroredDataAnalysis {
 	
 	public enum analysisType { average , max , min }
-
 	
 	public static Map<Integer,ArrayList<Double>>  getMapStepValMorp ( String dossierExp , String nameFileExp ,analysisType type ) throws IOException {
 		
@@ -23,8 +22,7 @@ public class valAnalysis {
 		
 		// iter dossier
 		File path = new File(dossierExp);
-		File [] files = path.listFiles();
-		
+		File [] files = path.listFiles();	
 		
 		for (int i = 1; i < files.length; i++){       
 			if (files[i].isFile()){ //	System.out.println(files[i]);
@@ -78,7 +76,16 @@ public class valAnalysis {
 		    }
 		return mapStepValMorp;
 		}
-	
+	public static Map<Integer,ArrayList<Double>>  getMapStepSPAC ( String dossierExp , String nameFileExp ,analysisType type ) throws IOException {
+		
+		Map< Integer , ArrayList<Double>> mapStepSPAC = new HashMap< Integer , ArrayList < Double >> ( ) ;
+		
+		
+		return mapStepSPAC ;
+		
+		
+	}
+		
 
 
 }

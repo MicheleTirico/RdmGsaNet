@@ -18,11 +18,15 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import javafx.scene.chart.XYChart;
+
 
 public class expChart extends JFrame  {
 	
 	public enum morp { activator, inhibitor }
+	public enum typeChart { XYchart, test }
 	
+	public typeChart type; 
 //	public  chartType typeChart ;
 
 	public morp typeMorp ;
@@ -36,41 +40,43 @@ public class expChart extends JFrame  {
     String yAxisLabel ;
   
     Map<Integer, ArrayList<Double>> map ;
-
 	
 	// costructor 
-	public expChart ( String chartTitle, int width , int height , Map<Integer, ArrayList<Double>> map ) {
+	public expChart (	typeChart type ,
+						String chartTitle, String xAxisLabel , String yAxisLabel ,
+						int width , int height , 
+						Map<Integer, ArrayList<Double>> map  ) {
 		
 		super ( chartTitle ) ;
 		
 		this.width = width; 
 		this.height = height ;
 		
-		JPanel chartPanel = createChartPanelXY( chartTitle , map );
+		JPanel chartPanel = null ;
+		switch ( type ) {
+		case XYchart : 	{ 	chartPanel = createChartPanelXY( chartTitle , xAxisLabel, yAxisLabel, map ); 
+							break ; }
+		case test : 	{ 
+							break ; }
+		}
+			
 		add(chartPanel, BorderLayout.CENTER);
-		
+		setLayoutFrame () ;
 	}
 
 	
-	public void setLayoutFrame( String title  ) {	
+	private void setLayoutFrame( ) {	
 				
 		setSize( width , height );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-	}
-	
-	public void setLayoutChart( String chartTitle, String xAxisLabel , String yAxisLabel ) {
 		
-		this.chartTitle = chartTitle;
-		this.xAxisLabel = xAxisLabel;
-		this.yAxisLabel = yAxisLabel;
 	}
 	
-	
-	private JPanel createChartPanelXY(  String chartTitle, Map<Integer, ArrayList<Double>> map ) {
-		this.chartTitle = chartTitle;
-        String xAxisLabel = "X";
-        String yAxisLabel = "Y";
+	private JPanel createChartPanelXY( String chartTitle, String xAxisLabel , String yAxisLabel ,  Map<Integer, ArrayList<Double>> map ) {
+		
+        this.xAxisLabel = xAxisLabel ;
+        this.yAxisLabel = yAxisLabel;
     
 		XYDataset dataset = createDataset( map );
         
@@ -79,9 +85,8 @@ public class expChart extends JFrame  {
       
 		return new ChartPanel(chart);
 	}
-
 	
-	
+	// create dataset of values ( which is a map java collection ) 
 	private XYDataset createDataset(  Map<Integer, ArrayList<Double>> map   ) {
 		
 		// create dataset
@@ -90,53 +95,27 @@ public class expChart extends JFrame  {
 		// create series
 		XYSeries serAct = new XYSeries("activator") ;
 		XYSeries serInh = new XYSeries("inhibithor") ;
-	
-
 		
 		for (Entry<Integer,ArrayList<Double>> entry : map.entrySet() ) {
 			
 			double x = (double) entry.getKey();
-			
 			ArrayList<Double> arrMorp = entry.getValue() ;
 			double YactVal = arrMorp.get(0) ;
 			double YInhVal = arrMorp.get(1) ;
 		
 			serAct.add(x,YactVal);
-			serInh.add(x,YInhVal);
-		
+			serInh.add(x,YInhVal);		
 		}
-		/*
-		
-		// add values in series
-		
-		serAct.add(1.0, 2.0);
-		serAct.add(2.0, 3.0);
-		serAct.add(3.0, 2.5);
-		serAct.add(3.5, 2.8);
-		serAct.add(4.2, 6.0);
-		
-		serInh.add(2.0, 1.0);
-		serInh.add(2.5, 2.4);
-		serInh.add(3.2, 1.2);
-		serInh.add(3.9, 2.8);
-		serInh.add(4.6, 3.0);
-		
-		*/
 		// set series in dataset
-		dataset.addSeries(serAct);
-		
+		dataset.addSeries(serAct);	
 		dataset.addSeries(serInh);
-	 
-	    return dataset;
-		
-		
+	    return dataset;	
 	}
 
-
-	
+	// save chart ( jpeg format ) in a folder
 	public void saveChart ( boolean saveImage ,  String folder, String nameChart ) throws IOException {
 
-		if (saveImage = true ) {
+		if (saveImage == true ) {
 			// aggiustare le eccezioni
 		
 			// define folder 
@@ -147,6 +126,4 @@ public class expChart extends JFrame  {
 			ChartUtilities.saveChartAsJPEG(lineChartFile, chart , width , height ) ;
 		}
 	}
-
-
 }

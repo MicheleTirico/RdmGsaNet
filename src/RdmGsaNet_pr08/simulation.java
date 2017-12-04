@@ -88,13 +88,12 @@ public class simulation {
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }
 			
-			// export values
-		
-			String dossierExp = main.getDossierExp();
+			// export values			
+	
 			String nameFileExp = main.getNameFileExp();
+			String folderExp = main.getDossierExp();
 			
-			if ( gsGraphExp == true) { expGraph.writeGraphEachStepDgs(gsGraph, dossierExp, nameFileExp, step); }
-			
+			if ( gsGraphExp == true) { expGraph.writeGraphEachStepDgs(gsGraph, folderExp, nameFileExp, step); }	
 		}
 		
 		finalStep = step - 1 ;

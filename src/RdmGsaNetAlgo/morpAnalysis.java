@@ -115,7 +115,7 @@ public class morpAnalysis {
 	public static void SignalAutoCor ( Graph graph0 , Graph graph1 ) {
 		System.out.println("Auto correlation signal processing");
 			
-		Map<String , Double> mapIdNodeSPAC = morpSignProCor.getMapSPACval(graph0, graph1, morphogen.activator);
+		Map<String , Double> mapIdNodeSPAC = morpSignProCor.getMapIdSPACval(graph0, graph1, morphogen.activator);
 
 	}
 	

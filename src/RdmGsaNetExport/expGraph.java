@@ -12,6 +12,7 @@ public class expGraph {
 	static String nameFile ;
 	static String dossier ;
 	static String typeFileExp = ".dgs";
+	static String[] repositoryInfo ;
 	
 	static FileSinkDGS fsd = new FileSinkDGS(); 
 	
@@ -48,6 +49,16 @@ public class expGraph {
 		source.end();
 		
 		return graph;
+	}
+	
+	public static String[] getRepositoryInfo (  ) {
+		
+		String[] repositoryInfo = new String[2] ;
+		
+		repositoryInfo[0] = dossier ;		
+		repositoryInfo[1] = nameFile ;
+	
+		return repositoryInfo ;
 	}
 	
 	

@@ -31,6 +31,7 @@ import org.graphstream.graph.Node;
 		private static double feed ;
 		private static double kill ;
 		
+		private static double[] arrVal = new double[4];
 		// handle NaN
 		private static boolean handleNaN ;
 		private static double setIfNaN ;
@@ -41,6 +42,8 @@ import org.graphstream.graph.Node;
 		
 		// handle MaxVal
 		private static double maxVal ;
+		
+		
 		
 		// set parameters in constructor
 		public gsAlgo( reactionType r, diffusionType d, extType e, double Da, double Di, double feed ,  double kill, 
@@ -60,6 +63,8 @@ import org.graphstream.graph.Node;
 			this.handleMinMaxVal = handleMinMaxVal ;
 			this.minVal = minVal ;
 			this.maxVal = maxVal ; 
+			
+			setValues(Da, Di, feed, kill);
 		}
 		
 		public static void gsAlgoMain (boolean print ) {	
@@ -154,14 +159,20 @@ import org.graphstream.graph.Node;
 			System.out.println("mapMorp1 " + mapMorp1);
 		}
 // GET METHODS ----------------------------------------------------------------------------------------
-		public static double getDa() { return Da ; } 
-		public static double getDi() { return Di ; } 
-		public static double getFeed() { return feed ; } 
-		public static double getKill() { return kill ; } 
+		public static  double getDa() { return arrVal[0] ; } 
+		public static double getDi() { return arrVal[1] ; } 
+		public static double getFeed() { return arrVal[2] ; } 
+		public static double getKill() { return arrVal[3] ; } 
 	
-	
-	
-	
+	// set val in an array in order to return the values
+		public static void setValues ( double Da, double Di, double feed ,  double kill  ) { 
+			arrVal[0]= Da;
+			arrVal[1]= Di;
+			arrVal[2]= feed;
+			arrVal[3]= kill;
+		}
+		
+		public static double[] getvaluesGsAlgo ( ) { return arrVal ; }
 	}
 	
 	

@@ -81,19 +81,21 @@ public class stroredDataAnalysis {
 		return mapStepValMorp;
 	}
 	
-	public static Map<String, ArrayList<Double>> getMapIdSPAC ( String folderExp , String nameFileExp , int step ) throws IOException {
+	// return map for a defined step.
+	// SPAC = Signal Processing Auto Correlation = act1  * act0
+	// map / key = (string) idGs , values, (list of double) [ SPACactivator, SPACinhibiter ] 
+	public static Map<String, ArrayList<Double>> getMapIdSPACfolder ( String folderExp , String nameFileExp , int step ) throws IOException {
 			
 		File path = new File(folderExp);
 		File [] files = path.listFiles();	
 		double maxStep = files.length;
-		int x  = 1;
 		
 		if ( step <= 1) {	System.out.println("can not compute SPAC at step <= 1 ");
 							java.lang.System.exit(1) ;	
-		}
-		if ( step > maxStep ) {	System.out.println("can not compute SPAC at step > " + maxStep );
-								java.lang.System.exit(1) ;
-		}	
+		} 
+//		if ( step > maxStep ) {	System.out.println("can not compute SPAC at step > " + maxStep );
+//								java.lang.System.exit(1) ;		}
+			
 		
 		Map< String , ArrayList<Double>> mapIdSPAC = new HashMap< String , ArrayList < Double >> ( ) ;
 	
@@ -101,9 +103,20 @@ public class stroredDataAnalysis {
 		String nameFileExpStep1 = nameFileExp+"_step_"+step 	;		//	System.out.println(nameFileExpStep)
 					
 		Graph graph0 = expGraph.getGRaphDgs(folderExp, nameFileExpStep0);
-		Graph graph1 = expGraph.getGRaphDgs(folderExp, nameFileExpStep0);
-				
+		Graph graph1 = expGraph.getGRaphDgs(folderExp, nameFileExpStep1);
+		
+		Map<String, Double> mapIdSPACact = morpSignProCor.getMapIdSPACval(graph0, graph1,  morpAnalysis.morphogen.activator ) ;
+		Map<String, Double> mapIdSPACinh = morpSignProCor.getMapIdSPACval(graph0, graph1,  morpAnalysis.morphogen.inhibitor ) ;
+		
 		for ( Node n1 : graph1.getEachNode()) {
+			
+			String key = n1.getId();
+		
+			mapIdSPAC.put(key, new ArrayList<Double>(Arrays.asList( mapIdSPACact.get(key) , mapIdSPACinh.get(key))));
+		
+		}
+		/*
+			for ( Node n1 : graph1.getEachNode()) {
 			double act1 = n1.getAttribute("gsAct") ;
 			double inh1 = n1.getAttribute("gsInh") ;
 					
@@ -124,30 +137,121 @@ public class stroredDataAnalysis {
 					
 			mapIdSPAC.put(key, arrSPAC);
 			}
+		
+		*/
+		
 		return mapIdSPAC ;
 		}
-	
-	public static Map< Integer, ArrayList< Double >> getMapStepSPACstat ( String folderExp , String nameFileExp , analysisType type ) throws IOException {
+
+	public static Map<String, ArrayList<Double>> getMapIdSPACassfolder ( String folderExp , String nameFileExp , int step ) throws IOException {
 		
-		Map< Integer, ArrayList< Double >>  mapStepSPACstat = new HashMap < Integer, ArrayList< Double >> () ;
+		File path = new File(folderExp);
+		File [] files = path.listFiles();	
+		double maxStep = files.length;
 		
-			for ( int i = 2 ; i < 4; i++ ) {
-				Map<String, ArrayList<Double>>  mapIdSpac = getMapIdSPAC( folderExp, nameFileExp, i );
-			 
-				ArrayList< Double > arrMorp = new ArrayList<Double>();
-				
-				for (Entry<String, ArrayList<Double>> entry : mapIdSpac.entrySet()) {
-					arrMorp.addAll(entry.getValue());
-					
-					
-					
-					
-				}
-				System.out.println();
+		if ( step <= 2) {	System.out.println("can not compute SPAC at step <= 2 ");
+							java.lang.System.exit(1) ;	
+		} 
+//		if ( step > maxStep ) {	System.out.println("can not compute SPAC at step > " + maxStep );
+//								java.lang.System.exit(1) ;		}
 			
+		
+		Map< String , ArrayList<Double>> mapIdSPACass = new HashMap< String , ArrayList < Double >> ( ) ;
+	
+		String nameFileExpStep2 = nameFileExp+"_step_"+(step-2) ;		//	System.out.println(nameFileExpStep)
+		String nameFileExpStep1 = nameFileExp+"_step_"+(step-1) ;		//	System.out.println(nameFileExpStep)
+		String nameFileExpStep0 = nameFileExp+"_step_"+step 	;		//	System.out.println(nameFileExpStep)
+		
+		Graph graph2 = expGraph.getGRaphDgs(folderExp, nameFileExpStep2);
+		Graph graph1 = expGraph.getGRaphDgs(folderExp, nameFileExpStep1);
+		Graph graph0 = expGraph.getGRaphDgs(folderExp, nameFileExpStep0);
+		
+		Map<String, Double> mapIdSPACassAct = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  morpAnalysis.morphogen.activator);
+		Map<String, Double> mapIdSPACassInh = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  morpAnalysis.morphogen.inhibitor ) ;
+		
+		
+		for ( Node n1 : graph1.getEachNode()) {
+			
+			String key = n1.getId();
+			mapIdSPACass.put(key, new ArrayList<Double>(Arrays.asList( mapIdSPACassAct.get(key) , mapIdSPACassInh.get(key)))) ;
+		}	
+		return mapIdSPACass ;	
+	}
+	
+	public static Map< Integer, ArrayList< Double >> getMapStepSPACAverage ( String folderExp , String nameFileExp , int maxStep) throws IOException {
+		
+		Map< Integer, ArrayList< Double >>  mapStepSPACAverage = new HashMap < Integer, ArrayList< Double >> () ;
+		
+		for ( int step = 2 ; step <= maxStep ; step++) {
+			
+			double sumStepSPACact = 0 ;
+			double sumStepSPACinh = 0 ;
+			
+			Map<String, ArrayList<Double>> mapIdSPAC = getMapIdSPACfolder(folderExp, nameFileExp, step ) ;
+			
+			int keyCount = mapIdSPAC.size() ;
+			
+			double sumSPACact = 0 ;
+			double sumSPACinh = 0 ;
+			
+			for ( Entry <String , ArrayList<Double>> entry : mapIdSPAC.entrySet()) {
+				
+				ArrayList<Double> arrMorp = new ArrayList<Double>() ;
+				arrMorp = entry.getValue() ;
+				
+				sumSPACact = sumSPACact + arrMorp.get(0) ;			
+				sumSPACinh = sumSPACinh + arrMorp.get(1) ;		
+				}
+			
+			sumStepSPACact = sumStepSPACact + ( sumSPACact / keyCount) ;
+			sumStepSPACinh = sumStepSPACinh + ( sumSPACinh / keyCount) ;
+			
+			ArrayList<Double> arrSpac = new ArrayList<Double>();
+			arrSpac.add(sumStepSPACact);
+			arrSpac.add(sumStepSPACinh);
+			
+			mapStepSPACAverage.put(step, arrSpac ) ;
 		}
 		
-		return mapStepSPACstat ;
+		return mapStepSPACAverage ;
+	}
+	
+public static Map< Integer, ArrayList< Double >> getMapStepSPACAssAverage ( String folderExp , String nameFileExp , int maxStep) throws IOException {
+		
+		Map< Integer, ArrayList< Double >>  mapStepSPACAssAverage = new HashMap < Integer, ArrayList< Double >> () ;
+		
+		for ( int step = 3 ; step <= maxStep ; step++) {
+			
+			double sumStepSPACassAct = 0 ;
+			double sumStepSPACassInh = 0 ;
+			
+			Map<String, ArrayList<Double>> mapIdSPAC = getMapIdSPACassfolder(folderExp, nameFileExp, step ) ;
+			
+			int keyCount = mapIdSPAC.size() ;
+			
+			double sumSPACact = 0 ;
+			double sumSPACinh = 0 ;
+			
+			for ( Entry <String , ArrayList<Double>> entry : mapIdSPAC.entrySet()) {
+				
+				ArrayList<Double> arrMorp = new ArrayList<Double>() ;
+				arrMorp = entry.getValue() ;
+				
+				sumSPACact = sumSPACact + arrMorp.get(0) ;			
+				sumSPACinh = sumSPACinh + arrMorp.get(1) ;		
+				}
+			
+			sumStepSPACassAct = sumStepSPACassAct + ( sumSPACact / keyCount) ;
+			sumStepSPACassInh = sumStepSPACassInh + ( sumSPACinh / keyCount) ;
+			
+			ArrayList<Double> arrSpac = new ArrayList<Double>();
+			arrSpac.add(sumStepSPACassAct);
+			arrSpac.add(sumStepSPACassInh);
+			
+			mapStepSPACAssAverage.put(step, arrSpac ) ;
+		}
+		
+		return mapStepSPACAssAverage ;
 	}
 	
 	

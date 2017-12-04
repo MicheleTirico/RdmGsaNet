@@ -18,8 +18,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import javafx.scene.chart.XYChart;
-
 
 public class expChart extends JFrame  {
 	
@@ -39,13 +37,13 @@ public class expChart extends JFrame  {
     String xAxisLabel ;
     String yAxisLabel ;
   
-    Map<Integer, ArrayList<Double>> map ;
+    Map map ;
 	
 	// costructor 
 	public expChart (	typeChart type ,
 						String chartTitle, String xAxisLabel , String yAxisLabel ,
 						int width , int height , 
-						Map<Integer, ArrayList<Double>> map  ) {
+						Map map  ) {
 		
 		super ( chartTitle ) ;
 		
@@ -64,24 +62,21 @@ public class expChart extends JFrame  {
 		setLayoutFrame () ;
 	}
 
-	
 	private void setLayoutFrame( ) {	
 				
 		setSize( width , height );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		
+		setLocationRelativeTo(null);	
 	}
 	
-	private JPanel createChartPanelXY( String chartTitle, String xAxisLabel , String yAxisLabel ,  Map<Integer, ArrayList<Double>> map ) {
+	private JPanel createChartPanelXY( String chartTitle, String xAxisLabel , String yAxisLabel ,  Map map ) {
 		
         this.xAxisLabel = xAxisLabel ;
         this.yAxisLabel = yAxisLabel;
     
 		XYDataset dataset = createDataset( map );
         
-        chart = ChartFactory.createXYLineChart(chartTitle,
-                xAxisLabel, yAxisLabel, dataset);
+        chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataset);
       
 		return new ChartPanel(chart);
 	}
@@ -94,7 +89,7 @@ public class expChart extends JFrame  {
 
 		// create series
 		XYSeries serAct = new XYSeries("activator") ;
-		XYSeries serInh = new XYSeries("inhibithor") ;
+		XYSeries serInh = new XYSeries("inhibitor") ;
 		
 		for (Entry<Integer,ArrayList<Double>> entry : map.entrySet() ) {
 			
@@ -106,6 +101,7 @@ public class expChart extends JFrame  {
 			serAct.add(x,YactVal);
 			serInh.add(x,YInhVal);		
 		}
+		
 		// set series in dataset
 		dataset.addSeries(serAct);	
 		dataset.addSeries(serInh);

@@ -24,11 +24,14 @@ public class main {
 	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
 	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
+	public static String nameFileExp ; 
+	public static String dossierExp ; 
+	
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
 	*/
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 150 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 400 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -49,7 +52,7 @@ public class main {
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
 		
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {	
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// GENERATE LAYER GS
@@ -83,6 +86,21 @@ public class main {
 				/* kill */			0.05 ,		
 									true , 1E-5 ,
 									true , 1E-5 , 1 ) ;
+//-------------------------------------------------------------------------------------------------------------------------------
+	
+// EXPORT VALUES	
+		// export graph at each step
+		nameFileExp =	"export"	+
+													"_Sim_"		+ simulation.getStopSim()   +
+													"_Size_"	+ setupGsGrid.getGsGridSize() +
+													"_Da_"		+ gsAlgo.getDa() +
+													"_Di_" 		+ gsAlgo.getDi() + 
+													"_F_" 		+ gsAlgo.getFeed() +
+													"_K_" 		+ gsAlgo.getKill()  ;
+				
+				
+		dossierExp	= "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\graph\\export_02\\";
+		
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// CREATE LAYER NET
@@ -111,7 +129,7 @@ public class main {
 		 * 				bol		genEdge		= generate edges in layer net
 		 * 				bol		gsGraphExp	= if true, export the gsGraph in .dgs format at each step 
 		 *				) 	*/		
-		run.runSim( 150 , false , false , false , false  );
+		run.runSim( 250 , false , false , false , true  );
 		
 //		System.out.println(simulation.getmapMorp1());
 	
@@ -132,9 +150,8 @@ public class main {
 //		testViz.displayColor1(gsGraph, "gsInh");
 //		gsGraph.display(false) ;
 		
-		
-// get images
-		String nameFileIm =	"immage"	+
+		// get images
+		String nameFileIm =	"image"	+
 							"_Sim_"		+ simulation.getStopSim()   +
 							"_Size_"	+ setupGsGrid.getGsGridSize() +
 							"_Da_"		+ gsAlgo.getDa() +
@@ -143,28 +160,12 @@ public class main {
 							"_K_" 		+ gsAlgo.getKill() +
 							".png";
 		
-		setupViz.testFileSink(gsGraph, "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\", nameFileIm );
+		setupViz.testFileSink(gsGraph, "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_02\\", nameFileIm );
 	}
-//-------------------------------------------------------------------------------------------------------------------------------		
-
-	// EXPORT VALUES
-		
-	// export graph at each step
-	private static String nameFileExp =	"export"	+
-										"_Sim_"		+ simulation.getStopSim()   +
-										"_Size_"	+ setupGsGrid.getGsGridSize() +
-										"_Da_"		+ gsAlgo.getDa() +
-										"_Di_" 		+ gsAlgo.getDi() + 
-										"_F_" 		+ gsAlgo.getFeed() +
-										"_K_" 		+ gsAlgo.getKill()  ;
-							
-				
-	private static String dossierExp	= "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\";
-	private static String filePathExp 	= dossierExp + nameFileExp ;
 	
+
 	public static String getNameFileExp() 	{ return nameFileExp ; }
 	public static String getDossierExp () 	{ return dossierExp ; }
-	public static String getFilePathExp () 	{ return filePathExp ; }
 	
 	
 }

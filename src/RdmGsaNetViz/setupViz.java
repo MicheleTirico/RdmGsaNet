@@ -15,8 +15,6 @@ public class setupViz {
 
 	static Graph gsGraph = layerGs.getGraph();
 	static Graph netGraph = layerNet.getGraph();
-		
-	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 
 	// method to return a screenshot
 	public static void getScreenshot ( Graph graph, String file ) {
@@ -24,10 +22,10 @@ public class setupViz {
 	}
 	
 	// method to return an image 
-	public static void  testFileSink (Graph graph ,String folder, String name ) throws IOException {
+	public static void  getImage (Graph graph ,String folder, String name ) throws IOException {
 		FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);	
-		 pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT ); 
-		 pic.writeAll(graph, folder +"/"+ name);
+		pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT ); 
+		pic.writeAll(graph, folder +"/"+ name);
 	}
 	
 	public static void Viz4Color( Graph graph ) {
@@ -52,9 +50,6 @@ public class setupViz {
 	}
 
 
-	
-	
-	
 	private static String setViz4Color () {
 		return  "node {"+
 			"	size: 4px;"+
@@ -79,8 +74,8 @@ public class setupViz {
 	
 	private static String setVizMorp ( String morp ) {
 		String colorRange ;
-		if ( morp == "gsAct" ) 	{ colorRange = "gray , red" ; 				}
-		else { if ( morp == "gsInh" ) 	{ colorRange = " gray, green" ;				} 
+		if ( morp == "gsAct" ) 	{ colorRange = "grey , red" ; 				}
+		else { if ( morp == "gsInh" ) 	{ colorRange = " grey, green" ;				} 
 		else 					{ colorRange = "0" ;
 								  System.out.println("color not defined");	}
 		}
@@ -95,11 +90,6 @@ public class setupViz {
 				"	size: 0.1px;"+
 				"	fill-color: white;"+
 				"}" ;
-	}
+	}	
 
-		
-// PRIVATE METHODS -----------------------------------------------------------------------------------------------
-		
-
-
-	}
+}

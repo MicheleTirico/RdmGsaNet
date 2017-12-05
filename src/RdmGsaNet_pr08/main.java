@@ -31,7 +31,7 @@ public class main {
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
 	*/
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 400 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 200 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -87,7 +87,6 @@ public class main {
 									true , 1E-5 ,
 									true , 1E-5 , 1 ) ;
 //-------------------------------------------------------------------------------------------------------------------------------
-	
 // EXPORT VALUES	
 		// export graph at each step
 		nameFileExp =	"export"	+
@@ -99,7 +98,7 @@ public class main {
 													"_K_" 		+ gsAlgo.getKill()  ;
 				
 				
-		dossierExp	= "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\graph\\export_02\\";
+		dossierExp	= "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\graph\\export_03\\";
 		
 
 //-------------------------------------------------------------------------------------------------------------------------------		
@@ -129,28 +128,20 @@ public class main {
 		 * 				bol		genEdge		= generate edges in layer net
 		 * 				bol		gsGraphExp	= if true, export the gsGraph in .dgs format at each step 
 		 *				) 	*/		
-		run.runSim( 250 , false , false , false , true  );
-		
-//		System.out.println(simulation.getmapMorp1());
+		run.runSim( 500 , false , false , false , true  );
 	
-//		morpAnalysis.spatialAutoCorLisaLocalMoran( gsGraph, morpAnalysis.morphogen.activator , 1, 	morpSpatialAutoCor.distanceMatrixType.topo );
-//		morpAnalysis.SignalAutoCor(gsGraph, mapMorp1, mapStepNetGraph); 
-		
-		
-		
-
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
 		setupViz.Viz4Color(gsGraph);
 		
-		setupViz.Vizmorp(gsGraph, "gsAct");
-//		testViz.displayColor2(gsGraph );
-//		testViz.displayColor1(gsGraph, "gsAct");
-//		testViz.displayColor1(gsGraph, "gsInh");
-//		gsGraph.display(false) ;
+//		setupViz.Vizmorp(gsGraph, "gsAct");
+//		setupViz.Vizmorp(gsGraph, "gsInh");
+
+		gsGraph.display(false) ;
 		
 		// get images
+		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_03\\" ;
 		String nameFileIm =	"image"	+
 							"_Sim_"		+ simulation.getStopSim()   +
 							"_Size_"	+ setupGsGrid.getGsGridSize() +
@@ -160,10 +151,9 @@ public class main {
 							"_K_" 		+ gsAlgo.getKill() +
 							".png";
 		
-		setupViz.testFileSink(gsGraph, "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_02\\", nameFileIm );
+		setupViz.getImage(gsGraph, folderIm , nameFileIm );
 	}
 	
-
 	public static String getNameFileExp() 	{ return nameFileExp ; }
 	public static String getDossierExp () 	{ return dossierExp ; }
 	

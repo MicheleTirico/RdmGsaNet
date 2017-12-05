@@ -2,21 +2,12 @@ package RdmGsaNetAlgo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-
-import RdmGsaNetAlgo.morpSpatialAutoCor.distanceMatrixType;
-
-import static org.graphstream.algorithm.Toolkit.*;
-
 import RdmGsaNet_pr08.*;
-import graphstream_dev.*;
 
 public class morpAnalysis {
 	
@@ -85,7 +76,7 @@ public class morpAnalysis {
 //			System.out.println( "zi " + zi );
 //			System.out.println( "sumWijZj " + sumWijZj );
 			
-			setScatterPlotAtr(graph, corScatterPlotAtr, zi, sumWijZj, 0.05);
+			morpSpatialAutoCor.setScatterPlotAtr(graph, corScatterPlotAtr, zi, sumWijZj, 0.05);
 			
 			
 		}
@@ -134,25 +125,7 @@ public class morpAnalysis {
 	
 // PRIVATE METHODS ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-// set for each an attribute of scatter plot autocorrelation
-	private static void setScatterPlotAtr ( Graph graph , String corScatterPlotAtr , double zi , double sumWijZj , double delta ) {
-		for ( Node n : graph.getEachNode()) {	
-			
-			String scatterVal = null;
-			if ( 	- delta < 	zi  				&&
-								zi 			< delta && 
-					- delta <	sumWijZj			&&
-								sumWijZj	< delta			) { scatterVal = "NS" ; }
-			else {
-					if ( zi > 0	&& sumWijZj > 0 ) { scatterVal = "HH" ; }; 
-					if ( zi < 0	&& sumWijZj > 0 ) { scatterVal = "LH" ; };
-					if ( zi > 0	&& sumWijZj < 0 ) { scatterVal = "HL" ; };
-					if ( zi < 0	&& sumWijZj < 0 ) { scatterVal = "LL" ; };
-			}
-			n.setAttribute(corScatterPlotAtr, scatterVal);	
-		}	
-	}
- 
+
 // set for each nodes an attribute that means the value of correlation
 	private static void setCorValInGraph ( Graph graph , double val , String corAttributeStr) {		
 		for ( Node n : graph.getEachNode()) {	n.setAttribute(corAttributeStr, val);	}

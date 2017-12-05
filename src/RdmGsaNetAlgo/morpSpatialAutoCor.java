@@ -100,7 +100,6 @@ public class morpSpatialAutoCor extends morpAnalysis {
 		String idNode = n.getId();																		//	System.out.println(idNode);
 		double xi = mapIdMorpInRad.get(idNode);															//	System.out.println("xi " +xi);	
 		zi = xi - meanInRad;																			//	System.out.println("zi " + zi);
-	
 		
 		sumWijZj = 0 ;
 		
@@ -166,10 +165,28 @@ public class morpSpatialAutoCor extends morpAnalysis {
 			distanceMatrix = graphstream_dev_toolkit.distanceMatrix.getDistanceMatrixWeight(graph);
 			break;
 		}
-		
 		return distanceMatrix;
 	}
 	
+	// set for each an attribute of scatter plot autocorrelation
+	public static void setScatterPlotAtr ( Graph graph , String corScatterPlotAtr , double zi , double sumWijZj , double delta ) {
+		for ( Node n : graph.getEachNode()) {	
+				
+			String scatterVal = null;
+			if ( 	- delta < 	zi  				&&
+								zi 			< delta && 
+					- delta <	sumWijZj			&&
+								sumWijZj	< delta			) { scatterVal = "NS" ; }
+			else {
+					if ( zi > 0	&& sumWijZj > 0 ) { scatterVal = "HH" ; }; 
+					if ( zi < 0	&& sumWijZj > 0 ) { scatterVal = "LH" ; };
+					if ( zi > 0	&& sumWijZj < 0 ) { scatterVal = "HL" ; };	
+					if ( zi < 0	&& sumWijZj < 0 ) { scatterVal = "LL" ; };
+			}
+			n.setAttribute(corScatterPlotAtr, scatterVal);	
+		}	
+	}
+	 	
 // get variables 
 	public static double getZi () 		{ return zi ; 		}
 	public static double getSumWijZj () { return sumWijZj ; }

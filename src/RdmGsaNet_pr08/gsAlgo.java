@@ -19,7 +19,7 @@ import org.graphstream.graph.Node;
 //		public enum interaction {reaction , diffusion, ext }
 		
 		public enum reactionType {ai2, linear }
-		public enum diffusionType {fick, perimeter, weigth }
+		public enum diffusionType {fick, perimeter, weight }
 		public enum extType {gsModel, test}
 	
 		// declare variables
@@ -46,11 +46,11 @@ import org.graphstream.graph.Node;
 		
 		
 		// set parameters in constructor
-		public gsAlgo( reactionType r, diffusionType d, extType e, double Da, double Di, double feed ,  double kill, 
-				boolean handleNaN , double setIfNaN, 
-				boolean handleMinMaxVal , 
-				double minVal , double maxVal
-				) {
+		public gsAlgo (	reactionType r, diffusionType d, extType e, 
+						double Da, double Di, double feed ,  double kill, 
+						boolean handleNaN , double setIfNaN, 
+						boolean handleMinMaxVal , 
+						double minVal , double maxVal ) {
 			this.r = r ;
 			this.d = d ;
 			this.e = e ;
@@ -86,15 +86,15 @@ import org.graphstream.graph.Node;
 				double inh0 = ArList0.get(1);
 					
 				// compute reaction
-				double reaction = gsAlgoReaction.gsComputeReaction(reactionType.ai2, act0, inh0);
+				double reaction = gsAlgoReaction.gsComputeReaction(r, act0, inh0);
 				
 				// compute diffusion
-				double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Da , gsGraph, "GsAct", id, mapMorp0 ) ;
-				double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(diffusionType.fick, Di , gsGraph, "GsInh", id, mapMorp0 ) ;
+				double diffusionAct = gsAlgoDiffusion.gsComputeDiffusion(d , Da , gsGraph, "gsAct", id, mapMorp0 ) ;
+				double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(d , Di , gsGraph, "gsInh", id, mapMorp0 ) ;
 					
 				// compute external values
-				double extFeed = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.activator , feed, kill , act0 , inh0 ) ;
-				double extKill = gsAlgoExt.gsComputeExt(extType.gsModel, morphogen.inhibitor , feed, kill , act0 , inh0 ) ;
+				double extFeed = gsAlgoExt.gsComputeExt(e, morphogen.activator , feed, kill , act0 , inh0 ) ;
+				double extKill = gsAlgoExt.gsComputeExt(e, morphogen.inhibitor , feed, kill , act0 , inh0 ) ;
 					
 //				System.out.println("Da " + Da);
 //				System.out.println("Di " + Di);

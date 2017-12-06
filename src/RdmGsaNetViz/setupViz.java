@@ -52,7 +52,7 @@ public class setupViz {
 
 	private static String setViz4Color () {
 		return  "node {"+
-			"	size: 4px;"+
+			"	size: 6px;"+
 			"	fill-color: grey, red, yellow, green, blue; "+
 			"	fill-mode: dyn-plain;"+
 			"}"+

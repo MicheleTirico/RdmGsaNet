@@ -2,8 +2,13 @@ package RdmGsaNet_pr08;
 
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.GridGenerator;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+
+import RdmGsaNetAlgo.gsAlgoToolkit;
+
+
 
 public class setupGsGrid implements setupGsInter {
 	
@@ -16,16 +21,16 @@ public class setupGsGrid implements setupGsInter {
 		this.type = type ;
 	}
 
+	// in this method ( initialized in interface setupGsInter ) we create the graph gs for the layer gs.
 	public void createLayerGs() {
-		// in this method ( initialized in interface setupGsInter ) we create the graph gs for the layer gs.
 		
-//		System.out.println(size);	System.out.println(type);
-		
+			
 		// create boolean switch to choice grid type ( degree 4 or 8 )
 		boolean typebol;
-		if (type == gsGridType.grid4) { typebol = false ; }
-		else { typebol = true ;	}
-	
+		if (type == gsGridType.grid4) 	{ typebol = false ; }
+		else 							{ typebol = true ;	}
+		
+//		if ( type == gsGridType.grid8weig ) {	setupWeight(); }
 		// call graph of layer gs
 		
 		// generate graph
@@ -37,21 +42,10 @@ public class setupGsGrid implements setupGsInter {
 	}
 	
 	public void setCoordinate() {
-		/*
-		for ( Node n : graph.getEachNode() ) { 
-			
-			for ( int x = 0 ; x < size ; x++ ) {
-				for ( int y = 0 ; y < size ; y++ ) {
-					n.setAttribute( "xyz", x ,y , 0 );	
-				}
-			}
-		}
-		*/
-		
-		
-		
 		
 	}
+	
+	
 	
 //--------------------------------------------------------------------------------------------------------------
 	// GET AND SET

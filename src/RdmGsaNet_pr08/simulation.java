@@ -69,7 +69,8 @@ public class simulation {
 			// method to handle first step
 			firstStep (step );	// System.out.println(mapMorp0);
 			
-			// run gs algo to all nodes
+			/* run gs algo to all nodes
+				boolean print : if true, print mapMorp */
 			gsAlgo.gsAlgoMain( false );
 			
 			// define rules to growth network
@@ -78,12 +79,10 @@ public class simulation {
 			if ( genEdge == true) {genNetEd.generateEdge( step ); }
 
 			// create list and map
-			listIdNet = createListId ( netGraph );
-//			mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					
+			listIdNet = createListId ( netGraph );												//	mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					
 
 			// update map graph
-			updateMapGraph( mapStepNetGraph , step, netGraph);
-//			System.out.println(mapStepNetGraph);
+			updateMapGraph( mapStepNetGraph , step, netGraph);									//	System.out.println(mapStepNetGraph);
 
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }

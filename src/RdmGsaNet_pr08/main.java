@@ -31,7 +31,7 @@ public class main {
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
 	*/
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 200 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 400, setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -56,6 +56,7 @@ public class main {
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// GENERATE LAYER GS
+		
 		// method to generate the graph gs
 		gsLayer.createLayer ( false , true ) ;
 		
@@ -64,10 +65,11 @@ public class main {
 			// type of distribution = random or homo
 		gsLayer.setupDisMorp(setupGsInter.disMorpType.homo , 12 , 34 , 1 , 0 );
 
-		// method to change type of layer ( not used)
-//		gsLayer.changeLayer( new setupGsGis() ) ;	
-		
 //-------------------------------------------------------------------------------------------------------------------------------
+		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ;
+		gsAlgoDiffusion.setWeightType ( gsAlgoDiffusion.weightType.matrix );
+		
+		
 		// SETUP START VALUES LAYER GS
 			/*	gsAlgo ( 	enum	reactionType 
 			* 				enum	diffusionType 
@@ -80,12 +82,13 @@ public class main {
 			*  				double	mmaxVal			= default value if morph > maxVal, set maxVal
 			*/
 		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.fick , gsAlgo.extType.gsModel , 
-				/* Da 	*/			0.6,			
-				/* Di 	*/			0.2, 		
-				/* feed */			0.05 , 	
-				/* kill */			0.05 ,		
+				/* Da 	*/			1,			
+				/* Di 	*/			0.5, 		
+				/* feed */			0.055 , 	
+				/* kill */			0.062 ,		
 									true , 1E-5 ,
-									true , 1E-5 , 1 ) ;
+									false , 1E-5 , 1 ) ;
+		
 //-------------------------------------------------------------------------------------------------------------------------------
 // EXPORT VALUES	
 		// export graph at each step
@@ -103,9 +106,6 @@ public class main {
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// CREATE LAYER NET
-		
-		// method to change type of layer ( not used)
-//		netLayer.changeLayer(new setupNetRandom() ) ;
  
 		/* method to create the layer
 		 * createLayer ( bol 	createMeanPoint	= 	chose if we have an initial node (or a small graph ) befor starting simulation
@@ -115,11 +115,8 @@ public class main {
 		 * 				 double	seedInh			=	inh value for seed node		
 		 * 				 bol	setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
 		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , false); 
+		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true ); 
  		
-//		for ( Node nNet : netGraph.getEachNode() )//	 {		System.out.println(n.getId());			double act = n.getAttribute("seedAct");			double inh = n.getAttribute("seedInh");//			System.out.println ( act ) ;//			System.out.println ( inh ) ;	}
-//			for ( Node nGs : gsGraph.getEachNode() ) {			double inh = nGs.getAttribute("gsInh");//			System.out.println ( n.getId() + "    " + inh ) ;}
-			
 //-------------------------------------------------------------------------------------------------------------------------------		
 		/* RUN simulation
 		 * // runSim ( 	int 	stopSim 	= Max step to stop simulation , 
@@ -128,7 +125,7 @@ public class main {
 		 * 				bol		genEdge		= generate edges in layer net
 		 * 				bol		gsGraphExp	= if true, export the gsGraph in .dgs format at each step 
 		 *				) 	*/		
-		run.runSim( 500 , false , false , false , true  );
+		run.runSim( 100 , false , false , false , false  );
 	
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
@@ -139,6 +136,7 @@ public class main {
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 
 		gsGraph.display(false) ;
+//		netGraph.display(false) ;
 		
 		// get images
 		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_03\\" ;
@@ -151,7 +149,7 @@ public class main {
 							"_K_" 		+ gsAlgo.getKill() +
 							".png";
 		
-		setupViz.getImage(gsGraph, folderIm , nameFileIm );
+//		setupViz.getImage(gsGraph, folderIm , nameFileIm );
 	}
 	
 	public static String getNameFileExp() 	{ return nameFileExp ; }

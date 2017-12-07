@@ -19,6 +19,7 @@ public class gsAlgoDiffusion  {
 	gsAlgo.diffusionType type;
 	gsAlgo.morphogen morp;
 		
+	static final int aldo = 5 ;
 	private static  double 	sideValSt ,			cornerValSt ;
 		
 	public enum weightType { matrix , length }
@@ -38,17 +39,22 @@ public class gsAlgoDiffusion  {
 		switch (type) {
 			case fick: {
 				diffusion = speed * fick ( graph, morp, id, mapMorp ) ; 	
+//				System.out.println("diffFick");
 			} break ;
 				// diffusion not yet developed 
 			case perimeter : 		{ 
 				diffusion = perimeter ( ) ;  
+//				System.out.println("diffPer");
 			} break ;
 			case weight : 			{ 
 				diffusion = speed * weight ( typeWeig, graph, morp, id, mapMorp ) ;
+//				System.out.println("diffWeig");
+				
 			} break ;
 			
 //			default: { System.out.println("diffusion type not defined") ; diffusion = 0; }
 		}	
+//		System.out.println(diffusion);
 		return diffusion;
 	}
 
@@ -94,7 +100,7 @@ public class gsAlgoDiffusion  {
 		}										//	System.out.println("sumNeig " + sumNeig);
 			
 		// compute fick's diffusion
-		diffusion = degree * d0 - sumNeig ;		//	System.out.println(diffusion);
+		diffusion =  - degree * d0 + sumNeig ;		//	System.out.println(diffusion);
 		return diffusion ;
 	}
 			
@@ -114,10 +120,10 @@ public class gsAlgoDiffusion  {
 		switch (typeWeig) {
 			case matrix : { 
 //				System.out.println("matrix");
-//				diffusion = getDiffusionWeightMatrix (graph, morp, id, mapMorp);
+				diffusion = getDiffusionWeightMatrix (graph, morp, id, mapMorp);
 				} break;
 			case length : { 
-				System.out.println("length");
+//				System.out.println("length");
 				diffusion = 0 ;}
 		}
 		return diffusion ;
@@ -150,6 +156,7 @@ public class gsAlgoDiffusion  {
 					
 		// value of morhogen in node
 		morp0 = (double) morp0list.get(morpInt);
+//		System.out.println(morpInt + " " + morp0);
 		
 		ArrayList<String> listNeig = new ArrayList<String>();
 		ArrayList<String> listNeigSide = new ArrayList<String>();
@@ -172,22 +179,42 @@ public class gsAlgoDiffusion  {
 //		System.out.println(listNeig);
 //		System.out.println(listNeigSide);
 //		System.out.println(listNeigCorner);
-		double coefSide = 0, coefCorner = 0 ;
-		switch (degree) {
+//		System.out.println(degree) ;
+		double coefSide = 0 , coefCorner = 0  ;
+		/*
+		switch (degree) { 
 			case 5: {
-				coefSide = 3 * 2/7 ;
-				coefCorner = 2 * 1/14 ;
+				coefSide = 3.0 * 2/7 ;
+				coefCorner = 2.0 * 1/14 ;
 			} ; break ;
 			case 3 : {
-				coefSide = 2 * 4/9 ;
-				coefCorner = 1 *  1/9 ;	
+				coefSide = 2.0 * 4/9 ;
+				coefCorner = 1.0 *  1/9 ;	
 			} ; break;
 			case 8 : {
-				coefSide = 4 * 1/5 ;
-				coefCorner = 4 * 1/20 ;		
+				coefSide = 4.0 * 1/5 ;
+				coefCorner = 4.0 * 1/20 ;		
+//				System.out.println(coefCorner + " " + coefSide);
 			} ; break;
 		}
-		
+		*/
+		switch (degree) { 
+		case 5: {
+			coefSide =  2.0/7 ;
+			coefCorner =  1.0/14 ;
+		} ; break ;
+		case 3 : {
+			coefSide = 4.0/9 ;
+			coefCorner = 1.0/9 ;	
+		} ; break;
+		case 8 : {
+			coefSide =  1.0/5 ;
+			coefCorner = 1.0/20 ;		
+//			System.out.println(coefCorner + " " + coefSide);
+		} ; break;
+	}
+//		System.out.println(degree ) ; 
+//		System.out.println(coefCorner + " " + coefSide);
 		for ( String idNeigSt : listNeig ) {
 			Node idNeigNd = graph.getNode(idNeigSt);
 //			System.out.println(idNeigSt);
@@ -199,7 +226,7 @@ public class gsAlgoDiffusion  {
 			else 									{ sumMorpC = sumMorpC + morpNeig ; }
 		}	
 		
-		dif =  morp0 - ( coefSide * sumMorpS + coefCorner * sumMorpC ) ;
+		dif =  - morp0 + ( coefSide * sumMorpS + coefCorner * sumMorpC ) ;
 	
 //		System.out.println(n.getId() + "  " + dif);
 		return dif;

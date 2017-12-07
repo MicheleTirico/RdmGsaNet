@@ -40,10 +40,10 @@ public class setupViz {
 			
 			double color = 0  ; //grey
 			
-			if ( act >= 0.9 && inh >= 0.9) 	{	 color =  	.25		;	} 		// red
-			if ( act >= 0.5 && inh <= 0.5) 	{	 color =  	.5		;	}		// yellow
-			if ( act <= 0.5 && inh >= 0.5) 	{	 color =  	.75		;	}		// green
-			if ( act <= 0.1 && inh <= 0.1) 	{	 color =  	1		;	}		// blue
+			if ( act >= 0.95 && inh >= 0.95) 	{	 color =  	.25		;	} 		// red
+			if ( act >= 0.99 && inh <= 0.01) 	{	 color =  	.5		;	}		// yellow
+			if ( act <= 0.01 && inh >= 0.99) 	{	 color =  	.75		;	}		// green
+			if ( act <= 0.05 && inh <= 0.05) 	{	 color =  	1		;	}		// blue
 			
 			n.addAttribute("ui.color", color );
 		}
@@ -52,7 +52,7 @@ public class setupViz {
 
 	private static String setViz4Color () {
 		return  "node {"+
-			"	size: 6px;"+
+			"	size: 3px;"+
 			"	fill-color: grey, red, yellow, green, blue; "+
 			"	fill-mode: dyn-plain;"+
 			"}"+

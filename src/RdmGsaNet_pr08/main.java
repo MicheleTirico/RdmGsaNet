@@ -19,7 +19,6 @@ import RdmGsaNetViz.testViz;
 
 public class main {
 	
-	
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
 	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
@@ -31,7 +30,7 @@ public class main {
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 ) 
 	*/
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 400, setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 128 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -81,32 +80,30 @@ public class main {
 			*  				double	minVal			= default value if morph < minVal, set minVal
 			*  				double	mmaxVal			= default value if morph > maxVal, set maxVal
 			*/
-		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.fick , gsAlgo.extType.gsModel , 
-				/* Da 	*/			1,			
-				/* Di 	*/			0.5, 		
-				/* feed */			0.055 , 	
-				/* kill */			0.062 ,		
+		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
+				/* Da 	*/			0.15,			
+				/* Di 	*/			0.05, 		
+				/* feed */			0.078 , 	
+				/* kill */			0.061 ,		
 									true , 1E-5 ,
-									false , 1E-5 , 1 ) ;
+									true , 1E-5 , 1 ) ;
 		
 //-------------------------------------------------------------------------------------------------------------------------------
 // EXPORT VALUES	
 		// export graph at each step
 		nameFileExp =	"export"	+
-													"_Sim_"		+ simulation.getStopSim()   +
-													"_Size_"	+ setupGsGrid.getGsGridSize() +
-													"_Da_"		+ gsAlgo.getDa() +
-													"_Di_" 		+ gsAlgo.getDi() + 
-													"_F_" 		+ gsAlgo.getFeed() +
-													"_K_" 		+ gsAlgo.getKill()  ;
-				
+						"_Sim_"		+ simulation.getStopSim()   +
+						"_Size_"	+ setupGsGrid.getGsGridSize() +
+						"_Da_"		+ gsAlgo.getDa() +
+						"_Di_" 		+ gsAlgo.getDi() + 
+						"_F_" 		+ gsAlgo.getFeed() +
+						"_K_" 		+ gsAlgo.getKill()  ;
 				
 		dossierExp	= "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\graph\\export_03\\";
 		
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// CREATE LAYER NET
- 
 		/* method to create the layer
 		 * createLayer ( bol 	createMeanPoint	= 	chose if we have an initial node (or a small graph ) befor starting simulation
 		 * 				 enum	meanPointPlace	=	define were are the mean point of started net graph 	( center , border , random )
@@ -125,15 +122,16 @@ public class main {
 		 * 				bol		genEdge		= generate edges in layer net
 		 * 				bol		gsGraphExp	= if true, export the gsGraph in .dgs format at each step 
 		 *				) 	*/		
-		run.runSim( 100 , false , false , false , false  );
-	
+		run.runSim( 5000 , false , false , false , false  );
+	System.out.println(mapMorp1);
+		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
 		setupViz.Viz4Color(gsGraph);
 		
 //		setupViz.Vizmorp(gsGraph, "gsAct");
-//		setupViz.Vizmorp(gsGraph, "gsInh");
+		setupViz.Vizmorp(gsGraph, "gsInh");
 
 		gsGraph.display(false) ;
 //		netGraph.display(false) ;
@@ -149,7 +147,7 @@ public class main {
 							"_K_" 		+ gsAlgo.getKill() +
 							".png";
 		
-//		setupViz.getImage(gsGraph, folderIm , nameFileIm );
+		setupViz.getImage(gsGraph, folderIm , nameFileIm );
 	}
 	
 	public static String getNameFileExp() 	{ return nameFileExp ; }

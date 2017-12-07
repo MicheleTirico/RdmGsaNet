@@ -109,8 +109,8 @@ import org.graphstream.graph.Node;
 //				System.out.println("extkill " + extKill);
 				
 				// compute new act and inh values for each node  
-				double act1 = act0 + ( - diffusionAct - reaction + extFeed ) ;
-				double inh1 = inh0 + ( - diffusionInh + reaction - extKill ) ;
+				double act1 = act0 + ( + diffusionAct - reaction + extFeed ) * 0.25 ;
+				double inh1 = inh0 + ( + diffusionInh + reaction - extKill ) * 0.25 ;
 				
 				
 				if ( handleNaN == true ) { 
@@ -125,7 +125,7 @@ import org.graphstream.graph.Node;
 					if ( inh1 < minVal )	{	inh1 = minVal ;	}
 					if ( inh1 >= 1  )  		{	inh1 = maxVal ;	}
 				}
-
+ 
 				
 				// create a list of values act an inh
 				ArrayList<Double> ArList1 = new ArrayList<Double>() ;
@@ -159,8 +159,8 @@ import org.graphstream.graph.Node;
 			System.out.println("mapMorp1 " + mapMorp1);
 		}
 // GET METHODS ----------------------------------------------------------------------------------------
-		public static  double getDa() { return arrVal[0] ; } 
-		public static double getDi() { return arrVal[1] ; } 
+		public static  double getDa()  { return arrVal[0] ; } 
+		public static double getDi()   { return arrVal[1] ; } 
 		public static double getFeed() { return arrVal[2] ; } 
 		public static double getKill() { return arrVal[3] ; } 
 	

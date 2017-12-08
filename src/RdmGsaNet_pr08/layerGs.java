@@ -1,16 +1,22 @@
 package RdmGsaNet_pr08;
 
+import java.io.IOException;
 import java.util.Random;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNetExport.expGraph;
 
 public class layerGs {
 	
+	// STORING GRAPH EVENTS
+	static FileSinkDGS fsd = new FileSinkDGS();
+
 	// VARIABLES
 	private setupGsInter layout ;
 	
@@ -28,10 +34,19 @@ public class layerGs {
 	}
 	
 	// method to create layer gs
-	public void createLayer ( boolean setCoordinate, boolean setDefaultAtr ) {
+	public void createLayer ( boolean setCoordinate, boolean setDefaultAtr , boolean storedDGS) throws IOException {
 		layout.createLayerGs () ; 
 		if (setCoordinate == true ) { layout.setCoordinate () ; }
-		if (setDefaultAtr == true ) { setDefaultAtr () ; }
+		if (setDefaultAtr == true ) { setDefaultAtr () ; }	
+		if ( storedDGS == true ) 	{ 	 
+			String fileType = main.getFileType();
+			String nameFile = main.getNameStartGs() ;
+			String nameFileStart = nameFile + fileType ;
+			String folderStart = main.getFolderStartGs();
+			String pathStart = folderStart + nameFileStart + fileType;
+			
+			graph.write(fsd, pathStart);	}
+		
 		setEdgeLength();
 	}
 			

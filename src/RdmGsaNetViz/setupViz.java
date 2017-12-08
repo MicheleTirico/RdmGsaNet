@@ -28,6 +28,9 @@ public class setupViz {
 		pic.writeAll(graph, folder +"/"+ name);
 	}
 	
+	
+// methods of visualization
+	
 	public static void Viz4Color( Graph graph ) {
 		
 		graph.addAttribute("ui.stylesheet", setViz4Color ( ) );

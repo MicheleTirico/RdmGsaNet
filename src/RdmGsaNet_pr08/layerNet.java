@@ -1,12 +1,18 @@
 package RdmGsaNet_pr08;
 
+import java.io.IOException;
+
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.file.FileSinkDGS;
 
 public class layerNet {	
 	
 	// COSTANTS
+	
+	static FileSinkDGS fsd = new FileSinkDGS();
+	
 	// initialization graph net
 	private static Graph netGraph = new SingleGraph("netGraph");
 	private static Graph gsGraph = layerGs.getGraph();
@@ -27,7 +33,11 @@ public class layerNet {
 	}
 	
 	// method to create layer Net
-	public void createLayer ( boolean createMeanPoint , meanPointPlace point , boolean setSeedMorp , double seedAct , double seedInh , boolean setSeedMorpInGs ) {
+	public void createLayer ( 	boolean createMeanPoint , meanPointPlace point , 
+								boolean setSeedMorp , 
+								double seedAct , double seedInh , 
+								boolean setSeedMorpInGs ,
+								boolean storedDGS) throws IOException {
 		
 		// set default values of net graph
 		setDefaultAtr () ;
@@ -42,6 +52,24 @@ public class layerNet {
 		if (setSeedMorp == true ) { setSeedMorp (  seedAct ,  seedInh ); }
 	
 		if ( setSeedMorpInGs = true ) { setSeedMorpInGs ( ) ; }
+		
+		if ( storedDGS == true ) 	{ 	 
+			String fileType = main.getFileType();
+			String nameFile = 	"layerNetStart" +
+								"_meanPoint_" + point +
+								"_seedAct_" + seedAct +
+								"_seedInh_" + seedInh ;
+					
+			
+			
+			String nameFileStart = nameFile + fileType ;
+			String folderStart = main.getFolderStartGs();
+			String pathStart = folderStart + nameFileStart + fileType;
+			
+			netGraph.write(fsd, pathStart);	}
+		
+		
+		
 	}
 	
 		

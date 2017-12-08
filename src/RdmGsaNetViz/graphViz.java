@@ -1,81 +1,71 @@
 package RdmGsaNetViz;
 
-import java.util.HashMap;
+import java.io.IOException;
 
-import java.util.Map;
-import org.graphstream.ui.spriteManager.*;
+import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.spriteManager.Sprite;
-import org.graphstream.ui.view.Viewer;
-
-import RdmGsaNet_pr08.*;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.GraphParseException;
+import org.graphstream.stream.file.FileSource;
+import org.graphstream.stream.file.FileSourceFactory;
 
 public class graphViz {
 	
-	static Graph gsGraph = layerGs.getGraph();
-	static Graph netGraph = layerNet.getGraph();
+	static Graph graph = new SingleGraph("graph");
 	
-	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
+	static String fileType = ".dgs" ;
+	static String nameFile = "testStored" ;
+	static String nameFileStart = nameFile + "Start" ;
+	static String nameFileStep = nameFile + "Step";
+	
+	static String folderStart = "D:\\Dropbox\\Dropbox\\JAVA\\test\\";
+	static String folderStep = folderStart ;
 
-	// set default parameters of gsGraph
-	static String styleDefaultBackground = setStyleDefaulBackground ( "white" ) ;
-	static String styleDefaultNode = setStyleDefaultNode ("circle" , 10 , "red" ) ;
-	static String styleDefaultEdge = setStyleDefaultEdge (1 , "black") ;
+//	static String pathStart = folderStart + nameFileStart + fileType;
+//	static String pathStep = folderStart + nameFileStep + fileType;
 	
-	static Viewer viewer ;
+	private static FileSource fs;
 	
-	public static void main( Graph graph ) {
+	public static void vizGraph ( Graph graph , String pathStart , String pathStep , int step ) throws IOException {
 		
-		// default style
-		gsGraph.addAttribute("ui.stylesheet", styleDefaultBackground + styleDefaultNode + styleDefaultEdge );
+		// import start graph
+		try {
+			graph.read(pathStart);
+		} 
+		catch (ElementNotFoundException | GraphParseException e1) {
+			e1.printStackTrace();
+		}
 		
-		// set quality viz
-		graph.addAttribute("ui.quality");
-	    graph.addAttribute("ui.antialias");
+		// set file Source for file step
+		fs = FileSourceFactory.sourceFor(pathStep);
+		fs.addSink(graph);
 		
-		viewer = gsGraph.display(false);
-	
+		// setup configuration viz grap 
+		setupViz.Viz4Color(graph);
+			
+		// import file step
+		try {
+			fs.begin(pathStep);
+			
+			while ( fs.nextStep()) {
+				
+				// identify step visualization  
+				if ( step == graph.getStep() ) {
+					System.out.println(graph.getStep());
+					graph.display(true);
+				}
+			}
+		}
+		catch (IOException e) {
+			// TODO: handle exception
+		}
+		
+		fs.end();
+		
 	}
-	
-// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------------
-	
-// set default style of edge
-	private static String setStyleDefaultEdge (int sizeXY , String color ) {
-		String styleSheetEdge =
-	    		"edge {"+
-	    				" size: "		+ sizeXY +	"px;	"+
-	    				" fill-color: "	+ color	 + " ;		"+
-	    				" fill-mode: 	dyn-plain;	"+
-	    		"}" ;
-		return styleSheetEdge ;
-	}
-	
-// set default style of node
-	private static String setStyleDefaultNode (String shape , int sizeXY , String color) {
-		String styleSheetNode =
-				"node {	"+
-						" shape: " 		+ shape 	+ "; "+
-	    				" size: " 		+ sizeXY	+ "px; "+
-	    				" fill-color: "	+ color		+ "; "+
-	    		"}";
-		return styleSheetNode;	
-	}
-	
-// set default style of background
-	private static String setStyleDefaulBackground (String color) {
-		String backgroundStyle = 
-				"graph {"+
-						" fill-color:" + color + "; }";
-		return backgroundStyle ;
-	}
-	
-	
-	
-	
-	
-	
 
 	
-
+	
 }
+		

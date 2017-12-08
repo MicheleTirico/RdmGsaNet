@@ -9,9 +9,10 @@ import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetExport.expGraph;
-import RdmGsaNetViz.graphViz;
+import RdmGsaNetViz.graphViz2;
 
 public class simulation {	
 	
@@ -20,9 +21,12 @@ public class simulation {
 	private static int stopSim ;
 	private static int finalStep;
 	private static int step;
+
+// STORING GRAPH EVENTS
+	 private static FileSinkDGS fsd = new FileSinkDGS();
+
 // MAP OF GRAPH
 	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
-
 	
 // LIST FOR ID
 	// list of gsId
@@ -37,32 +41,29 @@ public class simulation {
  		
  	// map / after each step / key = (string) idGs , values, (list of double) [ activator, inhibiter ] 
 	private static Map< String, ArrayList<Double >> mapMorp1 	= new HashMap< String, ArrayList<Double >>();
-	
-// MAP FOR CONNECTION
-//	 map / key = (string) idGs , value = (string) idNet
-//	private static Map< String, String > mapIdGsNet 	= new HashMap< String, String >();
-	 
+		 
 // TEMPORAL MAP
 	// map / key = (double) step , values = ( list of string)  idGs connected to net
 	private static Map < Double , ArrayList<String> > mapStepIdNet = new HashMap <Double , ArrayList<String> > ()  ;
 	
 	// map / key = (double) step , values = (list of string ) id of new nodes in net
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
-	
-	// map / key = (double) step , values = (list of string ) idNet of new nodes 
-//	private static Map < Double , ArrayList<String> > mapStepNewNodeIdNet = new HashMap <Double , ArrayList<String> > ()  ;
-	
-	// map / key = (double) step , values = (list of string ) idNet 	
-		//	CARREFUL : mapStepIdNet = mapStepIdGsCon
-//	private static Map < Double , ArrayList<String> > mapStepIdNet = new HashMap <Double , ArrayList<String> > ()  ;
-	
-	public void  runSim (int stopSim, boolean printMorp , boolean genNode, boolean genEdge , boolean gsGraphExp ) throws IOException {
+		
+	public static void  runSim ( int stopSim, boolean printMorp , 
+							boolean genNode, boolean genEdge , 
+							boolean storedDgsStep , String pathStepGs ) 
+									throws IOException {
 		
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
 		
+		if ( storedDgsStep == true) { 		gsGraph.addSink(fsd); fsd.begin(pathStepGs);	
+										}
+			
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
+			
+			if ( storedDgsStep == true) { 	gsGraph.stepBegins(step); }			
 			
 			System.out.println("step " + step);
 
@@ -87,14 +88,11 @@ public class simulation {
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }
 			
-			// export values			
-	
-			String nameFileExp = main.getNameFileExp();
-			String folderExp = main.getDossierExp();
+					
 			
-			if ( gsGraphExp == true) { expGraph.writeGraphEachStepDgs(gsGraph, folderExp, nameFileExp, step); }	
 		}
-		
+		if ( storedDgsStep == true) { 	fsd.end();	
+			}
 		finalStep = step - 1 ;
 	}
 		

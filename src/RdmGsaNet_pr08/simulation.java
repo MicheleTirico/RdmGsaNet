@@ -90,7 +90,7 @@ public class simulation {
 			if ( printMorp == true) { System.out.println(mapMorp1); }
 			
 
-            Thread.sleep(100);		
+//            Thread.sleep(100);		
 			
 		}
 		if ( storedDgsStep == true) { 	fsd.end();	

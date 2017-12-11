@@ -40,10 +40,10 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 50 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 128 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
-	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
+	static layerNet netLayer = new layerNet(new setupNetSmallGraph ( 2 , setupNetSmallGraph.radiusType.topo ) );	
 	
 	// call gs graph ( to test code , not important )
 	static Graph gsGraph = layerGs.getGraph() ;
@@ -61,7 +61,7 @@ public class main {
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
 		
-	public static void main(String[] args) throws IOException, InterruptedException {	
+	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
 // SETUP START VALUES LAYER GS
 		/*	gsAlgo -> 	enum	reactionType 
@@ -76,8 +76,8 @@ public class main {
 		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
 			/* Da 	*/			0.15,			
 			/* Di 	*/			0.05, 		
-			/* feed */			0.078 , 	
-			/* kill */			0.061 ,		
+			/* feed */			0.037 , 	
+			/* kill */			0.06 ,		
 								true , 1E-5 ,
 								true , 1E-5 , 1 ) ;
 
@@ -89,10 +89,6 @@ public class main {
 					"_Di_" 			+ gsAlgo.getDi() + 
 					"_F_" 			+ gsAlgo.getFeed() +
 					"_K_" 			+ gsAlgo.getKill()  ;
-		
-		
-		
-		
 		
 	/* CREATE GS GRAPH
 	 *  method to generate the graph gs
@@ -114,7 +110,7 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------
 	
 	// SETUP DIFFUSION
-		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ;
+		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ; // not implemented
 		gsAlgoDiffusion.setWeightType ( gsAlgoDiffusion.weightType.matrix );
 		
 		
@@ -143,6 +139,7 @@ public class main {
 				"_F_" 			+ gsAlgo.getFeed() +
 				"_K_" 			+ gsAlgo.getKill()  ;
 		pathStepGs = folderStepGs + nameStepGs + fileType ;
+		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		/* RUN simulation
 		 * // runSim ( 	int 	stopSim 		= Max step to stop simulation , 
@@ -151,7 +148,8 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 100 , false , false , false , false , pathStepGs );
+		run.runSim( 1 , false , false , false , false , pathStepGs );	// 
+//		for ( Node nNet : netGraph.getEachNode()) { System.out.println(nNet.getId() + " " + nNet.getAttribute("seedInh"));}
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 

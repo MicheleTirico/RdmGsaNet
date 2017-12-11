@@ -10,7 +10,6 @@ import org.graphstream.stream.file.FileSinkDGS;
 public class layerNet {	
 	
 	// COSTANTS
-	
 	static FileSinkDGS fsd = new FileSinkDGS();
 	
 	// initialization graph net
@@ -67,9 +66,6 @@ public class layerNet {
 			String pathStart = folderStart + nameFileStart + fileType;
 			
 			netGraph.write(fsd, pathStart);	}
-		
-		
-		
 	}
 	
 		

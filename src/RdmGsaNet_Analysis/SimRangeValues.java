@@ -60,7 +60,7 @@ public class SimRangeValues {
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 	
 		
 		// set list of parameters
@@ -78,8 +78,8 @@ public class SimRangeValues {
 						gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
 								/* Da 	*/			Da,			
 								/* Di 	*/			Di, 		
-								/* feed */			0.078 , 	
-								/* kill */			0.061 ,		
+								/* feed */			feed , 	
+								/* kill */			kill ,		
 													true , 1E-5 ,
 													true , 1E-5 , 1 ) ;
 						
@@ -105,10 +105,10 @@ public class SimRangeValues {
 				 		
 						nameStepGs =	"layerGsStep"	+
 								"_Size_"		+ setupGsGrid.getGsGridSize() +
-								"_Da_"			+ gsAlgo.getDa() +
-								"_Di_" 			+ gsAlgo.getDi() + 
-								"_F_" 			+ gsAlgo.getFeed() +
-								"_K_" 			+ gsAlgo.getKill()  ;
+								"_Da_"			+ Da +
+								"_Di_" 			+ Di + 
+								"_F_" 			+ feed +
+								"_K_" 			+ kill ;
 						pathStepGs = folderStepGs + nameStepGs + fileType ;
 						
 						// RUN simulation
@@ -117,7 +117,6 @@ public class SimRangeValues {
 				}	
 			}
 		}
-
 	}
 	
 	

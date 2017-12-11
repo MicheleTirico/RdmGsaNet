@@ -40,7 +40,7 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 5 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 50 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSeed () ) ;	
@@ -61,7 +61,7 @@ public class main {
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
 		
-	public static void main(String[] args) throws IOException {	
+	public static void main(String[] args) throws IOException, InterruptedException {	
 		
 // SETUP START VALUES LAYER GS
 		/*	gsAlgo -> 	enum	reactionType 
@@ -100,7 +100,7 @@ public class main {
 	 *  				bol		setDefaultAtr 	=
 	 *  				bol		storedDGS		= if true , create a dgs file of started graph
 	 */
-		gsLayer.createLayer ( false , true , true ) ;
+		gsLayer.createLayer ( false , true , false ) ;
 		
 	/* SETUP DISMORP
 	 *  setup values of distribution of gs morphogens
@@ -134,7 +134,7 @@ public class main {
 		 * 				 	bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
 		 *  			 	bol		storedDGS		= 	if true , create a dgs file of started graph
 		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , true ); 
+		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , false ); 
  		
 		nameStepGs =	"layerGsStep"	+
 				"_Size_"		+ setupGsGrid.getGsGridSize() +
@@ -151,15 +151,15 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 1000 , false , false , false , true , pathStepGs );
+		run.runSim( 100 , false , false , false , false , pathStepGs );
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
 		setupViz.Viz4Color(gsGraph);
-		
+
 //		setupViz.Vizmorp(gsGraph, "gsAct");
-		setupViz.Vizmorp(gsGraph, "gsInh");
+//		setupViz.Vizmorp(gsGraph, "gsInh");
 
 		gsGraph.display(false) ;
 //		netGraph.display(false) ;

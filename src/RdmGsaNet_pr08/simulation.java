@@ -13,6 +13,7 @@ import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetViz.graphViz2;
+import RdmGsaNetViz.setupViz;
 
 public class simulation {	
 	
@@ -52,7 +53,7 @@ public class simulation {
 	public static void  runSim ( int stopSim, boolean printMorp , 
 							boolean genNode, boolean genEdge , 
 							boolean storedDgsStep , String pathStepGs ) 
-									throws IOException {
+									throws IOException, InterruptedException {
 		
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
@@ -88,7 +89,8 @@ public class simulation {
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }
 			
-					
+
+            Thread.sleep(100);		
 			
 		}
 		if ( storedDgsStep == true) { 	fsd.end();	

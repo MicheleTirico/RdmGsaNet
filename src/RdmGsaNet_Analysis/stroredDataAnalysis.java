@@ -47,7 +47,7 @@ public class stroredDataAnalysis {
 			if (files[i].isFile()){ //	System.out.println(files[i]);
 				String nameFileExpStep = nameFileGr+"_step_"+i;	//	System.out.println(nameFileExpStep)
 				
-				Graph graph = expGraph.getGRaphDgs(folderGr, nameFileExpStep);
+				Graph graph = expGraph.getGraphDgs(folderGr, nameFileExpStep);
 				Map<String, ArrayList<Double>> mapIdMorp = expValues.getMapIdGsMorp(graph);    
 				
 				ArrayList<Double> arrAct = new ArrayList<Double>();
@@ -103,7 +103,7 @@ public class stroredDataAnalysis {
 			if (files[i].isFile()){ //	System.out.println(files[i]);
 				String nameFileExpStep = nameFileExp+"_step_"+i;	//	System.out.println(nameFileExpStep)
 				
-				Graph graph = expGraph.getGRaphDgs(folderExp, nameFileExpStep);
+				Graph graph = expGraph.getGraphDgs(folderExp, nameFileExpStep);
 				Map<String, ArrayList<Double>> mapIdMorp = expValues.getMapIdGsMorp(graph);    
 				
 				ArrayList<Double> arrAct = new ArrayList<Double>();
@@ -171,8 +171,8 @@ public class stroredDataAnalysis {
 		String nameFileExpStep0 = nameFileExp+"_step_"+(step-1) ;		//	System.out.println(nameFileExpStep)
 		String nameFileExpStep1 = nameFileExp+"_step_"+step 	;		//	System.out.println(nameFileExpStep)
 					
-		Graph graph0 = expGraph.getGRaphDgs(folderExp, nameFileExpStep0);
-		Graph graph1 = expGraph.getGRaphDgs(folderExp, nameFileExpStep1);
+		Graph graph0 = expGraph.getGraphDgs(folderExp, nameFileExpStep0);
+		Graph graph1 = expGraph.getGraphDgs(folderExp, nameFileExpStep1);
 		
 		Map<String, Double> mapIdSPACact = morpSignProCor.getMapIdSPACval(graph0, graph1,  morpAnalysis.morphogen.activator ) ;
 		Map<String, Double> mapIdSPACinh = morpSignProCor.getMapIdSPACval(graph0, graph1,  morpAnalysis.morphogen.inhibitor ) ;
@@ -231,9 +231,9 @@ public class stroredDataAnalysis {
 		String nameFileExpStep1 = nameFileExp+"_step_"+(step-1) ;		//	System.out.println(nameFileExpStep)
 		String nameFileExpStep0 = nameFileExp+"_step_"+step 	;		//	System.out.println(nameFileExpStep)
 		
-		Graph graph2 = expGraph.getGRaphDgs(folderExp, nameFileExpStep2);
-		Graph graph1 = expGraph.getGRaphDgs(folderExp, nameFileExpStep1);
-		Graph graph0 = expGraph.getGRaphDgs(folderExp, nameFileExpStep0);
+		Graph graph2 = expGraph.getGraphDgs(folderExp, nameFileExpStep2);
+		Graph graph1 = expGraph.getGraphDgs(folderExp, nameFileExpStep1);
+		Graph graph0 = expGraph.getGraphDgs(folderExp, nameFileExpStep0);
 		
 		Map<String, Double> mapIdSPACassAct = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  morpAnalysis.morphogen.activator);
 		Map<String, Double> mapIdSPACassInh = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  morpAnalysis.morphogen.inhibitor ) ;

@@ -42,7 +42,7 @@ public class graphViz {
 		fs.addSink(graph);
 		
 		// setup configuration viz grap 
-		setupViz.Viz4Color(graph);
+//		setupViz.Viz4Color(graph);
 			
 		// import file step
 		try {
@@ -53,10 +53,12 @@ public class graphViz {
 				// identify step visualization  
 				if ( step == graph.getStep() ) {
 					System.out.println(graph.getStep());
-					graph.display(true);
+//					graph.display(false);
+					break;
 				}
 			}
 		}
+		
 		catch (IOException e) {
 			// TODO: handle exception
 		}

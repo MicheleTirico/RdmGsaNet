@@ -66,7 +66,7 @@ public class setupNetSmallGraph implements setupNetInter {
 		
 		Node meanPointNodeGs = gsGraph.getNode(meanPointId);
 		
-		System.out.println("meanPointId " + meanPointId);
+//		System.out.println("meanPointId " + meanPointId);
 		
 		switch (radiusType) {
 		case topo: 		{ pointInRadiusStr =  graphstream_dev_toolkit.DFSinRadius.getIdInRadiusTopo(gsGraph, meanPointNodeGs, radius ) ;

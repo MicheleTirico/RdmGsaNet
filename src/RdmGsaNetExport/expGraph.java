@@ -30,6 +30,18 @@ public class expGraph {
 		graph.write(fsd, filePathStep);
 	}
 
+	public static void readGraphDgs ( Graph graph , String folder  , String nameFile ) throws IOException {
+		
+		String filePath = folder + nameFile + typeFile;
+		FileSourceDGS source = new FileSourceDGS();
+		
+		source.addSink( graph );
+		source.begin(filePath);
+		
+		while( source.nextEvents() ){	}
+		source.end();
+	}
+	
 	public static void readGraphEachStepDgs ( Graph graph , String folder  , String nameFile ) throws IOException {
 		
 		String filePath = folder + nameFile + typeFile;
@@ -40,7 +52,6 @@ public class expGraph {
 		
 		while( source.nextEvents() ){	}
 		source.end();
-
 	}
 	
 	public static Graph getGraphDgs (  String folder , String nameFile) throws IOException {

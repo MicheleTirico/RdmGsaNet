@@ -93,8 +93,8 @@ import org.graphstream.graph.Node;
 				double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(d , Di , gsGraph, "gsInh", id, mapMorp0 ) ;
 					
 				// compute external values
-				double extFeed = gsAlgoExt.gsComputeExt(e, morphogen.activator , feed, kill , act0 , inh0 ) ;
-				double extKill = gsAlgoExt.gsComputeExt(e, morphogen.inhibitor , feed, kill , act0 , inh0 ) ;
+				double extFeed = gsAlgoExt.gsComputeExt(e, morphogen.activator , feed, kill , act0 , inh0 ) *0.25 ;
+				double extKill = gsAlgoExt.gsComputeExt(e, morphogen.inhibitor , feed, kill , act0 , inh0 ) *0.25 ;
 					
 //				System.out.println("Da " + Da);
 //				System.out.println("Di " + Di);

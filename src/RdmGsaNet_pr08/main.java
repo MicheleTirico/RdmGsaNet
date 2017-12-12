@@ -28,7 +28,7 @@ public class main {
 	private static String fileType = ".dgs" ;
 	private static String nameStartGs  ;
 
-	private static String folderStartGs = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export2\\";
+	private static String folderStartGs = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\";
 	private static String pathStartGs = folderStartGs + nameStartGs + fileType ;
 	
 	// step storing
@@ -40,10 +40,10 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 50 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
-	static layerNet netLayer = new layerNet(new setupNetSmallGrid (2 ,setupNetSmallGrid.typeGrid.grid4) );	
+	static layerNet netLayer = new layerNet(new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
 	
 	// call gs graph ( to test code , not important )
 	static Graph gsGraph = layerGs.getGraph() ;
@@ -74,10 +74,10 @@ public class main {
 		*  				double	minVal			= default value if morph < minVal, set minVal
 		*  				double	mmaxVal			= default value if morph > maxVal, set maxVal */
 		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
-			/* Da 	*/			0.15,			
-			/* Di 	*/			0.05, 		
-			/* feed */			0.037 , 	
-			/* kill */			0.06 ,		
+			/* Da 	*/			1,			
+			/* Di 	*/			0.5, 		
+			/* feed */			0.03 , 	
+			/* kill */			0.062 ,		
 								true , 1E-5 ,
 								true , 1E-5 , 1 ) ;
 
@@ -96,7 +96,7 @@ public class main {
 	 *  				bol		setDefaultAtr 	=
 	 *  				bol		storedDGS		= if true , create a dgs file of started graph
 	 */
-		gsLayer.createLayer ( false , true , false ) ;
+		gsLayer.createLayer ( false , true , true ) ;
 		
 	/* SETUP DISMORP
 	 *  setup values of distribution of gs morphogens
@@ -105,12 +105,12 @@ public class main {
 	  					int 	randomSeedInh 	=	(only random)  
 	  					double 	act				=	(only homo) 
 	  					double 	inh				=	(only homo)  */
-		gsLayer.setupDisMorp(setupGsInter.disMorpType.homo , 12 , 34 , 1 , 0 );
+		gsLayer.setupDisMorp(setupGsInter.disMorpType.homo , 12 , 34 , 0.5 , 0.25 );
 
 //-------------------------------------------------------------------------------------------------------------------------------
 	
 	// SETUP DIFFUSION
-		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ; // not implemented
+//		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ; // not implemented
 		gsAlgoDiffusion.setWeightType ( gsAlgoDiffusion.weightType.matrix );
 		
 		
@@ -130,7 +130,7 @@ public class main {
 		 * 				 	bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
 		 *  			 	bol		storedDGS		= 	if true , create a dgs file of started graph
 		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , false ); 
+		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 0 , true , true ); 
  		
 		nameStepGs =	"layerGsStep"	+
 				"_Size_"		+ setupGsGrid.getGsGridSize() +
@@ -148,8 +148,7 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 1 , false , false , false , false , pathStepGs );	// 
-//		for ( Node nNet : netGraph.getEachNode()) { System.out.println(nNet.getId() + " " + nNet.getAttribute("seedInh"));}
+		run.runSim( 10000 , false , false , false , true , pathStepGs );	//		for ( Node nNet : netGraph.getEachNode()) { System.out.println(nNet.getId() + " " + nNet.getAttribute("seedInh"));}
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
@@ -163,7 +162,7 @@ public class main {
 //		netGraph.display(false) ;
 		
 		// get images
-		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_03\\" ;
+		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_04\\" ;
 		String nameFileIm =	"image"	+
 							"_Sim_"		+ simulation.getStopSim()   +
 							"_Size_"	+ setupGsGrid.getGsGridSize() +
@@ -175,7 +174,10 @@ public class main {
 		
 //		setupViz.getImage(gsGraph, folderIm , nameFileIm );
 	}
+
 	
+//-------------------------------------------------------------------------------------------------------------------------------		
+
 	public static String getFileType () 		{ return fileType ; }
 	public static String getNameStartGs () 		{ return nameStartGs ; }
 	public static String getFolderStartGs () 	{ return folderStartGs ; }

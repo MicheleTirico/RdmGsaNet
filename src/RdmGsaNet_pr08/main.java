@@ -28,7 +28,7 @@ public class main {
 	private static String fileType = ".dgs" ;
 	private static String nameStartGs  ;
 
-	private static String folderStartGs = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\";
+	private static String folderStartGs = "C:\\Users\\Michele TIRICO\\ownCloud\\RdmGsaNet_exp\\dgs\\Da_0.2_Di_0.1\\dt_1.0\\forseVanno\\";
 	private static String pathStartGs = folderStartGs + nameStartGs + fileType ;
 	
 	// step storing
@@ -74,13 +74,13 @@ public class main {
 		*  				double	minVal			= default value if morph < minVal, set minVal
 		*  				double	mmaxVal			= default value if morph > maxVal, set maxVal */
 		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
-			/* Da 	*/			1,			
-			/* Di 	*/			0.5, 		
-			/* feed */			0.03 , 	
+			/* Da 	*/			0.1,			
+			/* Di 	*/			0.05, 		
+			/* feed */			0.055 , 	
 			/* kill */			0.062 ,		
 								true , 1E-5 ,
 								true , 1E-5 , 1 ) ;
-
+  
 //-------------------------------------------------------------------------------------------------------------------------------		
 	// GENERATE LAYER GS
 		nameStartGs  =	"layerGsStart"	+
@@ -105,14 +105,13 @@ public class main {
 	  					int 	randomSeedInh 	=	(only random)  
 	  					double 	act				=	(only homo) 
 	  					double 	inh				=	(only homo)  */
-		gsLayer.setupDisMorp(setupGsInter.disMorpType.homo , 12 , 34 , 0.5 , 0.25 );
+		gsLayer.setupDisMorp(setupGsInter.disMorpType.homo , 12 , 34 , 1 , 0 );
 
 //-------------------------------------------------------------------------------------------------------------------------------
 	
 	// SETUP DIFFUSION
 //		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ; // not implemented
 		gsAlgoDiffusion.setWeightType ( gsAlgoDiffusion.weightType.matrix );
-		
 		
 //-------------------------------------------------------------------------------------------------------------------------------
 // EXPORT VALUES	
@@ -130,7 +129,7 @@ public class main {
 		 * 				 	bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
 		 *  			 	bol		storedDGS		= 	if true , create a dgs file of started graph
 		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 0 , true , true ); 
+		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , true ); 
  		
 		nameStepGs =	"layerGsStep"	+
 				"_Size_"		+ setupGsGrid.getGsGridSize() +
@@ -148,7 +147,9 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 10000 , false , false , false , true , pathStepGs );	//		for ( Node nNet : netGraph.getEachNode()) { System.out.println(nNet.getId() + " " + nNet.getAttribute("seedInh"));}
+		run.runSim( 10000 , false , false , false , true , pathStepGs );	//		
+//		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
+//		for ( Node n : netGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));}
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 

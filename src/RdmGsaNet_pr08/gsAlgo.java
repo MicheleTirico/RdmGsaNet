@@ -93,8 +93,8 @@ import org.graphstream.graph.Node;
 				double diffusionInh = gsAlgoDiffusion.gsComputeDiffusion(d , Di , gsGraph, "gsInh", id, mapMorp0 ) ;
 					
 				// compute external values
-				double extFeed = gsAlgoExt.gsComputeExt(e, morphogen.activator , feed, kill , act0 , inh0 ) *0.25 ;
-				double extKill = gsAlgoExt.gsComputeExt(e, morphogen.inhibitor , feed, kill , act0 , inh0 ) *0.25 ;
+				double extFeed = gsAlgoExt.gsComputeExt(e, morphogen.activator , feed, kill , act0 , inh0 )  ;
+				double extKill = gsAlgoExt.gsComputeExt(e, morphogen.inhibitor , feed, kill , act0 , inh0 )  ;
 					
 //				System.out.println("Da " + Da);
 //				System.out.println("Di " + Di);
@@ -109,9 +109,8 @@ import org.graphstream.graph.Node;
 //				System.out.println("extkill " + extKill);
 				
 				// compute new act and inh values for each node  
-				double act1 = act0 + ( + diffusionAct - reaction + extFeed ) * 0.25 ;
-				double inh1 = inh0 + ( + diffusionInh + reaction - extKill ) * 0.25 ;
-				
+				double act1 = act0 + ( diffusionAct - reaction + extFeed ) ;
+				double inh1 = inh0 + ( diffusionInh + reaction - extKill ) ;
 				
 				if ( handleNaN == true ) { 
 					if ( Double.isNaN(act1) ) 	{	act1 = setIfNaN ;	}

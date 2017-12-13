@@ -29,7 +29,7 @@ public class gsAlgoExt {
 				break;
 			
 			case test :
-				if ( morp == gsAlgo.morphogen.activator ) { ext = 0 ; }
+				if ( morp == gsAlgo.morphogen.activator ) { ext = 0 ; } 
 				else {
 					if (morp == gsAlgo.morphogen.inhibitor ) { ext = 0 ; }
 					else { ext = 0 ; System.out.println(" morp not defined"); }

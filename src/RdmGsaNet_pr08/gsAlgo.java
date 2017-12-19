@@ -67,10 +67,12 @@ import org.graphstream.graph.Node;
 			setValues(Da, Di, feed, kill);
 		}
 		
-		public static void gsAlgoMain (boolean print ) {	
+		public static void gsAlgoMain (boolean print ) throws InterruptedException {	
 	
 			//declare iterator to go over each node
 			Iterator<Node> iterNode = gsGraph.iterator();
+//			gsGraph.addAttribute("ui.stylesheet",nodeViz);
+
 
 			// start iterator loop
 			while (iterNode.hasNext()) {
@@ -147,8 +149,11 @@ import org.graphstream.graph.Node;
 					
 				n.setAttribute( "gsAct", act1);
 				n.setAttribute( "gsInh", inh1);	
-			}
 			
+			
+//				n.addAttribute("ui.class", "highlight"); Thread.sleep(1);
+		
+			}
 			if (print == true) {	printGsAlgo ();		}
 		}
 		
@@ -172,6 +177,22 @@ import org.graphstream.graph.Node;
 		}
 		
 		public static double[] getvaluesGsAlgo ( ) { return arrVal ; }
+		
+		/*
+		static String nodeViz =  "node.highlight {"+
+				"	size: 5px;"+
+				"	fill-color: rgb(128,128,128), "
+				+ "				rgb(255,128,0),rgb(255,255,0),rgb(128,255,0),"
+				+ "				rgb(0,128,255),rgb(0,0,255),rgb(127,0,255),"
+				+ "				rgb(255,0,255),rgb(255,0,128),rgb(255,0,0) ; "+
+				"	fill-mode: dyn-plain;"+
+				"}"+
+				"edge {"+
+				"	size: 0.1px;"+
+				"	fill-color: white;"+
+				"}" ;
+			*/
+		
 	}
 	
 	

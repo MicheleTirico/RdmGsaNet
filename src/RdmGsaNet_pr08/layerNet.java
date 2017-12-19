@@ -61,7 +61,7 @@ public class layerNet {
 					
 			
 			
-			String nameFileStart = nameFile + fileType ;
+			String nameFileStart = nameFile ;
 			String folderStart = main.getFolderStartGs();
 			String pathStart = folderStart + nameFileStart + fileType;
 			

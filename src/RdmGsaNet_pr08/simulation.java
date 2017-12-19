@@ -12,6 +12,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetExport.expGraph;
+import RdmGsaNetViz.VizThread;
 import RdmGsaNetViz.graphViz2;
 import RdmGsaNetViz.setupViz;
 
@@ -52,14 +53,16 @@ public class simulation {
 		
 	public static void  runSim ( int stopSim, boolean printMorp , 
 							boolean genNode, boolean genEdge , 
-							boolean storedDgsStep , String pathStepGs ) 
+							boolean storedDgsStep , String pathStepGs  
+//							boolean vizMorp 
+							) 
 									throws IOException, InterruptedException {
 		
-		generateNetEdge genNetEd = main.generateNetEdge ;
+//		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
 		
-		if ( storedDgsStep == true) { 		gsGraph.addSink(fsd); fsd.begin(pathStepGs);	
-										}
+//		if ( vizMorp == true)		{ VizThread.vizThreadMorp(); }
+		if ( storedDgsStep == true) { gsGraph.addSink(fsd); fsd.begin(pathStepGs);	}
 			
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
@@ -78,7 +81,7 @@ public class simulation {
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }
 			
-			if ( genEdge == true) {genNetEd.generateEdge( step ); }
+//			if ( genEdge == true) {genNetEd.generateEdge( step ); }
 
 			// create list and map
 			listIdNet = createListId ( netGraph );												//	mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					

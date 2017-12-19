@@ -41,7 +41,7 @@ public class layerGs {
 		if ( storedDGS == true ) 	{ 	 
 			String fileType = main.getFileType();
 			String nameFile = main.getNameStartGs() ;
-			String nameFileStart = nameFile + fileType ;
+			String nameFileStart = nameFile ;
 			String folderStart = main.getFolderStartGs();
 			String pathStart = folderStart + nameFileStart + fileType;
 			

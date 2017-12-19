@@ -65,8 +65,8 @@ public class setupViz {
 			"}" ;
 }
 
-	private static String setViz10Color () {
-		System.out.print("aldo");
+	protected static String setViz10Color () {
+		
 		return  "node {"+
 			"	size: 5px;"+
 			"	fill-color: rgb(128,128,128), "
@@ -84,7 +84,6 @@ public class setupViz {
 public static void Viz5Color( Graph graph , String morp   ) {
 		
 		graph.addAttribute("ui.stylesheet", setViz4Color ( ) );
-
 		
 		for ( Node n : graph.getEachNode()) {
 			double act = n.getAttribute("gsAct");
@@ -107,10 +106,9 @@ public static void Viz5Color( Graph graph , String morp   ) {
 		}
 	}
 	
-public static void Viz10Color( Graph graph , String morp   ) {
+	public static void Viz10Color( Graph graph , String morp   ) {
 	
 	graph.addAttribute("ui.stylesheet", setViz10Color ( ) );
-	System.out.print("aldo");
 	
 	for ( Node n : graph.getEachNode()) {
 		double act = n.getAttribute("gsAct");
@@ -160,7 +158,7 @@ public static void Viz10Color( Graph graph , String morp   ) {
 	}
 }
 
-public static void Viz10ColorInh( Graph graph ) {
+	public static void Viz10ColorInh( Graph graph ) {
 	
 	graph.addAttribute("ui.stylesheet", setViz10Color ( ) );
 	

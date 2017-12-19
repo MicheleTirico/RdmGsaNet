@@ -28,8 +28,8 @@ public class main {
 	private static String fileType = ".dgs" ;
 	private static String nameStartGs  ;
 
-	private static String folderStartGs = "C:\\Users\\Michele TIRICO\\ownCloud\\RdmGsaNet_exp\\dgs\\Da_0.2_Di_0.1\\dt_1.0\\forseVanno\\";
-	private static String pathStartGs = folderStartGs + nameStartGs + fileType ;
+	private static String folderStartGs = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\dgs\\Da_0.2_Di_0.1_02\\";
+	private static String pathStartGs = folderStartGs + nameStartGs ;
 	
 	// step storing
 	private static String nameStepGs ; 
@@ -74,10 +74,10 @@ public class main {
 		*  				double	minVal			= default value if morph < minVal, set minVal
 		*  				double	mmaxVal			= default value if morph > maxVal, set maxVal */
 		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
-			/* Da 	*/			0.1,			
-			/* Di 	*/			0.05, 		
-			/* feed */			0.055 , 	
-			/* kill */			0.062 ,		
+			/* Da 	*/			0.2,			
+			/* Di 	*/			0.1, 		
+			/* feed */			0.062 , 	
+			/* kill */			0.061 ,		
 								true , 1E-5 ,
 								true , 1E-5 , 1 ) ;
   

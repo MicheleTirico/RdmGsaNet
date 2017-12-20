@@ -1,5 +1,10 @@
 package RdmGsaNetAlgo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -59,4 +64,23 @@ public class gsAlgoToolkit {
 		return dist.getPathLength(n2);	
 	}
 
+	public static ArrayList<String> getNodeMaxDegree ( Graph graph ) {
+		
+	ArrayList<String> list = new ArrayList<String> () ;
+		Map<String , Integer > map = new HashMap<String , Integer > ();
+		
+		for( Node n : graph.getEachNode()) { map.put(n.getId(), n.getDegree()); }
+		
+		Integer maxDegree = map.entrySet()
+	            .stream()
+	            .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+	            .get()
+	            .getValue();
+		
+		for ( String s : map.keySet()) {
+			if ( map.get(s) == maxDegree ) {list.add(s); }
+		}
+		
+		return list;
+	}
 }

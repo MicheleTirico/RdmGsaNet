@@ -43,8 +43,6 @@ import org.graphstream.graph.Node;
 		// handle MaxVal
 		private static double maxVal ;
 		
-		
-		
 		// set parameters in constructor
 		public gsAlgo (	reactionType r, diffusionType d, extType e, 
 						double Da, double Di, double feed ,  double kill, 

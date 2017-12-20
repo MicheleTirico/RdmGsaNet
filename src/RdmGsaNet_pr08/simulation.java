@@ -58,7 +58,7 @@ public class simulation {
 							) 
 									throws IOException, InterruptedException {
 		
-//		generateNetEdge genNetEd = main.generateNetEdge ;
+		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
 		
 //		if ( vizMorp == true)		{ VizThread.vizThreadMorp(); }
@@ -81,7 +81,7 @@ public class simulation {
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }
 			
-//			if ( genEdge == true) {genNetEd.generateEdge( step ); }
+			if ( genEdge == true) {genNetEd.generateEdge( step ); }
 
 			// create list and map
 			listIdNet = createListId ( netGraph );												//	mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					

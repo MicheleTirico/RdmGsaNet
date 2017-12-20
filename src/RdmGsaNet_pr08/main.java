@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
@@ -40,7 +41,7 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 50 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 	static layerNet netLayer = new layerNet(new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
@@ -96,7 +97,7 @@ public class main {
 	 *  				bol		setDefaultAtr 	=
 	 *  				bol		storedDGS		= if true , create a dgs file of started graph
 	 */
-		gsLayer.createLayer ( false , true , true ) ;
+		gsLayer.createLayer ( false , true , false ) ;
 		
 	/* SETUP DISMORP
 	 *  setup values of distribution of gs morphogens
@@ -112,11 +113,6 @@ public class main {
 	// SETUP DIFFUSION
 //		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ; // not implemented
 		gsAlgoDiffusion.setWeightType ( gsAlgoDiffusion.weightType.matrix );
-		
-//-------------------------------------------------------------------------------------------------------------------------------
-// EXPORT VALUES	
-		// export graph at each step
-
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// CREATE LAYER NET
@@ -129,7 +125,7 @@ public class main {
 		 * 				 	bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
 		 *  			 	bol		storedDGS		= 	if true , create a dgs file of started graph
 		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , true ); 
+		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , false ); 
  		
 		nameStepGs =	"layerGsStep"	+
 				"_Size_"		+ setupGsGrid.getGsGridSize() +
@@ -147,10 +143,13 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 10000 , false , false , false , true , pathStepGs );	//		
+		run.runSim( 100 , false , true , true , false , pathStepGs );	//		
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 //		for ( Node n : netGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));}
-		
+//		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
+//		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId()); }
+
+			
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
@@ -160,7 +159,7 @@ public class main {
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 
 		gsGraph.display(false) ;
-//		netGraph.display(false) ;
+		netGraph.display(false) ;
 		
 		// get images
 		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_04\\" ;

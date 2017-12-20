@@ -124,18 +124,10 @@ public class morpAnalysis {
 	}
 	
 // PRIVATE METHODS ---------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 // set for each nodes an attribute that means the value of correlation
 	private static void setCorValInGraph ( Graph graph , double val , String corAttributeStr) {		
 		for ( Node n : graph.getEachNode()) {	n.setAttribute(corAttributeStr, val);	}
 	}
-	
-		
-		
-		
-	
-		
-	}
+}
 
 

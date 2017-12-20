@@ -181,23 +181,7 @@ public class gsAlgoDiffusion  {
 //		System.out.println(listNeigCorner);
 //		System.out.println(degree) ;
 		double coefSide = 0 , coefCorner = 0  ;
-		/*
-		switch (degree) { 
-			case 5: {
-				coefSide = 3.0 * 2/7 ;
-				coefCorner = 2.0 * 1/14 ;
-			} ; break ;
-			case 3 : {
-				coefSide = 2.0 * 4/9 ;
-				coefCorner = 1.0 *  1/9 ;	
-			} ; break;
-			case 8 : {
-				coefSide = 4.0 * 1/5 ;
-				coefCorner = 4.0 * 1/20 ;		
-//				System.out.println(coefCorner + " " + coefSide);
-			} ; break;
-		}
-		*/
+	
 		switch (degree) { 
 		case 5: {
 			coefSide =  2.0/7 ;

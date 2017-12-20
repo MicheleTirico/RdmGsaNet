@@ -58,8 +58,6 @@ public class layerNet {
 								"_meanPoint_" + point +
 								"_seedAct_" + seedAct +
 								"_seedInh_" + seedInh ;
-					
-			
 			
 			String nameFileStart = nameFile ;
 			String folderStart = main.getFolderStartGs();
@@ -67,7 +65,6 @@ public class layerNet {
 			
 			netGraph.write(fsd, pathStart);	}
 	}
-	
 		
 // PRIVATE METHODS-----------------------------------------------------------------------------------------------------	
 	// method to set default values to network

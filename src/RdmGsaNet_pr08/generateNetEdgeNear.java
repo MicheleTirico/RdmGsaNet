@@ -88,6 +88,7 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 //  PRIVATE METHODS --------------------------------------------------------------------------------------------------------
 	
 // method to create one edge for each nodes in set and the new node
+	// set id edge like idNode1 - idNode2 ( doesn't work )
 	private static void createEdge ( Node n1 , Set<String> idNear , Graph graph) {
 		
 		// declare id for new node
@@ -99,10 +100,35 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 			Node n2 = graph.getNode(idN2) ;											//	System.out.println("idN2 " + n2.getId() ) ;
 			
 			// try create an edge. It return exception whether nodes are yet connected -> continue
-			try 													{ 	graph.addEdge(  idN1 + "-" + idN2 ,  n1 , n2 );	}
-			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue;	}
+			try 														{ graph.addEdge(  idN1 + "-" + idN2 ,  n1 , n2 );	}
+			catch ( org.graphstream.graph.EdgeRejectedException e  ) 	{ continue ; }
+			catch ( org.graphstream.graph.IdAlreadyInUseException e)	{ continue ; }
 		}	  	
 	}
+
+	// not implemented
+	private static void createEdgeIdGs ( Node n1 , Set<String> idNear , Graph netGraph, Graph gsGraph ) {
+		
+		// declare id for new node
+		String idN1 = n1.getId();													//	System.out.println("idN1 " + n1.getId() ) ;
+				
+		// create an edge for each new node
+		for ( String idN2 : idNear) {
+					
+			Node n2 = netGraph.getNode(idN2) ;											//	System.out.println("idN2 " + n2.getId() ) ;
+					
+			// try create an edge. It return exception whether nodes are yet connected -> continue
+			int [] arrIdEdge ;
+			
+			try 													{ 	netGraph.addEdge(  idN1 + "-" + idN2 ,  n1 , n2 );	}
+			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue;	}
+		
+		}	  		
+	}
+	
+	
+	
+
 	
 // method to create map of distance
 		// map / key = (string) id of nodes n2 , (double) distance between n1 and n2

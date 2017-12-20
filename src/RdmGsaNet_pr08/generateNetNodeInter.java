@@ -5,7 +5,7 @@ import org.graphstream.graph.Graph;
 public interface generateNetNodeInter {
 	
 	// COSTANTS
-	public enum generateNodeType { threshold , moran , delta }
+	public enum generateNodeType { threshold , moran , gradient}
 	
 	public void generateNodeRule ( int step ) ;
 	

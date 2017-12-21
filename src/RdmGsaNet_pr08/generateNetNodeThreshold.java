@@ -47,6 +47,14 @@ public class generateNetNodeThreshold implements generateNetNodeInter {
 		
 	}
 
+	// not yet implemented but important in gradient rules
+	@Override
+	public void setSeedNodes(int step) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 	
 	

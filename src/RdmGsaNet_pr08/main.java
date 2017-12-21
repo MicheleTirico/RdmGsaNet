@@ -37,6 +37,8 @@ public class main {
 	private static String folderStepGs = folderStartGs;
 	private static String pathStepGs ;
 	
+	// private initial configuration 
+	
 	
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
@@ -44,7 +46,7 @@ public class main {
 	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
-	static layerNet netLayer = new layerNet(new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
+	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
 	
 	// call gs graph ( to test code , not important )
 	static Graph gsGraph = layerGs.getGraph() ;
@@ -57,12 +59,13 @@ public class main {
 	
 	// initialization of rules to evolving Net	
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
-	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeThreshold( 0.2 , 0.2 )) ;
+	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(4)) ;
 	
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
 		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
+		
 		
 // SETUP START VALUES LAYER GS
 		/*	gsAlgo -> 	enum	reactionType 
@@ -126,7 +129,7 @@ public class main {
 		 *  			 	bol		storedDGS		= 	if true , create a dgs file of started graph
 		 * 				)*/
 		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , false ); 
- 		
+		
 		nameStepGs =	"layerGsStep"	+
 				"_Size_"		+ setupGsGrid.getGsGridSize() +
 				"_Da_"			+ gsAlgo.getDa() +
@@ -143,12 +146,14 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 100 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 10 , false , true , true , false , pathStepGs );	//		
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 //		for ( Node n : netGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));}
 //		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
-//		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId()); }
-
+		for ( Node n : netGraph.getEachNode()) {
+			int x = n.getAttribute("seedGrad") ;
+			System.out.println(x);
+		}
 			
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
@@ -183,6 +188,6 @@ public class main {
 	public static String getFolderStartGs () 	{ return folderStartGs ; }
 	public static String getPathStartGs () 		{ return pathStartGs ; }
 	public static String getNameStepGs () 		{ return nameStepGs ; }
-
+	public static layerNet getNetLayer() 		{return netLayer;	}
 
 }

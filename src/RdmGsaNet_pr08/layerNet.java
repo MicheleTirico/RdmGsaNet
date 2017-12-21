@@ -52,6 +52,7 @@ public class layerNet {
 	
 		if ( setSeedMorpInGs = true ) { setSeedMorpInGs ( ) ; }
 		
+		// stored code
 		if ( storedDGS == true ) 	{ 	 
 			String fileType = main.getFileType();
 			String nameFile = 	"layerNetStart" +

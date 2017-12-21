@@ -29,13 +29,14 @@ public class generateNetNode {
 	// constructor
 	public generateNetNode (generateNetNodeInter type ) {
 		this.type = type ;
+		
 	}
 	
 	public void generateNode ( int step ) {
 		type.generateNodeRule ( step ) ;
 		identifyGsNodeCon ( step ) ;  
-		createNodeNet (step ) ;
-	
+		createNodeNet (step ) ;	
+		type.setSeedNodes( step );
 	} 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -51,23 +52,21 @@ public class generateNetNode {
 		// iterator
 		Iterator<Node> iterNodeGs = gsGraph.getNodeIterator();
 			
-			while (iterNodeGs.hasNext()) {
-				Node n = iterNodeGs.next();
+		while (iterNodeGs.hasNext()) {
+			Node n = iterNodeGs.next();
 					
-				// ask if node in gsGraph is connected with netGraph
-				int isCon = n.getAttribute("con");
+			// ask if node in gsGraph is connected with netGraph
+			int isCon = n.getAttribute("con");
 				
-				// if gs node is connected, add idGs to local list
-				if ( isCon == 1 ) {
-					String idGs = n.getId();
-					listIdCon.add(idGs);
-
-					}
+			// if gs node is connected, add idGs to local list
+			if ( isCon == 1 ) {
+				String idGs = n.getId();
+				listIdCon.add(idGs);
 				}
+			}
 			
-			// add local list to map, in order to create a map with each nodes connected at each step
-			mapStepIdNet.put((double) step, listIdCon) ;	//			System.out.println(mapStepIdGsCon)	;
-
+		// add local list to map, in order to create a map with each nodes connected at each step
+		mapStepIdNet.put((double) step, listIdCon) ;	//			System.out.println(mapStepIdGsCon)	;
 	}
 	
 	// method to return a list of new nodes, at each step
@@ -139,8 +138,6 @@ public class generateNetNode {
 			netNode.setAttribute( "xyz" , gsNodeConXYZ[0] , gsNodeConXYZ[1] , gsNodeConXYZ[2] );		
 		}
 	}
-	
-		
 		 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------	
 	// get method

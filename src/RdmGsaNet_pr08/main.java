@@ -59,7 +59,7 @@ public class main {
 	
 	// initialization of rules to evolving Net	
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
-	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(4)) ;
+	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(1)) ;
 	
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
@@ -137,7 +137,7 @@ public class main {
 				"_F_" 			+ gsAlgo.getFeed() +
 				"_K_" 			+ gsAlgo.getKill()  ;
 		pathStepGs = folderStepGs + nameStepGs + fileType ;
-		
+				
 //-------------------------------------------------------------------------------------------------------------------------------		
 		/* RUN simulation
 		 * // runSim ( 	int 	stopSim 		= Max step to stop simulation , 
@@ -147,13 +147,16 @@ public class main {
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
 		run.runSim( 10 , false , true , true , false , pathStepGs );	//		
+
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
-//		for ( Node n : netGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));}
-//		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
-		for ( Node n : netGraph.getEachNode()) {
-			int x = n.getAttribute("seedGrad") ;
-			System.out.println(x);
+		for ( Node n : netGraph.getEachNode()) { 
+			System.out.println(n.getId() + n.getAttributeKeySet());
 		}
+
+			
+//			System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));
+//		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
+		
 			
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 

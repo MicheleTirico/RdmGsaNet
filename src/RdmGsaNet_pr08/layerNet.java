@@ -38,14 +38,14 @@ public class layerNet {
 								boolean setSeedMorpInGs ,
 								boolean storedDGS) throws IOException {
 		
-		// set default values of net graph
-		setDefaultAtr () ;
-		
 		// setup parameter of first point in netGraph 
 		if ( createMeanPoint == true ) {layout.setMeanPoint ( point ) ; }
 		
 		// create mean point in netLayer
 		layout.createLayerNet ();
+		
+		// set default values of net graph
+		setDefaultAtr () ;
 		
 		// set morphogens in netGraph
 		if (setSeedMorp == true ) { setSeedMorp (  seedAct ,  seedInh ); }
@@ -69,10 +69,14 @@ public class layerNet {
 		
 // PRIVATE METHODS-----------------------------------------------------------------------------------------------------	
 	// method to set default values to network
-	private void setDefaultAtr ( ) {
+	private static void setDefaultAtr ( ) {
 		for ( Node n : netGraph.getEachNode() ) {
-			n.addAttribute( "idGs" , 0 );
+			n.addAttribute( "seedAct" , 0 );
+			n.addAttribute( "seedInh" , 0 );			
 			n.addAttribute( "con" , 0 );
+			n.addAttribute( "seedGrad" , 0 );
+			n.addAttribute("oldSeedGrad", 0 );
+		
 		}
 	}
 	

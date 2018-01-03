@@ -146,13 +146,15 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 10 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 2 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 
-			System.out.println(n.getId() + n.getAttributeKeySet());
+//			System.out.println(n.getId() + n.getAttributeKeySet());
+			System.out.println(n.getId() + " seedGrad " + n.getAttribute("seedGrad") + " oldSeedGrad " + n.getAttribute("oldSeedGrad") );
 		}
 
+//		for ( Node n : gsGraph.getEachNode()) {		System.out.println(n.getId() + n.getAttributeKeySet());	}
 			
 //			System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));
 //		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
@@ -166,8 +168,8 @@ public class main {
 //		setupViz.Vizmorp(gsGraph, "gsAct");
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 
-		gsGraph.display(false) ;
-		netGraph.display(false) ;
+//		gsGraph.display(false) ;
+//		netGraph.display(false) ;
 		
 		// get images
 		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_04\\" ;

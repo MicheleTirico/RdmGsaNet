@@ -101,9 +101,6 @@ public class layerNet {
 			nGs.setAttribute("gsAct", seedAct );
 			nGs.setAttribute("gsInh", seedInh );
 		}
-		
-		
-		
 	}
 	
 // Get Methods -----------------------------------------------------------------------------------------------------	

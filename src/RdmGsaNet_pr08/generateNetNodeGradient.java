@@ -2,6 +2,8 @@ package RdmGsaNet_pr08;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Random;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -15,6 +17,7 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	int seedNumber;
 	Graph netGraph = layerNet.getGraph();
 	Graph gsGraph = layerGs.getGraph();	
+	String morp = "gsAct";
 	
 	// COSTRUCTOR 
 	public generateNetNodeGradient( int seedNumber ) {
@@ -39,23 +42,69 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 			if ( oldSeedGradInt == 1 ) 	{	listNodeOldSeedGrad.add(nNet) ; }
 		}
 			
-	// Iterator for each node ( NET) with seedGrad = 1 and oldSeedGrad = 0
-		
+//		System.out.println(listNodeSeedGrad);
+//		System.out.println(listNodeOldSeedGrad);
+	
+		// Iterator for each node ( NET) with seedGrad = 1 and oldSeedGrad = 0
 		for ( Node nNet : listNodeSeedGrad ) {
 			
+//			 System.out.println(nNet.getId());
 			
-		}
+			Node nGs = gsGraph.getNode(nNet.getId());
 			
-		// get max value of act of neigbords ( in gsGraph)
-		
-		// if nNet attribute oldGraph = 0 -> create new node 
-		
+			// get max value of act of neigbords ( in gsGraph)
+			Iterator<Node> iter = nGs.getNeighborNodeIterator() ;		//	System.out.println("id " + n);
+
+			double val = 0 ;
+			ArrayList<String> listIdNeigValMax = new ArrayList<String>();
+			while ( iter.hasNext()) {
+				
+				Node neig = iter.next() ;
+				
+				double morpVal = neig.getAttribute(morp);	
+//				System.out.println(neig.getId() + " " + morpVal);
+				
+				if ( morpVal >= val ) {	
+					val = morpVal; 
+					listIdNeigValMax.add(neig.getId() ) ;
+				}
+			}	//			System.out.println(listIdNeigValMax);	System.out.println(nGs.getId() + " " + val);
+			
+			// if nNet attribute oldGraph = 0 -> create new node 
+			for ( String id : listIdNeigValMax) {
+
+				// get random node from listIdNeigValMax
+				String randomNodeInListValMax = listIdNeigValMax.get((new Random()).nextInt(listIdNeigValMax.size()));	//System.out.println(randomNodeInListValMax);
+				
+				Node nNetValMax = netGraph.getNode(id);				//	System.out.println(nNetValMax.getId());
+				
+				int oldSeed = nNetValMax.getAttribute("oldSeedGrad");
+//				System.out.println(oldSeed);
+				
+				try {
+					if ( oldSeed == 0 ) {
+						netGraph.addNode(id);
+					
+						// set coordinate 
+						Node nFrom = gsGraph.getNode(id);
+						Node nTo = netGraph.getNode(id);
+						gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		
+//						nNetValMax.setAttribute("oldSeedGrad", 1);
+						}
+					else { break;}
+				}
+				catch ( org.graphstream.graph.IdAlreadyInUseException e) {
+					System.out.println("node "+ nNetValMax.getId() + " already exist");
+					nNetValMax.setAttribute("seedGrad", 1);
+				}
+				
+			}
 		// set nNet attribute : oldSeedGrad = 1 ; seedGrad = 0
 		
 		// set attribute of new node : oldSeedGrad = 0 , seedGrad = 1 ;
 		
 		
-		
+		}
 	}
 
 	@Override

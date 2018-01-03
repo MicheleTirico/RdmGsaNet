@@ -53,15 +53,4 @@ public class generateNetNodeThreshold implements generateNetNodeInter {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
 }

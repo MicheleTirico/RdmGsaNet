@@ -65,21 +65,34 @@ public class gsAlgoToolkit {
 
 	public static ArrayList<String> getNodeMaxDegree ( Graph graph ) {
 		
-	ArrayList<String> list = new ArrayList<String> () ;
+		ArrayList<String> list = new ArrayList<String> () ;
 		Map<String , Integer > map = new HashMap<String , Integer > ();
 		
 		for( Node n : graph.getEachNode()) { map.put(n.getId(), n.getDegree()); }
 		
 		Integer maxDegree = map.entrySet()
-	            .stream()
-	            .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
-	            .get()
-	            .getValue();
+				.stream()
+				.max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+				.get()
+				.getValue();
 		
 		for ( String s : map.keySet()) {
 			if ( map.get(s) == maxDegree ) {list.add(s); }
 		}
 		
 		return list;
+	
 	}
+	public static void setNodeCoordinateFromNode ( Graph graphFrom , Graph graphTo, Node nFrom , Node nTo ) {
+		
+		// get coordinate nFrom
+		String idNFrom = nFrom.getId();
+		Node nodeFrom = graphFrom.getNode(idNFrom);
+		double [] nFromCoordinate = GraphPosLengthUtils.nodePosition(nodeFrom) ;						//	System.out.println(nGsCoordinate[0]);
+		
+		// set coordinate of node in netGraph
+		String idNTo = nTo.getId();
+		Node nodeTo = graphTo.getNode(idNTo);
+		nodeTo.setAttribute( "xyz", nFromCoordinate[0] , nFromCoordinate[1] , nFromCoordinate[2] );		
+		}	
 }

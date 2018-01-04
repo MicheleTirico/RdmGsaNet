@@ -80,7 +80,7 @@ public class layerGs {
 	private void setDefaultAtr ( ) {
 		
 		for ( Node n : graph.getEachNode() ) {
-			n.addAttribute( "idNet" , 0 );
+//			n.addAttribute( "idNet" , 0 );
 			n.addAttribute( "gsAct" , 0 );
 			n.addAttribute( "gsInh" , 0 );
 			n.addAttribute( "con" , 0 );

@@ -73,7 +73,7 @@ public class layerNet {
 		for ( Node n : netGraph.getEachNode() ) {
 			n.addAttribute( "seedAct" , 0 );
 			n.addAttribute( "seedInh" , 0 );			
-			n.addAttribute( "con" , 0 );
+//			n.addAttribute( "con" , 0 );
 			n.addAttribute( "seedGrad" , 0 );
 			n.addAttribute("oldSeedGrad", 0 );
 		

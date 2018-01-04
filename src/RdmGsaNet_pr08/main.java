@@ -43,10 +43,11 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 2 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
-	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
+//	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
+	static layerNet netLayer = new layerNet (new setupNetSeed());
 	
 	// call gs graph ( to test code , not important )
 	static Graph gsGraph = layerGs.getGraph() ;
@@ -146,16 +147,19 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 2 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 5 , false , true , false , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
-		for ( Node n : netGraph.getEachNode()) { 
+		for ( Node n : gsGraph.getEachNode()) { 
 //			System.out.println(n.getId() + n.getAttributeKeySet());
-			System.out.println(n.getId() + " seedGrad " + n.getAttribute("seedGrad") + " oldSeedGrad " + n.getAttribute("oldSeedGrad") );
+//			System.out.println(n.getId() + " seedGrad " + n.getAttribute("seedGrad") + " oldSeedGrad " + n.getAttribute("oldSeedGrad") );	
+		int con = n.getAttribute("con");
+//		System.out.println(con);
 		}
 
-//		for ( Node n : gsGraph.getEachNode()) {		System.out.println(n.getId() + n.getAttributeKeySet());	}
-			
+		
+//		for ( Node n : gsGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet());		}
+//		for ( Node n : netGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet() ) ; }
 //			System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));
 //		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
 		
@@ -165,7 +169,7 @@ public class main {
 
 		setupViz.Viz4Color(gsGraph);
 
-//		setupViz.Vizmorp(gsGraph, "gsAct");
+		setupViz.Vizmorp(gsGraph, "gsAct");
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 
 //		gsGraph.display(false) ;

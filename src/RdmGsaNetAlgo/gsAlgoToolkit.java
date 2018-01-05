@@ -3,6 +3,9 @@ package RdmGsaNetAlgo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.Edge;
@@ -81,8 +84,8 @@ public class gsAlgoToolkit {
 		}
 		
 		return list;
-	
 	}
+	
 	public static void setNodeCoordinateFromNode ( Graph graphFrom , Graph graphTo, Node nFrom , Node nTo ) {
 		
 		// get coordinate nFrom
@@ -95,4 +98,15 @@ public class gsAlgoToolkit {
 		Node nodeTo = graphTo.getNode(idNTo);
 		nodeTo.setAttribute( "xyz", nFromCoordinate[0] , nFromCoordinate[1] , nFromCoordinate[2] );		
 		}	
+	
+	// method to obtain a set of key with an assigned value
+	public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
+		   
+		return map.entrySet()
+		          .stream()
+		          .filter(entry -> Objects.equals(entry.getValue(), value))
+		          .map(Map.Entry::getKey)
+		          .collect(Collectors.toSet());
+		}
+		
 }

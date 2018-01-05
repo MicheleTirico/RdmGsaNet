@@ -43,7 +43,7 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* setupGsGrid 	->	int size		=	graph size , 
 	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 2 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 //	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
@@ -63,7 +63,7 @@ public class main {
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(1)) ;
 	
 		// generateNetEdgeNear ( max radius of search )
-	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(0.5 , generateNetEdgeNear.whichNode.all )) ;
+	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(1.1 , generateNetEdgeNear.whichNode.onlyOld )) ;
 		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
@@ -147,15 +147,17 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 5 , false , true , false , false , pathStepGs );	//		
+		run.runSim( 4 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
-		for ( Node n : gsGraph.getEachNode()) { 
+		for ( Node n : netGraph.getEachNode()) { 
 //			System.out.println(n.getId() + n.getAttributeKeySet());
 //			System.out.println(n.getId() + " seedGrad " + n.getAttribute("seedGrad") + " oldSeedGrad " + n.getAttribute("oldSeedGrad") );	
-		int con = n.getAttribute("con");
-//		System.out.println(con);
 		}
+//		System.out.println(netGraph.getEdgeCount());
+		
+		System.out.println("new nodes " + simulation.getMapStepNewNodeId());
+		System.out.println("node set  " + simulation.getMapStepIdNet());
 
 		
 //		for ( Node n : gsGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet());		}
@@ -173,7 +175,7 @@ public class main {
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 
 //		gsGraph.display(false) ;
-//		netGraph.display(false) ;
+		netGraph.display(false) ;
 		
 		// get images
 		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_04\\" ;

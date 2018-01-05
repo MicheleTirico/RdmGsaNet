@@ -30,8 +30,9 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 // CREATE LIST OF SEEDGRAD AND OLDSEEDGRAD ------------------------------------------------------------------------------------------------------------------
 		ArrayList<Node> listNodeSeedGrad = createListSeedGrad(netGraph);
 	
-		System.out.println("list node seed grad " + listNodeSeedGrad);
-		System.out.println("list of node net "  + netGraph.getNodeSet());
+//		System.out.println("list node seed grad " + listNodeSeedGrad);
+//		System.out.println("node count "  + netGraph.getNodeCount());
+//	 	System.out.println("list of node net "  + netGraph.getNodeSet());
 		
 // Iterator for each node ( NET) with seedGrad = 1 and oldSeedGrad = 0
 		for ( Node nNet : listNodeSeedGrad ) {
@@ -50,26 +51,29 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 				Node gsNodeRandomNew = gsGraph.getNode(idRandomNew);
 				
 				try {
-					
+					// create new node
 					netGraph.addNode(idRandomNew);
+					
+					// call new node
 					Node netNodeRandomNew = netGraph.getNode(idRandomNew);
+					
+					// set parameters
 					netNodeRandomNew.addAttribute("seedGrad", 1);
-					netNodeRandomNew.addAttribute("oldSeedGrad", 1);
-					int oldSeedGrad = netNodeRandomNew.getAttribute("oldSeedGrad");
-					System.out.println(oldSeedGrad);
+//					netNodeRandomNew.addAttribute("oldSeedGrad", 1);		int oldSeedGrad = netNodeRandomNew.getAttribute("oldSeedGrad"); //	System.out.println(oldSeedGrad);
+					
 					// set coordinate 
 					Node nFrom = gsGraph.getNode(idRandomNew);
 					Node nTo = netGraph.getNode(idRandomNew);
-					gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		
-					System.out.println(netNodeRandomNew.getAttributeKeySet());
+					gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		//	System.out.println(netNodeRandomNew.getAttributeKeySet());
+				
 					break;
 				}
 				catch (org.graphstream.graph.IdAlreadyInUseException e) {
-					
-				}
-				
+					continue;
+				}		
 			}
-//			nNet.setAttribute("oldSeedGrad", 1);
+			// set all old nodes not yet seedGrad for new step
+			nNet.setAttribute("seedGrad", 0);
 			
 		}
 			

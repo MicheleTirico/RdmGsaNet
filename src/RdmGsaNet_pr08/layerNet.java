@@ -51,7 +51,7 @@ public class layerNet {
 		if (setSeedMorp == true ) { setSeedMorp (  seedAct ,  seedInh ); }
 	
 		if ( setSeedMorpInGs = true ) { setSeedMorpInGs ( ) ; }
-		
+		 
 		// stored code
 		if ( storedDGS == true ) 	{ 	 
 			String fileType = main.getFileType();
@@ -70,13 +70,12 @@ public class layerNet {
 // PRIVATE METHODS-----------------------------------------------------------------------------------------------------	
 	// method to set default values to network
 	private static void setDefaultAtr ( ) {
+		
 		for ( Node n : netGraph.getEachNode() ) {
 			n.addAttribute( "seedAct" , 0 );
 			n.addAttribute( "seedInh" , 0 );			
-//			n.addAttribute( "con" , 0 );
 			n.addAttribute( "seedGrad" , 0 );
-			n.addAttribute("oldSeedGrad", 0 );
-		
+//			n.addAttribute("oldSeedGrad", 0 );	
 		}
 	}
 	
@@ -91,6 +90,7 @@ public class layerNet {
 	}
 	
 	private void setSeedMorpInGs () {
+		
 		for ( Node nNet : netGraph.getEachNode()) {
 			
 			String idNet = nNet.getId() ;

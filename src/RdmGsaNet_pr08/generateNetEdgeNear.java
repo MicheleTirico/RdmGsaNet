@@ -13,6 +13,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import RdmGsaNetAlgo.gsAlgoToolkit;
+
 public class generateNetEdgeNear implements generateNetEdgeInter{
 
 	// ENUM
@@ -41,41 +43,49 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 // generate edge
 	public void generateEdgeRule( double  step ) {
 
-		// list of new nodes
-		ArrayList<String> listIdNewNode = mapStepNewNodeId.get( step ) ;				//	System.out.println(listIdNewNode);
-		
-		//list of nodes that maybe are connected to new nodes
-		ArrayList<String> listNodesOld ;												//	System.out.println(listNodesOld);
-		
-		// define list of nodes maybe are connected to new nodes
-		switch (type) {
-		
-		// all nodes in net graph
-		case all : 		{ 	listNodesOld = mapStepIdNet.get( step ) ;	}
-						break;
 	
-		// only old nodes
-		case onlyOld : {	listNodesOld = mapStepIdNet.get( step ) ;
-							listNodesOld.removeAll(listIdNewNode); 		}
-						break;	
-		}																				//	System.out.println(listNodesOld);
+		try {
+			// list of new nodes
+			ArrayList<String> listIdNewNode = mapStepNewNodeId.get( step ) ;				//	System.out.println(listIdNewNode);
 		
-		//loop, in the next , we must improve the code with k-nearest neighbors algorithm
-		for ( String id : listIdNewNode ) {
+			//list of nodes that maybe are connected to new nodes
+			ArrayList<String> listNodesOld = null;											//	System.out.println(listNodesOld);
+		
+			// define list of nodes maybe are connected to new nodes
+			switch (type) {
+		
+			// all nodes in net graph
+			case all : 		{ 	listNodesOld = mapStepIdNet.get( step ) ;	}
+								break;
+	
+			// only old nodes
+			case onlyOld : {	listNodesOld = mapStepIdNet.get( step ) ;
+								listNodesOld.removeAll(listIdNewNode); 		}
+								break;	
+			}																				//	System.out.println(listNodesOld);
+		
+			//loop, in the next , we must improve the code with k-nearest neighbors algorithm
+			for ( String id : listIdNewNode ) {
 			
-			Node n1 = netGraph.getNode(id) ;											//	Object a = n1.getId(); 			System.out.println(a);		
+				Node n1 = netGraph.getNode(id) ;											//	Object a = n1.getId(); 			System.out.println(a);		
 			
-			// get map of distance
-			Map <String , Double> mapDist = getMapIdDist( netGraph , n1) ;				//	System.out.println(id + " " + mapDist);
+				// get map of distance
+				Map <String , Double> mapDist = getMapIdDist( netGraph , n1) ;				//	System.out.println(id + " " + mapDist);
 			
-			// get min distance between n1 and n2 ( you may have more than one node )
-			double minDist = getMinDist (mapDist); 										// System.out.println(minDist);		
+				// get min distance between n1 and n2 ( you may have more than one node )
+				double minDist = getMinDist (mapDist); 										// System.out.println(minDist);		
 			
-			// get a set of nearest nodes
-			Set<String> idNear = getKeysByValue(mapDist, minDist ); 					// System.out.println(idNear);
+				// get a set of nearest nodes
+				Set<String> idNear = gsAlgoToolkit.getKeysByValue(mapDist, minDist ); 					// System.out.println(idNear);
 			
-			// create edges
-			createEdge(n1, idNear, netGraph);	
+				// create edges
+				createEdge(n1, idNear, netGraph);	
+			}
+//			System.out.println("create new edge " );
+		}
+		catch (java.util.NoSuchElementException e) {
+//			System.out.println("peppe");
+//			System.out.println(e.getClass().getName());		
 		}
 	}
 	
@@ -110,7 +120,7 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 	private static void createEdgeIdGs ( Node n1 , Set<String> idNear , Graph netGraph, Graph gsGraph ) {
 		
 		// declare id for new node
-		String idN1 = n1.getId();													//	System.out.println("idN1 " + n1.getId() ) ;
+		String idN1 = n1.getId();								 					//	System.out.println("idN1 " + n1.getId() ) ;
 				
 		// create an edge for each new node
 		for ( String idN2 : idNear) {
@@ -125,10 +135,6 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 		
 		}	  		
 	}
-	
-	
-	
-
 	
 // method to create map of distance
 		// map / key = (string) id of nodes n2 , (double) distance between n1 and n2
@@ -147,44 +153,11 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 			String n2Str = n2.getId();
 			String n1Str = n1.getId();
 			
-			if ( n2.getId() != n1Str ) {	mapDist.put(n2Str, calcDist(n1, n2)) ; }
+			if ( n2.getId() != n1Str ) {	mapDist.put(n2Str, gsAlgoToolkit.getDistGeom(n1, n2)) ; }
 			}
 		
 		return mapDist ;
 		}
-
-// method to calculate distance between two nodes
-	private static double calcDist (Node n1 , Node n2 ) {
-		double dist ;
-		
-		// coordinate of node n1
-		double [] n1Coordinate = GraphPosLengthUtils.nodePosition(n1) ;
-		double x1 = n1Coordinate [0];
-		double y1 = n1Coordinate [1];
-		double z1 = n1Coordinate [2];
-		
-		// coordinate of node n2
-		double [] n2Coordinate = GraphPosLengthUtils.nodePosition(n2) ;
-		double x2 = n2Coordinate [0];
-		double y2 = n2Coordinate [1];
-		double z2 = n2Coordinate [2];
-		
-		// calculate distance
-		double distSq = Math.pow( ( x1 - x2 ), 2 )  + Math.pow( ( y1 - y2 ), 2 ) + Math.pow( ( z1 - z2 ), 2 ) ;
-		dist = Math.sqrt( distSq );
-		
-		return dist;
-	}
-
-// method to obtain a set of key with an assigned value
-	private static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
-	   
-		return map.entrySet()
-	              .stream()
-	              .filter(entry -> Objects.equals(entry.getValue(), value))
-	              .map(Map.Entry::getKey)
-	              .collect(Collectors.toSet());
-	    }
 	
 // method to get min value in list from a map
 	private static double getMinDist ( Map <String , Double>  map ) {

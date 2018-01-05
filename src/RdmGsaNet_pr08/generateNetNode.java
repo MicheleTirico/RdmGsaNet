@@ -10,6 +10,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 public class generateNetNode {
 	
 	// VARIABLES 
@@ -33,10 +35,13 @@ public class generateNetNode {
 	}
 	
 	public void generateNode ( int step ) {
+	
+		
 		type.generateNodeRule ( step ) ;
 		identifyGsNodeCon ( step ) ;  
 		createNodeNet (step ) ;	
 		type.setSeedNodes( step );
+		System.out.println(returnNewNodes(step));
 	} 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -71,9 +76,9 @@ public class generateNetNode {
 	
 	// method to return a list of new nodes, at each step
 	private ArrayList<String> returnNewNodes (double step ) {
-		
+
 		// create new list of values at step 0 and at step of return
-		ArrayList<String> oldNodes = mapStepIdNet.get( (double) (step - 1) ) ;	
+		ArrayList<String> oldNodes = mapStepIdNet.get( (double) (step - 1 ) ) ;	
 		ArrayList<String> AllNodes = mapStepIdNet.get( (double) step  ) ;
 		
 		//Initialized new empty list of new nodes and list list of nodes in common for step 0 and 1 
@@ -100,7 +105,7 @@ public class generateNetNode {
 		if ( step == 1 ) 	{ mapStepNewNodeId.put( step , mapStepIdNet.get( (double) (step )    )) ; }
 		else				{
 		mapStepNewNodeId.put( step ,  newNodesId ) ;
-		}
+		} 
 		return newNodesId ;
 	}
 	

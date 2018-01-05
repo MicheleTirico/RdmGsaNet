@@ -69,6 +69,7 @@ public class simulation {
 			
 			if ( storedDgsStep == true) { 	gsGraph.stepBegins(step); }			
 			
+			// print each step
 			System.out.println("step " + step);
 
 			// method to handle first step
@@ -89,16 +90,19 @@ public class simulation {
 			// update map graph
 			updateMapGraph( mapStepNetGraph , step, netGraph);									//	System.out.println(mapStepNetGraph);
 
+			// update set of nodes for each step 
+			updateMapStepId(step , netGraph, mapStepIdNet);
+			
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }
-			
-
-//            Thread.sleep(100);		
-			
+		
 		}
-		if ( storedDgsStep == true) { 	fsd.end();	
-			}
+		
+		// stored graph in dgs format
+		if ( storedDgsStep == true) { 	fsd.end();	}
+	
 		finalStep = step - 1 ;
+;
 	}
 		
 // PRIVATE METHODS --------------------------------------------------------------------------------------------------------------

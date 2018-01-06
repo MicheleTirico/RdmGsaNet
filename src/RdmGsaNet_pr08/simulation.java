@@ -11,6 +11,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetViz.VizThread;
 import RdmGsaNetViz.graphViz2;
@@ -79,23 +81,28 @@ public class simulation {
 				boolean print : if true, print mapMorp */
 			gsAlgo.gsAlgoMain( false );
 			
+			
+			
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }
+			
+			// update net 
+			updateMapStepId(step , netGraph, mapStepIdNet);
+			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );
 			
 			if ( genEdge == true) {genNetEd.generateEdge( step ); }
 
 			// create list and map
-			listIdNet = createListId ( netGraph );												//	mapStepIdNet = updateMapStepId( step , netGraph , mapStepIdNet) ;	//					
-
+			listIdNet = createListId ( netGraph );	
+			
 			// update map graph
-			updateMapGraph( mapStepNetGraph , step, netGraph);									//	System.out.println(mapStepNetGraph);
-
-			// update set of nodes for each step 
-			updateMapStepId(step , netGraph, mapStepIdNet);
+			updateMapGraph( mapStepNetGraph , step, netGraph);
 			
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }
-		
+			
+//			System.out.println("node set " + mapStepIdNet);
+			
 		}
 		
 		// stored graph in dgs format
@@ -135,13 +142,39 @@ public class simulation {
 		} 
 	}
 	
+	// update new nodes map
+	private static void updateMapStepNewNodes ( int step , Graph graph , Map mapNewNodes ) {
+
+		ArrayList<String> nodeStep    	= mapStepIdNet.get( (double) step );
+		ArrayList<String> nodeOldStep 	= mapStepIdNet.get( (double) step - 1.0 );
+		
+		ArrayList<String> newNodes 		= new ArrayList<String>() ;
+		
+		
+//		System.out.println( "step " + nodeStep);
+//		System.out.println( "old step " + nodeOldStep);
+		
+		try {
+			for ( String s : nodeStep ) {
+				if ( !nodeOldStep.contains(s) ) {
+					newNodes.add(s);
+				}
+			}
+		} catch (java.lang.NullPointerException e ) {  }
+			
+//		System.out.println(newNodes);	
+		
+		mapNewNodes.put(step, newNodes);
+		
+	}
+	
 	// create map
 	private static Map < Double , ArrayList<String >>  updateMapStepId ( double step, Graph graph, Map < Double , ArrayList<String >>  map   ) {
 		map.put(step, createListId(graph)) ;
 		return map;	
 	}
 	
-	// method to a list of id of nodes 
+	// method to create a list of id of nodes 
 	protected static ArrayList<String> createListId (Graph graph ) {
 		
 		ArrayList<String> list = new ArrayList<String>() ; 

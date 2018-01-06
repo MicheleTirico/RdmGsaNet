@@ -2,6 +2,7 @@ package RdmGsaNet_pr08;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class generateNetNode {
@@ -18,7 +20,6 @@ public class generateNetNode {
 	// map
 	private static Map < Double , ArrayList<String> > mapStepIdNet = simulation.getMapStepIdNet() ;
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = simulation.getMapStepNewNodeId() ;
-//	private static Map < Double , ArrayList<String> > mapStepNewNodeIdNet = simulation.GetMapStepNewNodeIdNet() ;
 	
 	// graph
 	private static Graph gsGraph = layerGs.getGraph();
@@ -31,24 +32,31 @@ public class generateNetNode {
 	// constructor
 	public generateNetNode (generateNetNodeInter type ) {
 		this.type = type ;
-		
 	}
 	
 	public void generateNode ( int step ) {
 	
-		
 		type.generateNodeRule ( step ) ;
-		identifyGsNodeCon ( step ) ;  
-		createNodeNet (step ) ;	
-		type.setSeedNodes( step );
-		System.out.println(returnNewNodes(step));
+		type.setSeedNodes( step );		//		System.out.println("node set " + mapStepIdNet);		//	System.out.println("new nodes" + mapStepNewNodeId);
 	} 
 
-//--------------------------------------------------------------------------------------------------------------------
-	// PRIVATE METHODS		
+// PRIVATE METHODS ------------------------------------------------------------------------------------------------
+	// 	
 	
+	
+	
+	
+// GET METHODS --------------------------------------------------------------------------------------------------------
+	public static generateNetNode getGenerateNode () { return growth ; }
+	
+
+
+
+
+}
 	/* in this private methods, we identify at each step , gs nodes that are connected to net nodes.
 	* In order to discover that, we create a map where the key is the step simulation , and the value is a list of gs nodes  connected to net nodes. */	
+	/*
 	private void identifyGsNodeCon ( int step ) {
 		
 		// list of id ( from gs layer) in common with netLayer
@@ -71,7 +79,7 @@ public class generateNetNode {
 			}
 			
 		// add local list to map, in order to create a map with each nodes connected at each step
-		mapStepIdNet.put((double) step, listIdCon) ;	//			System.out.println(mapStepIdGsCon)	;
+		mapStepIdNet.put((double) step, listIdCon) ;	//			
 	}
 	
 	// method to return a list of new nodes, at each step
@@ -79,8 +87,11 @@ public class generateNetNode {
 
 		// create new list of values at step 0 and at step of return
 		ArrayList<String> oldNodes = mapStepIdNet.get( (double) (step - 1 ) ) ;	
-		ArrayList<String> AllNodes = mapStepIdNet.get( (double) step  ) ;
+//		System.out.println("old Nodes " + oldNodes);
+	System.out.println(mapStepIdNet);
 		
+		ArrayList<String> AllNodes = mapStepIdNet.get( (double) step ) ;
+//		System.out.println("all nodes " + AllNodes);
 		//Initialized new empty list of new nodes and list list of nodes in common for step 0 and 1 
 		ArrayList<String> newNodesId = new ArrayList<String> () ;
 		ArrayList<String> commonNodes = new ArrayList<String> (  AllNodes ) ;
@@ -113,7 +124,8 @@ public class generateNetNode {
 	private void createNodeNet ( double step ) {
 		
 		// pass value from returnNewNodes
-		ArrayList<String> newNodes = returnNewNodes ( step )  ;	// System.out.println("newNodes " + newNodes);
+		ArrayList<String> newNodes = returnNewNodes ( step )  ;	// 
+		System.out.println("newNodes " + newNodes);
 		
 		// initialize list of new nodes
 		ArrayList<String> listCreateNode ;
@@ -142,9 +154,8 @@ public class generateNetNode {
 			double [] gsNodeConXYZ = GraphPosLengthUtils.nodePosition(gsNode) ;	// System.out.println("gsX " + gsNodeConXYZ [0] + " gsY " + gsNodeConXYZ [1]);
 			netNode.setAttribute( "xyz" , gsNodeConXYZ[0] , gsNodeConXYZ[1] , gsNodeConXYZ[2] );		
 		}
+		
 	}
-		 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------	
-	// get method
-	public static generateNetNode getGenerateNode () { return growth ; }
-}
+		*/
+	
+

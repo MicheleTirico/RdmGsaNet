@@ -18,6 +18,7 @@ import RdmGsaNetAlgo.morpSpatialAutoCor;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.testViz;
+import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
 	
@@ -37,12 +38,9 @@ public class main {
 	private static String folderStepGs = folderStartGs;
 	private static String pathStepGs ;
 	
-	// private initial configuration 
-	
-	
 	/* create reaction diffusion layer ( gs = Gray Scott )
-	* setupGsGrid 	->	int size		=	graph size , 
-	* 					enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
+	* 		setupGsGrid 	->	int size		=	graph size , 
+	* 							enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
 	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
@@ -60,13 +58,16 @@ public class main {
 	
 	// initialization of rules to evolving Net	
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
-	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(1)) ;
+	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
+			1 , 
+			"gsAct" , 
+			splitSeed.splitMax)) ;
 	
 		// generateNetEdgeNear ( max radius of search )
-	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear(1.1 , generateNetEdgeNear.whichNode.onlyOld )) ;
+	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
+			0 , generateNetEdgeNear.whichNode.all )) ;
 		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
-		
 		
 // SETUP START VALUES LAYER GS
 		/*	gsAlgo -> 	enum	reactionType 
@@ -147,7 +148,7 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 4 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 1000 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 
@@ -156,8 +157,8 @@ public class main {
 		}
 //		System.out.println(netGraph.getEdgeCount());
 		
-		System.out.println("new nodes " + simulation.getMapStepNewNodeId());
-		System.out.println("node set  " + simulation.getMapStepIdNet());
+//		System.out.println("new nodes " + simulation.getMapStepNewNodeId());
+//		System.out.println("node set  " + simulation.getMapStepIdNet());
 
 		
 //		for ( Node n : gsGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet());		}
@@ -174,7 +175,7 @@ public class main {
 		setupViz.Vizmorp(gsGraph, "gsAct");
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 
-//		gsGraph.display(false) ;
+		gsGraph.display(false) ;
 		netGraph.display(false) ;
 		
 		// get images

@@ -43,10 +43,11 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 // generate edge
 	public void generateEdgeRule( double  step ) {
 
-	
+		Map<Double, ArrayList<String>> mapStepNewNodeId = simulation.getMapStepNewNodeId();	//	System.out.println(mapStepNewNodeId);
+		
 		try {
 			// list of new nodes
-			ArrayList<String> listIdNewNode = mapStepNewNodeId.get( step ) ;				//	System.out.println(listIdNewNode);
+			ArrayList<String> listIdNewNode = mapStepNewNodeId.get( (int) step ) ;			//	System.out.println(listIdNewNode);
 		
 			//list of nodes that maybe are connected to new nodes
 			ArrayList<String> listNodesOld = null;											//	System.out.println(listNodesOld);
@@ -76,17 +77,14 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 				double minDist = getMinDist (mapDist); 										// System.out.println(minDist);		
 			
 				// get a set of nearest nodes
-				Set<String> idNear = gsAlgoToolkit.getKeysByValue(mapDist, minDist ); 					// System.out.println(idNear);
+				Set<String> idNear = gsAlgoToolkit.getKeysByValue(mapDist, minDist ); 		// System.out.println(idNear);
 			
 				// create edges
 				createEdge(n1, idNear, netGraph);	
 			}
-//			System.out.println("create new edge " );
 		}
-		catch (java.util.NoSuchElementException e) {
-//			System.out.println("peppe");
-//			System.out.println(e.getClass().getName());		
-		}
+	
+		catch (java.lang.NullPointerException e) {		}
 	}
 	
 // remove edge
@@ -125,14 +123,13 @@ public class generateNetEdgeNear implements generateNetEdgeInter{
 		// create an edge for each new node
 		for ( String idN2 : idNear) {
 					
-			Node n2 = netGraph.getNode(idN2) ;											//	System.out.println("idN2 " + n2.getId() ) ;
+			Node n2 = netGraph.getNode(idN2) ;										//	System.out.println("idN2 " + n2.getId() ) ;
 					
 			// try create an edge. It return exception whether nodes are yet connected -> continue
 			int [] arrIdEdge ;
 			
 			try 													{ 	netGraph.addEdge(  idN1 + "-" + idN2 ,  n1 , n2 );	}
-			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue;	}
-		
+			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue; 	}
 		}	  		
 	}
 	

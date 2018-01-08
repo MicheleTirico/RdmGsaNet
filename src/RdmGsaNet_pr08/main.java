@@ -61,7 +61,7 @@ public class main {
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
 			1 , 
 			"gsAct" , 
-			splitSeed.splitMax)) ;
+			splitSeed.splitMax )) ;
 	
 		// generateNetEdgeNear ( max radius of search )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
@@ -148,7 +148,7 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 1000 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 100 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 

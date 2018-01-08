@@ -2,11 +2,17 @@ package RdmGsaNet_pr08;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+
+import com.sun.javafx.runtime.async.AsyncOperationListener;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import static org.graphstream.algorithm.Toolkit.*;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
@@ -18,6 +24,8 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	static Graph netGraph = layerNet.getGraph();
 	static Graph gsGraph = layerGs.getGraph();	
 	String morp ;
+	
+	static Map<Integer , ArrayList<Node>> test =  new HashMap<Integer , ArrayList<Node>>();
 	enum splitSeed {onlyOneRandom , splitMax }
 	splitSeed typeSplit;
 	
@@ -32,7 +40,20 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	public void generateNodeRule(int step) {
 		
 		// CREATE LIST OF SEEDGRAD AND OLDSEEDGRAD ------------------------------------------------------------------------------------------------------------------
-		ArrayList<Node> listNodeSeedGrad = createListSeedGrad(netGraph);
+		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
+				
+		listNodeSeedGrad = 	createListSeedGrad( step );
+		test.put(step, listNodeSeedGrad);
+		
+//		System.out.println(test);
+		
+		if ( listNodeSeedGrad.isEmpty() && step != 1 ) {
+			System.out.println("peppe");
+			listNodeSeedGrad = test.get( step - 1 );
+			test.put(step, listNodeSeedGrad);
+		}
+		
+		System.out.println("list seed " + listNodeSeedGrad);
 	
 		// Iterator for each node ( NET) with seedGrad = 1 and oldSeedGrad = 0
 		for ( Node nNet : listNodeSeedGrad ) {
@@ -40,22 +61,46 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 			// CREATE LIST NEIGBHORDS WITH MAX VALUE ----------------------------------------------------------------------------------------------------------------
 			ArrayList<String> listIdNeigValMax = createListMaxNeig(gsGraph, nNet , morp);
 		
-			String idRandomNew = null ;
+			// print
+//			System.out.println("list max nodes " + listIdNeigValMax);
+//			System.out.println("node set " + netGraph.getNodeSet());
+		
+			String idNewNode = null ;
+			ArrayList<String> listNewNode = new ArrayList<String>();
 			switch (typeSplit) {
-			case onlyOneRandom: {	onlyOneRandomMethod (idRandomNew, listIdNeigValMax);	}
-									break;
+			
+				case onlyOneRandom: {	
+					onlyOneRandomMethod (idNewNode, listIdNeigValMax);	// System.out.println("onlyOneRandom");
+				} break;
 									
-			case splitMax : 	{	splitMaxMethod (idRandomNew, listIdNeigValMax); }
-									break;
+				case splitMax : {	
+					splitMaxMethod ( listNewNode ,  listIdNeigValMax ); 		// System.out.println("splitMax");
+				} break;
 			}
 			
-			
+//			System.out.println("list seed " + listNodeSeedGrad);
 			// set all old nodes not yet seedGrad for new step
-			nNet.setAttribute("seedGrad", 0);		
-		}		
+			nNet.setAttribute("seedGrad", 0);
+		
+			/*
+			for ( String s : listNewNode) {
+				Node newNode = netGraph.getNode(s);
+				newNode.setAttribute("seedGrad", 1);
+			}
+			*/
+		}
+		/*
+		System.out.println("listNewNode " + listNewNode);
+		
+		if ( listNewNode.isEmpty()) {
+			System.out.println("no new nodes");
+			for ( Node n : listNodeSeedGrad) {
+//				n.setAttribute("seedGrad", 1);
+			}
+		}
+		*/
 	}
 
-	
 
 	@Override
 	public void removeNodeRule(int step) {
@@ -98,67 +143,99 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------
-	private void splitMaxMethod(String idRandomNew , ArrayList<String> listIdNeigValMax) {
+	private void splitMaxMethod(ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax) {
 		
 		try {
-			for ( String s : listIdNeigValMax) {
-				// create new node
-				netGraph.addNode(s);
-		
-				// call new node
-				Node netNodeRandomNew = netGraph.getNode(s);
-					
-				// set parameters
-				netNodeRandomNew.addAttribute("seedGrad", 1);
-						
+			for ( String newNodeId : listIdNeigValMax )  {
+//				System.out.println("new node " + newNodeId);
+				netGraph.addNode(newNodeId);	
+			
+				Node newNode = netGraph.getNode(newNodeId);	
+				newNode.addAttribute("seedGrad", 1);
+				
+				listNewNode.add(newNodeId);
+			
 				// set coordinate 
-				Node nFrom = gsGraph.getNode(s);
-				Node nTo = netGraph.getNode(s);
+				Node nFrom = gsGraph.getNode(newNodeId);
+				Node nTo = netGraph.getNode(newNodeId);
 				gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		//	System.out.println(netNodeRandomNew.getAttributeKeySet());			
 			}
-		}
-		catch (org.graphstream.graph.IdAlreadyInUseException e) {	}
+		} catch (org.graphstream.graph.IdAlreadyInUseException e) {
+			// TODO: handle exception
+		}	
+		
+//		System.out.println("listNewNode in method" + listNewNode);
+		
 	}
 	
-	private static void onlyOneRandomMethod (String idRandomNew , ArrayList<String> listIdNeigValMax) {
+	private static void onlyOneRandomMethod (String idNewNode , ArrayList<String> listIdNeigValMax) {
 	
 		for ( int i = 0 ; i < Math.pow(listIdNeigValMax.size() , 2 ) ; i++ ) {
 	
 			// get random node from listIdNeigValMax
-			idRandomNew = listIdNeigValMax.get((new Random()).nextInt(listIdNeigValMax.size()));	//System.out.println(randomNodeInListValMax);
-	
+			idNewNode = listIdNeigValMax.get((new Random()).nextInt(listIdNeigValMax.size()));	//System.out.println(randomNodeInListValMax);
+			
 			try {
 				// create new node
-				netGraph.addNode(idRandomNew);
+				netGraph.addNode(idNewNode);
 				break;
 			}
 			catch (org.graphstream.graph.IdAlreadyInUseException e) {	continue;		}		
 		}
 	
 		// call new node
-		Node netNodeRandomNew = netGraph.getNode(idRandomNew);
+		Node netNodeRandomNew = netGraph.getNode(idNewNode);
 					
 		// set parameters
 		netNodeRandomNew.addAttribute("seedGrad", 1);
 				
 		// set coordinate 
-		Node nFrom = gsGraph.getNode(idRandomNew);
-		Node nTo = netGraph.getNode(idRandomNew);
+		Node nFrom = gsGraph.getNode(idNewNode);
+		Node nTo = netGraph.getNode(idNewNode);
 		gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		//	System.out.println(netNodeRandomNew.getAttributeKeySet());		
 	}
 	
-	private ArrayList<Node> createListSeedGrad (Graph graph) {
+	private ArrayList<Node> createListSeedGrad (int step ) {
+		
+		Map<Double, Graph> mapStepNetGraph = simulation.getMapStepNetGraph();
+		
+		Graph gr = null ;
+
+		// list of nodes with seedGrad = 1 ;
+		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
+		
+		try {
+			
+			gr = mapStepNetGraph.get( (double) step - 1 );
+
+			// create listNodeSeedGrad ;
+		
+			for ( Node nNet : gr.getEachNode() ) {
+					
+				int seedGradInt = nNet.getAttribute("seedGrad") ; // 
+//				System.out.println(seedGradInt);
+				if ( seedGradInt == 1 ) 	{	listNodeSeedGrad.add(nNet) ; }
+			}
+			
+		} catch (java.lang.NullPointerException e) {	}
+		
+		return listNodeSeedGrad;
+	}
+	
+	private ArrayList<Node> setOldSeed ( int step ) {
 		
 		// list of nodes with seedGrad = 1 ;
 		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
-
-		// create listNodeSeedGrad ;
-		for ( Node nNet : graph.getEachNode() ) {
-					
-			int seedGradInt = nNet.getAttribute("seedGrad") ; 
-			if ( seedGradInt == 1 ) 	{	listNodeSeedGrad.add(nNet) ; }
-		}
+		
+		Map<Double, Graph> mapStepNetGraph = simulation.getMapStepNetGraph();
+		Graph gr = null ;
+		gr = mapStepNetGraph.get( (double) step - 2 );
+		System.out.println(gr.getNodeCount());
+		
+	
 		return listNodeSeedGrad;
+	
+	
 	}
 	
 // create list of neigbrd with max value of morphogen

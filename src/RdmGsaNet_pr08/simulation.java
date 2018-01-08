@@ -72,7 +72,7 @@ public class simulation {
 			if ( storedDgsStep == true) { 	gsGraph.stepBegins(step); }			
 			
 			// print each step
-			System.out.println("step " + step);
+			System.out.println("------------step " + step + "----------------------------");
 
 			// method to handle first step
 			firstStep (step );	// System.out.println(mapMorp0);

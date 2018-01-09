@@ -24,16 +24,18 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	static Graph netGraph = layerNet.getGraph();
 	static Graph gsGraph = layerGs.getGraph();	
 	String morp ;
+	boolean isGreater;
 	
-	static Map<Integer , ArrayList<Node>> test =  new HashMap<Integer , ArrayList<Node>>();
+	static Map<Integer , ArrayList<Node>> mapStepSeed =  new HashMap<Integer , ArrayList<Node>>();
 	enum splitSeed {onlyOneRandom , splitMax }
 	splitSeed typeSplit;
 	
 	// COSTRUCTOR 
-	public generateNetNodeGradient( int seedNumber , String morp , splitSeed typeSPlit ) {
+	public generateNetNodeGradient( int seedNumber , String morp , splitSeed typeSPlit, boolean isGreater ) {
 		this.seedNumber = seedNumber;
 		this.morp = morp;
 		this.typeSplit = typeSPlit;
+		this.isGreater = isGreater;
 	}
 
 	@Override
@@ -43,14 +45,13 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
 				
 		listNodeSeedGrad = 	createListSeedGrad( step );
-		test.put(step, listNodeSeedGrad);
+		mapStepSeed.put(step, listNodeSeedGrad);
 		
 //		System.out.println(test);
 		
 		if ( listNodeSeedGrad.isEmpty() && step != 1 ) {
-			System.out.println("peppe");
-			listNodeSeedGrad = test.get( step - 1 );
-			test.put(step, listNodeSeedGrad);
+			listNodeSeedGrad = mapStepSeed.get( step - 1 );
+			mapStepSeed.put(step, listNodeSeedGrad);
 		}
 		
 		System.out.println("list seed " + listNodeSeedGrad);
@@ -59,48 +60,41 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		for ( Node nNet : listNodeSeedGrad ) {
 		
 			// CREATE LIST NEIGBHORDS WITH MAX VALUE ----------------------------------------------------------------------------------------------------------------
-			ArrayList<String> listIdNeigValMax = createListMaxNeig(gsGraph, nNet , morp);
+			ArrayList<String> listIdNeigValMax = createListMaxNeig( gsGraph, nNet , morp);
 		
+			/*
 			// print
-//			System.out.println("list max nodes " + listIdNeigValMax);
-//			System.out.println("node set " + netGraph.getNodeSet());
+			System.out.println("list max nodes of " + nNet.getId() + " " + listIdNeigValMax);
+			System.out.println("node set " + netGraph.getNodeSet());
 		
+			Node nGs = gsGraph.getNode(nNet.getId());
+			double valMorp = nGs.getAttribute(morp);
+			System.out.println(nGs.getId() + " " + valMorp);
+			
+			for ( String s : listIdNeigValMax) {
+				Node n = gsGraph.getNode(s);
+				double val = n.getAttribute(morp);
+				System.out.println(n.getId() + " " + val);
+			}
+			*/
+			
 			String idNewNode = null ;
 			ArrayList<String> listNewNode = new ArrayList<String>();
 			switch (typeSplit) {
 			
 				case onlyOneRandom: {	
-					onlyOneRandomMethod (idNewNode, listIdNeigValMax);	// System.out.println("onlyOneRandom");
+					onlyOneRandomMethod ( nNet, idNewNode, listIdNeigValMax);	// System.out.println("onlyOneRandom");
 				} break;
 									
 				case splitMax : {	
-					splitMaxMethod ( listNewNode ,  listIdNeigValMax ); 		// System.out.println("splitMax");
+					splitMaxMethod ( nNet, listNewNode ,  listIdNeigValMax ); 		// System.out.println("splitMax");
 				} break;
-			}
+			} //			System.out.println("list seed " + listNodeSeedGrad);
 			
-//			System.out.println("list seed " + listNodeSeedGrad);
 			// set all old nodes not yet seedGrad for new step
 			nNet.setAttribute("seedGrad", 0);
-		
-			/*
-			for ( String s : listNewNode) {
-				Node newNode = netGraph.getNode(s);
-				newNode.setAttribute("seedGrad", 1);
-			}
-			*/
 		}
-		/*
-		System.out.println("listNewNode " + listNewNode);
-		
-		if ( listNewNode.isEmpty()) {
-			System.out.println("no new nodes");
-			for ( Node n : listNodeSeedGrad) {
-//				n.setAttribute("seedGrad", 1);
-			}
-		}
-		*/
 	}
-
 
 	@Override
 	public void removeNodeRule(int step) {
@@ -143,32 +137,41 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------
-	private void splitMaxMethod(ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax) {
+	private void splitMaxMethod(Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax) {
 		
-		try {
-			for ( String newNodeId : listIdNeigValMax )  {
-//				System.out.println("new node " + newNodeId);
-				netGraph.addNode(newNodeId);	
-			
-				Node newNode = netGraph.getNode(newNodeId);	
-				newNode.addAttribute("seedGrad", 1);
+			for ( String newNodeId : listIdNeigValMax )  {	//	System.out.println(newNodeId);
+
+				try {
+					Node seedMorp = gsGraph.getNode(nNet.getId());
+					double valSeed = seedMorp.getAttribute(morp);
 				
-				listNewNode.add(newNodeId);
+					Node newNodeTest = gsGraph.getNode(newNodeId) ;
+					double valNewNode = newNodeTest.getAttribute(morp); // System.out.println("new node " + newNodeId);
+				
+					if ( isGreater == true ) { //	System.out.println("true");
+					
+						if ( valNewNode >= valSeed) {
+							netGraph.addNode(newNodeId);	// System.out.println(newNodeId);
+						} else { break; }
+					
+					} else { netGraph.addNode(newNodeId); 	// System.out.println("false");
+					}
+				
+					Node newNode = netGraph.getNode(newNodeId);	
+					newNode.addAttribute("seedGrad", 1);
+				
+					listNewNode.add(newNodeId);
 			
-				// set coordinate 
-				Node nFrom = gsGraph.getNode(newNodeId);
-				Node nTo = netGraph.getNode(newNodeId);
-				gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		//	System.out.println(netNodeRandomNew.getAttributeKeySet());			
+					// set coordinate 
+					Node nFrom = gsGraph.getNode(newNodeId);
+					Node nTo = netGraph.getNode(newNodeId);
+					gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		//	System.out.println(netNodeRandomNew.getAttributeKeySet());			
+				}
+				catch (org.graphstream.graph.IdAlreadyInUseException e) {	}	
+				}
 			}
-		} catch (org.graphstream.graph.IdAlreadyInUseException e) {
-			// TODO: handle exception
-		}	
-		
-//		System.out.println("listNewNode in method" + listNewNode);
-		
-	}
 	
-	private static void onlyOneRandomMethod (String idNewNode , ArrayList<String> listIdNeigValMax) {
+	private static void onlyOneRandomMethod ( Node nNet, String idNewNode , ArrayList<String> listIdNeigValMax) {
 	
 		for ( int i = 0 ; i < Math.pow(listIdNeigValMax.size() , 2 ) ; i++ ) {
 	
@@ -198,22 +201,18 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	private ArrayList<Node> createListSeedGrad (int step ) {
 		
 		Map<Double, Graph> mapStepNetGraph = simulation.getMapStepNetGraph();
-		
 		Graph gr = null ;
 
 		// list of nodes with seedGrad = 1 ;
 		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
 		
-		try {
-			
+		try {		
 			gr = mapStepNetGraph.get( (double) step - 1 );
 
 			// create listNodeSeedGrad ;
-		
 			for ( Node nNet : gr.getEachNode() ) {
 					
-				int seedGradInt = nNet.getAttribute("seedGrad") ; // 
-//				System.out.println(seedGradInt);
+				int seedGradInt = nNet.getAttribute("seedGrad") ; //				System.out.println(seedGradInt);
 				if ( seedGradInt == 1 ) 	{	listNodeSeedGrad.add(nNet) ; }
 			}
 			
@@ -222,6 +221,7 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		return listNodeSeedGrad;
 	}
 	
+	/*
 	private ArrayList<Node> setOldSeed ( int step ) {
 		
 		// list of nodes with seedGrad = 1 ;
@@ -232,17 +232,16 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		gr = mapStepNetGraph.get( (double) step - 2 );
 		System.out.println(gr.getNodeCount());
 		
-	
 		return listNodeSeedGrad;
-	
-	
 	}
+	*/
 	
 // create list of neigbrd with max value of morphogen
 	private ArrayList<String> createListMaxNeig (Graph graph , Node n , String morp ) {
 		
 		Node nGs = gsGraph.getNode(n.getId());
 		double val = 0 ;
+		int big = 1 ;
 		ArrayList<String> listIdNeigValMax = new ArrayList<String>();
 		
 		// get max value of act of neigbords ( in gsGraph)
@@ -252,7 +251,7 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 			
 			Node neig = iter.next() ;			
 			double morpVal = neig.getAttribute(morp);	
-			if ( morpVal >= val ) {	
+			if ( morpVal * big >= val * big ) {	
 				val = morpVal; 
 				listIdNeigValMax.add(neig.getId() ) ;
 			}

@@ -51,7 +51,27 @@ public class setupViz {
 			n.addAttribute("ui.color", color );
 		}
 	}
+	
+	public static void VizNodeId ( Graph graph ) {
+		graph.addAttribute("ui.stylesheet", setVizNodeId () );
+		
+		for ( Node n : graph.getEachNode()) {
+			n.addAttribute("ui.label", " " + n.getId());
+		
+		}
 
+	}
+
+	private static String setVizNodeId () {
+		return  "node { "
+				+ "size: 15px;"
+				+ "fill-color: black;"
+				+ "text-alignment: at-right; "
+				+ "text-color: black; "
+				+ "text-background-mode: plain; "
+				+ "text-background-color: white; "
+				+ "}";
+	}
 
 	private static String setViz4Color () {
 		return  "node {"+
@@ -120,29 +140,7 @@ public static void Viz5Color( Graph graph , String morp   ) {
 		else { if ( morp == "gsInh" ) 	{  morpColor = inh ;	} 
 		
 		double color = 0  ; //grey
-		/*
-		switch ((int) (morpColor * 10) ) { 
-		case 1: {	 color =  	0.1		;	}  break ;
-		case 2: {	 color =  	0.2		;	}  break ;
-		case 3: {	 color =  	0.3		;	}  break ;
-		case 4: {	 color =  	0.4		;	}  break ;
-		case 5: {	 color =  	0.5		;	}  break ;
-		case 6: {	 color =  	0.6		;	}  break ;
-		case 7: {	 color =  	0.7		;	}  break ;
-		case 8: {	 color =  	0.8		;	}  break ;
-		case 9: {	 color =  	0.9		;	}  break ;
-	
-		if ( morpColor >= 0.10 ) 	{	 color =  	0.1		;	} 		// 
-		if ( morpColor >= 0.20 )	{	 color =  	0.2		;	}		// 
-		if ( morpColor >= 0.30 ) 	{	 color =  	0.3		;	}		// 
-		if ( morpColor >= 0.40 ) 	{	 color =  	0.4		;	}		// 
-		if ( morpColor >= 0.50 ) 	{	 color =  	0.5		;	} 		// 
-		if ( morpColor >= 0.60 )	{	 color =  	0.6		;	}		// 
-		if ( morpColor >= 0.70 ) 	{	 color =  	0.7		;	}		// 
-		if ( morpColor >= 0.80 ) 	{	 color =  	0.8		;	}		// 
-		if ( morpColor >= 0.90 ) 	{	 color =  	0.9		;	}		// 
-	*/	
-	
+
 		if ( morpColor >= 0.10 &&  morpColor <= 0.20) 	{	 color =  	0.1		;	} 		// 
 		if ( morpColor >= 0.20 &&  morpColor <= 0.30)	{	 color =  	0.2		;	}		// 
 		if ( morpColor >= 0.30 &&  morpColor <= 0.40) 	{	 color =  	0.3		;	}		// 

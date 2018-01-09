@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.graphstream.graph.Edge;
@@ -58,14 +59,18 @@ public class main {
 	
 	// initialization of rules to evolving Net	
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
+		// generateNetNodeThreshold ( ) 
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
-			1 , 
-			"gsAct" , 
-			splitSeed.splitMax )) ;
+			/* number of started seed 	*/	1 
+			/* morphogen 	*/				, "gsAct" 
+			/* type of seed behavior 	*/	, splitSeed.splitMax
+			/* seed move to greater ? 	*/	, true 
+											)) ;
 	
-		// generateNetEdgeNear ( max radius of search )
+	// generateNetEdgeNear (  )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
-			0 , generateNetEdgeNear.whichNode.all )) ;
+			/* radius max 	*/				0 
+			/* which node link ? 	*/		, generateNetEdgeNear.whichNode.all )) ;
 		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
@@ -148,7 +153,7 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 100 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 3000 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 
@@ -160,8 +165,50 @@ public class main {
 //		System.out.println("new nodes " + simulation.getMapStepNewNodeId());
 //		System.out.println("node set  " + simulation.getMapStepIdNet());
 
+		/*
+		try {
+		String idNode1 = "46_49";
+		String idNode2 = "46_47";
+		
+		Node nNet = netGraph.getNode(idNode1);
+		Iterator<Node> iterNet = nNet.getNeighborNodeIterator() ;
+		
+		while ( iterNet.hasNext()) {				
+			
+			Node neig = iterNet.next() ;			
+			System.out.println("neig of " + nNet.getId() + " = " + neig.getId());
+		}
+		
+		Node nGs = gsGraph.getNode(idNode1);
+		Collection<String> nodeAtrSet = nGs.getAttributeKeySet() ;
+		
+		double nodeVal = nGs.getAttribute("gsAct");
+		System.out.println("\n" + nGs.getId() + " " + nodeAtrSet);
+		System.out.println(nGs.getId() + " " + nodeVal) ;
+		Iterator<Node> iter = nGs.getNeighborNodeIterator() ;		//	System.out.println("id " + n);
+		
+		while ( iter.hasNext()) {				
+			
+			Node neig = iter.next() ;			
+			double morpVal = neig.getAttribute("gsAct");	
+			System.out.println(neig.getId() + " " + morpVal);
+			int isCon = neig.getAttribute("con");
+			System.out.println(isCon);
+			}
+		
+		for ( Node n : gsGraph.getEachNode()) {
+			int isCon = n.getAttribute("con");
+			System.out.println(isCon);
+		}
+		} catch (java.lang.NullPointerException e) {
+			// TODO: handle exception
+		}
+		
+		*/
 		
 //		for ( Node n : gsGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet());		}
+
+		// print atribute set of each node 
 //		for ( Node n : netGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet() ) ; }
 //			System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));
 //		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
@@ -171,7 +218,9 @@ public class main {
 		// VISUALIZATION 
 
 		setupViz.Viz4Color(gsGraph);
-
+		
+		setupViz.VizNodeId( netGraph );
+		
 		setupViz.Vizmorp(gsGraph, "gsAct");
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 

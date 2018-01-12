@@ -62,9 +62,10 @@ public class main {
 		// generateNetNodeThreshold ( ) 
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
 			/* number of started seed 	*/	1 
-			/* morphogen 	*/				, "gsAct" 
-			/* type of seed behavior 	*/	, splitSeed.splitMax
+			/* morphogen 				*/	, "gsAct" 
+			/* type of seed behavior 	*/	, splitSeed.splitMaxThreshold
 			/* seed move to greater ? 	*/	, true 
+			/* set increment test 		*/	, 0.001
 											)) ;
 	
 	// generateNetEdgeNear (  )
@@ -95,18 +96,17 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------		
 	// GENERATE LAYER GS
 		nameStartGs  =	"layerGsStart"	+
-					"_Size_"		+ setupGsGrid.getGsGridSize() +
-					"_Da_"			+ gsAlgo.getDa() +
-					"_Di_" 			+ gsAlgo.getDi() + 
-					"_F_" 			+ gsAlgo.getFeed() +
-					"_K_" 			+ gsAlgo.getKill()  ;
+						"_Size_"		+ setupGsGrid.getGsGridSize() +
+						"_Da_"			+ gsAlgo.getDa() +
+						"_Di_" 			+ gsAlgo.getDi() + 
+						"_F_" 			+ gsAlgo.getFeed() +
+						"_K_" 			+ gsAlgo.getKill()  ;
 		
 	/* CREATE GS GRAPH
 	 *  method to generate the graph gs
 	 *  createLayer = 	bol		setCoordinate	=
 	 *  				bol		setDefaultAtr 	=
-	 *  				bol		storedDGS		= if true , create a dgs file of started graph
-	 */
+	 *  				bol		storedDGS		= if true , create a dgs file of started graph  */
 		gsLayer.createLayer ( false , true , false ) ;
 		
 	/* SETUP DISMORP
@@ -153,7 +153,7 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 3000 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 1000 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 
@@ -203,8 +203,8 @@ public class main {
 		} catch (java.lang.NullPointerException e) {
 			// TODO: handle exception
 		}
-		
 		*/
+		
 		
 //		for ( Node n : gsGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet());		}
 
@@ -217,7 +217,7 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
-		setupViz.Viz4Color(gsGraph);
+		setupViz.Viz4Color( gsGraph );
 		
 		setupViz.VizNodeId( netGraph );
 		

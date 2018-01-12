@@ -28,7 +28,6 @@ public class setupViz {
 		pic.writeAll(graph, folder +"/"+ name);
 	}
 	
-	
 // methods of visualization
 	
 	public static void Viz4Color( Graph graph ) {
@@ -57,14 +56,13 @@ public class setupViz {
 		
 		for ( Node n : graph.getEachNode()) {
 			n.addAttribute("ui.label", " " + n.getId());
-		
 		}
 
 	}
 
 	private static String setVizNodeId () {
 		return  "node { "
-				+ "size: 15px;"
+				+ "size: 5px;"
 				+ "fill-color: black;"
 				+ "text-alignment: at-right; "
 				+ "text-color: black; "

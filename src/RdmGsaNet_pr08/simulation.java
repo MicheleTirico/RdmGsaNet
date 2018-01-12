@@ -54,11 +54,11 @@ public class simulation {
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
 		
 	public static void  runSim ( int stopSim, boolean printMorp , 
-							boolean genNode, boolean genEdge , 
-							boolean storedDgsStep , String pathStepGs  
-//							boolean vizMorp 
-							) 
-									throws IOException, InterruptedException {
+								 boolean genNode, boolean genEdge , 
+								 boolean storedDgsStep , String pathStepGs  
+//								boolean vizMorp 
+								) 
+								throws IOException, InterruptedException {
 		
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
@@ -80,8 +80,6 @@ public class simulation {
 			/* run gs algo to all nodes
 				boolean print : if true, print mapMorp */
 			gsAlgo.gsAlgoMain( false );
-			
-			
 			
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }

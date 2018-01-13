@@ -65,7 +65,7 @@ public class main {
 			/* morphogen 				*/	, "gsAct" 
 			/* type of seed behavior 	*/	, splitSeed.splitMaxThreshold
 			/* seed move to greater ? 	*/	, true 
-			/* set increment test 		*/	, 0.001
+			/* set increment test 		*/	, 0.000001
 											)) ;
 	
 	// generateNetEdgeNear (  )
@@ -153,7 +153,7 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 1000 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 100 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 

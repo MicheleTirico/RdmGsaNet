@@ -37,9 +37,7 @@ public class expChart extends JFrame  {
     String xAxisLabel ;
     String yAxisLabel ;
   
-    Map map ;
-	
-	// costructor 
+	// COSTRUCTOR  
 	public expChart (	typeChart type ,
 						String chartTitle, String xAxisLabel , String yAxisLabel ,
 						int width , int height , 
@@ -82,7 +80,7 @@ public class expChart extends JFrame  {
 	}
 	
 	// create dataset of values ( which is a map java collection ) 
-	private XYDataset createDataset(  Map<Integer, ArrayList<Double>> map   ) {
+	private XYDataset createDataset(  Map<Double, ArrayList<Double>> map   ) {
 		
 		// create dataset
 		XYSeriesCollection dataset = new XYSeriesCollection();
@@ -91,9 +89,9 @@ public class expChart extends JFrame  {
 		XYSeries serAct = new XYSeries("activator") ;
 		XYSeries serInh = new XYSeries("inhibitor") ;
 		
-		for (Entry<Integer,ArrayList<Double>> entry : map.entrySet() ) {
+		for (Entry<Double, ArrayList<Double>> entry : map.entrySet() ) {
 			
-			double x = (double) entry.getKey();
+			double x =  entry.getKey();
 			ArrayList<Double> arrMorp = entry.getValue() ;
 			double YactVal = arrMorp.get(0) ;
 			double YInhVal = arrMorp.get(1) ;

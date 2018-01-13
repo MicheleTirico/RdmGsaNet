@@ -76,18 +76,18 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 				
 			switch (typeSplit) {
 				case onlyOneRandom: {	
-					onlyOneRandomMethod ( nNet, idNewNode, listIdNeigValMax );	// System.out.println("onlyOneRandom");
-					System.out.println("");
+					onlyOneRandomMethod ( nNet, idNewNode, listIdNeigValMax );		// System.out.println("onlyOneRandom");
+					System.out.println();
 				} break;
 									
 				case splitMax : {	
 					splitMaxMethod ( nNet, listNewNode ,  listIdNeigValMax  ); 		// System.out.println("splitMax");
-					System.out.println("");
+					System.out.println();
 				} break;
 				
 				case splitMaxThreshold : {
-					splitMaxThresholdMethod(nNet, listNewNode, listIdNeigValMax);
-					
+					splitMaxThresholdMethod(nNet, listNewNode, listIdNeigValMax);	// System.out.println("splitMaxThreshold");
+					System.out.println();
 				}
 			} //			System.out.println("list seed " + listNodeSeedGrad);
 			

@@ -19,7 +19,11 @@ import RdmGsaNetAlgo.morpAnalysis.morphogen;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.expValues;
 
-public class stroredDataAnalysis {
+/* storedDataAnalysis
+ * class to 
+ * 
+ */
+public class TESTstroredDataAnalysis {
 	
 	public enum analysisType { average , max , min }
 	
@@ -44,8 +48,8 @@ public class stroredDataAnalysis {
 		File [] files = path.listFiles();	
 		
 		for (int i = 1; i < files.length; i++){       
-			if (files[i].isFile()){ //	System.out.println(files[i]);
-				String nameFileExpStep = nameFileGr+"_step_"+i;	//	System.out.println(nameFileExpStep)
+			if (files[i].isFile()){ 												//	System.out.println(files[i]);
+				String nameFileExpStep = nameFileGr+"_step_"+i;						//	System.out.println(nameFileExpStep)
 				
 				Graph graph = expGraph.getGraphDgs(folderGr, nameFileExpStep);
 				Map<String, ArrayList<Double>> mapIdMorp = expValues.getMapIdGsMorp(graph);    
@@ -56,14 +60,14 @@ public class stroredDataAnalysis {
 				for (Entry<String, ArrayList<Double>> entry : mapIdMorp.entrySet()) {
 					
 					ArrayList<Double> arrMorp = new ArrayList<Double>();
-					arrMorp = entry.getValue();		//	System.out.println(arrMorp);
+					arrMorp = entry.getValue();										//	System.out.println(arrMorp);
 					
 					double act = arrMorp.get(0);
 					double inh = arrMorp.get(1);
 					
 					arrAct.add(act);
 					arrInh.add(inh);
-				}		//				System.out.println(arrAct);
+				}																	//	System.out.println(arrAct);
 				
 				double 	actVal = 0, 
 						inhVal = 0 ;
@@ -91,6 +95,7 @@ public class stroredDataAnalysis {
 			}
 		}			
 	}
+	
 	public static Map<Integer,ArrayList<Double>>  getMapStepValMorp ( Boolean storedMap, String folderExp , String nameFileExp , analysisType type ) throws IOException {
 		
 		Map< Integer , ArrayList<Double>> mapStepValMorp = new HashMap< Integer , ArrayList < Double >> ( ) ;
@@ -101,7 +106,7 @@ public class stroredDataAnalysis {
 		
 		for (int i = 1; i < files.length; i++){       
 			if (files[i].isFile()){ //	System.out.println(files[i]);
-				String nameFileExpStep = nameFileExp+"_step_"+i;	//	System.out.println(nameFileExpStep)
+				String nameFileExpStep = nameFileExp+"_step_"+ i;							//	System.out.println(nameFileExpStep)
 				
 				Graph graph = expGraph.getGraphDgs(folderExp, nameFileExpStep);
 				Map<String, ArrayList<Double>> mapIdMorp = expValues.getMapIdGsMorp(graph);    
@@ -112,14 +117,14 @@ public class stroredDataAnalysis {
 				for (Entry<String, ArrayList<Double>> entry : mapIdMorp.entrySet()) {
 					
 					ArrayList<Double> arrMorp = new ArrayList<Double>();
-					arrMorp = entry.getValue();		//	System.out.println(arrMorp);
+					arrMorp = entry.getValue();												//	System.out.println(arrMorp);
 					
 					double act = arrMorp.get(0);
 					double inh = arrMorp.get(1);
 					
 					arrAct.add(act);
 					arrInh.add(inh);
-				}		//				System.out.println(arrAct);
+				}																			//	System.out.println(arrAct);
 				
 				double 	actVal = 0, 
 						inhVal = 0 ;

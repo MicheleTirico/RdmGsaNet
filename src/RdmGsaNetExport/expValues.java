@@ -2,7 +2,6 @@ package RdmGsaNetExport;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,7 +15,7 @@ import org.graphstream.graph.Node;
 
 public class expValues {
 	
-	// method to export in a forder generic map after simulation
+	// method to export in a folder generic map after simulation
 	public static void writeMap ( Boolean writeRun, Map map , String folderMap, String nameMap ) throws IOException {
 		if ( writeRun == true ) {
 			
@@ -49,6 +48,8 @@ public class expValues {
 		return map ;
 	}
 	
+	/*	method to create a map with id of and list of morphogens of each nodes
+	 * 		map < string, list > = map < id , morphogen >	 			*/
 	public static Map<String, ArrayList<Double>> getMapIdGsMorp ( Graph graph ) {
 		
 		Map<String, ArrayList<Double>> mapIdGsMorp = new HashMap<String, ArrayList<Double>>();

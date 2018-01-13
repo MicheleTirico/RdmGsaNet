@@ -15,6 +15,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 public class gsAlgoToolkit {
 	
+	// method to get weighted distance among two nodes in the same graph
 	public static double getDistWeight ( Graph graph, Node n1, Node n2) {
 		
 		setWeigth(graph) ;
@@ -29,6 +30,7 @@ public class gsAlgoToolkit {
 		return dist;			
 	}
 	
+	// method to set attribute "length" to each edge and distance start and end nodes
 	private static void setWeigth ( Graph graph ) {
 		
 		for ( Edge e : graph.getEachEdge()) {
@@ -55,6 +57,7 @@ public class gsAlgoToolkit {
 		return Math.sqrt( distSq );
 	}
 	
+	// method to get geometric distance among two nodes in the same graph
 	public static double getDistTopo ( Graph graph, Node n1, Node n2) {
 		
 		Dijkstra dist = new Dijkstra();
@@ -66,6 +69,7 @@ public class gsAlgoToolkit {
 		return dist.getPathLength(n2);	
 	}
 
+	// method to get a list of nodes with the max degree
 	public static ArrayList<String> getNodeMaxDegree ( Graph graph ) {
 		
 		ArrayList<String> list = new ArrayList<String> () ;
@@ -86,6 +90,7 @@ public class gsAlgoToolkit {
 		return list;
 	}
 	
+	// method to assign the same coordinate between two nodes ( owned by two graph ) 
 	public static void setNodeCoordinateFromNode ( Graph graphFrom , Graph graphTo, Node nFrom , Node nTo ) {
 		
 		// get coordinate nFrom

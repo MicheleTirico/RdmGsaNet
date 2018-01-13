@@ -7,9 +7,9 @@ import java.util.Map;
 import RdmGsaNetAlgo.*;
 import RdmGsaNetExport.*;
 import RdmGsaNetExport.expChart.typeChart;
-import RdmGsaNet_Analysis.stroredDataAnalysis.analysisType;
+import RdmGsaNet_Analysis.TESTstroredDataAnalysis.analysisType;
 
-public class runAnalysis {
+public class TESTanalysis {
 	
 	// export map
 	private static String folderMap 	= "C:\\Users\\Michele TIRICO\\Desktop\\prove\\"; 
@@ -37,7 +37,7 @@ public class runAnalysis {
 // CREATE MAPS
 	
 		// create map of val
-		stroredDataAnalysis.storedMapStepValMorp(folderGr, nameFileGr, folderMap, nameMapAve, nameMapMax, nameMapMin, true, true, true );
+		TESTstroredDataAnalysis.storedMapStepValMorp(folderGr, nameFileGr, folderMap, nameMapAve, nameMapMax, nameMapMin, true, true, true );
 		
 		// get map of val
 		Map<Integer,ArrayList<Double>> mapStepMorpAve = expValues.readMap(true, folderMap, nameMapAve) ;
@@ -45,8 +45,8 @@ public class runAnalysis {
 		Map<Integer,ArrayList<Double>> mapStepMorpMin = expValues.readMap(true, folderMap, nameMapMin) ;
 
 		// create mapStepSPACAverage
-		Map< Integer, ArrayList< Double >> mapStepSPACAverage = stroredDataAnalysis. getMapStepSPACAverage(true, folderGr, nameFileGr, 500 ) ;
-		Map< Integer, ArrayList< Double >> mapStepSPACAssAverage = stroredDataAnalysis. getMapStepSPACAverage(true, folderGr, nameFileGr, 500 ) ;
+		Map< Integer, ArrayList< Double >> mapStepSPACAverage = TESTstroredDataAnalysis. getMapStepSPACAverage(true, folderGr, nameFileGr, 500 ) ;
+		Map< Integer, ArrayList< Double >> mapStepSPACAssAverage = TESTstroredDataAnalysis. getMapStepSPACAverage(true, folderGr, nameFileGr, 500 ) ;
 		
 // CREATE CHARTS 	
 		createChart(true, mapStepMorpAve , nameFileChartAverage );	
@@ -92,7 +92,6 @@ public class runAnalysis {
 			xyChartMin.saveChart(true,  folderChart, nameFileChartMin );		
 		}
 	}
-	
 	
 	private static void createChart ( boolean createChart , Map map , String nameChart) throws IOException {
 		if ( createChart == true ) { 

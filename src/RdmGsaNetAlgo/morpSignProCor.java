@@ -1,6 +1,5 @@
 package RdmGsaNetAlgo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +16,8 @@ public class morpSignProCor {
 	private static Map<String , Double> mapStringSPACass = new HashMap<String, Double> ();
 	private static Map<String , Double> mapStringSPCC = new HashMap<String, Double> ();
 	
+	/* method to create a map of SPAC value of defined morphogen.
+	* 															*/
 	public static Map<String, Double> getMapIdSPACval ( Graph graph0 , Graph graph1 , morpAnalysis.morphogen MorpType ) {
 		
 		Map<String , Double> mapStringMorp0 = new HashMap<String, Double> ();
@@ -50,10 +51,11 @@ public class morpSignProCor {
 		}
 		return mapStringSPAC ;
 	}
-
-	// morp2 = morp at tn;
-	// morp1 = morp at tn-1;
-	// morp0 = morp at tn-2;
+	
+	/* method to create a map of SPAC value of defined morphogen.
+	* morp2 = morp at tn;
+	* morp1 = morp at tn-1;
+	* morp0 = morp at tn-2;																*/
 	public static Map<String , Double> getMapSPACassVal (Graph graph0, Graph graph1, Graph graph2 , morpAnalysis.morphogen MorpType ) {
 		
 		Map<String , Double> mapStringMorp0 = new HashMap<String, Double> ();
@@ -88,6 +90,9 @@ public class morpSignProCor {
 		return mapStringSPACass ;
 	}
 
+	/* method to create a map of SPCC value of morphogens. 
+	 * 
+	 */
 	public static Map<String, Double> getMapSPCCval ( Graph graph0 , Graph graph1  ) {
 		
 		Map<String , Double> mapStringAct0 = new HashMap<String, Double> ();
@@ -115,8 +120,5 @@ public class morpSignProCor {
 		}
 		return  mapStringSPCC ;
 	}
-	
 
-
-	
 }

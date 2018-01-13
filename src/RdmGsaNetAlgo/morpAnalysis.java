@@ -3,6 +3,7 @@ package RdmGsaNetAlgo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -22,12 +23,12 @@ public class morpAnalysis {
 
 	private Map<String, Double > mapIdLisa = new HashMap<String , Double >() ;
 	
+	public enum analysisType { average , max , min }
 	public enum spatialAutoCor { moran, lisa }
 	
 	private static double [][] matrixLisa ;
 	
 // SPATIAL AUTO CORRELATION LISA LOCAL MORAN  ---------------------------------------------------------------------------------------------------------------------------	
-	
 	public static void spatialAutoCorLisaLocalMoran (	Graph graph , morphogen MorpType , double radius , morpSpatialAutoCor.distanceMatrixType type) {
 		System.out.println("lisa");
 		String morp  ;
@@ -117,14 +118,46 @@ public class morpAnalysis {
 		Map<String , Double> mapIdNodeSPCC = morpSignProCor.getMapSPCCval(graph0, graph1 );
 	}
 
-// SPATIAL AUTO CORRELATION MORAN  -----------------------------------------------------------------------------------------------------------------------------------	
-	
-	private static void spatialAutoCorMoran () {
+// SPATIAL AUTO CORRELATION MORAN  -----------------------------------------------------------------------------------------------------------------------------------		
+	public static void spatialAutoCorMoran () {
 		System.out.println("spatial auto correlation moran");
 	}
+
+// DATA ANALYSIS ------------------------------------------------------------------------------------------------------------------------------------
+	
+	// get a statistical value of attribute of node 
+	public static double getAttributeStatistic (Graph graph , String attribute , analysisType type  ) { 
+		
+		double statisticVal = 0 ;
+		ArrayList<Double> arrAttr = new ArrayList<Double>();
+		
+		for ( Node n : graph.getEachNode()) {
+			
+			double attrVal = n.getAttribute(attribute);												//	System.out.println(arrMorp);
+			arrAttr.add(attrVal);
+		}	
+
+		switch (type) {
+			case average: {
+				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).average().getAsDouble();	
+				break;
+			}
+			case max : {
+				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).max().getAsDouble();
+				break;
+			}
+			case min : {
+				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).min().getAsDouble();
+				break;
+			}
+		}
+		return statisticVal;
+	}
+	
+	
 	
 // PRIVATE METHODS ---------------------------------------------------------------------------------------------------------------------------------------------------
-// set for each nodes an attribute that means the value of correlation
+	// set for each nodes an attribute that means the value of correlation
 	private static void setCorValInGraph ( Graph graph , double val , String corAttributeStr) {		
 		for ( Node n : graph.getEachNode()) {	n.setAttribute(corAttributeStr, val);	}
 	}

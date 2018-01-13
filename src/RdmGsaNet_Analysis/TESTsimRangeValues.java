@@ -21,7 +21,13 @@ import RdmGsaNet_pr08.generateNetNodeThreshold;
 import RdmGsaNet_pr08.generateNetEdge;
 import RdmGsaNet_pr08.generateNetEdgeNear;
 
-public class SimRangeValues {
+/* simRangeValues
+ * In this class we run more than simulation. We defined the range of the paramether of RDm, the max step
+ * and the folder to stored results.
+ * NB: before simulation, check new classes setup in order to be sure these are the latest developed.
+ */
+
+public class simRangeValues {
 	
 	// start storing
 	private static String fileType = ".dgs" ;
@@ -62,7 +68,6 @@ public class SimRangeValues {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 	
-		
 		// set list of parameters
 		ArrayList<Double> DaPar = new ArrayList<Double> (Arrays.asList(0.1)); 
 		ArrayList<Double>  DiPar = new ArrayList<Double> (Arrays.asList(0.1)); 
@@ -118,8 +123,10 @@ public class SimRangeValues {
 			}
 		}
 	}
+		
+// PRIVATE METHODS --------------------------------------------------------------------------------------------------------------------------
 	
-	
+	// create list of parameters in defined range 
 	private static ArrayList<Double> setListParRange ( double min , double max , double inc , int round) {
 	
 		ArrayList<Double> arrList = new ArrayList<Double>() ;

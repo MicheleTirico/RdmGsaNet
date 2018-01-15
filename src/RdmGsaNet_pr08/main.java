@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -42,7 +43,7 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* 		setupGsGrid 	->	int size		=	graph size , 
 	* 							enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 //	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
@@ -63,7 +64,7 @@ public class main {
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
 			/* number of started seed 	*/	1 
 			/* morphogen 				*/	, "gsAct" 
-			/* type of seed behavior 	*/	, splitSeed.splitMaxThreshold
+			/* type of seed behavior 	*/	, splitSeed.onlyOneRandom
 			/* seed move to greater ? 	*/	, true 
 			/* set increment test 		*/	, 0.000001
 											)) ;
@@ -88,8 +89,8 @@ public class main {
 		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
 			/* Da 	*/			0.2,			
 			/* Di 	*/			0.1, 		
-			/* feed */			0.062 , 	
-			/* kill */			0.061 ,		
+			/* feed */			0.03 , 	
+			/* kill */			0.062 ,		
 								true , 1E-5 ,
 								true , 1E-5 , 1 ) ;
   
@@ -153,75 +154,31 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 100 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 2 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 
 //			System.out.println(n.getId() + n.getAttributeKeySet());
 //			System.out.println(n.getId() + " seedGrad " + n.getAttribute("seedGrad") + " oldSeedGrad " + n.getAttribute("oldSeedGrad") );	
 		}
-//		System.out.println(netGraph.getEdgeCount());
+		System.out.println(gsGraph.getNodeCount());
+		Map <Double, Double> mapTestAss = morpAnalysis.getMapFrequencyAss(gsGraph, "gsAct", 10);
 		
-//		System.out.println("new nodes " + simulation.getMapStepNewNodeId());
-//		System.out.println("node set  " + simulation.getMapStepIdNet());
-
-		/*
-		try {
-		String idNode1 = "46_49";
-		String idNode2 = "46_47";
+		Map <Double, Double> mapTestRel = morpAnalysis.getMapFrequencyRel(gsGraph, "gsAct", 10);
+		System.out.println("mapTestAss " + mapTestAss);
 		
-		Node nNet = netGraph.getNode(idNode1);
-		Iterator<Node> iterNet = nNet.getNeighborNodeIterator() ;
+		System.out.println("mapTestRel " + mapTestRel);
 		
-		while ( iterNet.hasNext()) {				
-			
-			Node neig = iterNet.next() ;			
-			System.out.println("neig of " + nNet.getId() + " = " + neig.getId());
-		}
-		
-		Node nGs = gsGraph.getNode(idNode1);
-		Collection<String> nodeAtrSet = nGs.getAttributeKeySet() ;
-		
-		double nodeVal = nGs.getAttribute("gsAct");
-		System.out.println("\n" + nGs.getId() + " " + nodeAtrSet);
-		System.out.println(nGs.getId() + " " + nodeVal) ;
-		Iterator<Node> iter = nGs.getNeighborNodeIterator() ;		//	System.out.println("id " + n);
-		
-		while ( iter.hasNext()) {				
-			
-			Node neig = iter.next() ;			
-			double morpVal = neig.getAttribute("gsAct");	
-			System.out.println(neig.getId() + " " + morpVal);
-			int isCon = neig.getAttribute("con");
-			System.out.println(isCon);
-			}
-		
-		for ( Node n : gsGraph.getEachNode()) {
-			int isCon = n.getAttribute("con");
-			System.out.println(isCon);
-		}
-		} catch (java.lang.NullPointerException e) {
-			// TODO: handle exception
-		}
-		*/
-		
-		
-//		for ( Node n : gsGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet());		}
-
-		// print atribute set of each node 
-//		for ( Node n : netGraph.getEachNode()) {					System.out.println(n.getId() + n.getAttributeKeySet() ) ; }
-//			System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("seedAct") +  " gsInh " + n.getAttribute("seedInh"));
-//		for ( Edge e : netGraph.getEachEdge()) { System.out.println(e.getId()) ;}
-		
-			
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
-		setupViz.Viz4Color( gsGraph );
+//		setupViz.Viz4Color( gsGraph );
 		
 		setupViz.VizNodeId( netGraph );
+	
+		setupViz.Viz10ColorAct( gsGraph ) ;
 		
-		setupViz.Vizmorp(gsGraph, "gsAct");
+//		setupViz.Vizmorp(gsGraph, "gsAct");
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 
 		gsGraph.display(false) ;

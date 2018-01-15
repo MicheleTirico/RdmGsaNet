@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
 import RdmGsaNet_pr08.*;
 
 public class morpAnalysis {
@@ -154,12 +156,112 @@ public class morpAnalysis {
 		return statisticVal;
 	}
 	
+	public static Map<Double, Double> getMapFrequencyRel ( Graph graph , String attribute , int numberFrequency ) {
+		
+		Map<Double, Double> mapFrequency = new HashMap<>();
+		Map <Node, Double> mapIdAtr = new HashMap<>();
+		ArrayList<Double> listAtr = new ArrayList<>();
+		
+		for ( Node n : graph.getEachNode() ) {
+			double val =  n.getAttribute(attribute) ;
+			mapIdAtr.put(n, val);
+			listAtr.add(val);
+		}																							//	System.out.println("listAtr " + listAtr);
+		
+		double maxAtr = listAtr.stream().mapToDouble(valstat -> valstat).max().getAsDouble();
+		double minAtr = listAtr.stream().mapToDouble(valstat -> valstat).min().getAsDouble(); 		//	System.out.println("maxAtr " + maxAtr);		System.out.println("minAtr " + minAtr);
+		
+		double gap = maxAtr - minAtr;
+		double increm = minAtr + gap / numberFrequency;												//	System.out.println("gap " + gap);	System.out.println("increm " + increm);
+		
+		for ( int x = 0 ; x < numberFrequency ; x++) {
+			double key = minAtr + gap * x / numberFrequency ;
+			
+			double minFreq = minAtr + x* increm ;
+			double maxFreq = minAtr + (x + 1)* increm ;
+			
+			double freq = 	listAtr.stream()
+							.filter(p -> p >=  minFreq && p < maxFreq )
+							.count();
+			
+			mapFrequency.put(  key  ,  freq );
+		}
+		return mapFrequency;	
+	}
 	
+	public static Map getMapFrequencyAss ( Graph graph , String attribute , int numberFrequency ) {
+		
+		Map<Double, Double> mapFrequency = new HashMap<>();
+		Map <Node, Double> mapIdAtr = new HashMap<>();
+		ArrayList<Double> listAtr = new ArrayList<>();
+		
+		for ( Node n : graph.getEachNode() ) {
+			double val =  n.getAttribute(attribute) ;
+			mapIdAtr.put(n, val);
+			listAtr.add(val);
+		}																							//	System.out.println("listAtr " + listAtr);
+		
+		double maxAtr = 1;
+		double minAtr = 0;
+		
+		double gap = maxAtr - minAtr;
+		double increm = minAtr + gap / numberFrequency;												//	System.out.println("gap " + gap);	System.out.println("increm " + increm);
+		
+		for ( int x = 0 ; x < numberFrequency ; x++) {
+			double key = minAtr + gap * x / numberFrequency ;
+			
+			double minFreq = minAtr + x* increm ;
+			double maxFreq = minAtr + (x + 1)* increm ;
+			
+			double freq = 	listAtr.stream()
+							.filter(p -> p >=  minFreq && p < maxFreq )
+							.count();
+			
+			mapFrequency.put( key  ,  freq );
+		}
+		return mapFrequency;	
+	
+	}
 	
 // PRIVATE METHODS ---------------------------------------------------------------------------------------------------------------------------------------------------
 	// set for each nodes an attribute that means the value of correlation
 	private static void setCorValInGraph ( Graph graph , double val , String corAttributeStr) {		
 		for ( Node n : graph.getEachNode()) {	n.setAttribute(corAttributeStr, val);	}
+	}
+	
+	
+	// not yet implemented
+	private static Map getMapFequency ( Graph graph , String attribute , int numberFrequency , String typeFrequency ) {
+		
+		Map<Double, Double> mapFrequency = new HashMap<>();
+		Map <Node, Double> mapIdAtr = new HashMap<>();
+		ArrayList<Double> listAtr = new ArrayList<>();
+		
+		for ( Node n : graph.getEachNode() ) {
+			double val =  n.getAttribute(attribute) ;
+			mapIdAtr.put(n, val);
+			listAtr.add(val);
+		}																							//	System.out.println("listAtr " + listAtr);
+		
+		double maxAtr = listAtr.stream().mapToDouble(valstat -> valstat).max().getAsDouble();
+		double minAtr = listAtr.stream().mapToDouble(valstat -> valstat).min().getAsDouble(); 		//	System.out.println("maxAtr " + maxAtr);		System.out.println("minAtr " + minAtr);
+		
+		double gap = maxAtr - minAtr;
+		double increm = minAtr + gap / numberFrequency;												//	System.out.println("gap " + gap);	System.out.println("increm " + increm);
+		
+		for ( int x = 0 ; x < numberFrequency ; x++) {
+			double key = minAtr + gap * x / numberFrequency ;
+			
+			double minFreq = minAtr + x* increm ;
+			double maxFreq = minAtr + (x + 1)* increm ;
+			
+			double freq = 	listAtr.stream()
+							.filter(p -> p >=  minFreq && p < maxFreq )
+							.count();
+			
+			mapFrequency.put(  key  ,  freq);
+		}
+		return mapFrequency;
 	}
 }
 

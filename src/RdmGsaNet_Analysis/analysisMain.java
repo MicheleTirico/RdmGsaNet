@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.*;
+import java.util.Map.Entry;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
-
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import RdmGsaNetAlgo.morpAnalysis.analysisType;
 import RdmGsaNetExport.expChart;
@@ -84,6 +82,27 @@ public class analysisMain {
 		dgsGs.readStartDGS(gsGraph, pathStartGs);
 		dgsNet.readStartDGS(netGraph, pathStartNet);
 		
+		// Map mapMaxAct = dgsGs.getMapStepStatFromDGS(gsGraph, "gsAct", 100, 10 , pathStartGs, pathStepGs , analysisType.max  );
+		
+		Map<Double, ArrayList<Double>>  mapStepMax = new HashMap(), mapStepMin = new HashMap(), mapStepAve = new HashMap() ;
+		
+		analysisDGS.computeAllStatFromDGS(gsGraph, 500, 50 , pathStartGs, pathStepGs , mapStepMax, mapStepMin, mapStepAve);
+		
+	//	Map mapTestAve = getAveRel(mapStepMax, mapStepMin, mapStepAve);
+	
+		Map mapStepfrequency = new HashMap<>();
+		dgsGs.computeFrequencyNodeFromDGS(gsGraph, "gsAct", 100, 10, pathStartGs, pathStepGs, mapStepfrequency);
+		System.out.println(mapStepfrequency);
+		
+		/*
+		// create charts stepFrequency
+		expChart xyChartAve = new expChart(typeChart.XYchart , "Ave", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepfrequency );
+		xyChartAve.setVisible(true);
+		xyChartAve.saveChart(true,  folderChart, nameFileChartAve );
+		*/
+		
+	
+		/*
 		dgsGs.readStepDGS(gsGraph, "gsAct", 5000, 10 , pathStartGs, pathStepGs , analysisType.max , mapStepGsActMax );
 		dgsGs.readStepDGS(gsGraph, "gsInh", 5000, 10 , pathStartGs, pathStepGs , analysisType.max , mapStepGsInhMax );
 		
@@ -103,11 +122,13 @@ public class analysisMain {
 		mapStepMin = getMapStepMorp(mapStepMin, mapStepGsActMin, mapStepGsInhMin);
 		mapStepAve = getMapStepMorp(mapStepAve, mapStepGsActAve, mapStepGsInhAve);
 		
+		*/
 		// create charts Max
 		expChart xyChartMax = new expChart(typeChart.XYchart , "max", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMax );
 		xyChartMax.setVisible(true);
 		xyChartMax.saveChart(true,  folderChart, nameFileChartMax );
 		
+		/*
 		// create charts Min
 		expChart xyChartMin = new expChart(typeChart.XYchart , "min", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMin );
 		xyChartMin.setVisible(true);
@@ -116,20 +137,17 @@ public class analysisMain {
 		// create charts Ave
 		expChart xyChartAve = new expChart(typeChart.XYchart , "Ave", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepAve );
 		xyChartAve.setVisible(true);
-		xyChartAve.saveChart(true,  folderChart, nameFileChartAve );
+		xyChartAve.saveChart(true,  folderChart, nameFileChartAve );	
+		 */
 		
-//		chart.createChart();
-		
-
-		
-
+	
 	}
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
 	
 	private static Map getMapStepMorp (Map mapMorp , Map<Double, Double> mapAct , Map<Double, Double> mapInh ) {
 		
-for ( java.util.Map.Entry<Double, Double> entry : mapAct.entrySet()) {
+for ( Entry<Double, Double> entry : mapAct.entrySet()) {
 			
 			ArrayList<Double> morp = new ArrayList<>();
 			morp.add(mapAct.get(entry.getKey()));
@@ -141,5 +159,38 @@ for ( java.util.Map.Entry<Double, Double> entry : mapAct.entrySet()) {
 		return mapMorp;
 		
 	}
+	// not yet testing 
+	private static Map<Double, ArrayList<Double>> getAveRel ( Map<Double, ArrayList<Double>> mapStepMax ,Map<Double, ArrayList<Double>> mapStepMin ,Map<Double, ArrayList<Double>> mapStepAve  ) {
+		
+		Map<Double, ArrayList<Double>> map = new HashMap<Double, ArrayList<Double>>();
+		
+		for ( Entry<Double, ArrayList<Double>> entry : mapStepAve.entrySet()) {
+			
+			double step = entry.getKey();
+			ArrayList<Double> aveRelList = new  ArrayList<Double>() ;
+			
+			ArrayList<Double> arrMax = mapStepMax.get(step);
+			ArrayList<Double> arrMin = mapStepMin.get(step);
+			ArrayList<Double> listAve = mapStepAve.get(step);
+			
 
+			for (int morp = 0 ; morp <= 1 ; morp++ ) {
+
+				double valMax = arrMax.get(morp);
+				double valMin = arrMin.get(morp);
+				double valAve = listAve.get(morp);
+		
+				double gap = valMax - valMin ;
+				
+				double AveRel = valAve / gap ;
+				
+				aveRelList.add(morp, AveRel);
+//				System.out.println(aveRelList);
+			}
+			
+			map.put(step, aveRelList);
+		}
+		return map;
+		
+	}
 }

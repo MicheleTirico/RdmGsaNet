@@ -183,45 +183,43 @@ public class analysisDGS {
 		fs.end();	
 }
 	
-	public static void computeFrequencyNodeFromDGS (	Graph graph , String attribute , 
+	public static void computeFrequencyNodeFromDGS (	Graph graph , String attribute , int nFreq ,
 														int stepMax , int stepInc ,
 														String pathStart , String pathStep ,
 														Map mapStepfrequency ) throws IOException {
 		// create list of step to create images
-				ArrayList<Double> incList = getListStepAnalysis(stepInc, stepMax);						//	System.out.println(incList);
+		ArrayList<Double> incList = getListStepAnalysis(stepInc, stepMax);											//	System.out.println(incList);
 
-				// import start graph
-				try 																										{	graph.read(pathStart);		} 
-				catch (ElementNotFoundException | GraphParseException | org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
+		// import start graph
+		try 																										{	graph.read(pathStart);		} 
+		catch (ElementNotFoundException | GraphParseException | org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
 
-				// set file Source for file step
-				fs = FileSourceFactory.sourceFor(pathStep);
-				fs.addSink(graph);
+		// set file Source for file step
+		fs = FileSourceFactory.sourceFor(pathStep);
+		fs.addSink(graph);
 
-				// import file step
-				try {
-					fs.begin(pathStep);
-					while ( fs.nextStep()) {
+		// import file step
+		try {
+			fs.begin(pathStep);
+			while ( fs.nextStep()) {
 
-						double step = graph.getStep();							//	System.out.println(step);
+				double step = graph.getStep();							//	System.out.println(step);
 
-						if ( incList.contains(step)) {
-							// add methods to run for each step in incList
-							System.out.println("----------------step " + step + " ----------------" );
+				if ( incList.contains(step)) {
+					// add methods to run for each step in incList
+					System.out.println("----------------step " + step + " ----------------" );
 
-							Map <Double, Double> mapAss = morpAnalysis.getMapFrequencyAss(graph, attribute, 10);
-							mapStepfrequency.put(step, mapAss);
+					Map <Double, Double> mapAss = morpAnalysis.getMapFrequencyAss(graph, attribute, nFreq);
+					mapStepfrequency.put(step, mapAss);
 							
-							// stop iteration    
-							if ( stepMax == step ) { break; }
-						}
-					}
-				} catch (IOException e) {		}				
-				fs.end();	
+					// stop iteration    
+					if ( stepMax == step ) { break; }
+				}
+			}
+		} catch (IOException e) {		}				
+		fs.end();	
 	}
-	
-	
-	
+
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
 	
 	private static ArrayList<Double> getListStepAnalysis ( double stepInc , double stepMax ) {

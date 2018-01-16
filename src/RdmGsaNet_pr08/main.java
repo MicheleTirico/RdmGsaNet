@@ -43,7 +43,7 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* 		setupGsGrid 	->	int size		=	graph size , 
 	* 							enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 10 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 //	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
@@ -62,16 +62,16 @@ public class main {
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
 		// generateNetNodeThreshold ( ) 
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
-			/* number of started seed 	*/	1 
+			/* number of started seed 	*/	  1 
 			/* morphogen 				*/	, "gsAct" 
-			/* type of seed behavior 	*/	, splitSeed.onlyOneRandom
+			/* type of seed behavior 	*/	, splitSeed.splitMaxThreshold
 			/* seed move to greater ? 	*/	, true 
-			/* set increment test 		*/	, 0.000001
+			/* set increment test 		*/	, 0.001
 											)) ;
 	
 	// generateNetEdgeNear (  )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
-			/* radius max 	*/				0 
+			/* radius max ?	*/				0 
 			/* which node link ? 	*/		, generateNetEdgeNear.whichNode.all )) ;
 		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -154,7 +154,7 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 2 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 20 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 
@@ -164,7 +164,7 @@ public class main {
 		System.out.println(gsGraph.getNodeCount());
 		Map <Double, Double> mapTestAss = morpAnalysis.getMapFrequencyAss(gsGraph, "gsAct", 10);
 		
-		Map <Double, Double> mapTestRel = morpAnalysis.getMapFrequencyRel(gsGraph, "gsAct", 10);
+		Map <Double, Double> mapTestRel = morpAnalysis.getMapFrequencyRel(gsGraph, "gsAct", 5);
 		System.out.println("mapTestAss " + mapTestAss);
 		
 		System.out.println("mapTestRel " + mapTestRel);
@@ -199,13 +199,11 @@ public class main {
 	}
 
 	
-//-------------------------------------------------------------------------------------------------------------------------------		
-
+// GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
 	public static String getFileType () 		{ return fileType ; }
 	public static String getNameStartGs () 		{ return nameStartGs ; }
 	public static String getFolderStartGs () 	{ return folderStartGs ; }
 	public static String getPathStartGs () 		{ return pathStartGs ; }
 	public static String getNameStepGs () 		{ return nameStepGs ; }
-	public static layerNet getNetLayer() 		{return netLayer;	}
-
+	public static layerNet getNetLayer() 		{ return netLayer;	}
 }

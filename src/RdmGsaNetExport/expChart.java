@@ -4,11 +4,9 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -21,15 +19,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.general.DatasetChangeListener;
-import org.jfree.data.general.DatasetGroup;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-
-import scala.collection.Set;
-import scala.collection.generic.Sorted;
 
 
 public class expChart extends JFrame  {

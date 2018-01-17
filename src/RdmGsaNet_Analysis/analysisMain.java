@@ -83,9 +83,7 @@ public class analysisMain {
 		// read files in a loop 
 		dgsGs.readStartDGS(gsGraph, pathStartGs);
 		dgsNet.readStartDGS(netGraph, pathStartNet);
-		
-		// Map mapMaxAct = dgsGs.getMapStepStatFromDGS(gsGraph, "gsAct", 100, 10 , pathStartGs, pathStepGs , analysisType.max  );
-		
+			
 		Map<Double, ArrayList<Double>>  mapStepMax = new HashMap(), 
 										mapStepMin = new HashMap(), 
 										mapStepAve = new HashMap() ;
@@ -169,8 +167,7 @@ public class analysisMain {
 				
 				double AveRel = valAve / gap ;
 				
-				aveRelList.add(morp, AveRel);
-//				System.out.println(aveRelList);
+				aveRelList.add(morp, AveRel);//				System.out.println(aveRelList);
 			}	
 			map.put(step, aveRelList);
 		}

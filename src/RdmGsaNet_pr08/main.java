@@ -32,6 +32,7 @@ public class main {
 	private static String fileType = ".dgs" ;
 	private static String nameStartGs  ;
 
+	
 	private static String folderStartGs = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\dgs\\Da_0.2_Di_0.1_02\\";
 	private static String pathStartGs = folderStartGs + nameStartGs ;
 	
@@ -43,7 +44,7 @@ public class main {
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* 		setupGsGrid 	->	int size		=	graph size , 
 	* 							enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 100 , setupGsInter.gsGridType.grid8 ) ) ;
+	static layerGs gsLayer = new layerGs(new setupGsGrid( 50 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
 //	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
@@ -64,10 +65,13 @@ public class main {
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
 			/* number of started seed 	*/	  1 
 			/* morphogen 				*/	, "gsAct" 
-			/* type of seed behavior 	*/	, splitSeed.splitMaxThreshold
+			/* type of seed behavior 	*/	, splitSeed.splitProbability
 			/* seed move to greater ? 	*/	, true 
-			/* set increment test 		*/	, 0.001
+			/* set increment Ass		*/	, 0.001
+			/* set increm Res (not impl	*/	, 0
+			/* set prob test			*/	, 0.5
 											)) ;
+	
 	
 	// generateNetEdgeNear (  )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
@@ -154,13 +158,14 @@ public class main {
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 20 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 2000 , false , true , true , false , pathStepGs );	//		
 
 //		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 		for ( Node n : netGraph.getEachNode()) { 
 //			System.out.println(n.getId() + n.getAttributeKeySet());
 //			System.out.println(n.getId() + " seedGrad " + n.getAttribute("seedGrad") + " oldSeedGrad " + n.getAttribute("oldSeedGrad") );	
 		}
+		/*
 		System.out.println(gsGraph.getNodeCount());
 		Map <Double, Double> mapTestAss = morpAnalysis.getMapFrequencyAss(gsGraph, "gsAct", 10);
 		
@@ -168,7 +173,7 @@ public class main {
 		System.out.println("mapTestAss " + mapTestAss);
 		
 		System.out.println("mapTestRel " + mapTestRel);
-		
+		*/
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 

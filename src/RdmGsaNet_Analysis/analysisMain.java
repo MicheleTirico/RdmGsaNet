@@ -14,11 +14,12 @@ import RdmGsaNetExport.expChart;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.expChart.typeChart;
 import RdmGsaNetViz.graphViz;
+import RdmGsaNet_pr08.setupNetSeed;
 
 public class analysisMain {
 		
 	private static String fileType = ".dgs" ;
-	private static String folder = "C:\\Users\\Michele TIRICO\\ownCloud\\RdmGsaNet_exp\\Da_0.2_Di_0.1\\DGS\\";
+	private static String folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\";
 	
 // START FILES
 	// GS graph
@@ -27,7 +28,7 @@ public class analysisMain {
 	private static String pathStartGs = folderStartGs + nameStartGs + fileType ;
 	
 	// NET graph
-	private static String nameStartNet = "layerNetStart_meanPoint_center_seedAct_1.0_seedInh_1.0"  ;
+	private static String nameStartNet = "layerNetStart_Size_50_Da_0.2_Di_0.1_F_0.03_K_0.062"  ;
 	private static String folderStartNet = folder;
 	private static String pathStartNet = folderStartNet + nameStartNet + fileType ;
 	
@@ -48,22 +49,24 @@ public class analysisMain {
 	private static String nameIm = nameStepGs + "_step_";
 	
 // EXPORT CHARTS
-	private static String folderChart = "C:\\Users\\Michele TIRICO\\ownCloud\\RdmGsaNet_exp\\Da_0.2_Di_0.1\\charts\\" ;
+	private static String folderChart = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test_gradient\\chart\\" ;
 	
 	private static String nameFileChartMax = nameStartGs + "max" ;
 	private static String nameFileChartMin = nameStartGs + "min" ;
 	private static String nameFileChartAve = nameStartGs + "ave" ;
 	
 // GRAPHS
-	private static Graph gsGraph = new SingleGraph( "gsGraph"); 
-	private static Graph netGraph = new SingleGraph( "netGraph"); 
+	protected static Graph gsGraph = new SingleGraph( "gsGraph"); 
+	protected static Graph netGraph = new SingleGraph( "netGraph"); 
 		
 // CREATE CHARTS
 	private static analysisChart chart = new analysisChart();
 	
 // ANALYSIS DGS
-	private static analysisDGS dgsGs = new analysisDGS();
-	private static analysisDGS dgsNet = new analysisDGS();
+	private static analysisDGS dgsGs = new analysisDGS(false // compute degree ?
+			
+			);
+	public static analysisDGS dgsNet = new analysisDGS(true);
 	
 // MAP
 	private static Map<Double, Double> mapStepGsActMax = new HashMap<Double , Double > ();
@@ -77,6 +80,9 @@ public class analysisMain {
 	
 	public static void main(String[] args) throws IOException {
 		
+		dgsGs.setParamDegree(gsGraph , 100);
+		dgsNet.setParamDegree(netGraph , 10);
+		
 		expChart xyChart = null;
 		Map mapStepfrequency = null ;
 		
@@ -86,8 +92,12 @@ public class analysisMain {
 			
 		Map<Double, ArrayList<Double>>  mapStepMax = new HashMap(), 
 										mapStepMin = new HashMap(), 
-										mapStepAve = new HashMap() ;
+										mapStepAve = new HashMap() ,
+										mapDegree = new HashMap() ;
 		
+		dgsGs.computeMultipleStat(gsGraph, "gsAct", 10, 5, pathStartGs, pathStepGs);
+		dgsNet.computeMultipleStat(netGraph, "gsAct", 10, 5, pathStartNet, pathStepNet);
+		/*
 		mapStepfrequency = new HashMap<>();
 		
 		dgsGs.computeFrequencyNodeFromDGS(gsGraph, "gsAct", 20 , 5000, 10, pathStartGs, pathStepGs, mapStepfrequency);
@@ -173,4 +183,6 @@ public class analysisMain {
 		}
 		return map;	
 	}
+	
+	public static analysisDGS getNameObj ( ) { return dgsNet	;}
 }

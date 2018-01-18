@@ -27,7 +27,8 @@ public class simulation {
 	private static int step;
 
 // STORING GRAPH EVENTS
-	 private static FileSinkDGS fsd = new FileSinkDGS();
+	 private static FileSinkDGS fsdGs = new FileSinkDGS();
+	 private static FileSinkDGS fsdNet = new FileSinkDGS();
 
 // MAP OF GRAPH
 	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
@@ -55,7 +56,8 @@ public class simulation {
 		
 	public static void  runSim ( int stopSim, boolean printMorp , 
 								 boolean genNode, boolean genEdge , 
-								 boolean storedDgsStep , String pathStepGs  
+								 boolean storedDgsGsStep , String pathStepGs ,
+								 boolean storedDgsNetStep , String pathStepNet
 //								boolean vizMorp 
 								) 
 								throws IOException, InterruptedException {
@@ -64,12 +66,15 @@ public class simulation {
 		generateNetNode genNetNo = main.generateNetNode ;
 		
 //		if ( vizMorp == true)		{ VizThread.vizThreadMorp(); }
-		if ( storedDgsStep == true) { gsGraph.addSink(fsd); fsd.begin(pathStepGs);	}
+		if ( storedDgsGsStep == true) { gsGraph.addSink(fsdGs); fsdGs.begin(pathStepGs);	}
+
+		if ( storedDgsNetStep == true) { netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);	}
 			
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
-			if ( storedDgsStep == true) { 	gsGraph.stepBegins(step); }			
+			if ( storedDgsGsStep == true) { 	gsGraph.stepBegins(step); }			
+			if ( storedDgsNetStep == true) { 	netGraph.stepBegins(step); }	
 			
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
@@ -97,14 +102,13 @@ public class simulation {
 			updateMapGraph( mapStepNetGraph , step, netGraph);
 			
 			// print values in run
-			if ( printMorp == true) { System.out.println(mapMorp1); }
-			
-//			System.out.println("node set " + mapStepIdNet);
+			if ( printMorp == true) { System.out.println(mapMorp1); }								//			System.out.println("node set " + mapStepIdNet);
 			
 		}
 		
 		// stored graph in dgs format
-		if ( storedDgsStep == true) { 	fsd.end();	}
+		if ( storedDgsGsStep == true) { 	fsdGs.end();	}
+		if ( storedDgsNetStep == true) { 	fsdNet.end();	}
 	
 		finalStep = step - 1 ;
 ;

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceDGS;
@@ -15,6 +16,7 @@ import org.graphstream.stream.file.FileSourceFactory;
 import RdmGsaNetAlgo.morpAnalysis;
 import RdmGsaNetAlgo.morpAnalysis.analysisType;
 import RdmGsaNetExport.expGraph;
+import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 
 public class analysisDGS {
 	
@@ -22,10 +24,34 @@ public class analysisDGS {
 	private static int 			stepMax, stepInc ;
 	private static String 		pathStart , pathStep; 
 	
+	private static Graph gsGraph = analysisMain.gsGraph;
+	private static Graph netGraph = analysisMain.netGraph; 
+	
+	// boolean to choice which charts to create
+	private static boolean computeDegree;
+	
+	// degree parameters chart
+	private static int degreeFreq ;
+	private static int degreeFreqGs ;
+	private static int degreeFreqNet ;
+	
 	public static enum runMethods { onlyOneStatAnalysis , allAnalysis }
 	public static runMethods method;
 
-	
+	public analysisDGS ( boolean computeDegree ) {
+		this.computeDegree = computeDegree;
+
+	}
+
+	public static void setParamDegree ( Graph graph, int freq) {
+		if ( graph == netGraph)
+			degreeFreqNet = freq ;
+		else
+			degreeFreqGs = freq ;
+				
+		
+		
+	}
 	// method to import start graph
 	public static void readStartDGS ( Graph graph , String pathStart ) throws IOException {
 
@@ -74,6 +100,48 @@ public class analysisDGS {
 		} catch (IOException e) {		}				
 		fs.end();	
 	}
+	
+	public  void computeMultipleStat ( 	Graph graph , String morp , 
+										int stepMax , int stepInc ,
+										String pathStart , String pathStep 
+										) throws IOException { 
+		// create list of step to create images
+				ArrayList<Double> incList = getListStepAnalysis(stepInc, stepMax);						//	System.out.println(incList);
+
+				// import start graph
+				try 																										{	graph.read(pathStart);		} 
+				catch (ElementNotFoundException | GraphParseException | org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
+
+				// set file Source for file step
+				fs = FileSourceFactory.sourceFor(pathStep);
+				fs.addSink(graph);
+
+				// import file step
+				try {
+					fs.begin(pathStep);
+					while ( fs.nextStep()) {
+
+						double step = graph.getStep();							//	System.out.println(step);
+
+						if ( incList.contains(step)) {
+							// add methods to run for each step in incList
+							System.out.println("----------------step " + step + " ----------------" );
+							
+							if ( computeDegree == true ) 
+								computeFreqDegree(graph);
+							
+							
+							// stop iteration    
+							if ( stepMax == step ) { break; }
+						}
+					}
+				} catch (IOException e) {		}				
+				fs.end();	
+		
+	}
+	
+	
+	
 	
 	public static Map<Double, Double> getMapStepStatFromDGS  ( 	Graph graph , String morp ,
 												int stepMax , int stepInc ,
@@ -221,7 +289,22 @@ public class analysisDGS {
 	}
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
-	
+	private static void computeFreqDegree ( Graph graph ) {
+		
+		// set parameters
+		if ( graph == netGraph) {
+			degreeFreq = degreeFreqNet;
+		}else {
+			degreeFreq = degreeFreqGs ;
+		}
+		Map<Node, Integer> mapNodeDegree = new HashMap<Node , Integer>();
+		
+		for ( Node n : graph.getEachNode()) {
+			mapNodeDegree.put(n, n.getDegree());
+		}	
+				
+
+	}
 	private static ArrayList<Double> getListStepAnalysis ( double stepInc , double stepMax ) {
 		
 		ArrayList<Double> list = new ArrayList<Double>();

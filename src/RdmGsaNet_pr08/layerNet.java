@@ -55,10 +55,7 @@ public class layerNet {
 		// stored code
 		if ( storedDGS == true ) 	{ 	 
 			String fileType = main.getFileType();
-			String nameFile = 	"layerNetStart" +
-								"_meanPoint_" + point +
-								"_seedAct_" + seedAct +
-								"_seedInh_" + seedInh ;
+			String nameFile = 	main.getNameStartNet() ;
 			
 			String nameFileStart = nameFile ;
 			String folderStart = main.getFolderStartGs();

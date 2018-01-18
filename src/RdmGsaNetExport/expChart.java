@@ -55,11 +55,14 @@ public class expChart extends JFrame  {
 		
 		JPanel chartPanel = null ;
 		switch ( type ) {
-		case XYchart2Morp : 		{ chartPanel = createChartPanelXY2Morp ( chartTitle , xAxisLabel , yAxisLabel , map ); 	break ; }
+		case XYchart2Morp : 		{ chartPanel = createChartPanelXY2Morp ( chartTitle , xAxisLabel , yAxisLabel , map ); 			
+									break ; }
 	
-		case XYchartMultipleLine : 	{ chartPanel = createChartPanelXYMultipleLine ( chartTitle , xAxisLabel , yAxisLabel , map ) ; break ; }	
+		case XYchartMultipleLine : 	{ chartPanel = createChartPanelXYMultipleLine ( chartTitle , xAxisLabel , yAxisLabel , map ) ; 	
+									break ; }	
 		
-		case test : 				{ 																					break ; }
+		case test : 				{ 																							
+									break ; }
 		
 		}
 			
@@ -92,38 +95,6 @@ public class expChart extends JFrame  {
 	}
 	
 	// create dataset of values ( which is a map java collection ) 
-	private XYDataset createDatasetMultipleLine2 (  Map<Double, ArrayList<Double>> mapChart  ) {
-						
-		// create dataset
-		XYSeriesCollection dataset = new XYSeriesCollection();
-	
-		for ( Entry<Double, ArrayList<Double>> step : mapChart.entrySet() ) {
-			
-			System.out.println();
-			
-			String xStr = Double.toString(step.getKey()); 	
-			XYSeries ser = new XYSeries(xStr) ;		
-			
-			//	System.out.println(xStr);
-			ArrayList<Double> arr = step.getValue() ;
-			System.out.println(arr);
-			double xVal = step.getKey() ;
-			
-			for ( int freq = 0 ; freq < arr.size() ; freq++ ) {
-			//	System.out.println(arr.get(x));
-				
-				
-				double yVal = arr.get(freq) ;
-				
-				ser.add(xVal, yVal);
-			}
-			System.out.print(ser);		
-			dataset.addSeries(ser);	
-		}	
-		
-		return dataset;	 
-	}
-	
 	private XYDataset createDatasetMultipleLine (  Map<Double, ArrayList<Double>> mapChart  ) {
 	
 		
@@ -198,30 +169,6 @@ public class expChart extends JFrame  {
 	    return dataset;	
 	}
 	
-	// create dataset of values ( which is a map java collection ) 
-	private XYDataset createDatasetMultipleLine3 (  Map<Double, Map < Double,  Double > > map   ) {
-					
-		// create dataset
-		XYSeriesCollection dataset = new XYSeriesCollection();
-	
-		for ( Double step : map.keySet() ) {
-			Map<Double, Double> mapInt = map.get(step);
-				
-			// create series	
-			String xStr = Double.toString(step); 
-			XYSeries ser = new XYSeries(xStr) ;
-				
-			double xPosition = step ;
-				
-			for (  Double freq : mapInt.keySet() ) {
-				double yPosition = freq ;
-				ser.add(xPosition, yPosition);
-			}
-			dataset.addSeries(ser);
-		}		
-		return dataset;	 
-	}		
-
 	// save chart ( jpeg format ) in a folder
 	public void saveChart ( boolean saveImage ,  String folder, String nameChart ) throws IOException {
 
@@ -236,8 +183,7 @@ public class expChart extends JFrame  {
 			ChartUtilities.saveChartAsJPEG(lineChartFile, chart , width , height ) ;
 		}
 	}
-	
-	
+		
 	private static  Map <Double, ArrayList<Double>> getSortedMap ( Map<Double, Map<Double,Double>> map ) {
 		
 		Map <Double, ArrayList<Double>> mapChart = new HashMap<Double, ArrayList<Double>>();

@@ -28,18 +28,41 @@ public class main {
 	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
 	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
-	// start storing
-	private static String fileType = ".dgs" ;
-	private static String nameStartGs  ;
-
+	// STORE DGS PARAMETERS
+	private static String 	fileType = ".dgs" ,
+							fileTypeIm = "png" ;
 	
-	private static String folderStartGs = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\dgs\\Da_0.2_Di_0.1_02\\";
-	private static String pathStartGs = folderStartGs + nameStartGs ;
+	private static boolean 	doStoreStartGs 	= true, 
+							doStoreStepGs 	= true ,
+							doStoreStartNet = true , 
+							doStoreStepNet 	= true ,
+							doStoreIm		= false ;
+					
+	// start storing
+	private static String 	nameStartGs  ,
+							nameStartNet  ;
+
+	private static String 	folderStartGs = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\",
+							folderStartNet = folderStartGs ;
+	
+	private static String 	pathStartGs = folderStartGs + nameStartGs,
+							pathStartNet = folderStartNet + nameStartNet ;
 	
 	// step storing
-	private static String nameStepGs ; 
-	private static String folderStepGs = folderStartGs;
-	private static String pathStepGs ;
+	private static String 	nameStepGs ,
+							nameStepNet ;
+	
+	private static String 	folderStepGs = folderStartGs ,	
+							folderStepNet = folderStartNet ;
+	
+	private static String 	pathStepGs ,
+							pathStepNet ;
+	
+	// image storing
+	private static String 	NameImage ,
+							folderImage = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_04\\", 
+							pathImage ;
+	
 	
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* 		setupGsGrid 	->	int size		=	graph size , 
@@ -72,7 +95,6 @@ public class main {
 			/* set prob test			*/	, 0.5
 											)) ;
 	
-	
 	// generateNetEdgeNear (  )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
 			/* radius max ?	*/				0 
@@ -80,7 +102,7 @@ public class main {
 		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
-// SETUP START VALUES LAYER GS
+		// SETUP START VALUES LAYER GS
 		/*	gsAlgo -> 	enum	reactionType 
 		* 				enum	diffusionType 
 		* 				enum	extType 
@@ -99,20 +121,15 @@ public class main {
 								true , 1E-5 , 1 ) ;
   
 //-------------------------------------------------------------------------------------------------------------------------------		
-	// GENERATE LAYER GS
-		nameStartGs  =	"layerGsStart"	+
-						"_Size_"		+ setupGsGrid.getGsGridSize() +
-						"_Da_"			+ gsAlgo.getDa() +
-						"_Di_" 			+ gsAlgo.getDi() + 
-						"_F_" 			+ gsAlgo.getFeed() +
-						"_K_" 			+ gsAlgo.getKill()  ;
-		
-	/* CREATE GS GRAPH
-	 *  method to generate the graph gs
-	 *  createLayer = 	bol		setCoordinate	=
-	 *  				bol		setDefaultAtr 	=
-	 *  				bol		storedDGS		= if true , create a dgs file of started graph  */
-		gsLayer.createLayer ( false , true , false ) ;
+		// GENERATE LAYER GS
+		nameStartGs  = getName ( "Gs", "Start") ;
+		nameStartNet = getName ( "Net" , "Start" );
+		/* CREATE GS GRAPH
+		 *  method to generate the graph gs
+		 *  createLayer = 	bol		setCoordinate	=
+		 *  				bol		setDefaultAtr 	=
+		 *  				bol		storedDGS		= if true , create a dgs file of started graph  */
+		gsLayer.createLayer ( false , true , doStoreStartGs ) ;
 		
 	/* SETUP DISMORP
 	 *  setup values of distribution of gs morphogens
@@ -140,16 +157,13 @@ public class main {
 		 * 				 	bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
 		 *  			 	bol		storedDGS		= 	if true , create a dgs file of started graph
 		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , false ); 
+		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , doStoreStartNet ); 
 		
-		nameStepGs =	"layerGsStep"	+
-				"_Size_"		+ setupGsGrid.getGsGridSize() +
-				"_Da_"			+ gsAlgo.getDa() +
-				"_Di_" 			+ gsAlgo.getDi() + 
-				"_F_" 			+ gsAlgo.getFeed() +
-				"_K_" 			+ gsAlgo.getKill()  ;
-		pathStepGs = folderStepGs + nameStepGs + fileType ;
-				
+		nameStepGs = getName("Gs", "Step");  ;
+		pathStepGs = getPath(folderStepGs, nameStepGs, fileType) ;
+		
+		nameStepNet = getName("Net" , "Step");
+		pathStepNet = getPath(folderStepNet , nameStepNet , fileType) ;		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		/* RUN simulation
 		 * // runSim ( 	int 	stopSim 		= Max step to stop simulation , 
@@ -157,23 +171,10 @@ public class main {
 		 * 				bol		genNode			= generate nodes in layer net
 		 * 				bol		genEdge			= generate edges in layer net
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
+		 *  			bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 2000 , false , true , true , false , pathStepGs );	//		
+		run.runSim( 3000 , false , true , true , doStoreStepGs , pathStepGs, doStoreStepNet , pathStepNet );	//		
 
-//		for ( Node n : gsGraph.getEachNode()) { System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
-		for ( Node n : netGraph.getEachNode()) { 
-//			System.out.println(n.getId() + n.getAttributeKeySet());
-//			System.out.println(n.getId() + " seedGrad " + n.getAttribute("seedGrad") + " oldSeedGrad " + n.getAttribute("oldSeedGrad") );	
-		}
-		/*
-		System.out.println(gsGraph.getNodeCount());
-		Map <Double, Double> mapTestAss = morpAnalysis.getMapFrequencyAss(gsGraph, "gsAct", 10);
-		
-		Map <Double, Double> mapTestRel = morpAnalysis.getMapFrequencyRel(gsGraph, "gsAct", 5);
-		System.out.println("mapTestAss " + mapTestAss);
-		
-		System.out.println("mapTestRel " + mapTestRel);
-		*/
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
@@ -190,25 +191,34 @@ public class main {
 		netGraph.display(false) ;
 		
 		// get images
-		String folderIm = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_04\\" ;
-		String nameFileIm =	"image"	+
-							"_Sim_"		+ simulation.getStopSim()   +
-							"_Size_"	+ setupGsGrid.getGsGridSize() +
-							"_Da_"		+ gsAlgo.getDa() +
-							"_Di_" 		+ gsAlgo.getDi() + 
-							"_F_" 		+ gsAlgo.getFeed() +
-							"_K_" 		+ gsAlgo.getKill() +
-							".png";
+		NameImage =	getName("gs" , "start") + ".png";
 		
-//		setupViz.getImage(gsGraph, folderIm , nameFileIm );
+//		setupViz.getImage(gsGraph, folderImage , nameFileIm );
 	}
-
+	
+// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
+	// get name file
+	private static String getName ( String layer , String stepORstart ) {
+		return 	"layer" + layer + stepORstart + 
+						"_Size_" + setupGsGrid.getGsGridSize() + 
+						"_Da_"	+ gsAlgo.getDa() + 
+						"_Di_" + gsAlgo.getDi() + 
+						"_F_" + gsAlgo.getFeed() +	
+						"_K_" + gsAlgo.getKill()  ;
+	}
+	
+	// get path file
+	private static String getPath ( String nameFolder , String nameFile , String typeFile ) {
+		return nameFolder + nameFile + typeFile ;
+	}
 	
 // GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
 	public static String getFileType () 		{ return fileType ; }
 	public static String getNameStartGs () 		{ return nameStartGs ; }
+	public static String getNameStartNet () 	{ return nameStartNet ; }
 	public static String getFolderStartGs () 	{ return folderStartGs ; }
 	public static String getPathStartGs () 		{ return pathStartGs ; }
 	public static String getNameStepGs () 		{ return nameStepGs ; }
+	public static String getNameStepNet () 		{ return nameStepNet ; }
 	public static layerNet getNetLayer() 		{ return netLayer;	}
 }

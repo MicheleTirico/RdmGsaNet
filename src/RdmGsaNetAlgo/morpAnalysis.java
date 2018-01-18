@@ -125,8 +125,7 @@ public class morpAnalysis {
 		System.out.println("spatial auto correlation moran");
 	}
 
-// DATA ANALYSIS ------------------------------------------------------------------------------------------------------------------------------------
-	
+// DATA ANALYSIS ------------------------------------------------------------------------------------------------------------------------------------	
 	// get a statistical value of attribute of node 
 	public static double getAttributeStatistic (Graph graph , String attribute , analysisType type  ) { 
 		

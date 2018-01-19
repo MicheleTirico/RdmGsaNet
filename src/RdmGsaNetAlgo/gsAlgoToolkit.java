@@ -1,6 +1,7 @@
 package RdmGsaNetAlgo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.graphstream.algorithm.Dijkstra;
+import org.graphstream.graph.DepthFirstIterator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -126,6 +128,268 @@ public class gsAlgoToolkit {
 		  }
 		  return x;
 		}
+	
+// GraphStream toolkit dev ----------------------------------------------------------------------------------------------------------------
+
+	public static double [][] getDistanceMatrixTopo(Graph graph) {
+		
+		int n = graph.getNodeCount();	
+		int[][] matrix = new  int [n][n];
+		double [][] matrixTopo = new double [graph.getNodeCount()] [graph.getNodeCount()] ;
+		fillDistanceMatrixTopo(graph, matrix , matrixTopo  );
+		return matrixTopo;	
+	}
+	
+	public static double[][] getDistanceMatrixWeight ( Graph graph  ) {
+		
+		int n = graph.getNodeCount();
+		double[][] matrix = new double[n][n];
+		double [][] matrixWeight = new double [graph.getNodeCount()] [graph.getNodeCount()] ;
+		fillDistanceMatrixWeigth(graph, matrix, matrixWeight);
+		return matrixWeight;	
+	}
+	
+// PRIVATE FILL METHODS ----------------------------------------------------------------------------------------------------------
+	
+	private static void fillDistanceMatrixTopo ( Graph graph, int [][] matrix , double [][] matrixTopo ) {
+		
+		ArrayList <String> listId = new ArrayList<String> ();
+		for ( Node n : graph.getEachNode()) {	listId.add(n.getId()) ;	}	//		System.out.println(listId);
+		
+		for (int i = 0; i < matrix.length; i++) {	Arrays.fill(matrix[i], 0);	}
+		
+		for (Edge e : graph.getEachEdge()) {
+			double i = e.getSourceNode().getIndex();
+			double j = e.getTargetNode().getIndex();		
+			
+			matrix[(int)i][(int)j]++;
+			if (!e.isDirected())
+				matrix[(int)j][(int)i]++;		
+		}
+
+			for ( int  x = 0 ; x < matrixTopo.length ; x++) {
+				Arrays.fill(matrixTopo[x], 0);
+			}
+			
+			for (Edge e : graph.getEachEdge()) {		
+				for ( int x = 0 ; x < matrixTopo.length ; x++) {
+
+					for ( int y = 0 ; y < matrixTopo.length ; y++) {
+							
+						Node n1 = graph.getNode(listId.get(x));
+						Node n2 = graph.getNode(listId.get(y));
+					
+						int dist = (int) getDistTopo(graph, n1, n2);//					System.out.println(dist) ;
+						if ( x != y ) {//						System.out.println(dist) ;
+							matrixTopo[x][y] = dist ;
+					}			
+				}
+			}
+		}
+	}
+	
+	private static void fillDistanceMatrixWeigth(Graph graph,  double[][] matrix , double[][] matrixWeight ) {
+	
+		ArrayList <String> listId = new ArrayList<String> ();
+		for ( Node n : graph.getEachNode()) {	listId.add(n.getId()) ;	}	//		System.out.println(listId);
+		
+		for (int i = 0; i < matrix.length; i++) {	Arrays.fill(matrix[i], 0);	}
+		
+		for (Edge e : graph.getEachEdge()) {
+			double i = e.getSourceNode().getIndex();
+			double j = e.getTargetNode().getIndex();		
+			
+			matrix[(int)i][(int)j]++;
+			if (!e.isDirected())
+				matrix[(int)j][(int)i]++;		
+		}
+
+			for ( int  x = 0 ; x < matrixWeight.length ; x++) {
+				Arrays.fill(matrixWeight[x], 0);
+			}
+			
+			for (Edge e : graph.getEachEdge()) {		
+				for ( int x = 0 ; x < matrixWeight.length ; x++) {
+
+					for ( int y = 0 ; y < matrixWeight.length ; y++) {
+							
+						Node n1 = graph.getNode(listId.get(x));
+						Node n2 = graph.getNode(listId.get(y));
+					
+						double dist = getDistWeight(graph, n1, n2);//					System.out.println(dist) ;
+						if ( x != y ) {//						System.out.println(dist) ;
+							matrixWeight[x][y] = dist ;
+					}			
+				}
+			}
+		}	
+	}
+
+
+	public static ArrayList<String> getIdInRadiusTopo ( Graph graph , Node startNode , double radius) {
+		
+		ArrayList<String> nodeIdInRadius = new ArrayList<String>();
+		
+		DepthFirstIterator<Node> iter = new DepthFirstIterator<>(startNode);		
+		while ( iter.hasNext()) {
+			Node n = iter.next();
+		
+			int dist = (int) getDistTopo(graph, startNode, n) ;		
+			
+			if ( dist < radius) 	{ nodeIdInRadius.add(n.getId()); }
+			else 					{ break; }	
+		}	
+		return nodeIdInRadius;
+	}
+
+	public static ArrayList<String> getIdInRadiusWeight ( Graph graph , Node startNode , double radius) /*throws InterruptedException*/ {
+		
+		ArrayList<String> nodeIdInRadius = new ArrayList<String>();
+		
+		DepthFirstIterator<Node> iter = new DepthFirstIterator<>(startNode);		
+		while ( iter.hasNext()) {
+			Node n = iter.next();
+		
+			double dist = getDistWeight(graph, startNode, n);
+			
+			if ( dist < radius) 	{ nodeIdInRadius.add(n.getId()); }
+			else 					{ break; }
+//			for(Edge e: n.getEachEdge()){  e.addAttribute("ui.class","highlight"); Thread.sleep(100);  }		
+		}
+		
+//		graph.addAttribute("ui.stylesheet","" +           "edge.highlight {  " +	             "   fill-color: rgb(200,39,65);\n" +	             "   size: 3px;" +	             "}");
+		
+		return nodeIdInRadius;
+	}
+
+	public static ArrayList<String> getIdInRadiusGeom ( Node startNode , double radius) /* throws InterruptedException */ {
+		
+		ArrayList<String> nodeIdInRadius = new ArrayList<String>();
+		
+		DepthFirstIterator<Node> iter = new DepthFirstIterator<>(startNode);		
+		while ( iter.hasNext()) {
+			Node n = iter.next();
+		
+			double dist = getDistGeom(startNode, n) ;
+			
+			if ( dist < radius) 	{ nodeIdInRadius.add(n.getId()); }
+			else 					{ continue; }
+//			for(Edge e: n.getEachEdge()){  e.addAttribute("ui.class","highlight"); Thread.sleep(100);  }	
+		}		
+		return nodeIdInRadius;
+	}
+	
+public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String nodeTestStr , double radius ) {
+		
+		double [][] matrixWeightRad = new double [graph.getNodeCount()] [graph.getNodeCount()] ;		
+		fillDistanceMatrixInRadiusWeight (graph, nodeTestStr, radius, matrixWeightRad);
+		return matrixWeightRad;
+	}
+	
+	public static int [][] getDistanceMatrixInRadiusTopo ( Graph graph , String nodeTestStr , double radius ) {
+		int n = graph.getNodeCount();	
+		int[][] matrix = new int[n][n];
+		fillDistanceMatrixInRadiusTopo(graph, nodeTestStr, matrix , radius );
+		return matrix;	
+	}
+	
+	public static int [][] getDistanceMatrixInRadiusGeom ( Graph graph , String nodeTestStr, double radius) {
+		int n = graph.getNodeCount();	
+		int[][] matrix = new int[n][n];
+		fillDistanceMatrixInRadiusGeom(graph, nodeTestStr, matrix , radius );
+		return matrix;	
+	}
+	
+// PRIVATE FILL METHODS ------------------------------------------------------------------------------------------------------------------
+	
+	private static void fillDistanceMatrixInRadiusWeight ( Graph graph , String nodeTestStr , double radius, double[][] matrixWeightRad ) {
+		
+		Node nodeTest = graph.getNode(nodeTestStr);
+		
+		ArrayList <String> listId = new ArrayList<String> ();	
+		for ( Node n : graph.getEachNode()) {	listId.add(n.getId()) ;	}
+		
+		int nodeNumber = graph.getNodeCount();
+		double [][] matrixWeight = getDistanceMatrixWeight(graph);
+
+			for ( int x = 0 ; x < nodeNumber ; x++ ) {
+				
+				String IdN = listId.get(x);
+				Node n2 = graph.getNode(IdN) ;
+				double distN1 = getDistWeight(graph, nodeTest, n2) ; //				System.out.println(distN1);
+				
+				for ( int y = 0 ; y < nodeNumber ; y++ ) {
+
+					if (  distN1 < radius ) {
+						matrixWeightRad[x][y] = matrixWeight[x][y] ;
+						matrixWeightRad[y][x] = matrixWeight[y][x] ;
+					}
+					else {
+						matrixWeightRad[x][y] = 0 ;
+						matrixWeightRad[y][x] = 0 ;
+					}				
+				}
+			}
+		}
+	
+	private static void fillDistanceMatrixInRadiusGeom(Graph graph, String  nodeTestStr, int[][] matrix, double radius ) {
+		
+		Node nodeTest = graph.getNode(nodeTestStr);
+		
+		for (int i = 0; i < matrix.length; i++) 
+			Arrays.fill(matrix[i], 0);
+
+		for (Edge e : graph.getEachEdge()) {
+	
+			int i = e.getSourceNode().getIndex();
+			int j = e.getTargetNode().getIndex();
+			Node n1 = graph.getNode(i);
+			Node n2 = graph.getNode(j);
+			
+			double distN1 = getDistGeom ( n1 , nodeTest ) ;
+			double distN2 = getDistGeom ( n2 , nodeTest ) ;
+				
+			if  ( distN1 <= radius && distN2 <= radius ) {			
+				matrix[i][j]++;		
+				if (!e.isDirected())
+					matrix[j][i]++;
+				}
+			}
+		// remove row with all values == 0
+		}
+
+	private static void fillDistanceMatrixInRadiusTopo(Graph graph, String nodeTestStr, int[][] matrix, double radius ) {
+	
+		Node nodeTest = graph.getNode(nodeTestStr);
+	
+		for (int i = 0; i < matrix.length; i++) 
+			Arrays.fill(matrix[i], 0);
+
+		for (Edge e : graph.getEachEdge()) {
+
+			int i = e.getSourceNode().getIndex();
+			int j = e.getTargetNode().getIndex();
+			Node n1 = graph.getNode(i);
+			Node n2 = graph.getNode(j);
+		
+			double distN1 = getDistTopo ( graph, n1 , nodeTest ) ;
+			double distN2 = getDistTopo ( graph, n2 , nodeTest ) ;
+			
+			if  ( distN1 <= radius && distN2 <= radius ) {			
+				matrix[i][j]++;		
+				if (!e.isDirected())
+					matrix[j][i]++;
+				}
+			}
+	// remove row with all values == 0
+		}
+
+
+	
+
+	
+	
+
 
 
 }

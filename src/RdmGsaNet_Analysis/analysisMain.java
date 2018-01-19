@@ -19,7 +19,7 @@ import RdmGsaNet_pr08.setupNetSeed;
 public class analysisMain {
 		
 	private static String fileType = ".dgs" ;
-	private static String folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\";
+	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\";
 	
 // START FILES
 	// GS graph
@@ -49,7 +49,7 @@ public class analysisMain {
 	private static String nameIm = nameStepGs + "_step_";
 	
 // EXPORT CHARTS
-	private static String folderChart = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test_gradient\\chart\\" ;
+	private static String folderChart = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient\\chart\\" ;
 	
 	private static String nameFileChartMax = nameStartGs + "max" ;
 	private static String nameFileChartMin = nameStartGs + "min" ;
@@ -63,10 +63,10 @@ public class analysisMain {
 	private static analysisChart chart = new analysisChart();
 	
 // ANALYSIS DGS
-	private static analysisDGS dgsGs = new analysisDGS(false // compute degree ?
+	public static analysisDGS dgsGs = new analysisDGS( true  // compute degree ?
 			
 			);
-	public static analysisDGS dgsNet = new analysisDGS(true);
+	public static analysisDGS dgsNet = new analysisDGS( true );
 	
 // MAP
 	private static Map<Double, Double> mapStepGsActMax = new HashMap<Double , Double > ();
@@ -80,8 +80,8 @@ public class analysisMain {
 	
 	public static void main(String[] args) throws IOException {
 		
-		dgsGs.setParamDegree(gsGraph , 100);
-		dgsNet.setParamDegree(netGraph , 10);
+		dgsGs.setDegreeParam(1200);
+		dgsNet.setDegreeParam(12);
 		
 		expChart xyChart = null;
 		Map mapStepfrequency = null ;
@@ -95,8 +95,9 @@ public class analysisMain {
 										mapStepAve = new HashMap() ,
 										mapDegree = new HashMap() ;
 		
-		dgsGs.computeMultipleStat(gsGraph, "gsAct", 10, 5, pathStartGs, pathStepGs);
-		dgsNet.computeMultipleStat(netGraph, "gsAct", 10, 5, pathStartNet, pathStepNet);
+		dgsGs.computeMultipleStat( gsGraph, "gsAct", 100, 50 , pathStartGs, pathStepGs);
+		
+		dgsNet.computeMultipleStat(netGraph, "gsAct", 1000, 50 , pathStartNet, pathStepNet);
 		/*
 		mapStepfrequency = new HashMap<>();
 		

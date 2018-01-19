@@ -27,7 +27,7 @@ import RdmGsaNet_pr08.generateNetEdgeNear;
  * NB: before simulation, check new classes setup in order to be sure these are the latest developed.
  */
 
-public class simRangeValues {
+public class TESTsimRangeValues {
 	
 	// start storing
 	private static String fileType = ".dgs" ;
@@ -117,7 +117,7 @@ public class simRangeValues {
 						pathStepGs = folderStepGs + nameStepGs + fileType ;
 						
 						// RUN simulation
-						run.runSim( 1 , false , false , false , false , pathStepGs );
+						run.runSim( 1 , false , false , false , false , pathStepGs, false, fileType );
 					}
 				}	
 			}

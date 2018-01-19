@@ -77,17 +77,17 @@ public class TESTanalysis {
 		
 		if ( createChart == true ) { 
 			// average chart
-			expChart xyChartAverage = new expChart(typeChart.XYchart , "Time Varing Morphogen Averange", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMorpAve );
+			expChart xyChartAverage = new expChart(typeChart.XYchart2Morp , "Time Varing Morphogen Averange", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMorpAve );
 			xyChartAverage.setVisible(true);
 			xyChartAverage.saveChart(true,  folderChart, nameFileChartAverage );
 				
 			// max chart
-			expChart xyChartMax = new expChart(typeChart.XYchart , "Time Varing Morphogen Max", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMorpMax );
+			expChart xyChartMax = new expChart(typeChart.XYchart2Morp , "Time Varing Morphogen Max", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMorpMax );
 			xyChartMax.setVisible(true);
 			xyChartMax.saveChart(true,  folderChart, nameFileChartMax );
 							
 			// min chart
-			expChart xyChartMin = new expChart(typeChart.XYchart , "Time Varing Morphogen Min", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMorpMin );
+			expChart xyChartMin = new expChart(typeChart.XYchart2Morp , "Time Varing Morphogen Min", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMorpMin );
 			xyChartMin.setVisible(true);
 			xyChartMin.saveChart(true,  folderChart, nameFileChartMin );		
 		}
@@ -97,7 +97,7 @@ public class TESTanalysis {
 		if ( createChart == true ) { 
 			
 			// average chart
-			expChart xyChartSPACAverage = new expChart(typeChart.XYchart , nameChart, "Step (t)" , "SPAC (%)" , 800, 600 ,	map );
+			expChart xyChartSPACAverage = new expChart(typeChart.XYchart2Morp , nameChart, "Step (t)" , "SPAC (%)" , 800, 600 ,	map );
 			xyChartSPACAverage.setVisible(true);
 			xyChartSPACAverage.saveChart(true,  folderChart, nameChart );
 		}

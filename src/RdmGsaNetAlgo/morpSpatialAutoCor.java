@@ -158,11 +158,11 @@ public class morpSpatialAutoCor extends morpAnalysis {
 
 		switch (type) {
 		case topo:
-			distanceMatrix = graphstream_dev_toolkit.distanceMatrix.getDistanceMatrixTopo(graph);
+			distanceMatrix = gsAlgoToolkit.getDistanceMatrixTopo(graph);
 			break;
 			
 		case weight:
-			distanceMatrix = graphstream_dev_toolkit.distanceMatrix.getDistanceMatrixWeight(graph);
+			distanceMatrix = gsAlgoToolkit.getDistanceMatrixWeight(graph);
 			break;
 		}
 		return distanceMatrix;

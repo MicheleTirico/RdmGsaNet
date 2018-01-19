@@ -6,6 +6,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import RdmGsaNetAlgo.gsAlgoToolkit;
+
 
 //class not yet developed. 
 public class setupNetSmallGraph implements setupNetInter {
@@ -69,11 +71,11 @@ public class setupNetSmallGraph implements setupNetInter {
 //		System.out.println("meanPointId " + meanPointId);
 		
 		switch (radiusType) {
-		case topo: 		{ pointInRadiusStr =  graphstream_dev_toolkit.DFSinRadius.getIdInRadiusTopo(gsGraph, meanPointNodeGs, radius ) ;
+		case topo: 		{ pointInRadiusStr = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, meanPointNodeGs, radius); 
+						  break;	}	
+		case weight : 	{ pointInRadiusStr = gsAlgoToolkit.getIdInRadiusWeight(gsGraph, meanPointNodeGs, radius) ;
 						  break;	}
-		case weight : 	{ pointInRadiusStr = graphstream_dev_toolkit.DFSinRadius.getIdInRadiusWeight(gsGraph, meanPointNodeGs, radius) ;
-						  break;	}
-		case geom :		{ pointInRadiusStr = graphstream_dev_toolkit.DFSinRadius.getIdInRadiusGeom(meanPointNodeGs, radius) ;
+		case geom :		{ pointInRadiusStr = gsAlgoToolkit.getIdInRadiusGeom(meanPointNodeGs, radius) ;
 						  break;	}
 		}									//		System.out.println("pointInRadiusStr "+ pointInRadiusStr);
 		

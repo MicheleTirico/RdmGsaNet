@@ -42,7 +42,7 @@ public class main {
 	private static String 	nameStartGs  ,
 							nameStartNet  ;
 
-	private static String 	folderStartGs = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\",
+	private static String 	folderStartGs = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\",
 							folderStartNet = folderStartGs ;
 	
 	private static String 	pathStartGs = folderStartGs + nameStartGs,

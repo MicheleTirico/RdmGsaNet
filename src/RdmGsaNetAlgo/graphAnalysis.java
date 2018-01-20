@@ -8,11 +8,10 @@ import java.util.Map.Entry;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 import RdmGsaNet_pr08.*;
 
-public class morpAnalysis {
+public class graphAnalysis {
 	
 	private static Graph gsGraph = layerGs.getGraph();
 	private static Graph netGraph = layerNet.getGraph();
@@ -160,15 +159,22 @@ public class morpAnalysis {
 		Map<Double, Double> mapFrequency = new HashMap<>();
 		Map <Node, Double> mapIdAtr = new HashMap<>();
 		ArrayList<Double> listAtr = new ArrayList<>();
+		double val;
 		
 		for ( Node n : graph.getEachNode() ) {
-			double val =  n.getAttribute(attribute) ;
+			
+			if (attribute == "degree" )  	
+				val = n.getDegree();
+			else							
+				val =  n.getAttribute(attribute) ;
+			
 			mapIdAtr.put(n, val);
 			listAtr.add(val);
 		}																							//	System.out.println("listAtr " + listAtr);
 		
 		double maxAtr = listAtr.stream().mapToDouble(valstat -> valstat).max().getAsDouble();
-		double minAtr = listAtr.stream().mapToDouble(valstat -> valstat).min().getAsDouble(); 		//	System.out.println("maxAtr " + maxAtr);		System.out.println("minAtr " + minAtr);
+		double minAtr = listAtr.stream().mapToDouble(valstat -> valstat).min().getAsDouble(); 		//	
+		System.out.println("maxAtr " + maxAtr);		System.out.println("minAtr " + minAtr);
 		
 		double gap = maxAtr - minAtr;
 		double increm = minAtr + gap / numberFrequency;												//	System.out.println("gap " + gap);	System.out.println("increm " + increm);
@@ -195,7 +201,11 @@ public class morpAnalysis {
 		ArrayList<Double> listAtr = new ArrayList<>();
 		
 		for ( Node n : graph.getEachNode() ) {
-			double val =  n.getAttribute(attribute) ;
+			double val;
+			if (attribute == "degree" )  	
+				val = n.getDegree();
+			else							
+				val =  n.getAttribute(attribute) ;
 			mapIdAtr.put(n, val);
 			listAtr.add(val);
 		}																							//	System.out.println("listAtr " + listAtr);
@@ -235,9 +245,15 @@ public class morpAnalysis {
 		Map<Double, Double> mapFrequency = new HashMap<>();
 		Map <Node, Double> mapIdAtr = new HashMap<>();
 		ArrayList<Double> listAtr = new ArrayList<>();
+		double val;
 		
 		for ( Node n : graph.getEachNode() ) {
-			double val =  n.getAttribute(attribute) ;
+			
+			if (attribute == "degree" )  	
+				val = n.getDegree();
+			else							
+				val =  n.getAttribute(attribute) ;
+			
 			mapIdAtr.put(n, val);
 			listAtr.add(val);
 		}																							//	System.out.println("listAtr " + listAtr);

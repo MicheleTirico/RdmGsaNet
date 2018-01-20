@@ -12,7 +12,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.graphicGraph.StyleGroupSet.ZIndex;
 
-public class morpSpatialAutoCor extends morpAnalysis {
+public class morpSpatialAutoCor extends graphAnalysis {
 	
 	public static enum distanceMatrixType { topo , weight }
 	public static distanceMatrixType type ;

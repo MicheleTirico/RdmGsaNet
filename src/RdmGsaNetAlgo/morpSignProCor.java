@@ -18,7 +18,7 @@ public class morpSignProCor {
 	
 	/* method to create a map of SPAC value of defined morphogen.
 	* 															*/
-	public static Map<String, Double> getMapIdSPACval ( Graph graph0 , Graph graph1 , morpAnalysis.morphogen MorpType ) {
+	public static Map<String, Double> getMapIdSPACval ( Graph graph0 , Graph graph1 , graphAnalysis.morphogen MorpType ) {
 		
 		Map<String , Double> mapStringMorp0 = new HashMap<String, Double> ();
 		Map<String , Double> mapStringMorp1 = new HashMap<String, Double> ();
@@ -56,7 +56,7 @@ public class morpSignProCor {
 	* morp2 = morp at tn;
 	* morp1 = morp at tn-1;
 	* morp0 = morp at tn-2;																*/
-	public static Map<String , Double> getMapSPACassVal (Graph graph0, Graph graph1, Graph graph2 , morpAnalysis.morphogen MorpType ) {
+	public static Map<String , Double> getMapSPACassVal (Graph graph0, Graph graph1, Graph graph2 , graphAnalysis.morphogen MorpType ) {
 		
 		Map<String , Double> mapStringMorp0 = new HashMap<String, Double> ();
 		Map<String , Double> mapStringMorp1 = new HashMap<String, Double> ();

@@ -27,7 +27,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class expChart extends JFrame  {
 	
 	public enum morp { activator, inhibitor }
-	public enum typeChart { XYchart2Morp,  XYchartMultipleLine , test  }
+	public enum typeChart { XYchart2Morp,  XYchartMultipleLine }
 	
 	public typeChart type; 
 //	public  chartType typeChart ;
@@ -52,22 +52,19 @@ public class expChart extends JFrame  {
 		
 		this.width = width; 
 		this.height = height ;
-		
-		JPanel chartPanel = null ;
-		switch ( type ) {
-		case XYchart2Morp : 		{ chartPanel = createChartPanelXY2Morp ( chartTitle , xAxisLabel , yAxisLabel , map ); 			
-									break ; }
 	
-		case XYchartMultipleLine : 	{ chartPanel = createChartPanelXYMultipleLine ( chartTitle , xAxisLabel , yAxisLabel , map ) ; 	
-									break ; }	
-		
-		case test : 				{ 																							
-									break ; }
-		
-		}
+		try {	
+			JPanel chartPanel = null ;
+			switch ( type ) {
+			case XYchart2Morp : 		{ chartPanel = createChartPanelXY2Morp ( chartTitle , xAxisLabel , yAxisLabel , map ); 			break ; }
+	
+			case XYchartMultipleLine : 	{ chartPanel = createChartPanelXYMultipleLine ( chartTitle , xAxisLabel , yAxisLabel , map ) ; 	break ; }	
+			}
 			
-		add(chartPanel, BorderLayout.CENTER);
-		setLayoutFrame () ;
+			add(chartPanel, BorderLayout.CENTER);
+			setLayoutFrame () ;
+			
+		} catch (java.lang.IllegalArgumentException e) {	System.exit(100);		} // exit if map is empty 
 	}
 
 	private void setLayoutFrame( ) {	
@@ -95,7 +92,7 @@ public class expChart extends JFrame  {
 	}
 	
 	// create dataset of values ( which is a map java collection ) 
-	private XYDataset createDatasetMultipleLine (  Map<Double, ArrayList<Double>> mapChart  ) {
+	private XYDataset createDatasetMultipleLine (  Map<Double, ArrayList<Double>> mapChart  ) 	{
 	
 		
 		Object[] keys = mapChart.keySet().toArray();

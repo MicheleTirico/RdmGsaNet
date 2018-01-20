@@ -14,8 +14,8 @@ import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 import org.graphstream.stream.file.FileSinkImages.OutputType;
 
-import RdmGsaNetAlgo.morpAnalysis;
-import RdmGsaNetAlgo.morpAnalysis.spatialAutoCor;
+import RdmGsaNetAlgo.graphAnalysis;
+import RdmGsaNetAlgo.graphAnalysis.spatialAutoCor;
 import RdmGsaNetAlgo.morpSpatialAutoCor;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetViz.setupViz;

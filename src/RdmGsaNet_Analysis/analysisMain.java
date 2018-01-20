@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 
-import RdmGsaNetAlgo.morpAnalysis.analysisType;
+import RdmGsaNetAlgo.graphAnalysis.analysisType;
 import RdmGsaNetExport.expChart;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.expChart.typeChart;
@@ -63,10 +63,14 @@ public class analysisMain {
 	private static analysisChart chart = new analysisChart();
 	
 // ANALYSIS DGS
-	public static analysisDGS dgsGs = new analysisDGS( true  // compute degree ?
-			
-			);
-	public static analysisDGS dgsNet = new analysisDGS( true );
+	public static analysisDGS dgsGs = new analysisDGS(
+														"dgsGs" , 		// id analysis dgs Gs
+														true  			// compute degree ?
+														);
+	
+	public static analysisDGS dgsNet = new analysisDGS( "dgsNet" , 		// id analysis dgs Net
+														false 		 	// compute degree ?
+														);
 	
 // MAP
 	private static Map<Double, Double> mapStepGsActMax = new HashMap<Double , Double > ();
@@ -80,9 +84,13 @@ public class analysisMain {
 	
 	public static void main(String[] args) throws IOException {
 		
-		dgsGs.setDegreeParam(1200);
-		dgsNet.setDegreeParam(12);
-		
+		dgsGs.setParamAnalysis(
+			/* morp analysis  		*/ "gsAct"
+			/* frequency degree		*/ , 5);
+		dgsNet.setParamAnalysis(
+			/* morp analysis  		*/ "gsAct"
+			/* frequency degree		*/ , 10 );
+			
 		expChart xyChart = null;
 		Map mapStepfrequency = null ;
 		
@@ -93,11 +101,25 @@ public class analysisMain {
 		Map<Double, ArrayList<Double>>  mapStepMax = new HashMap(), 
 										mapStepMin = new HashMap(), 
 										mapStepAve = new HashMap() ,
-										mapDegree = new HashMap() ;
+										mapFreqDegreeGs = new HashMap() ,
+										mapFreqDegreeNet = new HashMap() ;
 		
-		dgsGs.computeMultipleStat( gsGraph, "gsAct", 100, 50 , pathStartGs, pathStepGs);
+		dgsGs.computeMultipleStat( 100, 50 , pathStartGs, pathStepGs, mapFreqDegreeGs);
 		
-		dgsNet.computeMultipleStat(netGraph, "gsAct", 1000, 50 , pathStartNet, pathStepNet);
+		dgsNet.computeMultipleStat( 100, 50 , pathStartNet, pathStepNet , mapFreqDegreeNet);
+		
+		System.out.println(mapFreqDegreeNet);
+		// create charts stepFrequency
+				xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency degree Net", "Step (t)" , "degree (n)" , 800, 600 ,	mapFreqDegreeNet );
+				xyChart.setVisible(true);
+				xyChart.saveChart(false,  folderChart, "frequency degree Net" );
+	
+		 
+		 // create charts stepFrequency
+				xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency degree gs", "Step (t)" , "degree (n)" , 800, 600 ,	mapFreqDegreeGs );
+				xyChart.setVisible(true);
+				xyChart.saveChart(false,  folderChart, "frequency degree gs" );
+		
 		/*
 		mapStepfrequency = new HashMap<>();
 		

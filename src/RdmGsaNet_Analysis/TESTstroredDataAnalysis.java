@@ -13,9 +13,9 @@ import org.graphstream.graph.Node;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
-import RdmGsaNetAlgo.morpAnalysis;
+import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.morpSignProCor;
-import RdmGsaNetAlgo.morpAnalysis.morphogen;
+import RdmGsaNetAlgo.graphAnalysis.morphogen;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.expValues;
 
@@ -179,8 +179,8 @@ public class TESTstroredDataAnalysis {
 		Graph graph0 = expGraph.getGraphDgs(folderExp, nameFileExpStep0);
 		Graph graph1 = expGraph.getGraphDgs(folderExp, nameFileExpStep1);
 		
-		Map<String, Double> mapIdSPACact = morpSignProCor.getMapIdSPACval(graph0, graph1,  morpAnalysis.morphogen.activator ) ;
-		Map<String, Double> mapIdSPACinh = morpSignProCor.getMapIdSPACval(graph0, graph1,  morpAnalysis.morphogen.inhibitor ) ;
+		Map<String, Double> mapIdSPACact = morpSignProCor.getMapIdSPACval(graph0, graph1,  graphAnalysis.morphogen.activator ) ;
+		Map<String, Double> mapIdSPACinh = morpSignProCor.getMapIdSPACval(graph0, graph1,  graphAnalysis.morphogen.inhibitor ) ;
 		
 		for ( Node n1 : graph1.getEachNode()) {
 			
@@ -240,8 +240,8 @@ public class TESTstroredDataAnalysis {
 		Graph graph1 = expGraph.getGraphDgs(folderExp, nameFileExpStep1);
 		Graph graph0 = expGraph.getGraphDgs(folderExp, nameFileExpStep0);
 		
-		Map<String, Double> mapIdSPACassAct = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  morpAnalysis.morphogen.activator);
-		Map<String, Double> mapIdSPACassInh = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  morpAnalysis.morphogen.inhibitor ) ;
+		Map<String, Double> mapIdSPACassAct = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  graphAnalysis.morphogen.activator);
+		Map<String, Double> mapIdSPACassInh = morpSignProCor.getMapSPACassVal(graph0, graph1, graph2,  graphAnalysis.morphogen.inhibitor ) ;
 		
 		
 		for ( Node n1 : graph1.getEachNode()) {

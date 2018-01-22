@@ -29,7 +29,7 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	protected boolean isGreater ;
 	protected double incremAss ;
 	protected double incremRel ; 
-	protected double probabilityTest ;
+	protected static double probabilityTest ;
 	
 	static Map<Integer , ArrayList<Node>> mapStepSeed =  new HashMap<Integer , ArrayList<Node>>();
 	enum splitSeed { onlyOneRandom , splitMax , splitMaxThreshold , splitProbability }
@@ -48,9 +48,7 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 
 	@Override
 	public void generateNodeRule(int step) {
-		
-		
-	
+
 		// CREATE LIST OF SEEDGRAD AND OLDSEEDGRAD 
 		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
 		
@@ -163,10 +161,8 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	
 	private void splitProbabilityMethod(Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax, ArrayList<Node> listNewSeed ) {
 		
-		int numberMaxNewNodes = listIdNeigValMax.size();
-//		System.out.println("numberMaxNewNodes " + numberMaxNewNodes);
-		int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, probabilityTest);
-//		System.out.println("numberNewNodes " + numberNewNodes);
+		int numberMaxNewNodes = listIdNeigValMax.size();										//		System.out.println("numberMaxNewNodes " + numberMaxNewNodes);
+		int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, probabilityTest);		//		System.out.println("numberNewNodes " + numberNewNodes);
 		
 		if (numberNewNodes == 0 ) {
 			listNewSeed.add(nNet);													//	System.out.println(nNet.getId());
@@ -319,4 +315,6 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		return listIdNeigValMax;
 	}
 
+// GET METHODS ----------------------------------------------------------------------------------------------------------------------------
+	public static double getProb() 		{ return probabilityTest; }
 }

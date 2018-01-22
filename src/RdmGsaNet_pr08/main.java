@@ -18,11 +18,13 @@ import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphAnalysis.spatialAutoCor;
 import RdmGsaNetAlgo.morpSpatialAutoCor;
 import RdmGsaNetExport.expGraph;
+import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.testViz;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
+	private static int stopSim = 30 ;
 	
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
@@ -31,18 +33,18 @@ public class main {
 	// STORE DGS PARAMETERS
 	private static String 	fileType = ".dgs" ,
 							fileTypeIm = "png" ;
-	
+
 	private static boolean 	doStoreStartGs 	= true, 
-							doStoreStepGs 	= true ,
-							doStoreStartNet = true , 
-							doStoreStepNet 	= true ,
+							doStoreStepGs 	= true,
+							doStoreStartNet = true, 
+							doStoreStepNet 	= true,
 							doStoreIm		= false ;
 					
 	// start storing
 	private static String 	nameStartGs  ,
 							nameStartNet  ;
 
-	private static String 	folderStartGs = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\",
+	private static String 	folderStartGs = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient\\dgs\\testProb\\",
 							folderStartNet = folderStartGs ;
 	
 	private static String 	pathStartGs = folderStartGs + nameStartGs,
@@ -63,6 +65,8 @@ public class main {
 							folderImage = "D:\\Dropbox\\Dropbox\\JAVA\\RdmGsaNet_Export\\image\\image_04\\", 
 							pathImage ;
 	
+	static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_handleNameFile\\";
+	handleNameFile handle = new handleNameFile(folder);
 	
 	/* create reaction diffusion layer ( gs = Gray Scott )
 	* 		setupGsGrid 	->	int size		=	graph size , 
@@ -102,6 +106,9 @@ public class main {
 		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
+		handleNameFile handle = new handleNameFile(folder);
+	
+		
 		// SETUP START VALUES LAYER GS
 		/*	gsAlgo -> 	enum	reactionType 
 		* 				enum	diffusionType 
@@ -123,7 +130,8 @@ public class main {
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// GENERATE LAYER GS
 		nameStartGs  = getName ( "Gs", "Start") ;
-		nameStartNet = getName ( "Net" , "Start" );
+		nameStartNet = getNameNetParam("Net", "Start" );
+	
 		/* CREATE GS GRAPH
 		 *  method to generate the graph gs
 		 *  createLayer = 	bol		setCoordinate	=
@@ -162,7 +170,7 @@ public class main {
 		nameStepGs = getName("Gs", "Step");  ;
 		pathStepGs = getPath(folderStepGs, nameStepGs, fileType) ;
 		
-		nameStepNet = getName("Net" , "Step");
+		nameStepNet = getNameNetParam("Net", "Step");
 		pathStepNet = getPath(folderStepNet , nameStepNet , fileType) ;		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		/* RUN simulation
@@ -173,7 +181,10 @@ public class main {
 		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
 		 *  			bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 
 		 *) 	*/		
-		run.runSim( 3000 , false , true , true , doStoreStepGs , pathStepGs, doStoreStepNet , pathStepNet );	//		
+		run.runSim( stopSim , false , true , true , doStoreStepGs , pathStepGs, doStoreStepNet , pathStepNet );	//	
+		
+		
+		
 
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
@@ -207,10 +218,22 @@ public class main {
 						"_K_" + gsAlgo.getKill()  ;
 	}
 	
+	private static String getNameNetParam ( String layer , String stepORstart ) {
+		return 	"layer" + layer + stepORstart + 
+				"_Size_" + setupGsGrid.getGsGridSize() + 
+				"_Da_"	+ gsAlgo.getDa() + 
+				"_Di_" + gsAlgo.getDi() + 
+				"_F_" + gsAlgo.getFeed() +	
+				"_K_" + gsAlgo.getKill() + 
+				"_genNode_" + generateNetNode.getGenerateType() +
+				"_prob_" + generateNetNodeGradient.getProb();
+	}
+	
 	// get path file
 	private static String getPath ( String nameFolder , String nameFile , String typeFile ) {
 		return nameFolder + nameFile + typeFile ;
 	}
+	
 	
 // GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
 	public static String getFileType () 		{ return fileType ; }
@@ -221,4 +244,5 @@ public class main {
 	public static String getNameStepGs () 		{ return nameStepGs ; }
 	public static String getNameStepNet () 		{ return nameStepNet ; }
 	public static layerNet getNetLayer() 		{ return netLayer;	}
+	public static  int getStopSim() 			{ return stopSim ; } 
 }

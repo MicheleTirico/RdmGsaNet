@@ -15,6 +15,7 @@ import org.graphstream.stream.file.FileSourceFactory;
 
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
+import RdmGsaNetViz.setupViz;
 
 public class analysisDGS {
 	
@@ -28,7 +29,10 @@ public class analysisDGS {
 	private static Graph netGraph = analysisMain.netGraph; 
 	
 	// boolean to choice which charts to create
-	private boolean computeDegree;
+	private boolean computeDegree , 
+					computeStepMaxMorp ,
+					computeStepMinMorp ,
+					computeStepAveMorp ;
 	
 	// degree parameters chart
 	private int degreeFreq ;
@@ -36,13 +40,22 @@ public class analysisDGS {
 	public static enum runMethods { onlyOneStatAnalysis , allAnalysis }
 	public static runMethods method;
 
-	private static Graph graph ;
+	private Graph graph ;
 	
-	public analysisDGS (String dgsId , boolean computeDegree ) {
+	public analysisDGS (String dgsId , boolean computeDegree , boolean computeStepMaxMorp , boolean computeStepMinMorp , boolean computeStepAveMorp ) {
 		this.dgsId = dgsId;
 		this.computeDegree = computeDegree ;
+		this.computeStepMaxMorp = computeStepMaxMorp ;
+		this.computeStepMinMorp = computeStepMinMorp ;
+		this.computeStepAveMorp = computeStepAveMorp ;
 	}
 
+	// set parameters of multiple analysis
+	public void setParamAnalysis ( String morp,  int degreeFreq ) {
+		this.morp = morp ;
+		this.degreeFreq = degreeFreq ;
+	}
+	
 	// method to import start graph
 	public static void readStartDGS ( Graph graph , String pathStart ) throws IOException {
 
@@ -92,22 +105,31 @@ public class analysisDGS {
 		fs.end();	
 	}
 	
-	public  void computeMultipleStat ( int stepMax , int stepInc ,
+	public  void computeMultipleStat ( 	int stepMax , int stepInc , Boolean threadViz, 
 										String pathStart , String pathStep ,
-										Map mapFreqDegree
-										) throws IOException { 
+										Map mapFreqDegree , Map mapStepMaxMorp, Map mapStepMinMorp, Map mapStepAveMorp
+										) throws IOException, InterruptedException { 
 		
-		System.out.println("\n" + dgsId);
-		// graphAnalysis = checkDgsGraph(this);
-	
 		graph = returnGraphAnalysis(dgsId);
+		
+		if ( graph == netGraph)
+			setupViz.VizNodeId( graph );
+		
+		if ( graph == gsGraph) {
+			setupViz.Viz10ColorAct(graph);
+			}
+		
+		if ( threadViz == true )
+			graph.display(false);
 		
 		// create list of step to create images
 		ArrayList<Double> incList = getListStepAnalysis(stepInc, stepMax);						//	System.out.println(incList);
 
 		// import start graph
-		try 																										{	graph.read(pathStart);		} 
-		catch (ElementNotFoundException | GraphParseException | org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/			}
+		try 														{	graph.read(pathStart);		} 
+		catch (	ElementNotFoundException | 
+				GraphParseException | 
+				org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
 		
 		// set file Source for file step
 		fs = FileSourceFactory.sourceFor(pathStep);
@@ -117,21 +139,26 @@ public class analysisDGS {
 		try {
 			fs.begin(pathStep);
 			while ( fs.nextStep()) {
-
 				double step = graph.getStep();							//	System.out.println(step);
-
 				if ( incList.contains(step)) {
 					// add methods to run for each step in incList
-					System.out.println("----------------step " + step + " ----------------" );
-	
-					int nodeCount = graph.getNodeCount();
-//					System.out.println("nodeCount " + graphAnalysis + " " + nodeCount);
+					System.out.println("----------------step " + step + " ----------------" );				
 					
-					
-					if ( computeDegree == true ) {
-						computeFreqDegree( graph , step , mapFreqDegree);
-					}
+					if ( computeDegree == true ) 				
+						computeFreqDegree( graph , step , mapFreqDegree );	
 							
+					if ( computeStepMaxMorp == true )
+						computeStepMorp(graph, step, mapStepMaxMorp , analysisType.max );
+					
+					if ( computeStepMinMorp == true )
+						computeStepMorp(graph, step, mapStepMinMorp , analysisType.min );
+					
+					if ( computeStepAveMorp == true )
+						computeStepMorp(graph, step, mapStepAveMorp , analysisType.average );
+					
+					if ( threadViz == true) 
+						Thread.sleep(100);
+					
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}
@@ -139,7 +166,99 @@ public class analysisDGS {
 		} catch (IOException e) {		}				
 		fs.end();	
 	}
+	
+	public void TESTviz (	int stepMax , int stepInc ,
+							String pathStart , String pathStep ) throws IOException, InterruptedException {
+
+		graph = returnGraphAnalysis(dgsId);
 		
+		// create list of step to create images
+		ArrayList<Double> incList = getListStepAnalysis(stepInc, stepMax);						//	System.out.println(incList);
+
+		// import start graph
+				try 														{	graph.read(pathStart);		} 
+				catch (	ElementNotFoundException | 
+						GraphParseException | 
+						org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/		}
+						
+				// set file Source for file step
+				fs = FileSourceFactory.sourceFor(pathStep);
+				fs.addSink(graph);
+
+						// import file step
+						try {
+							fs.begin(pathStep);
+							while ( fs.nextStep()) {
+
+								double step = graph.getStep();							//	System.out.println(step);
+
+								if ( incList.contains(step)) {
+									// add methods to run for each step in incList
+									System.out.println("----------------step " + step + " ----------------" );				
+									
+									System.out.println(graph.getNodeCount());
+									Thread.sleep(1000);
+
+									// stop iteration    
+									if ( stepMax == step ) { break; }
+								}
+							}
+						} catch (IOException e) {		}				
+						fs.end();	
+				
+
+	}
+	
+	public void TESTreadNet (	Graph graph, int stepMax , int stepInc ,
+								String pathStart , String pathStep ) throws IOException {
+		
+		// create list of step to create images
+				ArrayList<Double> incList = getListStepAnalysis(stepInc, stepMax);						//	System.out.println(incList);
+
+				// import start graph
+				try 																										{	graph.read(pathStart);		} 
+				catch (ElementNotFoundException | GraphParseException | org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
+
+				// set file Source for file step
+				fs = FileSourceFactory.sourceFor(pathStep);
+				fs.addSink(graph);
+
+				// import file step
+				try {
+					fs.begin(pathStep);
+					while ( fs.nextStep()) {
+
+						double step = graph.getStep();							//	System.out.println(step);
+
+						if ( incList.contains(step)) {
+							// add methods to run for each step in incList
+							System.out.println("----------------step " + step + " ----------------" );
+
+							int nodeCount = graph.getNodeCount();
+							System.out.println(nodeCount);
+							ArrayList<Double> listTest = new ArrayList<Double>();
+							ArrayList<Double> listTestDegree = new ArrayList<Double>();
+							double valTest ;
+							for (Node n :  graph.getEachNode()) {
+						
+								listTestDegree.add((double) n.getDegree());
+								
+								
+							}
+						
+							
+							valTest = listTestDegree.stream().mapToDouble(valstat -> valstat).average().getAsDouble();
+							
+							// System.out.println(valTest);
+							// stop iteration    
+							if ( stepMax == step ) { break; }
+						}
+					}
+				} catch (IOException e) {		}				
+				fs.end();	
+	}
+	
+// OLD METHODS TO READ DGS ----------------------------------------------------------------------------------------------------------------
 	public static Map<Double, Double> getMapStepStatFromDGS  ( 	Graph graph , String morp ,
 												int stepMax , int stepInc ,
 												String pathStart , String pathStep ,
@@ -286,32 +405,31 @@ public class analysisDGS {
 	}
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
-
 	// compute frequency chart of degree
 	private void computeFreqDegree ( Graph graph , double step , Map mapFreqDegree ) {
 		
-		System.out.println(graph + " " + degreeFreq );
-	
-		for ( Node n : graph.getEachNode()) {
-		//	System.out.println(graph.getNodeCount());
-		}
 		int nFreq = degreeFreq;
 		String attribute = "degree";
 		
-		Map <Double, Double> mapDegree = graphAnalysis.getMapFrequencyRel(graph, attribute, nFreq);
+		Map <Double, Double> mapDegree = graphAnalysis.getMapFrequencyDegree(graph, attribute, nFreq) ;
 		mapFreqDegree.put(step, mapDegree);
-		
-		
-//		System.out.println("nodeCount " + graph + " " + nodeCount);
-
 	}
 
-	// set parameters of multiple analysis
-	public void setParamAnalysis ( String morp,  int degreeFreq ) {
-		this.morp = morp ;
-		this.degreeFreq = degreeFreq ;
+	private void computeStepMorp ( Graph graph , double step , Map mapStepMorp , analysisType stat) {
+		
+		Map mapAct = new HashMap<>();
+		Map mapInh = new HashMap<>();
+		double val; 
+		
+		val = graphAnalysis.getAttributeStatistic(graph, "gsAct", stat );
+		mapAct.put(step, val);		//	System.out.println(val);	
+		
+		val = graphAnalysis.getAttributeStatistic(graph, "gsInh", stat );
+		mapInh.put(step, val);		//	System.out.println(val);	
+		
+		mapStepMorp = getMapStepMorp(mapStepMorp, mapAct, mapInh);		
 	}
-	
+
 	private static Graph returnGraphAnalysis ( String dgsId ) {
 		Graph graphAnalysis = null ;
 		if ( dgsId == "dgsGs" ) 				graphAnalysis = gsGraph;

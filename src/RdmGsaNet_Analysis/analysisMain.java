@@ -8,13 +8,16 @@ import java.util.Map.Entry;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
 import RdmGsaNetExport.expChart;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.expChart.typeChart;
 import RdmGsaNetViz.graphViz;
+import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr08.setupNetSeed;
+import javafx.scene.chart.XYChart;
 
 public class analysisMain {
 		
@@ -39,7 +42,7 @@ public class analysisMain {
 	private static String pathStepGs = folderStepGs + nameStepGs + fileType ;
 	
 	// NET graph
-	private static String nameStepNet = "layerGsStep_Size_50_Da_0.2_Di_0.1_F_0.03_K_0.062"; 
+	private static String nameStepNet = "layerNetStep_Size_50_Da_0.2_Di_0.1_F_0.03_K_0.062"; 
 	private static String folderStepNet = folder;
 	private static String pathStepNet = folderStepNet + nameStepNet + fileType ;
 	
@@ -65,12 +68,18 @@ public class analysisMain {
 // ANALYSIS DGS
 	public static analysisDGS dgsGs = new analysisDGS(
 														"dgsGs" , 		// id analysis dgs Gs
-														true  			// compute degree ?
-														);
+														false , 			// compute degree ?
+														true ,
+														true ,
+														true											
+			);
 	
 	public static analysisDGS dgsNet = new analysisDGS( "dgsNet" , 		// id analysis dgs Net
-														false 		 	// compute degree ?
-														);
+														false , 		 	// compute degree ?
+														false ,
+														false,
+														false
+			);
 	
 // MAP
 	private static Map<Double, Double> mapStepGsActMax = new HashMap<Double , Double > ();
@@ -82,86 +91,74 @@ public class analysisMain {
 	private static Map<Double, Double> mapStepGsActAve = new HashMap<Double , Double > ();
 	private static Map<Double, Double> mapStepGsInhAve = new HashMap<Double , Double > ();
 	
-	public static void main(String[] args) throws IOException {
+	private static Map<Double, ArrayList<Double>>  	mapStepMaxMorp = new HashMap(), 
+													mapStepMinMorp = new HashMap(), 
+													mapStepAveMorp = new HashMap() ,
+													mapFreqDegreeGs = new HashMap() ,			
+													mapFreqDegreeNet = new HashMap() ;
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
+	
+			
 		
 		dgsGs.setParamAnalysis(
 			/* morp analysis  		*/ "gsAct"
 			/* frequency degree		*/ , 5);
 		dgsNet.setParamAnalysis(
 			/* morp analysis  		*/ "gsAct"
-			/* frequency degree		*/ , 10 );
+			/* frequency degree		*/ , 8 );
 			
-		expChart xyChart = null;
-		Map mapStepfrequency = null ;
 		
 		// read files in a loop 
-		dgsGs.readStartDGS(gsGraph, pathStartGs);
-		dgsNet.readStartDGS(netGraph, pathStartNet);
-			
-		Map<Double, ArrayList<Double>>  mapStepMax = new HashMap(), 
-										mapStepMin = new HashMap(), 
-										mapStepAve = new HashMap() ,
-										mapFreqDegreeGs = new HashMap() ,
-										mapFreqDegreeNet = new HashMap() ;
-		
-		dgsGs.computeMultipleStat( 100, 50 , pathStartGs, pathStepGs, mapFreqDegreeGs);
-		
-		dgsNet.computeMultipleStat( 100, 50 , pathStartNet, pathStepNet , mapFreqDegreeNet);
-		
-		System.out.println(mapFreqDegreeNet);
-		// create charts stepFrequency
-				xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency degree Net", "Step (t)" , "degree (n)" , 800, 600 ,	mapFreqDegreeNet );
-				xyChart.setVisible(true);
-				xyChart.saveChart(false,  folderChart, "frequency degree Net" );
-	
-		 
-		 // create charts stepFrequency
-				xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency degree gs", "Step (t)" , "degree (n)" , 800, 600 ,	mapFreqDegreeGs );
-				xyChart.setVisible(true);
-				xyChart.saveChart(false,  folderChart, "frequency degree gs" );
-		
-		/*
-		mapStepfrequency = new HashMap<>();
-		
-		dgsGs.computeFrequencyNodeFromDGS(gsGraph, "gsAct", 20 , 5000, 10, pathStartGs, pathStepGs, mapStepfrequency);
-		
-		// create charts stepFrequency
-		xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency of nodes Act", "Step (t)" , "number of nodes (n)" , 800, 600 ,	mapStepfrequency );
-		xyChart.setVisible(true);
-		xyChart.saveChart(true,  folderChart, "frequency Act" );
-		
-		mapStepfrequency = new HashMap<>() ;
-		dgsGs.computeFrequencyNodeFromDGS(gsGraph, "gsInh", 20 , 5000, 10, pathStartGs, pathStepGs, mapStepfrequency);
-		
-		// create charts stepFrequency
-		xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency of nodes Inh", "Step (t)" , "number of nodes (n)" , 800, 600 ,	mapStepfrequency );
-		xyChart.setVisible(true);
-		xyChart.saveChart(true,  folderChart, "frequency Inh" );
-		
-		/*
-		analysisDGS.computeAllStatFromDGS(gsGraph, 5000, 10 , pathStartGs, pathStepGs , mapStepMax, mapStepMin, mapStepAve);
-		mapStepMax = getMapStepMorp(mapStepMax, mapStepGsActMax, mapStepGsInhMax);
-		mapStepMin = getMapStepMorp(mapStepMin, mapStepGsActMin, mapStepGsInhMin);
-		mapStepAve = getMapStepMorp(mapStepAve, mapStepGsActAve, mapStepGsInhAve);
+	//	dgsGs.readStartDGS(gsGraph, pathStartGs);
+	//	dgsNet.readStartDGS(netGraph, pathStartNet);
 				
-		// create charts Max
-		expChart xyChartMax = new expChart(typeChart.XYchart2Morp , "max", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMax );
-		xyChartMax.setVisible(true);
-		xyChartMax.saveChart(false,  folderChart, nameFileChartMax );
+		dgsGs.computeMultipleStat( 3000, 5 , true , pathStartGs, pathStepGs, 
+								mapFreqDegreeGs , mapStepMaxMorp , mapStepMinMorp , mapStepAveMorp);	
 		
-		// create charts Min
-		expChart xyChartMin = new expChart(typeChart.XYchart2Morp , "min", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMin );
-		xyChartMin.setVisible(true);
-		xyChartMin.saveChart(false,  folderChart, nameFileChartMin );
-				
-		// create charts Ave
-		expChart xyChartAve = new expChart(typeChart.XYchart2Morp , "Ave", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepAve );
-		xyChartAve.setVisible(true);
-		xyChartAve.saveChart(false,  folderChart, nameFileChartAve );	
-		*/
+	//	dgsNet.computeMultipleStat( 100, 5 , true ,  pathStartNet, pathStepNet , 
+		//							mapFreqDegreeNet , mapStepMaxMorp , mapStepMinMorp , mapStepAveMorp );
+		
+	//	createCharts(true, false , false , false );  
+		
+
+	//	dgsNet.TESTviz ( 100, 5 , pathStartNet, pathStepNet );
+		
 	}
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
+	private static void createCharts ( boolean createChartDegree , boolean createChartMax , boolean createChartMin, boolean createChartAve ) throws IOException {
+		
+		expChart xyChart = null ;
+		
+		if ( createChartDegree == true ) {	
+			xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency degree Net", "Step (t)" , " freq degree (n)" , 800, 600 ,	mapFreqDegreeGs );
+			xyChart.setVisible(true);
+			xyChart.saveChart(true,  folderChart, "frequency degree Net" );	
+		}
+		xyChart = null ;
+		
+		if ( createChartMax == true ) {
+			 xyChart = new expChart(typeChart.XYchart2Morp , "max", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMaxMorp );
+			xyChart.setVisible(true);
+			xyChart.saveChart(true,  folderChart, "max" );			
+		}
+		xyChart = null ;
+		
+		if ( createChartMin == true ) {
+			 xyChart = new expChart(typeChart.XYchart2Morp , "min", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepMinMorp );
+			xyChart.setVisible(true);
+			xyChart.saveChart(true,  folderChart, "min" );			
+		}
+		xyChart = null ;
+		
+		if ( createChartAve == true ) {
+			 xyChart = new expChart(typeChart.XYchart2Morp , "ave", "Step (t)" , "morp (%)" , 800, 600 ,	mapStepAveMorp );
+			xyChart.setVisible(true);
+			xyChart.saveChart(true,  folderChart, "ave" );			
+		}
+		xyChart = null ;		
+	}
 	
 	private static Map getMapStepMorp (Map mapMorp , Map<Double, Double> mapAct , Map<Double, Double> mapInh ) {
 		

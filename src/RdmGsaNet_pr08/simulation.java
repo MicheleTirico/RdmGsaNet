@@ -2,21 +2,12 @@ package RdmGsaNet_pr08;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
-import RdmGsaNetExport.expGraph;
-import RdmGsaNetViz.VizThread;
-import RdmGsaNetViz.graphViz2;
-import RdmGsaNetViz.setupViz;
 
 public class simulation {	
 	
@@ -65,7 +56,6 @@ public class simulation {
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
 		
-//		if ( vizMorp == true)		{ VizThread.vizThreadMorp(); }
 		if ( storedDgsGsStep == true) { gsGraph.addSink(fsdGs); fsdGs.begin(pathStepGs);	}
 
 		if ( storedDgsNetStep == true) { netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);	}
@@ -102,8 +92,7 @@ public class simulation {
 			updateMapGraph( mapStepNetGraph , step, netGraph);
 			
 			// print values in run
-			if ( printMorp == true) { System.out.println(mapMorp1); }								//			System.out.println("node set " + mapStepIdNet);
-			
+			if ( printMorp == true) { System.out.println(mapMorp1); }								//			System.out.println("node set " + mapStepIdNet);	
 		}
 		
 		// stored graph in dgs format
@@ -111,7 +100,8 @@ public class simulation {
 		if ( storedDgsNetStep == true) { 	fsdNet.end();	}
 	
 		finalStep = step - 1 ;
-;
+		
+		
 	}
 		
 // PRIVATE METHODS --------------------------------------------------------------------------------------------------------------
@@ -196,7 +186,7 @@ public class simulation {
 	public static Map<Double, ArrayList<String>> getMapStepNewNodeId  () 	{ return mapStepNewNodeId  ; }  
 	public static Map<Double, Graph>			 getMapStepNetGraph	() 		{ return mapStepNetGraph  ; }
 	
-	public static int getStopSim() { return finalStep ; } 
+	public static  int getStopSim() { return stopSim ; } 
 	public static ArrayList<String> getListIdGs () { return listIdGs ; }
 	public static int getStep () { return step ; }
 }

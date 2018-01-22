@@ -30,11 +30,10 @@ public class expChart extends JFrame  {
 	public enum typeChart { XYchart2Morp,  XYchartMultipleLine }
 	
 	public typeChart type; 
-//	public  chartType typeChart ;
 
 	public morp typeMorp ;
 	
-	int width , height ;
+	public int width , height ;
 	
 	JFreeChart chart ;
 	
@@ -83,9 +82,7 @@ public class expChart extends JFrame  {
 	    Map <Double, ArrayList<Double>> mapChart = getSortedMap( map );	//     System.out.println(mapChart);
 	    
 	    XYDataset dataset = createDatasetMultipleLine ( mapChart );
-	    
-	//    XYDataset dataset = createDatasetMultipleLine ( map );
-
+	
 	    chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataset);
 	    
 		return new ChartPanel(chart);
@@ -94,13 +91,10 @@ public class expChart extends JFrame  {
 	// create dataset of values ( which is a map java collection ) 
 	private XYDataset createDatasetMultipleLine (  Map<Double, ArrayList<Double>> mapChart  ) 	{
 	
-		
+		// Get random key
 		Object[] keys = mapChart.keySet().toArray();
 		Random rand = new Random();
-
-		// Get random key
 		Double randKey = (Double) keys[ rand.nextInt(keys.length) ];
-		
 		ArrayList<Double> randList = mapChart.get(randKey);
 		
 		// create dataset
@@ -118,11 +112,9 @@ public class expChart extends JFrame  {
 				double YVal = arr.get(freq) ;
 		
 				ser.add(xPosition,YVal);
-
 			}
 			// set series in dataset
-			dataset.addSeries(ser);	
-			
+			dataset.addSeries(ser);		
 		}	
 		return dataset;	 
 	}

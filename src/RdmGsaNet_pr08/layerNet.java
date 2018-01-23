@@ -7,19 +7,22 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
 
+import RdmGsaNetExport.handleNameFile;
+
 public class layerNet {	
 	
 	// COSTANTS
 	static FileSinkDGS fsd = new FileSinkDGS();
+	private handleNameFile handle = main.getHandle();
 	
 	// initialization graph net
 	private static Graph netGraph = new SingleGraph("netGraph");
 	private static Graph gsGraph = layerGs.getGraph();
 	
 	public enum meanPointPlace { center , random , border }
-	meanPointPlace point ;
+	private static meanPointPlace point ;
 	
-	private setupNetInter layout;
+	private static setupNetInter layout;
 	
 	// COSTRUCTOR
 	public layerNet (setupNetInter layout ) {
@@ -53,14 +56,8 @@ public class layerNet {
 		if ( setSeedMorpInGs = true ) { setSeedMorpInGs ( ) ; }
 		 
 		// stored code
-		if ( storedDGS == true ) 	{ 	 
-			String fileType = main.getFileType();
-			String nameFile = 	main.getNameStartNet() ;
-			
-			String nameFileStart = nameFile ;
-			String folderStart = main.getFolderStartGs();
-			String pathStart = folderStart + nameFileStart + fileType;
-			
+		if ( storedDGS == true ) 	{ 	
+			String pathStart = handle.getPathStartNet();
 			netGraph.write(fsd, pathStart);	}
 	}
 		
@@ -72,7 +69,6 @@ public class layerNet {
 			n.addAttribute( "seedAct" , 0 );
 			n.addAttribute( "seedInh" , 0 );			
 			n.addAttribute( "seedGrad" , 0 );
-//			n.addAttribute("oldSeedGrad", 0 );	
 		}
 	}
 	
@@ -104,7 +100,8 @@ public class layerNet {
 	// get graph
 	public static Graph getGraph ( ) { return netGraph; }
 
+
 	
-	
+	public static String getLayout () { return layout.getClass().getSimpleName() ; }
 	
 }

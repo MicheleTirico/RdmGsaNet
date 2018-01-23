@@ -19,13 +19,13 @@ public class gsAlgoDiffusion  {
 	gsAlgo.diffusionType type;
 	gsAlgo.morphogen morp;
 		
-	static final int aldo = 5 ;
-	private static  double 	sideValSt ,			cornerValSt ;
+	public static String typeDiff ;
+	private static  double 	sideValSt ,			
+							cornerValSt ;
 		
 	public enum weightType { matrix , length }
 	private static weightType typeWeig;
-		
-		
+			
 	// constructor ( define type of diffusion and morphogen )
 	public gsAlgoDiffusion (gsAlgo.diffusionType type,  gsAlgo.morphogen morp ) {
 		this.type = type;
@@ -38,23 +38,18 @@ public class gsAlgoDiffusion  {
 			
 		switch (type) {
 			case fick: {
-				diffusion = speed * fick ( graph, morp, id, mapMorp ) ; 	
-//				System.out.println("diffFick");
-			} break ;
-				// diffusion not yet developed 
-			case perimeter : 		{ 
-				diffusion = perimeter ( ) ;  
-//				System.out.println("diffPer");
-			} break ;
-			case weight : 			{ 
-				diffusion = speed * weight ( typeWeig, graph, morp, id, mapMorp ) ;
-//				System.out.println("diffWeig");
-				
-			} break ;
+				diffusion = speed * fick ( graph, morp, id, mapMorp ) ; 			} break ;	//				System.out.println("diffFick");
 			
-//			default: { System.out.println("diffusion type not defined") ; diffusion = 0; }
-		}	
-//		System.out.println(diffusion);
+				
+			// diffusion not yet implemented 
+			case perimeter : { 
+				diffusion = perimeter ( ) ;  										} break ;	//				System.out.println("diffPer");
+			
+			case weight : { 
+				diffusion = speed * weight ( typeWeig, graph, morp, id, mapMorp ) ;	} break ;	//				System.out.println("diffWeig");
+					
+		}																						//		System.out.println(diffusion);
+		typeDiff = type.toString();
 		return diffusion;
 	}
 
@@ -103,8 +98,7 @@ public class gsAlgoDiffusion  {
 		diffusion =  - degree * d0 + sumNeig ;		//	System.out.println(diffusion);
 		return diffusion ;
 	}
-			
-	
+				
 //----------------------------------------------------------------------------------------------------------------------------------
 		
 	// diffusion not defined
@@ -155,8 +149,7 @@ public class gsAlgoDiffusion  {
 		else 					{	morpInt = 1 ;	}			
 					
 		// value of morhogen in node
-		morp0 = (double) morp0list.get(morpInt);
-//		System.out.println(morpInt + " " + morp0);
+		morp0 = (double) morp0list.get(morpInt);											//		System.out.println(morpInt + " " + morp0);
 		
 		ArrayList<String> listNeig = new ArrayList<String>();
 		ArrayList<String> listNeigSide = new ArrayList<String>();
@@ -169,17 +162,13 @@ public class gsAlgoDiffusion  {
 			String idNeig = neig.getId();
 		
 			Edge e = n.getEdgeFrom(neig) ;
-			double len = e.getAttribute("length");			//	System.out.println(len);
+			double len = e.getAttribute("length");											//	System.out.println(len);
 			
 			if ( len ==  1 ) 	{ listNeigSide.add(idNeig); 	}
 			else 				{ listNeigCorner.add(idNeig); 	}
 			listNeig.add(idNeig);
-		}
-	
-//		System.out.println(listNeig);
-//		System.out.println(listNeigSide);
-//		System.out.println(listNeigCorner);
-//		System.out.println(degree) ;
+		}																					//		System.out.println(listNeig);//		System.out.println(listNeigSide);//		System.out.println(listNeigCorner);//		System.out.println(degree) ;
+		
 		double coefSide = 0 , coefCorner = 0  ;
 	
 		switch (degree) { 
@@ -193,38 +182,31 @@ public class gsAlgoDiffusion  {
 		} ; break;
 		case 8 : {
 			coefSide =  1.0/5 ;
-			coefCorner = 1.0/20 ;		
-//			System.out.println(coefCorner + " " + coefSide);
+			coefCorner = 1.0/20 ;											//			System.out.println(coefCorner + " " + coefSide);
 		} ; break;
-	}
-//		System.out.println(degree ) ; 
-//		System.out.println(coefCorner + " " + coefSide);
+	}																		//		System.out.println(degree ) ; //		System.out.println(coefCorner + " " + coefSide);
 		for ( String idNeigSt : listNeig ) {
-			Node idNeigNd = graph.getNode(idNeigSt);
-//			System.out.println(idNeigSt);
+			Node idNeigNd = graph.getNode(idNeigSt);						//			System.out.println(idNeigSt);
 		
-			double morpNeig = idNeigNd.getAttribute(morp) ;
-		
-//			System.out.println(morpNeig);
+			double morpNeig = idNeigNd.getAttribute(morp) ;					//			System.out.println(morpNeig);
+			
 			if ( listNeigSide.contains(idNeigSt))	{ sumMorpS = sumMorpS + morpNeig ; }
 			else 									{ sumMorpC = sumMorpC + morpNeig ; }
 		}	
 		
-		dif =  - morp0 + ( coefSide * sumMorpS + coefCorner * sumMorpC ) ;
-	
-//		System.out.println(n.getId() + "  " + dif);
+		dif =  - morp0 + ( coefSide * sumMorpS + coefCorner * sumMorpC ) ;	//		System.out.println(n.getId() + "  " + dif);
 		return dif;
-	}
-		
+	}		
 
 	public static void setLaplacianMatrix ( double sideVal, double cornerVal ) {
 		sideValSt =  sideVal ;
 		cornerValSt = cornerVal ;	
 	}
 
-
 	public static void setWeightType(weightType type) {
 		typeWeig = type;
 		}
-
+	
+// GET METHODS ----------------------------------------------------------------------------------------------------------------------------
+	public static String getDiffusionType() { return typeDiff; }
 }

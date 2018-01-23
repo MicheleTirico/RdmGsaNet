@@ -10,10 +10,9 @@ import RdmGsaNet_pr08.layerNet.meanPointPlace;
 public interface setupNetInter {
 	
 	// COSTANTS
-	
+	 meanPointPlace point = null ;
 //	public enum typeNet { grid ,seed , gis}
 	
-
 	// METHODS	
 
 	// method for createLayer
@@ -71,15 +70,14 @@ public interface setupNetInter {
 		}
 	}
 	
-	// PRIVATE METHODS 
-	static String convertIdToString( int x , int y ) {
-		
+// PRIVATE METHODS ------------------------------------------------------------------------------------------------------------------------
+	static String convertIdToString( int x , int y ) {	
 		String idString = (String) (x + "_" + y);
 		return idString;
 	}
 
-	
-		
+// GET METHODS ----------------------------------------------------------------------------------------------------------------------------	
+	public static String getMeanPointPlace ( ) { return point.getClass().getSimpleName(); }
 	
 	
 

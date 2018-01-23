@@ -50,4 +50,6 @@ public class setupGsGrid implements setupGsInter {
 //--------------------------------------------------------------------------------------------------------------
 	// GET AND SET
 	public static int getGsGridSize () { return size; }
+
+	public static String getGridType() { return type.name(); }
 }

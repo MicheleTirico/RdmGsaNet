@@ -32,7 +32,8 @@ public class analysisDGS {
 	private boolean computeDegree , 
 					computeStepMaxMorp ,
 					computeStepMinMorp ,
-					computeStepAveMorp ;
+					computeStepAveMorp ,
+					computeStepNewNode ;
 	
 	// degree parameters chart
 	private int degreeFreq ;
@@ -42,12 +43,13 @@ public class analysisDGS {
 
 	private Graph graph ;
 	
-	public analysisDGS (String dgsId , boolean computeDegree , boolean computeStepMaxMorp , boolean computeStepMinMorp , boolean computeStepAveMorp ) {
+	public analysisDGS (String dgsId , boolean computeDegree , boolean computeStepMaxMorp , boolean computeStepMinMorp , boolean computeStepAveMorp , boolean computeStepNewNode ) {
 		this.dgsId = dgsId;
 		this.computeDegree = computeDegree ;
 		this.computeStepMaxMorp = computeStepMaxMorp ;
 		this.computeStepMinMorp = computeStepMinMorp ;
 		this.computeStepAveMorp = computeStepAveMorp ;
+		this.computeStepNewNode = computeStepNewNode ;
 	}
 
 	// set parameters of multiple analysis
@@ -107,7 +109,7 @@ public class analysisDGS {
 	
 	public  void computeMultipleStat ( 	int stepMax , int stepInc , Boolean threadViz, 
 										String pathStart , String pathStep ,
-										Map mapFreqDegree , Map mapStepMaxMorp, Map mapStepMinMorp, Map mapStepAveMorp
+										Map mapFreqDegree , Map mapStepMaxMorp, Map mapStepMinMorp, Map mapStepAveMorp , Map mapStepNewNode
 										) throws IOException, InterruptedException { 
 		
 		graph = returnGraphAnalysis(dgsId);
@@ -155,6 +157,9 @@ public class analysisDGS {
 					
 					if ( computeStepAveMorp == true )
 						computeStepMorp(graph, step, mapStepAveMorp , analysisType.average );
+					
+					if ( computeStepNewNode == true )
+						computeStepNewNode ( graph , step , mapStepNewNode ) ;
 					
 					if ( threadViz == true) 
 						Thread.sleep(100);
@@ -430,12 +435,17 @@ public class analysisDGS {
 		mapStepMorp = getMapStepMorp(mapStepMorp, mapAct, mapInh);		
 	}
 
+	private void computeStepNewNode (Graph graph , double step , Map mapStepNewNode ) {
+		
+	}
+
 	private static Graph returnGraphAnalysis ( String dgsId ) {
 		Graph graphAnalysis = null ;
 		if ( dgsId == "dgsGs" ) 				graphAnalysis = gsGraph;
 		if ( dgsId == "dgsNet" )				graphAnalysis = netGraph ;
 		return graphAnalysis ;
 	}
+	
 	
 	// not used
 	private static  Graph  checkDgsGraph ( analysisDGS dgsGraph ) {

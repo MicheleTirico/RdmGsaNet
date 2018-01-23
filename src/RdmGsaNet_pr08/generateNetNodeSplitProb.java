@@ -18,9 +18,6 @@ public class generateNetNodeSplitProb implements generateNetNodeInter {
 		
 	// COSTRUCTOR 
 	public generateNetNodeSplitProb( ) {
-		
-		
-		
 	}
 	
 

@@ -1,14 +1,10 @@
 package RdmGsaNet_pr08;
 
-import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.algorithm.generator.GridGenerator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
-import java.lang.Math;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class setupNetSeed implements setupNetInter {
 		
@@ -52,6 +48,5 @@ public class setupNetSeed implements setupNetInter {
 		setupNetInter.setMeanPointInter(gsGraph, point);
 	}
 }
-
 	
 //-----------------------------------------------------------------------------------------------------	

@@ -67,18 +67,21 @@ public class analysisMain {
 	
 // ANALYSIS DGS
 	public static analysisDGS dgsGs = new analysisDGS(
-														"dgsGs" , 		// id analysis dgs Gs
-														false , 			// compute degree ?
-														true ,
-														true ,
-														true											
+			"dgsGs" , 		// id analysis dgs Gs
+			false , 	// compute degree ?
+			false ,		// compute distribution of morphogens (max)
+			false,		// compute distribution of morphogens (min)					
+			false ,		// compute distribution of morphogens (average)		
+			false
 			);
 	
-	public static analysisDGS dgsNet = new analysisDGS( "dgsNet" , 		// id analysis dgs Net
-														false , 		 	// compute degree ?
-														false ,
-														false,
-														false
+	public static analysisDGS dgsNet = new analysisDGS( 
+			"dgsNet" , 	// id analysis dgs Net
+			false , 	// compute degree ?
+			false ,		// compute distribution of morphogens (max)
+			false,		// compute distribution of morphogens (min)					
+			false,		// compute distribution of morphogens (average)
+			true
 			);
 	
 // MAP
@@ -95,7 +98,8 @@ public class analysisMain {
 													mapStepMinMorp = new HashMap(), 
 													mapStepAveMorp = new HashMap() ,
 													mapFreqDegreeGs = new HashMap() ,			
-													mapFreqDegreeNet = new HashMap() ;
+													mapFreqDegreeNet = new HashMap() ,
+													mapStepNewNode = new HashMap() ;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 	
@@ -114,7 +118,7 @@ public class analysisMain {
 	//	dgsNet.readStartDGS(netGraph, pathStartNet);
 				
 		dgsGs.computeMultipleStat( 3000, 5 , true , pathStartGs, pathStepGs, 
-								mapFreqDegreeGs , mapStepMaxMorp , mapStepMinMorp , mapStepAveMorp);	
+								mapFreqDegreeGs , mapStepMaxMorp , mapStepMinMorp , mapStepAveMorp , mapStepNewNode);	
 		
 	//	dgsNet.computeMultipleStat( 100, 5 , true ,  pathStartNet, pathStepNet , 
 		//							mapFreqDegreeNet , mapStepMaxMorp , mapStepMinMorp , mapStepAveMorp );

@@ -9,6 +9,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 
+import RdmGsaNetExport.handleNameFile;
+
 public class simulation {	
 	
 	private static Graph gsGraph = layerGs.getGraph() ;
@@ -17,6 +19,8 @@ public class simulation {
 	private static int finalStep;
 	private static int step;
 
+	private static handleNameFile handle = main.getHandle();
+	
 // STORING GRAPH EVENTS
 	 private static FileSinkDGS fsdGs = new FileSinkDGS();
 	 private static FileSinkDGS fsdNet = new FileSinkDGS();
@@ -55,6 +59,8 @@ public class simulation {
 		
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;
+		 
+		pathStepGs = handle.getPathStepGs();
 		
 		if ( storedDgsGsStep == true) { gsGraph.addSink(fsdGs); fsdGs.begin(pathStepGs);	}
 
@@ -99,9 +105,7 @@ public class simulation {
 		if ( storedDgsGsStep == true) { 	fsdGs.end();	}
 		if ( storedDgsNetStep == true) { 	fsdNet.end();	}
 	
-		finalStep = step - 1 ;
-		
-		
+		finalStep = step - 1 ;	
 	}
 		
 // PRIVATE METHODS --------------------------------------------------------------------------------------------------------------
@@ -140,11 +144,7 @@ public class simulation {
 		ArrayList<String> nodeStep    	= mapStepIdNet.get( (double) step );
 		ArrayList<String> nodeOldStep 	= mapStepIdNet.get( (double) step - 1.0 );
 		
-		ArrayList<String> newNodes 		= new ArrayList<String>() ;
-		
-		
-//		System.out.println( "step " + nodeStep);
-//		System.out.println( "old step " + nodeOldStep);
+		ArrayList<String> newNodes 		= new ArrayList<String>() ;								//		System.out.println( "step " + nodeStep);//		System.out.println( "old step " + nodeOldStep);
 		
 		try {
 			for ( String s : nodeStep ) {
@@ -152,12 +152,9 @@ public class simulation {
 					newNodes.add(s);
 				}
 			}
-		} catch (java.lang.NullPointerException e ) {  }
-			
-//		System.out.println(newNodes);	
+		} catch (java.lang.NullPointerException e ) {  }										//		System.out.println(newNodes);	
 		
-		mapNewNodes.put(step, newNodes);
-		
+		mapNewNodes.put(step, newNodes);	
 	}
 	
 	// create map

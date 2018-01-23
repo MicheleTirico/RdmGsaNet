@@ -11,14 +11,16 @@ import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetExport.expGraph;
+import RdmGsaNetExport.handleNameFile;
 
 public class layerGs {
 	
 	// STORING GRAPH EVENTS
 	static FileSinkDGS fsd = new FileSinkDGS();
-
+	private handleNameFile handle = main.getHandle();
+	
 	// VARIABLES
-	private setupGsInter layout ;
+	private static setupGsInter layout ;
 	
 	// create graph of reaction diffusion layer
 	private static Graph graph = new SingleGraph("gsGraph");
@@ -39,14 +41,9 @@ public class layerGs {
 		if (setCoordinate == true ) { layout.setCoordinate () ; }
 		if (setDefaultAtr == true ) { setDefaultAtr () ; }	
 		if ( storedDGS == true ) 	{ 	 
-			String fileType = main.getFileType();
-			String nameFile = main.getNameStartGs() ;
-			String nameFileStart = nameFile ;
-			String folderStart = main.getFolderStartGs();
-			String pathStart = folderStart + nameFileStart + fileType;
-			
-			graph.write(fsd, pathStart);	}
-		
+			String pathStart = handle.getPathStartGs();
+			graph.write(fsd, pathStart);		
+		}
 		setEdgeLength();
 	}
 			
@@ -80,14 +77,12 @@ public class layerGs {
 	private void setDefaultAtr ( ) {
 		
 		for ( Node n : graph.getEachNode() ) {
-//			n.addAttribute( "idNet" , 0 );
+
 			n.addAttribute( "gsAct" , 0 );
 			n.addAttribute( "gsInh" , 0 );
 			n.addAttribute( "con" , 0 );
 		}
 	}
-
-	
 
 	// set length attribute at each edge
 	private static void setEdgeLength ( ) {
@@ -97,8 +92,12 @@ public class layerGs {
 		}
 	}
 
-	// get graph
-		public static Graph getGraph ( ) { return graph; }
+// GET METHODS ----------------------------------------------------------------------------------------------------------------------------
+	public static Graph getGraph ( ) { return graph; }
+	
+	public static String getTypeGrid () { return layout.getClass().getSimpleName(); }
+		
+	public static String getLayout () { return layout.getClass().getSimpleName() ; }
 
 }
 

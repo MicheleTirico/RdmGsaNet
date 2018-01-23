@@ -50,7 +50,7 @@ public class generateNetNode {
 	public static generateNetNode 	getGenerateNode () { return growth ; }
 	
 	 
-	public static String 			getGenerateType () { return type.getClass().getSimpleName(); }
+	public static String 		getGenerateType () { return type.getClass().getSimpleName(); }
 
 
 

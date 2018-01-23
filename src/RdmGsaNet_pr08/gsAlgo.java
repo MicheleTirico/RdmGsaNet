@@ -69,8 +69,6 @@ import org.graphstream.graph.Node;
 	
 			//declare iterator to go over each node
 			Iterator<Node> iterNode = gsGraph.iterator();
-//			gsGraph.addAttribute("ui.stylesheet",nodeViz);
-
 
 			// start iterator loop
 			while (iterNode.hasNext()) {
@@ -124,8 +122,7 @@ import org.graphstream.graph.Node;
 					if ( inh1 < minVal )	{	inh1 = minVal ;	}
 					if ( inh1 >= 1  )  		{	inh1 = maxVal ;	}
 				}
- 
-				
+		
 				// create a list of values act an inh
 				ArrayList<Double> ArList1 = new ArrayList<Double>() ;
 				
@@ -146,51 +143,34 @@ import org.graphstream.graph.Node;
 				double inh1 = (double) ArList1.get(1);
 					
 				n.setAttribute( "gsAct", act1);
-				n.setAttribute( "gsInh", inh1);	
-			
-			
-//				n.addAttribute("ui.class", "highlight"); Thread.sleep(1);
-		
+				n.setAttribute( "gsInh", inh1);			
 			}
 			if (print == true) {	printGsAlgo ();		}
 		}
 		
 		// print results
 		private static void printGsAlgo () {
-//			System.out.println("mapMorp0 " + mapMorp0);	
-			System.out.println("mapMorp1 " + mapMorp1);
+ 			System.out.println("mapMorp1 " + mapMorp1); //			System.out.println("mapMorp0 " + mapMorp0);	
 		}
+		
 // GET METHODS ----------------------------------------------------------------------------------------
-		public static  double getDa()  { return arrVal[0] ; } 
-		public static double getDi()   { return arrVal[1] ; } 
-		public static double getFeed() { return arrVal[2] ; } 
-		public static double getKill() { return arrVal[3] ; } 
+	
+	public static  double getDa()  { return arrVal[0] ; } 
+	public static double getDi()   { return arrVal[1] ; } 	
+	public static double getFeed() { return arrVal[2] ; } 
+	public static double getKill() { return arrVal[3] ; } 
+		
+	public static String getDiffusionType () { return d.toString();}
 	
 	// set val in an array in order to return the values
-		public static void setValues ( double Da, double Di, double feed ,  double kill  ) { 
-			arrVal[0]= Da;
-			arrVal[1]= Di;
-			arrVal[2]= feed;
-			arrVal[3]= kill;
-		}
-		
-		public static double[] getvaluesGsAlgo ( ) { return arrVal ; }
-		
-		/*
-		static String nodeViz =  "node.highlight {"+
-				"	size: 5px;"+
-				"	fill-color: rgb(128,128,128), "
-				+ "				rgb(255,128,0),rgb(255,255,0),rgb(128,255,0),"
-				+ "				rgb(0,128,255),rgb(0,0,255),rgb(127,0,255),"
-				+ "				rgb(255,0,255),rgb(255,0,128),rgb(255,0,0) ; "+
-				"	fill-mode: dyn-plain;"+
-				"}"+
-				"edge {"+
-				"	size: 0.1px;"+
-				"	fill-color: white;"+
-				"}" ;
-			*/
-		
+	public static void setValues ( double Da, double Di, double feed ,  double kill  ) { 
+		arrVal[0]= Da;
+		arrVal[1]= Di;
+		arrVal[2]= feed;
+		arrVal[3]= kill;
 	}
+		
+	public static double[] getvaluesGsAlgo ( ) { return arrVal ; }	
+}
 	
 	

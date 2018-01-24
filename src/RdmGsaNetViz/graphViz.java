@@ -65,6 +65,7 @@ public class graphViz {
 		for ( double n = 1 ; n * stepInc <= stepMax ; n++ ) {	incList.add( n * stepInc );	}
 			
 		System.out.println(incList);
+		
 		// import start graph
 		try 														{	graph.read(pathStart);	} 
 		catch (ElementNotFoundException | GraphParseException e1) 	{	e1.printStackTrace();	}
@@ -98,5 +99,6 @@ public class graphViz {
 		catch (IOException e) {		}	
 		fs.end();
 	}
+
 }
 		

@@ -30,7 +30,7 @@ public class graphAnalysis {
 	private static double [][] matrixLisa ;
 	
 // SPATIAL AUTO CORRELATION LISA LOCAL MORAN  ---------------------------------------------------------------------------------------------------------------------------	
-	public static void spatialAutoCorLisaLocalMoran (	Graph graph , morphogen MorpType , double radius , morpSpatialAutoCor.distanceMatrixType type) {
+	public static void spatialAutoCorLisaLocalMoran ( Graph graph , morphogen MorpType , double radius , morpSpatialAutoCor.distanceMatrixType type) {
 		System.out.println("lisa");
 		String morp  ;
 		if (MorpType == morphogen.activator ) 	{ morp = "Act" ; }

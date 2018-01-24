@@ -155,11 +155,11 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		splitMax(nNet, listNewNode, listIdNeigValMax , true);
 	}
 	
-	private void splitMaxMethod(Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax ) {
+	private void splitMaxMethod (Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax ) {
 		splitMax(nNet, listNewNode, listIdNeigValMax , false);
 	}
 	
-	private void splitProbabilityMethod(Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax, ArrayList<Node> listNewSeed ) {
+	private void splitProbabilityMethod (Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax, ArrayList<Node> listNewSeed ) {
 		
 		int numberMaxNewNodes = listIdNeigValMax.size();										//		System.out.println("numberMaxNewNodes " + numberMaxNewNodes);
 		int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, probabilityTest);		//		System.out.println("numberNewNodes " + numberNewNodes);
@@ -192,7 +192,7 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		}
 	}
 	
-	private void splitMax(Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax , boolean isIncremThreshold ) {
+	private void splitMax (Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax , boolean isIncremThreshold ) {
 		
 		System.out.println( listIdNeigValMax);
 		for ( String newNodeId : listIdNeigValMax )  {	//		System.out.println(newNodeId);

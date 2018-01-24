@@ -41,19 +41,10 @@ public class generateNetNode {
 	} 
 
 // PRIVATE METHODS ------------------------------------------------------------------------------------------------
-	// 	
-	
-	
-	
 	
 // GET METHODS --------------------------------------------------------------------------------------------------------
 	public static generateNetNode 	getGenerateNode () { return growth ; }
-	
-	 
 	public static String 		getGenerateType () { return type.getClass().getSimpleName(); }
-
-
-
 }
 	
 	

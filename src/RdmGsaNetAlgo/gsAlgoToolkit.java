@@ -385,6 +385,26 @@ public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String 
 		}
 
 
+	// get list of new nodes
+	public static ArrayList<String> getListNewNode ( Graph graph0 , Graph graph1  ) {
+		
+		ArrayList<String> listNewNode = new ArrayList<String>();
+		
+		try {
+		
+		ArrayList<String> listNode0 = new ArrayList<String>();
+		
+		for ( Node n0 : graph0.getEachNode() ) {	listNode0.add(n0.getId()); }
+		
+		for ( Node n1 : graph1.getEachNode() ) {
+			if ( !listNode0.contains(n1.getId()) )
+				listNewNode.add(n1.getId()) ;	
+		}
+		} catch (java.lang.NullPointerException e) {
+			// TODO: handle exception
+		}
+		return listNewNode;	
+	}
 	
 
 	

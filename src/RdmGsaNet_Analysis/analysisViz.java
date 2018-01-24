@@ -13,23 +13,23 @@ public class analysisViz {
 
 	// start storing
 	private static String fileType = ".dgs" ;
-	private static String nameStartGs = "layerGsStart_Size_50_Da_0.2_Di_0.1_F_0.062_K_0.061"  ;
+	private static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight"  ;
 
-	private static String folderStartGs = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\dgs\\Da_0.2_Di_0.1_02\\";
+	private static String folderStartGs = "D:\\\\ownCloud\\\\RdmGsaNet_exp\\\\test_gradient_2\\\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.15_00\\\\";
 	private static String pathStartGs = folderStartGs + nameStartGs + fileType ;
 			
 	// step storing		
-	private static String nameStepGs = "layerGsStep_Size_50_Da_0.2_Di_0.1_F_0.062_K_0.061"; 
+	private static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight"; 
 	private static String folderStepGs = folderStartGs;
 	private static String pathStepGs = folderStepGs + nameStepGs + fileType ;
 		
 	private static Graph graph = new SingleGraph( "graph"); 
 	private static Graph netGraph = new SingleGraph( "netGraph"); 
 		
-	private static String nameStartNet = "layerNetStart_meanPoint_center_seedAct_1.0_seedInh_1.0";
+	private static String nameStartNet = "layerNet_start_setupNetSeed";
 		
 	// export images
-	private static String folderIm =  "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\dgs\\Da_0.2_Di_0.1_02\\image\\";
+	private static String folderIm =  "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_2\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.15_00\\image\\";
 	private static String nameIm = nameStepGs + "_step_";
 			
 	public static void main ( String[ ] args ) throws IOException {
@@ -39,7 +39,7 @@ public class analysisViz {
 //			setupViz.Vizmorp(graph, "gsInh");			
 //			graphViz.vizGraph(graph, pathStartGs, pathStepGs, 3000 );
 			
-		graphViz.getImageStep(graph, pathStartGs, pathStepGs, 10000 , 100, folderIm, nameIm);
+		graphViz.getImageStep(graph, pathStartGs, pathStepGs, 1000 , 100, folderIm, nameIm);
 			
 //			for ( Node n : graph.getEachNode()) { 			System.out.println(n.getId() + " " +"gsAct " + n.getAttribute("gsAct") +  " gsInh " + n.getAttribute("gsInh"));}
 			
@@ -47,7 +47,7 @@ public class analysisViz {
 //			setupViz.Viz5Color( graph , "gsInh");
 //			setupViz.Viz4Color(graph);
 			
-		setupViz.Viz10ColorAct( graph );
+	//	setupViz.Viz10ColorAct( graph );
 //			setupViz.Viz10ColorInh( graph );
 
 //			setupViz.Vizmorp(graph, "gsAct");

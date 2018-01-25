@@ -78,13 +78,5 @@ public interface setupNetInter {
 
 // GET METHODS ----------------------------------------------------------------------------------------------------------------------------	
 	public static String getMeanPointPlace ( ) { return point.getClass().getSimpleName(); }
-	
-	
-
-	 
-
-
-	
-
 }
 

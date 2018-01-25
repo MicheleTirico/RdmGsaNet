@@ -27,7 +27,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class expChart extends JFrame  {
 	
 	public enum morp { activator, inhibitor }
-	public enum typeChart { XYchart2Morp,  XYchartMultipleLine }
+	public enum typeChart { XYchart2Morp,  XYchartMultipleLine , XYchartSingleLine }
 	
 	public typeChart type; 
 
@@ -58,6 +58,9 @@ public class expChart extends JFrame  {
 			case XYchart2Morp : 		{ chartPanel = createChartPanelXY2Morp ( chartTitle , xAxisLabel , yAxisLabel , map ); 			break ; }
 	
 			case XYchartMultipleLine : 	{ chartPanel = createChartPanelXYMultipleLine ( chartTitle , xAxisLabel , yAxisLabel , map ) ; 	break ; }	
+			
+			case XYchartSingleLine :	{ chartPanel =  createChartPanelXYSingleLine ( chartTitle , xAxisLabel , yAxisLabel , map ) ; 	break ; }
+				
 			}
 			
 			add(chartPanel, BorderLayout.CENTER);
@@ -71,6 +74,18 @@ public class expChart extends JFrame  {
 		setSize( width , height );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);	
+	}
+	
+	private JPanel createChartPanelXYSingleLine ( String chartTitle , String xAxisLabel , String yAxisLabel ,  Map<Double, Double> map ) {
+		
+		this.xAxisLabel = xAxisLabel ;
+	    this.yAxisLabel = yAxisLabel;
+	    
+	    XYDataset dataset = createDatasetSingleLine(map);
+	
+	    chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataset);
+	    
+		return new ChartPanel(chart);
 	}
 	
 	private JPanel createChartPanelXYMultipleLine ( String chartTitle , String xAxisLabel , String yAxisLabel ,  Map<Double, Map<Double,Double>> map ) {
@@ -129,6 +144,29 @@ public class expChart extends JFrame  {
         chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataset);
       
 		return new ChartPanel(chart);
+	}
+	
+	// create dataset single line 
+	private XYDataset createDatasetSingleLine (  Map <Double, Double > map   ) {
+		
+		// create dataset
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
+ 		// create series
+		XYSeries ser = new XYSeries("serSingle") ;
+		
+		for (Entry<Double, Double> entry : map.entrySet() ) {
+			
+			double xPosition =  entry.getKey();
+			double YVal = entry.getValue() ;
+	
+			ser.add(xPosition,YVal);
+		}
+		
+		// set series in dataset
+		dataset.addSeries(ser);		
+		
+	    return dataset;	
 	}
 	
 	// create dataset of values ( which is a map java collection ) 

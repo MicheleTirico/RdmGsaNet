@@ -13,8 +13,9 @@ import RdmGsaNet_pr08.*;
 
 public class setupViz {
 
-	static Graph gsGraph = layerGs.getGraph();
-	static Graph netGraph = layerNet.getGraph();
+	// GRAPHS
+	static Graph gsGraph = layerGs.getGraph(), 
+					netGraph = layerNet.getGraph();
 
 	// method to return a screenshot
 	public static void getScreenshot ( Graph graph, String file ) {
@@ -28,14 +29,12 @@ public class setupViz {
 		pic.writeAll(graph, folder +"/"+ name);
 	}
 	
+// VIZ METHODS --------------------------------------------------------------------------------------------------------------------------------------
 // methods of visualization
-	
 	public static void Viz4Color( Graph graph ) {
 		
 		graph.addAttribute("ui.stylesheet", setViz4Color ( ) );
-//		graph.addAttribute("ui.quality");
-//	    graph.addAttribute("ui.antialias");
-		
+
 		for ( Node n : graph.getEachNode()) {
 			double act = n.getAttribute("gsAct");
 			double inh = n.getAttribute("gsInh");
@@ -57,49 +56,9 @@ public class setupViz {
 		for ( Node n : graph.getEachNode()) {
 			n.addAttribute("ui.label", " " + n.getId());
 		}
-
 	}
-
-	private static String setVizNodeId () {
-		return  "node { "
-				+ "size: 5px;"
-				+ "fill-color: black;"
-				+ "text-alignment: at-right; "
-				+ "text-color: black; "
-				+ "text-background-mode: plain; "
-				+ "text-background-color: white; "
-				+ "}";
-	}
-
-	private static String setViz4Color () {
-		return  "node {"+
-			"	size: 5px;"+
-			"	fill-color: grey, red, yellow, green, blue; "+
-			"	fill-mode: dyn-plain;"+
-			"}"+
-			"edge {"+
-			"	size: 0.1px;"+
-			"	fill-color: white;"+
-			"}" ;
-}
-
-	protected static String setViz10Color () {
-		
-		return  "node {"+
-			"	size: 5px;"+
-			"	fill-color: rgb(128,128,128), "
-			+ "				rgb(255,128,0),rgb(255,255,0),rgb(128,255,0),"
-			+ "				rgb(0,128,255),rgb(0,0,255),rgb(127,0,255),"
-			+ "				rgb(255,0,255),rgb(255,0,128),rgb(255,0,0) ; "+
-			"	fill-mode: dyn-plain;"+
-			"}"+
-			"edge {"+
-			"	size: 0.1px;"+
-			"	fill-color: white;"+
-			"}" ;
-}
 	
-public static void Viz5Color( Graph graph , String morp   ) {
+	public static void Viz5Color( Graph graph , String morp   ) {
 		
 		graph.addAttribute("ui.stylesheet", setViz4Color ( ) );
 		
@@ -179,7 +138,7 @@ public static void Viz5Color( Graph graph , String morp   ) {
 		}
 	}
 
-public static void Viz10ColorAct( Graph graph ) { 
+	public static void Viz10ColorAct( Graph graph ) { 
 	
 	graph.addAttribute("ui.stylesheet", setViz10Color ( ) );
 	
@@ -204,7 +163,6 @@ public static void Viz10ColorAct( Graph graph ) {
 		}
 	}
 
-
 	public static void Vizmorp( Graph graph , String morp ) {
 	
 		graph.addAttribute("ui.stylesheet", setVizMorp ( morp ) );
@@ -215,15 +173,58 @@ public static void Viz10ColorAct( Graph graph ) {
 			}
 		}
 	
-	private static String setVizMorp ( String morp ) {
-		String colorRange ;
-		if ( morp == "gsAct" ) 	{ colorRange = "grey , red" ; 				}
-		else { if ( morp == "gsInh" ) 	{ colorRange = " grey, green" ;				} 
-		else 					{ colorRange = "0" ;
-								  System.out.println("color not defined");	}
+	public static void VizSeedGrad ( Graph graph , String attribute ) {
+		
+		graph.addAttribute("ui.stylesheet", setVizSeedGrad() );			
+		
+		for ( Node n : graph.getEachNode () ) {
+			
+			double color = 0 ;
+			int isTrue = n.getAttribute(attribute);
+			if ( isTrue == 1 )
+				color = 1 ;
+			n.addAttribute("ui.color", color );
 		}
-		
-		
+	}
+	
+// SET ATTRIBUTE VIZ --------------------------------------------------------------------------------------------------------------------------------
+	
+	protected static String setVizSeedGrad () {
+		return  "node {"+
+				"	size: 10px;"+
+				"	fill-color: black,  red; "+
+				"	fill-mode: dyn-plain;"+
+				"}"+
+				"edge {"+
+				"	size: 1px;"+
+				"	fill-color: black;"+
+				"}" ;	
+	}
+
+	
+	protected static String setVizNodeId () {
+		return  "node { "
+				+ "size: 5px;"
+				+ "fill-color: black;"
+				+ "text-alignment: at-right; "
+				+ "text-color: black; "
+				+ "text-background-mode: plain; "
+				+ "text-background-color: white; "
+				+ "}";
+	}
+
+	protected static String setVizMorp ( String morp ) {
+		String colorRange ;
+		if ( morp == "gsAct" ) 			
+			colorRange = "grey , red" ; 
+		else { 
+			if ( morp == "gsInh" ) 	 
+				colorRange = " grey, green" ;				
+				else { 
+					colorRange = "0" ;			 
+					System.out.println("color not defined");		
+				}
+		}
 		return  "node {"+
 				"	size: 4px;"+
 				"	fill-color: "+ colorRange	+ "  	;"+
@@ -235,4 +236,31 @@ public static void Viz10ColorAct( Graph graph ) {
 				"}" ;
 	}	
 
+	protected static String setViz4Color () {
+		return  "node {"+
+			"	size: 5px;"+
+			"	fill-color: grey, red, yellow, green, blue; "+
+			"	fill-mode: dyn-plain;"+
+			"}"+
+			"edge {"+
+			"	size: 0.1px;"+
+			"	fill-color: white;"+
+			"}" ;		
+	}
+
+	protected static String setViz10Color () {
+		return  "node {"+
+			"	size: 5px;"+
+			"	fill-color: rgb(128,128,128), "
+			+ "				rgb(255,128,0),rgb(255,255,0),rgb(128,255,0),"
+			+ "				rgb(0,128,255),rgb(0,0,255),rgb(127,0,255),"
+			+ "				rgb(255,0,255),rgb(255,0,128),rgb(255,0,0) ; "+
+			"	fill-mode: dyn-plain;"+
+			"}"+
+			"edge {"+
+			"	size: 0.1px;"+
+			"	fill-color: white;"+
+			"}" ;
+	}
+	
 }

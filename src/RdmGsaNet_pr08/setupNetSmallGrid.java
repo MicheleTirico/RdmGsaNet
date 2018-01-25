@@ -10,15 +10,18 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 public class setupNetSmallGrid implements setupNetInter {
 
-	private static Graph gsGraph = layerGs.getGraph() ;
-	private static Graph netGraph = layerNet.getGraph() ;
+	// COSTANTS
+	private static Graph gsGraph = layerGs.getGraph() ,
+							netGraph = layerNet.getGraph() ;
 		
 	public enum typeGrid { grid4 , grid8 }
 	private static typeGrid type;
 	
+	// COSTRUCTOR
 	public setupNetSmallGrid( typeGrid type) {
 		this.type = type ;
 	}
+	
 	
 	public void createLayerNet() {
 	System.out.println("create small grid");
@@ -53,10 +56,8 @@ public class setupNetSmallGrid implements setupNetInter {
 			ArrayList<String> neigList = new ArrayList<String>();
 			
 			switch (type) {
-			case grid4:  {	neigList = getListInRadiusGeom(netGraph, nNet, 1.01); 	}
-							break;
-			case grid8: {	neigList = getListInRadiusGeom(netGraph, nNet, 1.5);	}
-							break;
+			case grid4:  {	neigList = getListInRadiusGeom(netGraph, nNet, 1.01); 	}	break;
+			case grid8: {	neigList = getListInRadiusGeom(netGraph, nNet, 1.5);	}	break;
 			}
 			
 		for ( String idNeig : neigList ) {	
@@ -77,6 +78,7 @@ public class setupNetSmallGrid implements setupNetInter {
 
 	@Override
 	public void setMeanPoint( layerNet.meanPointPlace point) {
+		
 		setupNetInter.setMeanPointInter(gsGraph, point);
 
 		String meanPointId = null ;
@@ -84,6 +86,7 @@ public class setupNetSmallGrid implements setupNetInter {
 			int isCon = nGs.getAttribute("con");
 			if ( isCon == 1  ) { meanPointId = nGs.getId() ; }
 		}
+		
 		Node meanPointNode = gsGraph.getNode(meanPointId);
 			
 		ArrayList<String> arrNeig = new ArrayList<String>();

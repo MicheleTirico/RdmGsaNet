@@ -2,6 +2,7 @@ package RdmGsaNet_Analysis;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.graphstream.graph.ElementNotFoundException;
@@ -23,6 +24,8 @@ public class analysisDGSnet implements analysisDGS {
 	private Graph graph = new SingleGraph ("graph");
 	private int degreeFreq ;
 	
+	private int s = 0 ; 
+	
 	protected static boolean 	run ,
 								runAll ,
 								computeDegree ,
@@ -32,6 +35,8 @@ public class analysisDGSnet implements analysisDGS {
 	// MAP FOR CHARTS
 	protected Map mapFreqDegree = analysisMain.mapNetFreqDegree ,
 					mapNetStepNewNode = analysisMain.mapNetStepNewNode;
+
+	private Map <Integer , Integer >  mapNetStepNodeCount = new HashMap< Integer , Integer > () ;
 	
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	// COSTRUCTOR
@@ -56,9 +61,6 @@ public class analysisDGSnet implements analysisDGS {
 	public void computeMultipleStat(int stepMax, int stepInc, String pathStart, String pathStep) throws IOException, InterruptedException  {
 		
 		if ( run == false  ) { return ; }
-			
-		// Previous graph
-		Graph graph0 = null ;
 		
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
@@ -79,44 +81,34 @@ public class analysisDGSnet implements analysisDGS {
 		// set file Source for file step
 		fs = FileSourceFactory.sourceFor(pathStep);
 		fs.addSink(graph);
-
-		
 		// import file step
+		
 		try {
 			fs.begin(pathStep);
 			while ( fs.nextStep()) {
 				double step = graph.getStep();							//	System.out.println(step);
+				
 				if ( incList.contains(step)) {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
-					if ( computeDegree  ) 				
-						analysisDGS.computeFreqDegree( degreeFreq, graph , step , mapFreqDegree );	
-					
-					
-					if ( computeStepNewNode )
-						analysisDGS.computeMapStepNewNode(graph, step, mapNetStepNewNode, incList);
-					
-					incList.indexOf(step) ;
-					
-				try {
-						System.out.println("graph 0 " + graph0.getNodeCount());
-						System.out.println("graph 1 " + graph.getNodeCount());
-				
-				} catch (java.lang.NullPointerException e) {
-					// TODO: handle exception
-				}	
+					if ( computeDegree  ) 
 						
-					
-				
-					graph0 = graph ;
-					
-					
+						analysisDGS.computeFreqDegree( degreeFreq, graph , step , mapFreqDegree );	
+							
+					if ( computeStepNewNode ) {
+						mapNetStepNodeCount.put(s, graph.getNodeCount());
+						try {
+							mapNetStepNewNode.put(step,(double) graph.getNodeCount() - mapNetStepNodeCount.get(s-1));//		System.out.println(nodeCount0);
+						} catch (java.lang.NullPointerException e) {			}
+						s++;
+					}
 					
 					// run viz
 					if ( runViz )
-						setupViz.VizNodeId(graph);
-						Thread.sleep(100);
+						// setupViz.VizNodeId(graph);
+						setupViz.VizSeedGrad(graph, "seedGrad");
+						Thread.sleep(50);
 					
 					// stop iteration    
 					if ( stepMax == step ) { break; }

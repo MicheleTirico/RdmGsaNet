@@ -16,8 +16,8 @@ public class layerNet {
 	private handleNameFile handle = main.getHandle();
 	
 	// initialization graph net
-	private static Graph netGraph = new SingleGraph("netGraph");
-	private static Graph gsGraph = layerGs.getGraph();
+	private static Graph netGraph = new SingleGraph("netGraph"),
+							gsGraph = layerGs.getGraph();
 	
 	public enum meanPointPlace { center , random , border }
 	private static meanPointPlace point ;
@@ -42,7 +42,8 @@ public class layerNet {
 								boolean storedDGS) throws IOException {
 		
 		// setup parameter of first point in netGraph 
-		if ( createMeanPoint == true ) {layout.setMeanPoint ( point ) ; }
+		if ( createMeanPoint ) 
+			layout.setMeanPoint ( point ) ; 
 		
 		// create mean point in netLayer
 		layout.createLayerNet ();
@@ -51,12 +52,14 @@ public class layerNet {
 		setDefaultAtr () ;
 		
 		// set morphogens in netGraph
-		if (setSeedMorp == true ) { setSeedMorp (  seedAct ,  seedInh ); }
+		if (setSeedMorp ) 
+			setSeedMorp (  seedAct ,  seedInh ); 
 	
-		if ( setSeedMorpInGs = true ) { setSeedMorpInGs ( ) ; }
+		if ( setSeedMorpInGs )  
+			setSeedMorpInGs ( ) ; 
 		 
 		// stored code
-		if ( storedDGS == true ) 	{ 	
+		if ( storedDGS ) 	{ 	
 			String pathStart = handle.getPathStartNet();
 			netGraph.write(fsd, pathStart);	}
 	}

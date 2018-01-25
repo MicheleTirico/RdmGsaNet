@@ -7,9 +7,10 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 import java.util.ArrayList;
 
 public class setupNetSeed implements setupNetInter {
-		
-	private static Graph gsGraph = layerGs.getGraph() ;
-	private static Graph netGraph = layerNet.getGraph() ;
+	
+	// get graphs
+	private static Graph gsGraph = layerGs.getGraph() ,
+							netGraph = layerNet.getGraph() ;
 	 
 	// create layer Net 
 	public void createLayerNet() {	
@@ -23,7 +24,7 @@ public class setupNetSeed implements setupNetInter {
 			int con = nGs.getAttribute("con") ;
 			if (  con == 1 ) {
 				listIdGsCon.add(nGs.getId());	}
-		}//		System.out.println(listIdGsCon);
+		}																							//		System.out.println(listIdGsCon);
 		
 		// create seed node in netGraph and set coordinate
 		for ( String id : listIdGsCon ) {

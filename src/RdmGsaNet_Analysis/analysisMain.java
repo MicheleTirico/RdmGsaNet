@@ -15,8 +15,8 @@ public class analysisMain {
 	
 	private static String fileType = ".dgs" ;
 	
-	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_2\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.15_00\\" ,
-							folderChart = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_2\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.15_00\\chart\\" ;
+	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\gradient_multiSeed\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.06_00\\" ,
+							folderChart = folder +"chart\\" ;
 	
 // START FILES
 	// GS graph
@@ -78,15 +78,15 @@ public class analysisMain {
 // SET WHICH CHARTS WE WANT TO HAVE ---------------------------------------------------------------
 		analysisNet.setWhichAnalysis(
 				/* run Viz 				*/ true ,
-				/* computeDegree		*/ true,
-				/* compuuteNewNode		*/ false 
+				/* computeDegree		*/ false ,
+				/* computeNewNode		*/ false 
 				);
 		
 		analysisGs.setWhichAnalysis(
-				/* run Viz 				*/ false ,
-				/* computeStepMaxMorp	*/ false , 
-				/* computeStepMinMorp	*/ false ,
-				/* computeStepAveMorp 	*/ false
+				/* run Viz 				*/ true ,
+				/* computeStepMaxMorp	*/ true , 
+				/* computeStepMinMorp	*/ true ,
+				/* computeStepAveMorp 	*/ true
 				);
 		
 // SET PARAMETERS OF ANALYSIS ---------------------------------------------------------------------
@@ -97,24 +97,30 @@ public class analysisMain {
 		analysisGs.setParamAnalysis("gsAct");
 	
 // RUN ANALYSIS -----------------------------------------------------------------------------------
-		analysisNet.computeMultipleStat	(100, 10, pathStartNet, pathStepNet);
+		analysisNet.computeMultipleStat	(3000, 2 , pathStartNet, pathStepNet);
 	
 		analysisGs.computeMultipleStat	(3000, 5, pathStartGs, pathStepGs);
 		
+	
+		
 // 	CREATE CHARTS ---------------------------------------------------------------------------------
 		createChartsNet(
-				/* storedCharts 		*/ false,
-				/* createChartDegree 	*/ false
+				/* storedCharts 		*/ false ,
+				/* createChartDegree 	*/ true , 
+				/* createChartNewNodes	*/ true
 				);
 	
 		createChartsGs(
 				/* storeCharts 			*/ false ,
-				/* createChartMax		*/ false , 
-				/* createChartMin		*/ false ,
-				/* createChartAve		*/ false
+				/* createChartMax		*/ true , 
+				/* createChartMin		*/ true ,
+				/* createChartAve		*/ true
 				);
+	
 		
-		System.out.println(mapNetStepNewNode);
+		
+		
+		
 // SET VIZ ----------------------------------------------------------------------------------------
 		// net viz 
 	//	netGraph.setAttribute("ui.stypesheet", setVizNodeId () );
@@ -126,7 +132,7 @@ public class analysisMain {
 	}	
 		
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
-	private static void createChartsNet ( boolean storeCharts, boolean createChartDegree ) throws IOException {
+	private static void createChartsNet ( boolean storeCharts, boolean createChartDegree , boolean createChartNewNode ) throws IOException {
 		
 		// exit method 
 		if ( !analysisDGSnet.run ) return ;
@@ -136,6 +142,13 @@ public class analysisMain {
 			xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency degree Net", "Step (t)" , " freq degree (n)" , 800, 600 ,	mapNetFreqDegree );
 			xyChart.setVisible(true);
 			xyChart.saveChart(storeCharts ,  folderChart, "Net Freq Degree" );	
+		}
+		
+		//create chart of new node
+		if ( createChartNewNode ) {
+			xyChart = new expChart(typeChart.XYchartSingleLine , "new node count", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepNewNode );
+			xyChart.setVisible(true);
+			xyChart.saveChart(storeCharts ,  folderChart, "Net new nodes" );	
 		}
 	}
 	

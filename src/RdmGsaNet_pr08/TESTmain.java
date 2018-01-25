@@ -41,15 +41,7 @@ public class TESTmain {
 	private static String nameStepNet ;
 	
 	
-	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
-			/* number of started seed 	*/	  1 
-			/* morphogen 				*/	, "gsAct" 
-			/* type of seed behavior 	*/	, splitSeed.splitProbability
-			/* seed move to greater ? 	*/	, true 
-			/* set increment Ass		*/	, 0.001
-			/* set increm Res (not impl	*/	, 0
-			/* set prob test			*/	, 0.5
-											)) ;
+	
 	
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
 			/* radius max ?	*/				0 

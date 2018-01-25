@@ -8,7 +8,6 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 
-
 //class not yet developed. 
 public class setupNetSmallGraph implements setupNetInter {
 	
@@ -66,9 +65,7 @@ public class setupNetSmallGraph implements setupNetInter {
 			if ( isCon == 1  ) { meanPointId = nGs.getId() ; }
 		}
 		
-		Node meanPointNodeGs = gsGraph.getNode(meanPointId);
-		
-//		System.out.println("meanPointId " + meanPointId);
+		Node meanPointNodeGs = gsGraph.getNode(meanPointId);										//		System.out.println("meanPointId " + meanPointId);
 		
 		switch (radiusType) {
 		case topo: 		{ pointInRadiusStr = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, meanPointNodeGs, radius); 
@@ -85,6 +82,4 @@ public class setupNetSmallGraph implements setupNetInter {
 			nGs.addAttribute("con", 1);
 		}
   	}
-
-	
 }

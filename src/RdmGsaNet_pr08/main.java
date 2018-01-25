@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
@@ -25,10 +27,9 @@ public class main {
 	
 	private static String 	fileType = ".dgs" ,
 							fileTypeIm = "png" ;
-
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_2\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\gradient_multiSeed\\" ;
 
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ;
 	
@@ -45,7 +46,7 @@ public class main {
 	static layerGs gsLayer = new layerGs(new setupGsGrid( 50 , setupGsInter.gsGridType.grid8 ) ) ;
 	
 	// generate layer of Net
-//	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid8) );	
+//	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid4) );	
 	static layerNet netLayer = new layerNet (new setupNetSeed());
 	
 	// call gs graph ( to test code , not important )
@@ -61,13 +62,14 @@ public class main {
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
 		// generateNetNodeThreshold ( ) 
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
-			/* number of started seed 	*/	  1 
+			/* number of started seed 	*/	  1
 			/* morphogen 				*/	, "gsAct" 
 			/* type of seed behavior 	*/	, splitSeed.splitProbability
 			/* seed move to greater ? 	*/	, true 
 			/* set increment Ass		*/	, 0.001
 			/* set increm Res (not impl	*/	, 0
-			/* set prob test			*/	, 0.55
+			/* set prob test			*/	, 0.10
+			/* still alive 				*/	, true
 											)) ;
 	
 	// generateNetEdgeNear (  )
@@ -151,7 +153,16 @@ public class main {
 		 *  			bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 
 		 *) 	*/		
 		run.runSim( stopSim , false , true , true , doStoreStepGs , pathStepGs, doStoreStepNet , pathStepNet );	//	
+
+		int seedAlive = 0 ;
+		for ( Node n : netGraph.getEachNode()) { 
+		//	System.out.println("idNode " + n.getId() + " attr " + n.getAttributeKeySet()  + " seedGrad " + n.getAttribute("seedGrad"));
+			int seed = n.getAttribute("seedGrad") ;
+			if(  seed == 1 )
+				seedAlive = seedAlive + seed;
+		}
 		
+		System.out.println("seedAlive " + seedAlive);
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 

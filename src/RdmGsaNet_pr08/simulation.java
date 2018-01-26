@@ -10,6 +10,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetExport.handleNameFile;
+import RdmGsaNetViz.setupViz;
 
 public class simulation {	
 	
@@ -98,13 +99,13 @@ public class simulation {
 			updateMapGraph( mapStepNetGraph , step, netGraph);
 			
 			// print values in run
-			if ( printMorp == true) { System.out.println(mapMorp1); }								//			System.out.println("node set " + mapStepIdNet);	
+			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	
 		}
 		
 		// stored graph in dgs format
 		if ( storedDgsGsStep == true) { 	fsdGs.end();	}
 		if ( storedDgsNetStep == true) { 	fsdNet.end();	}
-	
+		
 		finalStep = step - 1 ;	
 	}
 		

@@ -11,7 +11,10 @@ import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
-	private static int stopSim = 3000 ;
+	private static int stopSim = 3000;
+	
+	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
+	private static RdmType type ;
 	
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
 	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
@@ -28,8 +31,10 @@ public class main {
 	private static String 	fileType = ".dgs" ,
 							fileTypeIm = "png" ;
 	
+	private static double feed , kill ;
+	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\gradient_multiSeed\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_mazes\\" ;
 
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ;
 	
@@ -68,36 +73,30 @@ public class main {
 			/* seed move to greater ? 	*/	, true 
 			/* set increment Ass		*/	, 0.001
 			/* set increm Res (not impl	*/	, 0
-			/* set prob test			*/	, 0.10
-			/* still alive 				*/	, true
-											)) ;
+			/* set prob test			*/	, 0.05
+			/* still alive 				*/	, true			)) ;
 	
 	// generateNetEdgeNear (  )
 	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
 			/* radius max ?	*/				0 
 			/* which node link ? 	*/		, generateNetEdgeNear.whichNode.all )) ;
-		
+// --------------------------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
 		handle = new handleNameFile(folder);		
 
+		// setup type RD
+		setRdType(RdmType.mazes);				//System.out.println(kill + " " + feed );
+		
 		// SETUP START VALUES LAYER GS
-		/*	gsAlgo -> 	enum	reactionType 
-		* 				enum	diffusionType 
-		* 				enum	extType 
-		* 				Da , Di , feed , kill 
-		* 				bol 	HandleNaN		= if true, set default value when act or inh is over NaN 
-		* 				double	setIfNaN		= defalt value if act or inh is NaN 
-		* 				bol		handleMinMaxVal	= if true, set value for values over the range
-		*  				double	minVal			= default value if morph < minVal, set minVal
-		*  				double	mmaxVal			= default value if morph > maxVal, set maxVal */
-		gsAlgo values = new gsAlgo( gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
-			/* Da 	*/			0.2,			
-			/* Di 	*/			0.1, 		
-			/* feed */			0.03 , 	
-			/* kill */			0.062 ,		
-								true , 1E-5 ,
-								true , 1E-5 , 1 ) ;
+		gsAlgo values = new gsAlgo( 
+			/* enum -- reaction , diffusion ext*/		gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
+			/* Da 	*/									0.2,			
+			/* Di 	*/									0.1, 		
+			/* feed */									feed , 	
+			/* kill */									kill ,		
+			/* HandleNaN , setIfNaN */					true , 1E-5 , 			/* if true, set default value when act or inh is over NaN  */
+			/* handleMinMaxVal , minVal , maxVal */		true , 1E-5 , 1 ) ; 	/* if true, set value for values over the range */
   
 		// create path in order to stored all dgs files
 		String pathStepNet = handle.getPathStepNet() ; 		//	System.out.println("pathStepNet " + pathStepNet);		
@@ -167,16 +166,37 @@ public class main {
 		// VISUALIZATION 
 
 //		setupViz.Viz4Color( gsGraph );
-		setupViz.VizNodeId( netGraph );	
+	//	setupViz.VizNodeId( netGraph );	
 		setupViz.Viz10ColorAct( gsGraph ) ;	
 //		setupViz.Vizmorp(gsGraph, "gsAct");
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 		gsGraph.display(false) ;
+		setupViz.VizSeedGrad(netGraph, "seedGrad");
 		netGraph.display(false) ;	
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
 
+	
+	private static  void setRdType ( RdmType type ) {
+		
+		switch ( type ) {
+			case holes: 				{ feed = 0.039 ; kill = 0.058 ; } break ;
+
+			case solitions :			{ feed = 0.030 ; kill = 0.062 ; } break ;
+			 
+			case mazes : 				{ feed = 0.029 ; kill = 0.057 ; } break ;
+			
+			case movingSpots :			{ feed = 0.014 ; kill = 0.054 ; } break ;
+		
+			case pulsatingSolitions :	{ feed = 0.025 ; kill = 0.060 ; } break ;
+			
+			case U_SkateWorld :			{ feed = 0.062 ; kill = 0.061 ; } break ;
+			
+			case f055_k062 :			{ feed = 0.055 ; kill = 0.062 ; } break ;
+		}
+		
+	}
 // GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
 	public static layerNet getNetLayer() 		{ return netLayer;	}
 	public static int getStopSim() 				{ return stopSim ; } 

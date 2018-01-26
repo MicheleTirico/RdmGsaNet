@@ -29,13 +29,15 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	protected String morp ;
 	protected boolean isGreater ,
 						stillAlive ;
+	
 	protected double incremAss ,
 						incremRel ; 
+	
 	protected static double probabilityTest ;
 	
 	protected static Map<Integer , ArrayList<Node>> mapStepSeed =  new HashMap<Integer , ArrayList<Node>>();
 	
-	enum splitSeed { onlyOneRandom , splitMax , splitMaxThreshold , splitProbability }
+	protected enum splitSeed { onlyOneRandom , splitMax , splitMaxThreshold , splitProbability }
 	
 	private splitSeed typeSplit ;
 	
@@ -54,10 +56,10 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	@Override
 	public void generateNodeRule(int step) {						//	System.out.println( setupNet );
 
-		// CREATE LIST OF SEEDGRAD AND OLDSEEDGRAD 
+		// CREATE LIST OF SEEDGRAD 
 		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
 		
-		ArrayList<Node> listNewSeed = new ArrayList<Node>();
+	//	ArrayList<Node> listNewSeed = new ArrayList<Node>();
 		
 		// handle whether no have new node, set seed list like previous step
 		listNodeSeedGrad = 	createListSeedGrad( step );
@@ -74,6 +76,8 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 			// still alive
 			ArrayList<Node> listStillAlive = new ArrayList<Node>();	
 	
+			ArrayList<Node> listNewSeed = new ArrayList<Node>();
+			
 			// CREATE LIST NEIGBHORDS WITH MAX VALUE ----------------------------------------------------------------------------------------------------------------
 			ArrayList<String> listIdNeigValMax = createListMaxNeig( gsGraph, nNet , morp);
 			
@@ -85,12 +89,10 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 			switch (typeSplit) {
 				case onlyOneRandom: {	
 					onlyOneRandomMethod ( nNet, idNewNode, listIdNeigValMax );		// System.out.println("onlyOneRandom");
-
 				} break;
 									
 				case splitMax : {	
 					splitMaxMethod ( nNet, listNewNode , listIdNeigValMax ); 		// System.out.println("splitMax");
-
 				} break;
 				
 				case splitMaxThreshold : {
@@ -106,12 +108,10 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 			nNet.setAttribute("seedGrad", 0);
 			
 			// still alive
-			if ( stillAlive ) {
-				for ( Node n : listStillAlive) { n.addAttribute("seedGrad", 1 ); }
-				listStillAlive.clear();	
-			}
-			for ( Node n : listNewSeed ) {	n.addAttribute("seedGrad", 1);	}
-			System.out.println(listNewNode);
+			if ( stillAlive ) 
+				for ( Node n : listStillAlive) { n.addAttribute("seedGrad", 1 ); }	//	System.out.println("listStillAlive " + listStillAlive);	
+			
+			for ( Node n : listNewSeed ) {	n.addAttribute("seedGrad", 1);	} 		//	System.out.println("listNewNode " + listNewNode);
 		}
 	}
 

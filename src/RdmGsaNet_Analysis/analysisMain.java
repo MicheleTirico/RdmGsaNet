@@ -15,7 +15,7 @@ public class analysisMain {
 	
 	private static String fileType = ".dgs" ;
 	
-	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\gradient_multiSeed\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.06_00\\" ,
+	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_solitions\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.06_00\\" ,
 							folderChart = folder +"chart\\" ;
 	
 // START FILES
@@ -68,12 +68,14 @@ public class analysisMain {
 	// Initialize net analysis
 	private static analysisDGSgs analysisGs = new analysisDGSgs(
 			/* id dgs 					*/		"dgsGs" , 
-			/* run analysis				*/		false , 
+			/* run analysis				*/		true , 
 			/* run all analysis			*/		true 
 			);
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	public static void main(String[] args) throws IOException, InterruptedException {
+		
+		
 		
 // SET WHICH CHARTS WE WANT TO HAVE ---------------------------------------------------------------
 		analysisNet.setWhichAnalysis(
@@ -84,9 +86,9 @@ public class analysisMain {
 		
 		analysisGs.setWhichAnalysis(
 				/* run Viz 				*/ true ,
-				/* computeStepMaxMorp	*/ true , 
-				/* computeStepMinMorp	*/ true ,
-				/* computeStepAveMorp 	*/ true
+				/* computeStepMaxMorp	*/ false , 
+				/* computeStepMinMorp	*/ false ,
+				/* computeStepAveMorp 	*/ false 
 				);
 		
 // SET PARAMETERS OF ANALYSIS ---------------------------------------------------------------------
@@ -97,7 +99,7 @@ public class analysisMain {
 		analysisGs.setParamAnalysis("gsAct");
 	
 // RUN ANALYSIS -----------------------------------------------------------------------------------
-		analysisNet.computeMultipleStat	(3000, 2 , pathStartNet, pathStepNet);
+		analysisNet.computeMultipleStat	(3000, 5 , pathStartNet, pathStepNet);
 	
 		analysisGs.computeMultipleStat	(3000, 5, pathStartGs, pathStepGs);
 		
@@ -105,13 +107,13 @@ public class analysisMain {
 		
 // 	CREATE CHARTS ---------------------------------------------------------------------------------
 		createChartsNet(
-				/* storedCharts 		*/ false ,
+				/* storedCharts 		*/ false  ,
 				/* createChartDegree 	*/ true , 
 				/* createChartNewNodes	*/ true
 				);
 	
 		createChartsGs(
-				/* storeCharts 			*/ false ,
+				/* storeCharts 			*/ false  ,
 				/* createChartMax		*/ true , 
 				/* createChartMin		*/ true ,
 				/* createChartAve		*/ true

@@ -47,7 +47,9 @@ public class analysisMain {
 // MAP FOR CHARTS
 	// MAP NET
 	protected static Map mapNetFreqDegree = new HashMap () , 
-							mapNetStepNewNode = new HashMap () ;
+							mapNetAverageDegree = new HashMap () ,
+								mapNetStepNewNode = new HashMap () ,
+									mapNetStepNormalDistributionDegree = new HashMap ();
 	
 	// MAP GS
 	protected static Map mapGsStepMaxMorp = new HashMap () , 
@@ -68,7 +70,7 @@ public class analysisMain {
 	// Initialize net analysis
 	private static analysisDGSgs analysisGs = new analysisDGSgs(
 			/* id dgs 					*/		"dgsGs" , 
-			/* run analysis				*/		true , 
+			/* run analysis				*/		false , 
 			/* run all analysis			*/		true 
 			);
 
@@ -79,13 +81,15 @@ public class analysisMain {
 		
 // SET WHICH CHARTS WE WANT TO HAVE ---------------------------------------------------------------
 		analysisNet.setWhichAnalysis(
-				/* run Viz 				*/ true ,
-				/* computeDegree		*/ false ,
-				/* computeNewNode		*/ false 
+				/* run Viz 							*/ true ,
+				/* computeDegree					*/ false ,
+				/* computeAverageDegree				*/ true ,
+				/* computeNewNode					*/ false ,
+				/* computeNormalDegreeDistribution 	*/ true
 				);
 		
 		analysisGs.setWhichAnalysis(
-				/* run Viz 				*/ true ,
+				/* run Viz 				*/ false ,
 				/* computeStepMaxMorp	*/ false , 
 				/* computeStepMinMorp	*/ false ,
 				/* computeStepAveMorp 	*/ false 
@@ -103,13 +107,17 @@ public class analysisMain {
 	
 		analysisGs.computeMultipleStat	(3000, 5, pathStartGs, pathStepGs);
 		
-	
+	//	System.out.println(mapNetAverageDegree);
+		System.out.println(mapNetStepNormalDistributionDegree);
 		
 // 	CREATE CHARTS ---------------------------------------------------------------------------------
 		createChartsNet(
-				/* storedCharts 		*/ false  ,
-				/* createChartDegree 	*/ true , 
-				/* createChartNewNodes	*/ true
+				/* storedCharts 							*/ true  ,
+				/* createChartDegree 						*/ false , 
+				/*create chart Average Degree 				*/ false ,
+				/* createChartNewNodes						*/ false,
+				/* create chart normal degree distribution 	*/ true
+				
 				);
 	
 		createChartsGs(
@@ -119,7 +127,6 @@ public class analysisMain {
 				/* createChartAve		*/ true
 				);
 	
-		
 		
 		
 		
@@ -134,7 +141,7 @@ public class analysisMain {
 	}	
 		
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
-	private static void createChartsNet ( boolean storeCharts, boolean createChartDegree , boolean createChartNewNode ) throws IOException {
+	private static void createChartsNet ( boolean storeCharts, boolean createChartDegree , boolean createChartAverageDegree , boolean createChartNewNode , boolean createCharNormalDegreedistribution ) throws IOException {
 		
 		// exit method 
 		if ( !analysisDGSnet.run ) return ;
@@ -145,12 +152,26 @@ public class analysisMain {
 			xyChart.setVisible(true);
 			xyChart.saveChart(storeCharts ,  folderChart, "Net Freq Degree" );	
 		}
-		
+	
+		// create chart average degree
+		if ( createChartAverageDegree) {
+			xyChart = new expChart(typeChart.XYchartSingleLine , "average Degree", "Step (t)" , " average degree (n)" , 800, 600 ,	mapNetAverageDegree );
+			xyChart.setVisible(true);
+			xyChart.saveChart(storeCharts ,  folderChart, "Net average degree" );	
+			
+		}
 		//create chart of new node
 		if ( createChartNewNode ) {
 			xyChart = new expChart(typeChart.XYchartSingleLine , "new node count", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepNewNode );
 			xyChart.setVisible(true);
 			xyChart.saveChart(storeCharts ,  folderChart, "Net new nodes" );	
+		}
+		
+		// create chart degree distribution
+		if ( createCharNormalDegreedistribution) {
+			xyChart = new expChart(typeChart.XYchartMultipleLine , "normal degree distribution", "Step (t)" , " normal degree distribution (n)" , 800, 600 ,	mapNetStepNormalDistributionDegree );
+			xyChart.setVisible(true);
+			xyChart.saveChart(storeCharts ,  folderChart, "Net normal degree distribution" );		
 		}
 	}
 	

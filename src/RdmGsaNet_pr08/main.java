@@ -3,15 +3,18 @@ package RdmGsaNet_pr08;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
-	private static int stopSim = 3000;
+	private static int stopSim = 100;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -22,10 +25,10 @@ public class main {
 	
 	// STORE DGS PARAMETERS
 	
-	private static boolean 	doStoreStartGs 	= true, 
-							doStoreStepGs 	= true,
-							doStoreStartNet = true, 
-							doStoreStepNet 	= true,
+	private static boolean 	doStoreStartGs 	= false, 
+							doStoreStepGs 	= false,
+							doStoreStartNet = false, 
+							doStoreStepNet 	= false,
 							doStoreIm		= false ;
 	
 	private static String 	fileType = ".dgs" ,
@@ -73,7 +76,7 @@ public class main {
 			/* seed move to greater ? 	*/	, true 
 			/* set increment Ass		*/	, 0.001
 			/* set increm Res (not impl	*/	, 0
-			/* set prob test			*/	, 0.05
+			/* set prob test			*/	, 0.08
 			/* still alive 				*/	, true			)) ;
 	
 	// generateNetEdgeNear (  )
@@ -162,6 +165,8 @@ public class main {
 		}
 		
 		System.out.println("seedAlive " + seedAlive);
+	
+
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 

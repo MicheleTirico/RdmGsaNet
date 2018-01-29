@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
@@ -216,6 +217,19 @@ public class graphAnalysis {
 			mapFrequency.put( key  ,  freq );
 		}
 		return mapFrequency;		
+	}
+	
+	// get map of normal degree distribution // map <degree , normal distribution >  
+	public static Map getNormalDegreeDistribution ( Graph graph ) {
+		
+		int[] degreeDist = Toolkit.degreeDistribution(graph);
+
+		Map< Double , Double > mapDegreeNormalDistr = new HashMap< Double , Double > ();
+		
+		for ( int i = 0 ; i < degreeDist.length ; i++ )  {
+			mapDegreeNormalDistr.put((double) i, (double) degreeDist[i] / graph.getNodeCount());	
+		}
+		return mapDegreeNormalDistr;	
 	}
 	
 // PRIVATE METHODS ---------------------------------------------------------------------------------------------------------------------------------------------------

@@ -16,7 +16,7 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr08.gsAlgo;
 
-public class analysisDGSnet implements analysisDGS {
+public class analysisDGSnet extends analysisMain implements analysisDGS  {
 
 	// CONSTANT
 	private String dgsId ;
@@ -29,14 +29,16 @@ public class analysisDGSnet implements analysisDGS {
 	protected static boolean 	run ,
 								runAll ,
 								computeDegree ,
+								computeAverageDegree , /* avD = 2 * edgeCount / nodeCount */
 								computeStepNewNode ,
+								computeNormalDegreeDistribution,
 								runViz ;
 	
 	// MAP FOR CHARTS
-	protected Map mapFreqDegree = analysisMain.mapNetFreqDegree ,
-					mapNetStepNewNode = analysisMain.mapNetStepNewNode;
 
-	private Map <Integer , Integer >  mapNetStepNodeCount = new HashMap< Integer , Integer > () ;
+	// private map
+	private Map <Integer , Integer >  mapNetStepNodeCount = new HashMap< Integer , Integer > ();
+		
 	
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	// COSTRUCTOR
@@ -51,10 +53,12 @@ public class analysisDGSnet implements analysisDGS {
 			this.degreeFreq = degreeFreq ;
 	}
 		
-	public void setWhichAnalysis (boolean runViz , boolean computeDegree , boolean computeStepNewNode  ) {
+	public void setWhichAnalysis (boolean runViz , boolean computeDegree , boolean computeAverageDegree , boolean computeStepNewNode, boolean computeNormalDegreeDistribution   ) {
 		this.runViz = runViz ;
-		this.computeDegree  = computeDegree  ;	
+		this.computeDegree  = computeDegree ;	
+		this.computeAverageDegree = computeAverageDegree ;
 		this.computeStepNewNode = computeStepNewNode ;
+		this.computeNormalDegreeDistribution = computeNormalDegreeDistribution ;
 	}
 			
 // COMPUTE MULTIPLE ANALYSIS --------------------------------------------------------------------------------------------------------------
@@ -70,7 +74,7 @@ public class analysisDGSnet implements analysisDGS {
 			graph.display(false);
 		
 		// create list of step to create images
-		ArrayList<Double> incList = analysisDGS.getListStepAnalysis(stepInc, stepMax);						//	System.out.println(incList);
+		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 
 		// import start graph
 		try 														{	graph.read(pathStart);		} 
@@ -93,9 +97,11 @@ public class analysisDGSnet implements analysisDGS {
 					System.out.println("----------------step " + step + " ----------------" );				
 					
 					if ( computeDegree  ) 
-						
-						analysisDGS.computeFreqDegree( degreeFreq, graph , step , mapFreqDegree );	
+						analysisDGS.computeFreqDegree( degreeFreq, graph , step , mapNetFreqDegree );	
 							
+					if ( computeAverageDegree )
+						analysisDGS.computeAverageDegree( graph, step, mapNetAverageDegree);
+					
 					if ( computeStepNewNode ) {
 						mapNetStepNodeCount.put(s, graph.getNodeCount());
 						try {
@@ -103,7 +109,10 @@ public class analysisDGSnet implements analysisDGS {
 						} catch (java.lang.NullPointerException e) {			}
 						s++;
 					}
-					
+				
+					if ( computeNormalDegreeDistribution) 	
+						analysisDGS.computeStepNormalDegreeDistribution(graph, step, mapNetStepNormalDistributionDegree, true , 9 );
+				
 					// run viz
 					if ( runViz )
 						// setupViz.VizNodeId(graph);
@@ -117,16 +126,4 @@ public class analysisDGSnet implements analysisDGS {
 		} catch (IOException e) {		}				
 		fs.end();	
 	}
-	
-	private static String setVizNodeId () {
-		return  "node { "
-				+ "size: 10px;"
-				+ "fill-color: black;"
-				+ "text-alignment: at-right; "
-				+ "text-color: black; "
-				+ "text-background-mode: plain; "
-				+ "text-background-color: white; "
-				+ "}";
-	}
-	
 }

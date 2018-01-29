@@ -14,7 +14,7 @@ import org.graphstream.stream.file.FileSourceFactory;
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
 import RdmGsaNetViz.setupViz;
 
-public class analysisDGSgs implements analysisDGS {
+public class analysisDGSgs extends analysisMain implements analysisDGS {
 
 	// CONSTANT
 	private String 	dgsId ,
@@ -32,11 +32,6 @@ public class analysisDGSgs implements analysisDGS {
 							computeStepMaxMorp ,
 							computeStepMinMorp ,
 							computeStepAveMorp ; 
-	
-	// MAP FOR CHARTS
-	protected Map mapGsStepMaxMorp = analysisMain.mapGsStepMaxMorp ,
-					mapGsStepMinMorp = analysisMain.mapGsStepMinMorp ,
-						mapGsStepAveMorp = analysisMain.mapGsStepAveMorp ;
 	
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	// COSTRUCTOR
@@ -72,7 +67,7 @@ public class analysisDGSgs implements analysisDGS {
 			 graph.display(false);
 				
 		// create list of step to create images
-		ArrayList<Double> incList = analysisDGS.getListStepAnalysis(stepInc, stepMax);						//	System.out.println(incList);
+		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 
 		// import start graph
 		try 														{	graph.read(pathStart);		} 
@@ -108,8 +103,7 @@ public class analysisDGSgs implements analysisDGS {
 							
 					// run viz
 					if ( runViz )	
-						
-					
+							
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}

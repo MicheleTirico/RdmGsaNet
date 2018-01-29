@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
-
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
-import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr08.*;
 
-public interface analysisDGS {
+public interface analysisDGS  {
 	
 	static Graph gsGraph = layerGs.getGraph();
 	static Graph netGraph = layerNet.getGraph();
@@ -43,9 +42,35 @@ public interface analysisDGS {
 		Map <Double, Double> mapDegree = graphAnalysis.getMapFrequencyDegree(graph, attribute, nFreq) ;
 		mapFreqDegree.put(step, mapDegree);
 	}
-		
+	
+	// compute average degree
+	public static void computeAverageDegree ( Graph graph , double step , Map mapStepAveDegree ) {
+	
+		double avDegree = Toolkit.averageDegree(graph);
+		//System.out.println(avDegree);
+		mapStepAveDegree.put(step, avDegree);
+	}
+	
+	public static void computeStepNormalDegreeDistribution ( Graph graph , double step , Map mapStepNormalDistributionDegree , boolean setNumberLine , int numberLine ) {
+	
+		if ( setNumberLine ) {
+			Map mapNormDegDist = graphAnalysis.getNormalDegreeDistribution(graph);
+			double numberOfDegreeFreq = mapNormDegDist.size();
+			double maxNewNullVal = numberLine - (double) numberOfDegreeFreq;	//			System.out.println("numberOfDegreeFreq " + numberOfDegreeFreq);			System.out.println("maxNewNullVal " + maxNewNullVal);		System.out.println(mapNormDegDist);
+			
+			for ( double x = numberOfDegreeFreq ; x <= maxNewNullVal + numberOfDegreeFreq ; x++ ) {
+				mapNormDegDist.put(x  , 0.0 ) ;
+			}	//	System.out.println(mapNormDegDist);
+			mapStepNormalDistributionDegree.put(step, mapNormDegDist);
+		} 
+		else {
+			Map mapNormDegDist = graphAnalysis.getNormalDegreeDistribution(graph);
+			mapStepNormalDistributionDegree.put(step, mapNormDegDist);
+		}	
+	}
+	
 	// get list of step to do analysis
-	public static ArrayList<Double> getListStepAnalysis ( double stepInc , double stepMax ) {
+	public static ArrayList<Double> getListStepToAnalyze ( double stepInc , double stepMax ) {
 			
 		ArrayList<Double> list = new ArrayList<Double>();
 		for ( double n = 1 ; n * stepInc <= stepMax ; n++ ) {	
@@ -84,6 +109,7 @@ public interface analysisDGS {
 		return mapMorp;			
 	}
 	
+	// implemented in analysisDGSnet
 	public static void computeMapStepNewNode ( Graph graph , double step , Map mapStepNewNpode , ArrayList<Double> incList ) {
 
 	

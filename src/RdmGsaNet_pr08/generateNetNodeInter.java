@@ -11,7 +11,7 @@ public interface generateNetNodeInter {
 	
 	public void removeNodeRule (int step ) ;
 	
-	public void setSeedNodes ( int step )  ;
+	// public void setSeedNodes ( int step )  ;
 
 
 }

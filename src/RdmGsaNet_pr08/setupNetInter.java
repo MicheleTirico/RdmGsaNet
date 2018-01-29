@@ -11,9 +11,6 @@ public interface setupNetInter {
 	
 	// COSTANTS
 	 meanPointPlace point = null ;
-//	public enum typeNet { grid ,seed , gis}
-	
-	// METHODS	
 
 	// method for createLayer
 	void createLayerNet ();

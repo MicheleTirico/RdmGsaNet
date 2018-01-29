@@ -48,10 +48,5 @@ public class generateNetNodeSplitProb implements generateNetNodeInter {
 		
 	}
 
-	@Override
-	public void setSeedNodes(int step) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

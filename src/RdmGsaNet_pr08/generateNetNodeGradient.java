@@ -16,6 +16,7 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import static org.graphstream.algorithm.Toolkit.*;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import graphstream_dev_toolkit.toolkit;
 
 public class generateNetNodeGradient implements generateNetNodeInter {
 	
@@ -33,6 +34,9 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	protected double incremAss ,
 						incremRel ; 
 	
+	protected enum layoutSeedGradient { multiRandom , oneCenter , fourDiagonal , fourEdge }
+	protected layoutSeedGradient layoutSeed ;
+	
 	protected static double probabilityTest ;
 	
 	protected static Map<Integer , ArrayList<Node>> mapStepSeed =  new HashMap<Integer , ArrayList<Node>>();
@@ -42,7 +46,8 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	private splitSeed typeSplit ;
 	
 	// COSTRUCTOR 
-	public generateNetNodeGradient( int seedNumber , String morp , splitSeed typeSPlit, boolean isGreater , double incremAss , double incremRel , double probabilityTest , boolean stillAlive ) {
+	public generateNetNodeGradient( layoutSeedGradient layoutSeed , int seedNumber , String morp , splitSeed typeSPlit, boolean isGreater , double incremAss , double incremRel , double probabilityTest , boolean stillAlive ) {
+		this.layoutSeed = layoutSeed;
 		this.seedNumber = seedNumber;
 		this.morp = morp;
 		this.typeSplit = typeSPlit;
@@ -56,10 +61,9 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	@Override
 	public void generateNodeRule(int step) {						//	System.out.println( setupNet );
 
+		setSeedNodes (step , layoutSeed) ;
 		// CREATE LIST OF SEEDGRAD 
-		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();
-		
-	//	ArrayList<Node> listNewSeed = new ArrayList<Node>();
+		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node>();	//	ArrayList<Node> listNewSeed = new ArrayList<Node>();
 		
 		// handle whether no have new node, set seed list like previous step
 		listNodeSeedGrad = 	createListSeedGrad( step );
@@ -119,41 +123,60 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	public void removeNodeRule(int step) {
 		}	
 
-	@Override
-	public void setSeedNodes( int step ) {
+	public void setSeedNodes( int step , layoutSeedGradient layoutSeed  ) {
 
+		
 		if ( step == 1 ) {
 			
-			ArrayList<String> listIdNodeMaxDegree = gsAlgoToolkit.getNodeMaxDegree(netGraph);
-				
-			String idSeed = null;														//	System.out.println(seedNumber);
-			if ( seedNumber == 1 ) {													//	System.out.println("seedNumber = " +seedNumber );
-				for ( String s : listIdNodeMaxDegree) { idSeed = s;	}					//	System.out.println(idSeed);
-				Node seedNode = netGraph.getNode(idSeed);
-				seedNode.addAttribute("seedGrad", 1);
-			}
+			switch (layoutSeed) {
 			
-			else {
-				if ( seedNumber >= 9 ) {													//	System.out.println("seedNumber = " +seedNumber );	//	System.out.println("seed Gradient over number of nodes , set seedNumber = countNodes");
-					for ( Node seedNode : netGraph.getEachNode()) {	seedNode.setAttribute("seedGrad", 1 );	}
-			}
+			case multiRandom: {
+				ArrayList<String> listIdNodeMaxDegree = gsAlgoToolkit.getNodeMaxDegree(netGraph);
 				
-			else {
-				if ( seedNumber > 1 && seedNumber < 9 ) {								//	System.out.println("seedNumber = " +seedNumber );
-					ArrayList<String> listSeed = new ArrayList<String>() ;
+				String idSeed = null;														//	System.out.println(seedNumber);
+				if ( seedNumber == 1 ) {													//	System.out.println("seedNumber = " +seedNumber );
+					for ( String s : listIdNodeMaxDegree) { idSeed = s;	}					//	System.out.println(idSeed);
+					Node seedNode = netGraph.getNode(idSeed);
+					seedNode.addAttribute("seedGrad", 1);
+				}
 				
-					for ( String s : listIdNodeMaxDegree) { listSeed.add(s); }			//	System.out.println(listSeed);
+				else {
+					if ( seedNumber >= 9 ) {													//	System.out.println("seedNumber = " +seedNumber );	//	System.out.println("seed Gradient over number of nodes , set seedNumber = countNodes");
+						for ( Node seedNode : netGraph.getEachNode()) {	seedNode.setAttribute("seedGrad", 1 );	}
+				}
 					
-					for ( int i = 1 ; listSeed.size() < seedNumber  ; i++ )  {			//	System.out.println(i);
-						Node nodeRandom = randomNode(netGraph);
-						String idNodeRandom = nodeRandom.getId();
-						if ( !listSeed.contains(idNodeRandom) ) {	listSeed.add(idNodeRandom);	}		
-						listSeed.forEach(s -> netGraph.getNode(s).setAttribute("seedGrad", 1));
+				else {
+					if ( seedNumber > 1 && seedNumber < 9 ) {								//	System.out.println("seedNumber = " +seedNumber );
+						ArrayList<String> listSeed = new ArrayList<String>() ;
+					
+						for ( String s : listIdNodeMaxDegree) { listSeed.add(s); }			//	System.out.println(listSeed);
+						
+						for ( int i = 1 ; listSeed.size() < seedNumber  ; i++ )  {			//	System.out.println(i);
+							Node nodeRandom = randomNode(netGraph);
+							String idNodeRandom = nodeRandom.getId();
+							if ( !listSeed.contains(idNodeRandom) ) {	listSeed.add(idNodeRandom);	}		
+							listSeed.forEach(s -> netGraph.getNode(s).setAttribute("seedGrad", 1));
+							}
 						}
 					}
-				}
-			}																			//			System.out.println(numberOfNodesNet);		//			System.out.println(listIdNodeMaxDegree);		//			System.out.println(nodeSet);		
-		}
+				}																			//			System.out.println(numberOfNodesNet);		//			System.out.println(listIdNodeMaxDegree);		//			System.out.println(nodeSet);		
+			
+			} break;
+			
+			case fourEdge : {
+				String IdCenter = gsAlgoToolkit.getCenterGrid(gsGraph);
+				ArrayList<String> listNewSeed = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, gsGraph.getNode(IdCenter), 1.05 ) ;
+				listNewSeed.forEach(s -> netGraph.getNode(s).setAttribute("seedGrad", 1));	
+			}	break;
+			case fourDiagonal : {
+				String IdCenter = gsAlgoToolkit.getCenterGrid(gsGraph);
+				ArrayList<String> listEdge = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, gsGraph.getNode(IdCenter), 1.05 ) ;
+				ArrayList<String> listEdgeAndDiagonal = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, gsGraph.getNode(IdCenter), 1.50 ) ;
+				
+			}}}
+			
+			
+				
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------

@@ -32,7 +32,7 @@ public class gsAlgoToolkit {
 		return dist;			
 	}
 	
-	// method to set attribute "length" to each edge and distance start and end nodes
+//	 method to set attribute "length" to each edge and distance start and end nodes
 	private static void setWeigth ( Graph graph ) {
 		
 		for ( Edge e : graph.getEachEdge()) {
@@ -406,6 +406,14 @@ public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String 
 		return listNewNode;	
 	}
 	
+	public static String getCenterGrid ( Graph graph ) {
+		
+		int nodeCount = graph.getNodeCount();
+		double gridSize = Math.pow(nodeCount, ( 1 / 2) ) ;
+		int idCenter = (int)  Math.floor(gridSize / 2) ;			
+
+		return idCenter + "_" + idCenter ;	
+	}
 
 	
 	

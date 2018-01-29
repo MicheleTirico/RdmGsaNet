@@ -11,6 +11,7 @@ import org.graphstream.graph.Node;
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
+import RdmGsaNet_pr08.generateNetNodeGradient.layoutSeedGradient;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
@@ -70,7 +71,8 @@ public class main {
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
 		// generateNetNodeThreshold ( ) 
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
-			/* number of started seed 	*/	  1
+			/* layoutSeedGradient		*/	layoutSeedGradient.multiRandom
+			/* number of started seed 	*/	, 1
 			/* morphogen 				*/	, "gsAct" 
 			/* type of seed behavior 	*/	, splitSeed.splitProbability
 			/* seed move to greater ? 	*/	, true 

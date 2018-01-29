@@ -37,7 +37,7 @@ public class generateNetNode {
 	public void generateNode ( int step )  {
 	
 		type.generateNodeRule ( step ) ;
-		type.setSeedNodes( step );		//		System.out.println("node set " + mapStepIdNet);		//	System.out.println("new nodes" + mapStepNewNodeId);
+	//	type.setSeedNodes( step );		//		System.out.println("node set " + mapStepIdNet);		//	System.out.println("new nodes" + mapStepNewNodeId);
 	} 
 
 // PRIVATE METHODS ------------------------------------------------------------------------------------------------

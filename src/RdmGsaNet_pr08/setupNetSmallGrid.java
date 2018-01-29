@@ -34,8 +34,7 @@ public class setupNetSmallGrid implements setupNetInter {
 			int con = nGs.getAttribute("con") ;
 				if (  con == 1 ) {
 					listIdGsCon.add(nGs.getId());	}
-			}		//
-		System.out.println(listIdGsCon);
+			}		//	System.out.println(listIdGsCon);
 				
 		// create seed node in netGraph and set coordinate
 		for ( String id : listIdGsCon ) {

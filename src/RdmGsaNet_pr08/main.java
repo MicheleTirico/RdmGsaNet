@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.graphstream.algorithm.Toolkit;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetExport.handleNameFile;
@@ -15,7 +18,7 @@ import RdmGsaNet_pr08.generateNetNodeGradient.layoutSeedGradient;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
-	private static int stopSim = 100;
+	private static int stopSim = 1;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -56,13 +59,12 @@ public class main {
 	
 	// generate layer of Net
 //	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid4) );	
-	static layerNet netLayer = new layerNet (new setupNetSeed());
+//	static layerNet netLayer = new layerNet (new setupNetSeed());
+	static layerNet netLayer = new layerNet (new setupNetSmallGraph(setupNetSmallGraph.smallGraphType.star4Edge));
 	
-	// call gs graph ( to test code , not important )
-	static Graph gsGraph = layerGs.getGraph() ;
-	
-	// call NET graph ( to test code , not important )
-	static Graph netGraph = layerNet.getGraph() ;
+	// get  Graphs ( only to test results ) 
+	protected static Graph gsGraph = layerGs.getGraph() ,
+							netGraph = layerNet.getGraph() ;
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	static simulation run = new simulation() ;
@@ -71,7 +73,7 @@ public class main {
 		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
 		// generateNetNodeThreshold ( ) 
 	static generateNetNode generateNetNode = new generateNetNode (new generateNetNodeGradient(
-			/* layoutSeedGradient		*/	layoutSeedGradient.multiRandom
+			/* layoutSeedGradient		*/	layoutSeedGradient.allNetNode
 			/* number of started seed 	*/	, 1
 			/* morphogen 				*/	, "gsAct" 
 			/* type of seed behavior 	*/	, splitSeed.splitProbability
@@ -158,20 +160,18 @@ public class main {
 		 *) 	*/		
 		run.runSim( stopSim , false , true , true , doStoreStepGs , pathStepGs, doStoreStepNet , pathStepNet );	//	
 
-		int seedAlive = 0 ;
-		for ( Node n : netGraph.getEachNode()) { 
-		//	System.out.println("idNode " + n.getId() + " attr " + n.getAttributeKeySet()  + " seedGrad " + n.getAttribute("seedGrad"));
-			int seed = n.getAttribute("seedGrad") ;
-			if(  seed == 1 )
-				seedAlive = seedAlive + seed;
-		}
+		//get seedAlive
+		int seedAlive = getSeedAlive(false);
 		
-		System.out.println("seedAlive " + seedAlive);
-	
-
+		ArrayList listIdNetSeedGrad = getListIdWithAttribute(true, netGraph, "seedGrad");
+		
+		printNodeSetAttribute(true , netGraph) ;
+		printEdgeSetAttribute(false , netGraph) ;
+		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
 
+		setupViz.setFixScale(netGraph, gsGraph);
 //		setupViz.Viz4Color( gsGraph );
 	//	setupViz.VizNodeId( netGraph );	
 		setupViz.Viz10ColorAct( gsGraph ) ;	
@@ -183,24 +183,66 @@ public class main {
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
-
+	// PRINT METHODS --------------------------------------------------------------------------------------------------------------------------------
+	protected static void printNodeSetAttribute ( boolean print, Graph graph ) {
 	
+		if ( print )	
+			for ( Node n : netGraph.getEachNode() ) 
+				System.out.println(n.getId() + " " + n.getAttributeKeySet());
+	}
+	
+	protected static void printEdgeSetAttribute (boolean print, Graph graph ) {
+		
+		if ( print )	
+			for ( Edge e : netGraph.getEachEdge() )
+				System.out.println(e.getId() + " " + e.getAttributeKeySet());
+	}
+		
+	// get arrayList of node id with attribute 
+	public static ArrayList getListIdWithAttribute ( boolean printListId ,Graph graph , String atr ) {
+		ArrayList<String> listId = new ArrayList<String>();
+		for ( Node n : graph.getEachNode()) {
+			int val = n.getAttribute(atr);
+			if ( val == 1 ) 
+				listId.add(n.getId());
+		}
+		if ( printListId) 
+			System.out.println( atr + " " + listId);
+		return listId;
+	}
+	
+	// get seed Alive number
+	private static int getSeedAlive ( boolean printValue ) {
+
+		int seedAlive = 0 ;
+		for ( Node n : netGraph.getEachNode()) { 
+			int seed = n.getAttribute("seedGrad") ;
+			if(  seed == 1 )
+				seedAlive = seedAlive + seed;
+		}
+		if ( printValue )
+			System.out.println("seedAlive " + seedAlive);
+		return seedAlive;
+	}
+	
+	// set RD start values to use in similtion ( gsAlgo )
 	private static  void setRdType ( RdmType type ) {
 		
 		switch ( type ) {
-			case holes: 				{ feed = 0.039 ; kill = 0.058 ; } break ;
-
-			case solitions :			{ feed = 0.030 ; kill = 0.062 ; } break ;
-			 
-			case mazes : 				{ feed = 0.029 ; kill = 0.057 ; } break ;
-			
-			case movingSpots :			{ feed = 0.014 ; kill = 0.054 ; } break ;
-		
-			case pulsatingSolitions :	{ feed = 0.025 ; kill = 0.060 ; } break ;
-			
-			case U_SkateWorld :			{ feed = 0.062 ; kill = 0.061 ; } break ;
-			
-			case f055_k062 :			{ feed = 0.055 ; kill = 0.062 ; } break ;
+			case holes: 				{ feed = 0.039 ; kill = 0.058 ; } 
+										break ;
+			case solitions :			{ feed = 0.030 ; kill = 0.062 ; } 
+										break ; 
+			case mazes : 				{ feed = 0.029 ; kill = 0.057 ; } 
+										break ;
+			case movingSpots :			{ feed = 0.014 ; kill = 0.054 ; } 
+										break ;
+			case pulsatingSolitions :	{ feed = 0.025 ; kill = 0.060 ; } 
+										break ;
+			case U_SkateWorld :			{ feed = 0.062 ; kill = 0.061 ; } 
+										break ;
+			case f055_k062 :			{ feed = 0.055 ; kill = 0.062 ; } 
+										break ;
 		}
 		
 	}

@@ -57,7 +57,7 @@ public interface setupNetInter {
 			if (randomDir == 1) {
 				int random = (int) ( Math.random() * gridSize );
 				idString = convertIdToString( 0 , random) ;
-			}													//			System.out.println(idString);
+			}													
 			
 			Node seed = gsGraph.getNode(idString);	
 			seed.setAttribute("con", 1);

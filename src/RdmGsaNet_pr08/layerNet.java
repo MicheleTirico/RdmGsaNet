@@ -7,6 +7,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
 
+import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetExport.handleNameFile;
 
 public class layerNet {	
@@ -57,6 +58,9 @@ public class layerNet {
 	
 		if ( setSeedMorpInGs )  
 			setSeedMorpInGs ( ) ; 
+		
+		// set length
+		gsAlgoToolkit.setWeigth(netGraph);
 		 
 		// stored code
 		if ( storedDGS ) 	{ 	

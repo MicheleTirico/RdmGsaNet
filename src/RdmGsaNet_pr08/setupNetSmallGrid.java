@@ -7,13 +7,14 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
-
 public class setupNetSmallGrid implements setupNetInter {
 
 	// COSTANTS
+	// get graphs
 	private static Graph gsGraph = layerGs.getGraph() ,
 							netGraph = layerNet.getGraph() ;
 		
+	// type grid
 	public enum typeGrid { grid4 , grid8 }
 	private static typeGrid type;
 	
@@ -22,9 +23,7 @@ public class setupNetSmallGrid implements setupNetInter {
 		this.type = type ;
 	}
 	
-	
-	public void createLayerNet() {
-	System.out.println("create small grid");
+	public void createLayerNet() {												//	System.out.println("create small grid");
 		
 		// list id gs nodes  ( con == 1 )
 		ArrayList<String> listIdGsCon = new ArrayList<String> () ;
@@ -33,8 +32,8 @@ public class setupNetSmallGrid implements setupNetInter {
 		for ( Node nGs : gsGraph.getEachNode()) {
 			int con = nGs.getAttribute("con") ;
 				if (  con == 1 ) {
-					listIdGsCon.add(nGs.getId());	}
-			}		//	System.out.println(listIdGsCon);
+					listIdGsCon.add(nGs.getId());	}	
+		}		//	System.out.println(listIdGsCon);
 				
 		// create seed node in netGraph and set coordinate
 		for ( String id : listIdGsCon ) {
@@ -67,10 +66,13 @@ public class setupNetSmallGrid implements setupNetInter {
 	}
 	
 	private static ArrayList<String> getListInRadiusGeom (Graph graph, Node n , double radius ) {
+		
 		ArrayList<String> arrNeig = new ArrayList<String> ();
+		
 		for ( Node neig : graph.getEachNode()) {
 			double dist = RdmGsaNetAlgo.gsAlgoToolkit.getDistGeom(n, neig);
-			if ( dist < radius ) arrNeig.add(neig.getId());
+			if ( dist < radius ) 
+				arrNeig.add(neig.getId());
 		}
 		return arrNeig ;
 	}

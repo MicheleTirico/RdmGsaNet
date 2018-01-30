@@ -3,6 +3,7 @@ package RdmGsaNetAlgo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class gsAlgoToolkit {
 	}
 	
 //	 method to set attribute "length" to each edge and distance start and end nodes
-	private static void setWeigth ( Graph graph ) {
+	public static void setWeigth ( Graph graph ) {
 		
 		for ( Edge e : graph.getEachEdge()) {
 			e.addAttribute(  "length",  getDistGeom(e.getNode0() ,e.getNode1()));	//			double x = e.getAttribute("length");		System.out.println(x);
@@ -415,7 +416,17 @@ public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String 
 		return idCenter + "_" + idCenter ;	
 	}
 
-	
+	// get list of neigboard
+	public static ArrayList<Node> getListNeighbor ( Graph graph , Node n ) {
+		ArrayList<Node> listNeig = new ArrayList<Node>();
+		
+		Iterator<Node> iter = n.getNeighborNodeIterator() ;	
+		while (iter.hasNext()) {		 
+			Node neig = iter.next() ;	
+			listNeig.add(neig);
+		}
+		return listNeig ;
+	}
 	
 
 

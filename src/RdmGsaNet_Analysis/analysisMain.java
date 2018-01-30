@@ -15,7 +15,7 @@ public class analysisMain {
 	
 	private static String fileType = ".dgs" ;
 	
-	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_solitions\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.06_00\\" ,
+	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_solitions\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.09_00\\" ,
 							folderChart = folder +"chart\\" ;
 	
 // START FILES
@@ -70,7 +70,7 @@ public class analysisMain {
 	// Initialize net analysis
 	private static analysisDGSgs analysisGs = new analysisDGSgs(
 			/* id dgs 					*/		"dgsGs" , 
-			/* run analysis				*/		false , 
+			/* run analysis				*/		true , 
 			/* run all analysis			*/		true 
 			);
 
@@ -85,11 +85,11 @@ public class analysisMain {
 				/* computeDegree					*/ false ,
 				/* computeAverageDegree				*/ true ,
 				/* computeNewNode					*/ false ,
-				/* computeNormalDegreeDistribution 	*/ true
+				/* computeNormalDegreeDistribution 	*/ false
 				);
 		
 		analysisGs.setWhichAnalysis(
-				/* run Viz 				*/ false ,
+				/* run Viz 				*/ true ,
 				/* computeStepMaxMorp	*/ false , 
 				/* computeStepMinMorp	*/ false ,
 				/* computeStepAveMorp 	*/ false 
@@ -114,9 +114,9 @@ public class analysisMain {
 		createChartsNet(
 				/* storedCharts 							*/ true  ,
 				/* createChartDegree 						*/ false , 
-				/*create chart Average Degree 				*/ false ,
+				/*create chart Average Degree 				*/ true ,
 				/* createChartNewNodes						*/ false,
-				/* create chart normal degree distribution 	*/ true
+				/* create chart normal degree distribution 	*/ false
 				
 				);
 	

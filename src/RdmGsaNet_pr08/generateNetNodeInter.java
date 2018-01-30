@@ -10,8 +10,10 @@ public interface generateNetNodeInter {
 	public void generateNodeRule ( int step ) ;
 	
 	public void removeNodeRule (int step ) ;
+
+//	public void setSeedNodes(int step);
 	
-	// public void setSeedNodes ( int step )  ;
+
 
 
 }

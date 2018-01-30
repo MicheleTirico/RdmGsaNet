@@ -26,15 +26,16 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	protected static Graph netGraph = layerNet.getGraph(),
 							gsGraph = layerGs.getGraph();	
 	
-	protected int seedNumber;
+	protected  int seedNumber;
 	protected String morp ;
+	
 	protected boolean isGreater ,
 						stillAlive ;
 	
 	protected double incremAss ,
 						incremRel ; 
 	
-	protected enum layoutSeedGradient { multiRandom , oneCenter , fourDiagonal , fourEdge }
+	protected enum layoutSeedGradient { multiRandom , oneCenter , allNetNode }
 	protected layoutSeedGradient layoutSeed ;
 	
 	protected static double probabilityTest ;
@@ -125,61 +126,72 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 
 	public void setSeedNodes( int step , layoutSeedGradient layoutSeed  ) {
 
-		
 		if ( step == 1 ) {
 			
 			switch (layoutSeed) {
-			
-			case multiRandom: {
-				ArrayList<String> listIdNodeMaxDegree = gsAlgoToolkit.getNodeMaxDegree(netGraph);
-				
-				String idSeed = null;														//	System.out.println(seedNumber);
-				if ( seedNumber == 1 ) {													//	System.out.println("seedNumber = " +seedNumber );
-					for ( String s : listIdNodeMaxDegree) { idSeed = s;	}					//	System.out.println(idSeed);
-					Node seedNode = netGraph.getNode(idSeed);
-					seedNode.addAttribute("seedGrad", 1);
-				}
-				
-				else {
-					if ( seedNumber >= 9 ) {													//	System.out.println("seedNumber = " +seedNumber );	//	System.out.println("seed Gradient over number of nodes , set seedNumber = countNodes");
-						for ( Node seedNode : netGraph.getEachNode()) {	seedNode.setAttribute("seedGrad", 1 );	}
-				}
-					
-				else {
-					if ( seedNumber > 1 && seedNumber < 9 ) {								//	System.out.println("seedNumber = " +seedNumber );
-						ArrayList<String> listSeed = new ArrayList<String>() ;
-					
-						for ( String s : listIdNodeMaxDegree) { listSeed.add(s); }			//	System.out.println(listSeed);
-						
-						for ( int i = 1 ; listSeed.size() < seedNumber  ; i++ )  {			//	System.out.println(i);
-							Node nodeRandom = randomNode(netGraph);
-							String idNodeRandom = nodeRandom.getId();
-							if ( !listSeed.contains(idNodeRandom) ) {	listSeed.add(idNodeRandom);	}		
-							listSeed.forEach(s -> netGraph.getNode(s).setAttribute("seedGrad", 1));
-							}
-						}
-					}
-				}																			//			System.out.println(numberOfNodesNet);		//			System.out.println(listIdNodeMaxDegree);		//			System.out.println(nodeSet);		
-			
-			} break;
-			
-			case fourEdge : {
-				String IdCenter = gsAlgoToolkit.getCenterGrid(gsGraph);
-				ArrayList<String> listNewSeed = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, gsGraph.getNode(IdCenter), 1.05 ) ;
-				listNewSeed.forEach(s -> netGraph.getNode(s).setAttribute("seedGrad", 1));	
-			}	break;
-			case fourDiagonal : {
-				String IdCenter = gsAlgoToolkit.getCenterGrid(gsGraph);
-				ArrayList<String> listEdge = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, gsGraph.getNode(IdCenter), 1.05 ) ;
-				ArrayList<String> listEdgeAndDiagonal = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, gsGraph.getNode(IdCenter), 1.50 ) ;
-				
-			}}}
-			
-			
-				
+				case multiRandom : 
+					setSeedMultiRandom( seedNumber);
+					break;
+																						
+				case allNetNode : 
+					setSeedAllNetNode () ;
+					break;
+			}
+		}
 	}
 	
-// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------------
+// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
+	
+	// METHODS TO SET STARTED SEED ------------------------------------------------------------------------------------------------------------------
+	private static void setSeedMultiRandom ( int seedNumber ) {	
+		
+		ArrayList<String> listIdNodeMaxDegree = gsAlgoToolkit.getNodeMaxDegree(netGraph);	
+		String idSeed = null;
+		
+		if ( seedNumber == 1 ) { 	// setup for seedNumber = 1	
+			for ( String s : listIdNodeMaxDegree) 
+				idSeed = s ;				
+			
+			Node seedNode = netGraph.getNode(idSeed);
+			seedNode.addAttribute("seedGrad", 1);
+		}
+		
+		else { 						// setup for seedNumber >= 9
+			if ( seedNumber >= 9 ) {													//	System.out.println("seedNumber = " +seedNumber );	//	System.out.println("seed Gradient over number of nodes , set seedNumber = countNodes");
+				for ( Node seedNode : netGraph.getEachNode()) {	seedNode.setAttribute("seedGrad", 1 );	}
+		}
+			
+		else {						// setup for 1 < seedNumber < 9  
+			if ( seedNumber > 1 && seedNumber < 9 ) {								//	System.out.println("seedNumber = " +seedNumber );
+				ArrayList<String> listSeed = new ArrayList<String>() ;
+			
+				for ( String s : listIdNodeMaxDegree)  
+					listSeed.add(s); 												//	System.out.println(listSeed);
+				
+				for ( int i = 1 ; listSeed.size() < seedNumber  ; i++ )  {			//	System.out.println(i);
+					
+					Node nodeRandom = randomNode(netGraph);
+					String idNodeRandom = nodeRandom.getId();
+					
+					if ( !listSeed.contains(idNodeRandom) ) 	
+						listSeed.add(idNodeRandom);			
+					
+					listSeed.forEach(s -> netGraph.getNode(s).setAttribute("seedGrad", 1));
+					}
+				}
+			}
+		}
+	}
+	
+	private static void setSeedAllNetNode ( ) {	
+		
+		for ( Node n : netGraph.getEachNode() ) 
+			n.addAttribute("seedGrad", 1);	
+	
+	}
+	
+
+	// METHODS TO HANDLE PROBABILITY ----------------------------------------------------------------------------------------------------------------
 	private void splitMaxThresholdMethod (Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax ) {
 		splitMax(nNet, listNewNode, listIdNeigValMax , true);
 	}
@@ -305,6 +317,8 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, nTo);		//	System.out.println(netNodeRandomNew.getAttributeKeySet());		
 	}
 	
+	
+// SERVICE METHODS ----------------------------------------------------------------------------------------------------------------------------------
 	protected static ArrayList<Node> createListSeedGrad (int step ) {
 		
 		Map<Double, Graph> mapStepNetGraph = simulation.getMapStepNetGraph();
@@ -342,10 +356,15 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 		while ( iter.hasNext()) {				
 			
 			Node neig = iter.next() ;			
+			try {
 			double morpVal = neig.getAttribute(morp);	
 			if ( morpVal * big >= val * big ) {	
 				val = morpVal; 
 				listIdNeigValMax.add(neig.getId() ) ;
+			}
+			} catch (java.lang.NullPointerException e) {
+				e.printStackTrace();
+				continue ;
 			}
 		}	
 		return listIdNeigValMax;
@@ -353,4 +372,5 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 
 // GET METHODS ----------------------------------------------------------------------------------------------------------------------------
 	public static double getProb() 		{ return probabilityTest; }
+
 }

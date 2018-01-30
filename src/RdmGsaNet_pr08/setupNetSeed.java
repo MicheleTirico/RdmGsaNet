@@ -13,8 +13,7 @@ public class setupNetSeed implements setupNetInter {
 							netGraph = layerNet.getGraph() ;
 	 
 	// create layer Net 
-	public void createLayerNet() {	
-		System.out.println("hello seed");	
+	public void createLayerNet() {	//		System.out.println("hello seed");	
 
 		// list id gs nodes  ( con == 1 )
 		ArrayList<String> listIdGsCon = new ArrayList<String> () ;
@@ -22,8 +21,8 @@ public class setupNetSeed implements setupNetInter {
 		// create list of id with con = 1 => that means we create a list of meanPoint
 		for ( Node nGs : gsGraph.getEachNode()) {
 			int con = nGs.getAttribute("con") ;
-			if (  con == 1 ) {
-				listIdGsCon.add(nGs.getId());	}
+			if (  con == 1 ) 
+				listIdGsCon.add(nGs.getId());	
 		}																							//		System.out.println(listIdGsCon);
 		
 		// create seed node in netGraph and set coordinate

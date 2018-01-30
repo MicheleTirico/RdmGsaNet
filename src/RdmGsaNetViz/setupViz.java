@@ -8,6 +8,7 @@ import org.graphstream.stream.file.FileSinkImages;
 import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
 import org.graphstream.stream.file.FileSinkImages.OutputType;
 import org.graphstream.stream.file.FileSinkImages.Resolutions;
+import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNet_pr08.*;
 
@@ -186,7 +187,33 @@ public class setupViz {
 			n.addAttribute("ui.color", color );
 		}
 	}
-	
+
+// SET SCALE VIZ ------------------------------------------------------------------------------------------------------------------------------------
+	public static void setFixScale ( Graph graphToFix , Graph graphFixed ) {
+			
+		double xMax = 0 , xMin = 1000000000 , yMax = 0, yMin = 1000000000 ; 
+		for ( Node n : graphFixed.getEachNode()) {
+			// coordinate of node n1
+			double [] nCoordinate = GraphPosLengthUtils.nodePosition(n) ;
+			
+			double x = nCoordinate [0];
+			double y = nCoordinate [1];
+
+			if ( x > xMax )
+				xMax = x ;
+			if ( x < xMin )
+				xMin = x ;
+			
+			if ( y > yMax )
+				yMax = y ;
+			if ( y < yMin )
+				yMin = y ;
+		}
+		System.out.println(xMax);
+		System.out.println(xMin);
+		System.out.println(yMax);
+		System.out.println(xMin);
+	}
 // SET ATTRIBUTE VIZ --------------------------------------------------------------------------------------------------------------------------------
 	
 	protected static String setVizSeedGrad () {
@@ -200,7 +227,6 @@ public class setupViz {
 				"	fill-color: black;"+
 				"}" ;	
 	}
-
 	
 	protected static String setVizNodeId () {
 		return  "node { "

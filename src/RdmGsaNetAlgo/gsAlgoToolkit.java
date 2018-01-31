@@ -93,6 +93,10 @@ public class gsAlgoToolkit {
 		return list;
 	}
 	
+	public static void setNodeCoordinateFromValues ( Graph graph , Node n , double x , double y , double z ) {
+		n.setAttribute( "xyz", x , y, z );		
+	}
+	
 	// method to assign the same coordinate between two nodes ( owned by two graph ) 
 	public static void setNodeCoordinateFromNode ( Graph graphFrom , Graph graphTo, Node nFrom , Node nTo ) {
 		

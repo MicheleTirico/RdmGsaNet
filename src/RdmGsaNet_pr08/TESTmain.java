@@ -20,7 +20,7 @@ import RdmGsaNetAlgo.morpSpatialAutoCor;
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
-import RdmGsaNetViz.testViz;
+import RdmGsaNetViz.TESTViz;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class TESTmain {

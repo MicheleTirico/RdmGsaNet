@@ -179,51 +179,89 @@ public class setupViz {
 		graph.addAttribute("ui.stylesheet", setVizSeedGrad() );			
 		
 		for ( Node n : graph.getEachNode () ) {
-			
-			double color = 0 ;
-			int isTrue = n.getAttribute(attribute);
-			if ( isTrue == 1 )
-				color = 1 ;
-			n.addAttribute("ui.color", color );
+			try {
+				double color = 0 ;
+				int isTrue = n.getAttribute(attribute);
+				if ( isTrue == 1 )
+					color = 1 ;
+				n.addAttribute("ui.color", color );
+			} catch (java.lang.NullPointerException e) {
+				continue ;
+			}
 		}
 	}
 
 // SET SCALE VIZ ------------------------------------------------------------------------------------------------------------------------------------
+	 
+	public static void setFixScaleManual ( Graph graph , double XYmax , double XYMin ) {
+		
+		try {
+			String idNode = "setScale" + 1;
+
+			graph.addNode(idNode);
+			graph.getNode(idNode).setAttribute( "xyz", XYmax , XYmax, 0 );
+			
+			idNode = "setScale" + 2;
+			graph.addNode(idNode);
+			graph.getNode(idNode).setAttribute( "xyz", XYMin , XYMin, 0 );
+		
+		} catch (org.graphstream.graph.IdAlreadyInUseException e) { return ;	}
+		}
+	
+	// doesn't work
 	public static void setFixScale ( Graph graphToFix , Graph graphFixed ) {
 			
+		try { 
 		double xMax = 0 , xMin = 1000000000 , yMax = 0, yMin = 1000000000 ; 
+		
 		for ( Node n : graphFixed.getEachNode()) {
-			// coordinate of node n1
+			
 			double [] nCoordinate = GraphPosLengthUtils.nodePosition(n) ;
 			
-			double x = nCoordinate [0];
-			double y = nCoordinate [1];
-
-			if ( x > xMax )
-				xMax = x ;
-			if ( x < xMin )
-				xMin = x ;
+			if ( nCoordinate [0] > xMax )
+				xMax = nCoordinate [0] ;
+			if ( nCoordinate [0] < xMin )
+				xMin = nCoordinate [0] ;
 			
-			if ( y > yMax )
-				yMax = y ;
-			if ( y < yMin )
-				yMin = y ;
+			if ( nCoordinate [1] > yMax )
+				yMax = nCoordinate [1] ;
+			if ( nCoordinate [1] < yMin )
+				yMin = nCoordinate [1] ;
 		}
-		System.out.println(xMax);
-		System.out.println(xMin);
-		System.out.println(yMax);
-		System.out.println(xMin);
+		
+		// create 2 nodes and set coordinate (xMin, yMin) and (xMax, yMax)
+		String idNode = "setScale" + 1;
+		graphToFix.addNode(idNode);
+		graphToFix.getNode(idNode).setAttribute( "xyz", xMin , yMin, 0 );
+		
+		idNode = "setScale" + 2;
+		graphToFix.addNode(idNode);
+		graphToFix.getNode(idNode).setAttribute( "xyz", xMax , yMax, 0 );
+		
+		// set Viz
+		Node n = graphToFix.getNode(idNode);
+	//	n.addAttribute("ui.class", "invisible");
+		} catch (org.graphstream.graph.IdAlreadyInUseException e) {		return ;	}
+	
 	}
 // SET ATTRIBUTE VIZ --------------------------------------------------------------------------------------------------------------------------------
 	
+	protected static String setVizInvisible () {
+		return "";
+	}
+	
 	protected static String setVizSeedGrad () {
 		return  "node {"+
-				"	size: 10px;"+
+				"	size: 5px;"+
 				"	fill-color: black,  red; "+
 				"	fill-mode: dyn-plain;"+
 				"}"+
+				
+				"node#setScale1 {	size: 0px; }" +
+				"node#setScale2 {	size: 0px; }" +
+
 				"edge {"+
-				"	size: 1px;"+
+				"	size: 0.5px;"+
 				"	fill-color: black;"+
 				"}" ;	
 	}
@@ -276,7 +314,7 @@ public class setupViz {
 
 	protected static String setViz10Color () {
 		return  "node {"+
-			"	size: 5px;"+
+			"	size: 6px;"+
 			"	fill-color: rgb(128,128,128), "
 			+ "				rgb(255,128,0),rgb(255,255,0),rgb(128,255,0),"
 			+ "				rgb(0,128,255),rgb(0,0,255),rgb(127,0,255),"

@@ -8,6 +8,7 @@ import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.swingViewer.ViewPanel;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
@@ -18,7 +19,7 @@ import RdmGsaNet_pr08.generateNetNodeGradient.layoutSeedGradient;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
-	private static int stopSim = 1;
+	private static int stopSim = 100;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -163,9 +164,8 @@ public class main {
 		//get seedAlive
 		int seedAlive = getSeedAlive(false);
 		
-		ArrayList listIdNetSeedGrad = getListIdWithAttribute(true, netGraph, "seedGrad");
-		
-		printNodeSetAttribute(true , netGraph) ;
+		ArrayList listIdNetSeedGrad = getListIdWithAttribute(false, netGraph, "seedGrad");
+		printNodeSetAttribute(false , netGraph) ;
 		printEdgeSetAttribute(false , netGraph) ;
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
@@ -179,7 +179,8 @@ public class main {
 //		setupViz.Vizmorp(gsGraph, "gsInh");
 		gsGraph.display(false) ;
 		setupViz.VizSeedGrad(netGraph, "seedGrad");
-		netGraph.display(false) ;	
+		netGraph.display(false) ;
+		
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------

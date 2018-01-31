@@ -28,6 +28,7 @@ public class expImage {
 			pic.writeAll(graph, folderIm +"/"+ nameIm + "_step_"+stepIm);
 		}
 	}
+
 	public static void createImageAtStep ( Graph graph , String folderIm, String nameIm , double  step ) throws IOException  {
 		
 		try {

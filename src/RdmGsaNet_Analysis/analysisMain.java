@@ -6,37 +6,39 @@ import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.swingViewer.ViewPanel;
+import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetExport.expChart;
 import RdmGsaNetExport.expChart.typeChart;
 import RdmGsaNetViz.setupViz;
 
 public class analysisMain {
+
+	protected static String fileType = ".dgs" ;
 	
-	private static String fileType = ".dgs" ;
-	
-	private static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_solitions\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.09_00\\" ,
+	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_solitions\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.09_00\\" ,
 							folderChart = folder +"chart\\" ;
 	
 // START FILES
 	// GS graph
-	private static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight"  ,
+	protected static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight"  ,
 							folderStartGs = folder ,
 								pathStartGs = folderStartGs + nameStartGs + fileType ;
 		
 	// NET graph
-	private static String nameStartNet = "layerNet_start_setupNetSeed"  ,
+	protected static String nameStartNet = "layerNet_start_setupNetSeed"  ,
 							folderStartNet = folder,
 								pathStartNet = folderStartNet + nameStartNet + fileType ;
 	
 // STEP FILES	
 	// GS graph
-	private static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight" ,
+	protected static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight" ,
 							folderStepGs = folder ,
 								pathStepGs = folderStepGs + nameStepGs + fileType ;
 		
 	// NET graph
-	private static String nameStepNet = "layerNet_step_setupNetSeed",
+	protected static String nameStepNet = "layerNet_step_setupNetSeed",
 							folderStepNet = folder ,
 								pathStepNet = folderStepNet + nameStepNet + fileType ;
 	
@@ -83,13 +85,13 @@ public class analysisMain {
 		analysisNet.setWhichAnalysis(
 				/* run Viz 							*/ true ,
 				/* computeDegree					*/ false ,
-				/* computeAverageDegree				*/ true ,
+				/* computeAverageDegree				*/ false ,
 				/* computeNewNode					*/ false ,
 				/* computeNormalDegreeDistribution 	*/ false
 				);
 		
 		analysisGs.setWhichAnalysis(
-				/* run Viz 				*/ true ,
+				/* run Viz 				*/ false ,
 				/* computeStepMaxMorp	*/ false , 
 				/* computeStepMinMorp	*/ false ,
 				/* computeStepAveMorp 	*/ false 
@@ -103,16 +105,16 @@ public class analysisMain {
 		analysisGs.setParamAnalysis("gsAct");
 	
 // RUN ANALYSIS -----------------------------------------------------------------------------------
-		analysisNet.computeMultipleStat	(3000, 5 , pathStartNet, pathStepNet);
+		analysisNet.computeMultipleStat	(300, 5 , pathStartNet, pathStepNet);
 	
-		analysisGs.computeMultipleStat	(3000, 5, pathStartGs, pathStepGs);
+		analysisGs.computeMultipleStat	(300, 5, pathStartGs, pathStepGs);
 		
 	//	System.out.println(mapNetAverageDegree);
 		System.out.println(mapNetStepNormalDistributionDegree);
 		
 // 	CREATE CHARTS ---------------------------------------------------------------------------------
 		createChartsNet(
-				/* storedCharts 							*/ true  ,
+				/* storedCharts 							*/ false  ,
 				/* createChartDegree 						*/ false , 
 				/*create chart Average Degree 				*/ true ,
 				/* createChartNewNodes						*/ false,
@@ -132,10 +134,6 @@ public class analysisMain {
 		
 // SET VIZ ----------------------------------------------------------------------------------------
 		// net viz 
-	//	netGraph.setAttribute("ui.stypesheet", setVizNodeId () );
-		
-	//	gsGraph.addAttribute("ui.stypesheet", setVizNodeId () );
-	
 	
 	
 	}	
@@ -144,7 +142,7 @@ public class analysisMain {
 	private static void createChartsNet ( boolean storeCharts, boolean createChartDegree , boolean createChartAverageDegree , boolean createChartNewNode , boolean createCharNormalDegreedistribution ) throws IOException {
 		
 		// exit method 
-		if ( !analysisDGSnet.run ) return ;
+		if ( !analysisDGSnet.run || storeCharts == false  ) return ;
 		
 		//create chart of frequency degree
 		if ( createChartDegree ) {
@@ -178,7 +176,7 @@ public class analysisMain {
 	private static void createChartsGs ( boolean storeCharts, boolean createChartMax , boolean createChartMin , boolean createChartAve ) throws IOException {
 		
 		// exit method 
-		if ( !analysisDGSgs.run ) return ;
+		if ( !analysisDGSgs.run || storeCharts == false  ) return ;
 		
 		//create chart of MAX values of morphogens
 		if ( createChartMax ) {

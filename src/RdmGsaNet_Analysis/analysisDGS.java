@@ -112,17 +112,6 @@ public interface analysisDGS  {
 	// implemented in analysisDGSnet
 	public static void computeMapStepNewNode ( Graph graph , double step , Map mapStepNewNpode , ArrayList<Double> incList ) {
 
-	
-		
-		
-		
-		
-	
 	}
-
-
-	
-	
-	
 
 }

@@ -17,19 +17,19 @@ import RdmGsaNet_pr08.simulation;
 public class handleNameFile {
 	
 	// CONSTANT	
-	private static String 	fileType = ".dgs" ;
-	private static String folder;
-	private static String pathStepNet ;
-	private static String pathStepGs ;
-	private static String pathStartNet ;	
-	private static String pathStartGs ; 
-	private static String  nameStepNet ;
-	private static String  nameStepGs;
+	private static String 	fileType = ".dgs" ,
+							folder,
+							pathStepNet,
+							pathStepGs ,
+							pathStartNet ,
+							pathStartGs ,
+							nameStepNet ,
+							nameStepGs;
 	
 	// FOLDER PARAMETERS
-	private static  String 	nameNewFolder;
-	private  String genNode = generateNetNode.getGenerateType ();
-	private  String genEdge = generateNetEdge.getGenerateType ();
+	private static String 	nameNewFolder;
+	private String   genNode = generateNetNode.getGenerateType (),
+						genEdge = generateNetEdge.getGenerateType ();
 	
 	static String path = null ;
 	private  int 	maxStep = main.getStopSim();
@@ -37,7 +37,6 @@ public class handleNameFile {
 	// CONSTRUCTOR
 	public handleNameFile (String folder ) {
 		this.folder = folder ;
-	
 		nameNewFolder = getNameNewFolder ( maxStep , genNode , genEdge );
 		String path = createFolder(folder , nameNewFolder) ;	
 	}

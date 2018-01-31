@@ -7,7 +7,7 @@ import org.graphstream.graph.Node;
 
 import RdmGsaNet_pr08.*;
 
-public class testViz {
+public class TESTViz {
 	
 	static Graph gsGraph = layerGs.getGraph();
 	static Graph netGraph = layerNet.getGraph();

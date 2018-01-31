@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSource;
@@ -57,11 +58,12 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 	
 	public void computeMultipleStat(int stepMax, int stepInc, String pathStart, String pathStep) throws IOException, InterruptedException {
 
-		if ( run == false  ) { return ; }
+		if ( run == false ) 
+			return ; 
 		
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
-
+		
 		// run viz
 		if ( runViz ) 
 			 graph.display(false);
@@ -87,7 +89,7 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 				if ( incList.contains(step)) {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
-				
+			
 					if ( runViz )	
 						setupViz.Viz10ColorAct(graph);
 						Thread.sleep(10);

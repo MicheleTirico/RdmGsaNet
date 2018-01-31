@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.SynchronousQueue;
 
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
@@ -11,18 +12,25 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
+import org.graphstream.ui.swingViewer.ViewPanel;
+import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr08.gsAlgo;
+import RdmGsaNet_pr08.layerGs;
+import RdmGsaNet_pr08.setupGsGrid;
 
-public class analysisDGSnet extends analysisMain implements analysisDGS  {
+public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 
 	// CONSTANT
 	private String dgsId ;
 	private static FileSource fs ;
-	private Graph graph = new SingleGraph ("graph");
+	private static Graph graph = new SingleGraph ("graph");
 	private int degreeFreq ;
+	
+	// viz constants
+	private static ViewPanel  view ;
 	
 	private int s = 0 ; 
 	
@@ -70,9 +78,13 @@ public class analysisDGSnet extends analysisMain implements analysisDGS  {
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
 		 
 		// run viz
-		if ( runViz ) 
-			graph.display(false);
-		
+		if ( runViz )  {
+			System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+			graph.addAttribute("ui.quality");
+		    graph.addAttribute("ui.antialias");
+
+			Viewer viewer = graph.display(false) ;	
+		}
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 
@@ -114,11 +126,11 @@ public class analysisDGSnet extends analysisMain implements analysisDGS  {
 						analysisDGS.computeStepNormalDegreeDistribution(graph, step, mapNetStepNormalDistributionDegree, true , 9 );
 				
 					// run viz
-					if ( runViz )
-						// setupViz.VizNodeId(graph);
-						setupViz.VizSeedGrad(graph, "seedGrad");
+					if ( runViz ) {
+					    setupViz.setFixScaleManual(graph, 50 , 0);
+					    setupViz.VizSeedGrad(graph, "seedGrad");
 						Thread.sleep(50);
-					
+					}
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}

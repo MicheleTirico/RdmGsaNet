@@ -2,7 +2,7 @@ package RdmGsaNetExport;
 
 import java.io.File;
 import RdmGsaNet_pr09.*;
-
+//import RdmGsaNet_pr08.*;
 
 public class handleNameFile {
 	
@@ -15,6 +15,7 @@ public class handleNameFile {
 							pathStartGs ,
 							nameStepNet ,
 							nameStepGs;
+	boolean toHandle ;
 	
 	// FOLDER PARAMETERS
 	private static String 	nameNewFolder;
@@ -26,6 +27,7 @@ public class handleNameFile {
 	
 	// CONSTRUCTOR
 	public handleNameFile ( boolean toHandle ,String folder ) {
+		this.toHandle = toHandle ;
 		
 		if ( toHandle = false )
 			return ;
@@ -40,6 +42,9 @@ public class handleNameFile {
 	// create new folder where stored all dgs files and return new path
 	private String createFolder (String folder, String nameNewFolder ) {
 
+		if ( toHandle == false )
+			return path;
+					
 		for ( int numFol = 0 ; numFol <= 50 ; numFol++ ) {
 			if ( numFol < 10 ) 
 				path = folder + nameNewFolder + "_0" + numFol;

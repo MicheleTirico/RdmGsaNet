@@ -284,7 +284,7 @@ public class gsAlgoToolkit {
 		return nodeIdInRadius;
 	}
 	
-public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String nodeTestStr , double radius ) {
+	public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String nodeTestStr , double radius ) {
 		
 		double [][] matrixWeightRad = new double [graph.getNodeCount()] [graph.getNodeCount()] ;		
 		fillDistanceMatrixInRadiusWeight (graph, nodeTestStr, radius, matrixWeightRad);
@@ -412,9 +412,10 @@ public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String 
 	}
 	
 	public static String getCenterGrid ( Graph graph ) {
-		
+		 
 		int nodeCount = graph.getNodeCount();
-		double gridSize = Math.pow(nodeCount, ( 1 / 2) ) ;
+		System.out.println(nodeCount);
+		double gridSize = Math.pow(nodeCount, ( 0.5 ) ) ;
 		int idCenter = (int)  Math.floor(gridSize / 2) ;			
 
 		return idCenter + "_" + idCenter ;	
@@ -433,6 +434,19 @@ public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String 
 	}
 	
 
+	// get list of node with attribute
+	public static ArrayList<Node> getListNodeAttribute ( Graph graph , String attribute , int valAtr ) {
+	
+		ArrayList<Node> list = new ArrayList<Node>();
+		
+		for ( Node n : graph.getEachNode() ) {
+			
+			int valTest =  n.getAttribute(attribute) ;
+			if ( valTest == valAtr )
+				list.add(n) ;	
+		}
+		return list ;
+	}
 
 
 }

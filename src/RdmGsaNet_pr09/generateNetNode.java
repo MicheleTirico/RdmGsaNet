@@ -11,9 +11,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 public class generateNetNode {
 	
 	// VARIABLES 

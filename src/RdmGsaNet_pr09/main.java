@@ -11,6 +11,7 @@ import org.graphstream.graph.Node;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr09.generateNetEdgeNear.whichNode;
+import RdmGsaNet_pr09.generateNetNodeGradient.layoutSeed;
 import RdmGsaNet_pr09.generateNetNodeGradient.splitSeed;
 import RdmGsaNet_pr09.gsAlgoDiffusion.weightType;
 import RdmGsaNet_pr09.layerNet.meanPointPlace;
@@ -20,10 +21,14 @@ import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.setupNetSmallGrid.typeGrid;
 
 public class main {
-	private static int stopSim = 1;
+	private static int stopSim = 10;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
+	
+	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
+	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
+	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
 	// STORE DGS PARAMETERS
 	private static boolean 	doStoreStartGs 	= false, 
@@ -38,11 +43,11 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_mazes\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_pr9\\" ;
 
 	// path
-	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ;
-	private static String 	folderNew = handleNameFile.getPath();
+	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
+								folderNew = handleNameFile.getPath();
 	
 	//name file
 	private static String 	nameStartGs , nameStartNet , nameStepGs , nameStepNet ;
@@ -65,34 +70,36 @@ public class main {
 							netGraph = layerNet.getGraph() ;
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
-	static simulation run = new simulation() ;
-
-	static generateNetNode generateNetNode = new generateNetNode (
-//		/* threshold for activator, threshold for inhibitor 	*/	new generateNetNodeThreshold(12, 11) 
-		/* type of split seed 									*/	new generateNetNodeGradient(splitSeed.onlyOneRandom)
-			) ;
-
-	static generateNetEdge generateNetEdge = new generateNetEdge (
+	protected static simulation run = new simulation() ;	
+	
+	protected static generateNetNode generateNetNode = new generateNetNode (
+//		/* threshold for activator, threshold for inhibitor 	*/	new generateNetNodeThreshold(12, 11)  
+																	new generateNetNodeGradientOnlyOneRandom( 1 , layoutSeed.allNode , "gsAct" )
+		) ;
+	
+	protected static generateNetEdge generateNetEdge = new generateNetEdge (
 			/* radius , which node to connect		*/	new generateNetEdgeNear( 0 , whichNode.all )) ;
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
 		// setup handle name file 
-		handle = new handleNameFile( false , folder);		
+		handle = new handleNameFile( 
+			/* handle file 				*/ false , 
+			/* set folder 				*/ folder);		
 
 		// setup type RD
 		setRdType(RdmType.mazes);			
 		
 		// SETUP START VALUES LAYER GS
-		gsAlgo values = new gsAlgo( 
-			/* enum reaction , diffusion ext	*/		gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
-			/* Da 	*/									0.2,			
-			/* Di 	*/									0.1, 		
-			/* feed */									feed , 	
-			/* kill */									kill ,		
-			/* HandleNaN , setIfNaN */					true , 1E-5 , 			/* if true, set default value when act or inh is over NaN  */
-			/* handleMinMaxVal , minVal , maxVal */		true , 1E-5 , 1 ) ; 	/* if true, set value for values over the range */
+		gsAlgo values = new gsAlgo( 	
+			/* enum reaction , diffusion ext		*/	gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
+			/* Da 									*/	0.2,			
+			/* Di 									*/	0.1, 		
+			/* feed									*/	feed , 	
+			/* kill 								*/	kill ,		
+			/* HandleNaN , setIfNaN 				*/	true , 1E-5 , 			/* if true, set default value when act or inh is over NaN  */
+			/* handleMinMaxVal , minVal , maxVal 	*/	true , 1E-5 , 1 ) ; 	/* if true, set value for values over the range */
   
 		// create path in order to stored all dgs files
 		String pathStepNet = handle.getPathStepNet() ; 		//	System.out.println("pathStepNet " + pathStepNet);		
@@ -101,14 +108,14 @@ public class main {
 		String pathStartGs = handle.getPathStartGs();		//	System.out.println("pathStartGs " + pathStartGs);
 
 // GENERATE LAYER GS --------------------------------------------------------------------------------------------------------------------------------		
-		// CREATE GS GRAPH
+		// create new layer gs
 		gsLayer.createLayer ( 
 			/* set coordinate 			*/ 	false , 
 			/* set default Atribute		*/ 	true , 
 			/* store results in folder? */	doStoreStartGs ) ;
 		
-		// SETUP DISMORP
-		gsLayer.setupDisMorp(
+		// Setup distribution of morphogens
+		gsLayer.setupDisMorp (
 			/* enum	type of distribution			*/	disMorpType.homo , 
 			/* int 	randomSeedAc (only random)		*/	12 , 
 			/* int 	randomSeedInh (only random)		*/	34 , 
@@ -120,10 +127,9 @@ public class main {
 		gsAlgoDiffusion.setWeightType ( weightType.matrix );
 
 //  CREATE LAYER NET --------------------------------------------------------------------------------------------------------------------------------		
-		// CREATE LAYER NET
 		netLayer.createLayer ( 
-			/* bol 	createMeanPoint		= 	chose if we have an initial node (or a small graph ) befor starting simulation		*/ true , 
-			/* enum	meanPointPlace		=	define were are the mean point of started net graph ( center , border , random )	*/ meanPointPlace.center ,
+			/* bol 		createMeanPoint	= 	chose if we have an initial node (or a small graph ) befor starting simulation		*/ true , 
+			/* enum		meanPointPlace	=	define were are the mean point of started net graph ( center , border , random )	*/ meanPointPlace.center ,
 			/* bol		setSeedMorp		= 	if true, add a fixed value for act and inh only in node in netGraph 				*/ true ,
 			/* double	seedAct			=	act value for seed node																*/ 1 , 
 			/* double	seedInh			=	inh value for seed node	 															*/ 1 , 
@@ -133,6 +139,7 @@ public class main {
 			
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
+			/* bol		runSim																					*/	true,
 			/* int 		stopSim 		= Max step to stop simulation , 										*/ stopSim ,
 			/* bol		printMorp		= print mapMorp1 ,														*/ false ,
 			/* bol		genNode			= generate nodes in layer net											*/ true ,
@@ -149,6 +156,8 @@ public class main {
 		ArrayList listIdNetSeedGrad = getListIdWithAttribute(false, netGraph, "seedGrad");
 		printNodeSetAttribute(false , netGraph) ;
 		printEdgeSetAttribute(false , netGraph) ;
+	
+		
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
@@ -229,6 +238,7 @@ public class main {
 		}
 		
 	}
+
 // GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
 	public static layerNet getNetLayer() 		{ return netLayer;	}
 	public static int getStopSim() 				{ return stopSim ; } 

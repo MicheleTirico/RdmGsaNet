@@ -50,13 +50,17 @@ public class simulation {
 	// map / key = (double) step , values = (list of string ) id of new nodes in net
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
 		
-	public static void  runSim ( int stopSim, boolean printMorp , 
+	public static void  runSim ( boolean runSim ,
+								 int stopSim, boolean printMorp , 
 								 boolean genNode, boolean genEdge , 
 								 boolean storedDgsGsStep , String pathStepGs ,
 								 boolean storedDgsNetStep , String pathStepNet
 //								boolean vizMorp 
 								) 
 								throws IOException, InterruptedException {
+		
+		if ( runSim == false ) 
+			return ;
 		
 		generateNetEdge genNetEd = main.generateNetEdge ;
 		generateNetNode genNetNo = main.generateNetNode ;

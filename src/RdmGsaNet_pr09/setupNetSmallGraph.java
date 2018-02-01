@@ -1,6 +1,7 @@
 package RdmGsaNet_pr09;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -36,7 +37,7 @@ public class setupNetSmallGraph implements setupNet_Inter {
 			int con = nGs.getAttribute("con") ;
 			if (  con == 1 ) 
 				listIdGsCon.add(nGs.getId());				
-		}																//	System.out.println(listIdGsCon);
+		}						 										//	System.out.println(listIdGsCon);
 			
 		//get start node 
 		String startNodeStr = listIdGsCon.get(0);
@@ -69,18 +70,19 @@ public class setupNetSmallGraph implements setupNet_Inter {
 			createEdge(netGraph, startNode, nNet);
 //			gsAlgoToolkit.setWeigth(netGraph);
 		
-			} catch (org.graphstream.graph.IdAlreadyInUseException e) {
-				continue;
-			}
+			} catch (org.graphstream.graph.IdAlreadyInUseException e) { continue; 	}
 		}
 	}
 
-
+	@Override
+	public void setMeanPoint(meanPointPlace point) {
+		setupNet_Inter.setMeanPointInter(gsGraph, point);	
+	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
 	
 	// method to create edge
-	private static void createEdge (Graph graph,  Node n1 , Node n2 ) {
+	private static void createEdge ( Graph graph,  Node n1 , Node n2 ) {
 	
 		String idEdge = n1.getId() + "-" + n2.getId() ;
 		graph.addEdge(idEdge, n1, n2 );
@@ -93,8 +95,6 @@ public class setupNetSmallGraph implements setupNet_Inter {
 		for ( Node n : listNeig )
 			listIdGsCon.add(n.getId());		
 	}
-	
-	
 	
 	// set layout star 4 diagonal
 	private static void setLayout4diagonal ( ArrayList<String> listIdGsCon , Node startNode  ) {
@@ -117,84 +117,4 @@ public class setupNetSmallGraph implements setupNet_Inter {
 		for ( String n : listNodeToAddList ) 
 			listIdGsCon.add(n);
 	}
-
-	@Override
-	public void setMeanPoint( layerNet.meanPointPlace point) {
-		// TODO Auto-generated method stub
-		
-	}
-}
-	
-	/*
-	private static Graph gsGraph = layerGs.getGraph() ;
-	private static Graph netGraph = layerNet.getGraph() ;
-	
-	public enum typeRadius { topo, geom , weight }
-	public static typeRadius radiusType;
-	private static double radius ;
-
-	public setupNetSmallGraph ( double radius , typeRadius type ) {
-		this.radius = radius ;
-		this.radiusType = type ;
-	}
-
-	public void createLayerNet() {
-		System.out.println("create small graph");
-		
-		// list id gs nodes  ( con == 1 )
-		ArrayList<String> listIdGsCon = new ArrayList<String> () ;
-				
-		// create list of id with con = 1 => that means we create a list of meanPoint
-		for ( Node nGs : gsGraph.getEachNode()) {
-			int con = nGs.getAttribute("con") ;
-				if (  con == 1 ) 
-					listIdGsCon.add(nGs.getId());	
-			}		System.out.println(listIdGsCon);
-				
-		// create seed node in netGraph and set coordinate
-		for ( String id : listIdGsCon ) {
-					
-			// get node in gsGraph with con == 1
-			Node nGs = gsGraph.getNode(id);
-					
-			// get array of coordinate of node gs with con == 1
-			double [] nGsCoordinate = GraphPosLengthUtils.nodePosition(nGs) ;						//	System.out.println(nGsCoordinate[0]);
-					
-			// create node in netGraph
-			netGraph.addNode(id);
-					
-			// set coordinate of node in netGraph
-			Node nNet = netGraph.getNode(id); 														//	System.out.println(nNet.getId());
-			nNet.setAttribute( "xyz", nGsCoordinate[0] , nGsCoordinate[1] , nGsCoordinate[2] );		//	double [] nNetCoordinate = GraphPosLengthUtils.nodePosition(nNet) ;			System.out.println(nNetCoordinate[0]);
-		}	
-	}
-
-	public void setMeanPoint( layerNet.meanPointPlace point)  {
-		setupNetInter.setMeanPointInter(gsGraph, point);
-		ArrayList<String> pointInRadiusStr =  new ArrayList<String>();
-		
-		
-		String meanPointId = null ;
-		for ( Node nGs : gsGraph.getEachNode()) {
-			int isCon = nGs.getAttribute("con");
-			if ( isCon == 1  ) { meanPointId = nGs.getId() ; }
-		}
-		
-		Node meanPointNodeGs = gsGraph.getNode(meanPointId);										//		System.out.println("meanPointId " + meanPointId);
-		
-		switch (radiusType) {
-		case topo: 		{ pointInRadiusStr = gsAlgoToolkit.getIdInRadiusTopo(gsGraph, meanPointNodeGs, radius); 
-						  break;	}	
-		case weight : 	{ pointInRadiusStr = gsAlgoToolkit.getIdInRadiusWeight(gsGraph, meanPointNodeGs, radius) ;
-						  break;	}
-		case geom :		{ pointInRadiusStr = gsAlgoToolkit.getIdInRadiusGeom(meanPointNodeGs, radius) ;
-						  break;	}
-		}									//		System.out.println("pointInRadiusStr "+ pointInRadiusStr);
-		
-		
-		for (String idConGs : pointInRadiusStr) {
-			Node nGs = gsGraph.getNode(idConGs);
-			nGs.addAttribute("con", 1);
-		}
-  	}
-  	*/
+}	

@@ -32,7 +32,7 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	protected boolean isGreater ,
 						stillAlive ;
 	
-	protected double incremAss ,
+	protected double incremAss , 
 						incremRel ; 
 	
 	protected enum layoutSeedGradient { multiRandom , oneCenter , allNetNode }

@@ -7,9 +7,6 @@ public interface setupGs_Inter {
 	
 	enum disMorpType { homo, random }
 	
-	
-
-	
 	// METHODS
 	void createLayerGs() ;
 	

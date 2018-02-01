@@ -12,7 +12,7 @@ import org.graphstream.graph.Node;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 
-public class generateNetEdgeNear implements generateNetEdge_Inter{
+public class generateNetEdgeNear implements generateNetEdge_Inter {
 
 	// ENUM
 	public enum whichNode { all , onlyOld }

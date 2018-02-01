@@ -10,7 +10,6 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
-import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.handleNameFile;
 
 public class layerGs {

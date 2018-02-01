@@ -190,7 +190,6 @@ public class generateNetNodeGradient implements generateNetNodeInter {
 	
 	}
 	
-
 	// METHODS TO HANDLE PROBABILITY ----------------------------------------------------------------------------------------------------------------
 	private void splitMaxThresholdMethod (Node nNet, ArrayList<String> listNewNode ,  ArrayList<String> listIdNeigValMax ) {
 		splitMax(nNet, listNewNode, listIdNeigValMax , true);

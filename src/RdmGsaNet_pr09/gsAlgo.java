@@ -1,7 +1,6 @@
 package RdmGsaNet_pr09;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -145,7 +144,7 @@ import org.graphstream.graph.Node;
 				n.setAttribute( "gsAct", act1);
 				n.setAttribute( "gsInh", inh1);			
 			}
-			if (print == true) {	printGsAlgo ();		}
+			if (print ) {	printGsAlgo ();		}
 		}
 		
 		// print results

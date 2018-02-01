@@ -7,8 +7,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
-import RdmGsaNet_pr08.layerNet.meanPointPlace;
-
 public class setupNetSmallGrid implements setupNet_Inter {
 
 	// COSTANTS
@@ -80,8 +78,31 @@ public class setupNetSmallGrid implements setupNet_Inter {
 	}
 
 	@Override
-	public void setMeanPoint(meanPointPlace point) {
-		// TODO Auto-generated method stub
+	public void setMeanPoint( layerNet.meanPointPlace point) {
 		
+		setupNet_Inter.setMeanPointInter(gsGraph, point);
+
+		String meanPointId = null ;
+		for ( Node nGs : gsGraph.getEachNode()) {
+			int isCon = nGs.getAttribute("con");
+			if ( isCon == 1  ) { meanPointId = nGs.getId() ; }
+		}
+		
+		Node meanPointNode = gsGraph.getNode(meanPointId);
+			
+		ArrayList<String> arrNeig = new ArrayList<String>();
+		
+		for ( Node n : gsGraph.getEachNode()) {
+			int isCon = n.getAttribute("con");
+			if ( isCon == 1 )
+				arrNeig.add(n.getId());
+			
+			Iterator<Node> iter = meanPointNode.getNeighborNodeIterator() ;		//	System.out.println("id " + n);
+
+			while ( iter.hasNext()) {
+				Node nNeig = iter.next();
+				nNeig.addAttribute("con", 1);		
+				}
+			}		
+		}
 	}
-}

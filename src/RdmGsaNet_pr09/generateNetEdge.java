@@ -2,10 +2,10 @@ package RdmGsaNet_pr09;
 
 public class generateNetEdge {
 	
-	private static generateNetEdge_inter type ;
+	private static generateNetEdge_Inter type ;
 	private static generateNetEdge growth ;
 	
-	public generateNetEdge ( generateNetEdge_inter type) {
+	public generateNetEdge ( generateNetEdge_Inter type) {
 		this.type = type ;
 	}
 	

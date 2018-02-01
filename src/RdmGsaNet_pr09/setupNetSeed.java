@@ -4,13 +4,12 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
-import RdmGsaNet_pr08.layerNet.meanPointPlace;
+import RdmGsaNet_pr09.layerNet.meanPointPlace;
 
 import java.util.ArrayList;
 
 public class setupNetSeed implements setupNet_Inter {
 	
-	meanPointPlace point ;
 	// get graphs
 	private static Graph gsGraph = layerGs.getGraph() ,
 							netGraph = layerNet.getGraph() ;
@@ -45,6 +44,13 @@ public class setupNetSeed implements setupNet_Inter {
 			nNet.setAttribute( "xyz", nGsCoordinate[0] , nGsCoordinate[1] , nGsCoordinate[2] );		//	double [] nNetCoordinate = GraphPosLengthUtils.nodePosition(nNet) ;			System.out.println(nNetCoordinate[0]);
 		}
 	}
+
+	@Override
+	public void setMeanPoint(meanPointPlace point) {
+		setupNet_Inter.setMeanPointInter(gsGraph, point);
+	}
+
+
 }
 	
 //-----------------------------------------------------------------------------------------------------	

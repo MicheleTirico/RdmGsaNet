@@ -31,13 +31,11 @@ public class generateNetNodeThreshold implements generateNetNode_Inter {
 			Node n = iterNode.next();
 			
 			double act = n.getAttribute("gsAct") ;	
-			double inh = n.getAttribute("gsInh") ;		//	System.out.println("idNode " + n.getId() + " gsAct " + act); //	System.out.println("idNode " + n.getId() + " gsInh " + inh);
+			double inh = n.getAttribute("gsInh") ;		
 	 
-			if ( act >= thAct && inh >= thInh ) {	//	System.out.println(n.getId());
-				
+			if ( act >= thAct && inh >= thInh ) 	
 				// get attribute "con" to node , in order to see new connection between layers
-				n.setAttribute( "con", 1 );
-			}	
+				n.setAttribute( "con", 1 );			
 		}	
 	}
 

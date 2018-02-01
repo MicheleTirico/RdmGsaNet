@@ -1,8 +1,6 @@
 package RdmGsaNet_pr09;
 
-import org.graphstream.graph.Node;
-
-public class _NOTIMPLgenerateNetEdgePrefer implements generateNetEdge_inter {
+public class _NOTIMPL_generateNetEdgePrefer implements generateNetEdge_Inter {
 
 	@Override
 	public void generateEdgeRule(double step) {

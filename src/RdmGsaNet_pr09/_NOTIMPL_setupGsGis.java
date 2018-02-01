@@ -1,7 +1,7 @@
 package RdmGsaNet_pr09;
 
 // class not yet developed.   
-public class _NOTIMPLsetupGsGis implements setupGs_Inter {
+public class _NOTIMPL_setupGsGis implements setupGs_Inter {
 
 	@Override
 	public void createLayerGs() {

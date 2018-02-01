@@ -184,7 +184,7 @@ public class simulation {
 	public static Map<Double, ArrayList<String>> getMapStepNewNodeId  () 	{ return mapStepNewNodeId  ; }  
 	public static Map<Double, Graph>			 getMapStepNetGraph	() 		{ return mapStepNetGraph  ; }
 	
-	public static  int getStopSim() { return stopSim ; } 
-	public static ArrayList<String> getListIdGs () { return listIdGs ; }
-	public static int getStep () { return step ; }
+	public static int 							getStopSim() 				{ return stopSim ; } 
+	public static ArrayList<String> 			getListIdGs ()				{ return listIdGs ; }
+	public static int 							getStep () 					{ return step ; }
 }

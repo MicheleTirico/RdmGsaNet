@@ -2,10 +2,8 @@ package RdmGsaNet_pr09;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.Edge;
-import org.graphstream.graph.implementations.SingleGraph;
 
-import RdmGsaNet_pr08.layerNet.meanPointPlace;
+import RdmGsaNet_pr09.layerNet.meanPointPlace;
 
 public interface setupNet_Inter {
 	

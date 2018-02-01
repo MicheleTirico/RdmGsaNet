@@ -1,6 +1,6 @@
 package RdmGsaNet_pr09;
 
-public interface generateNetEdge_inter {
+public interface generateNetEdge_Inter {
 
 	// costants
 	public enum generateEdgeType { near , preferentialAttachment  }

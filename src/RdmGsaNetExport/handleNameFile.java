@@ -1,18 +1,8 @@
 package RdmGsaNetExport;
 
 import java.io.File;
+import RdmGsaNet_pr09.*;
 
-import RdmGsaNet_pr08.generateNetEdge;
-import RdmGsaNet_pr08.generateNetNode;
-import RdmGsaNet_pr08.generateNetNodeGradient;
-import RdmGsaNet_pr08.gsAlgo;
-import RdmGsaNet_pr08.gsAlgoDiffusion;
-import RdmGsaNet_pr08.layerGs;
-import RdmGsaNet_pr08.layerNet;
-import RdmGsaNet_pr08.main;
-import RdmGsaNet_pr08.setupGsGrid;
-import RdmGsaNet_pr08.setupNetInter;
-import RdmGsaNet_pr08.simulation;
 
 public class handleNameFile {
 	
@@ -35,13 +25,17 @@ public class handleNameFile {
 	private  int 	maxStep = main.getStopSim();
 	
 	// CONSTRUCTOR
-	public handleNameFile (String folder ) {
+	public handleNameFile ( boolean toHandle ,String folder ) {
+		
+		if ( toHandle = false )
+			return ;
+		
 		this.folder = folder ;
 		nameNewFolder = getNameNewFolder ( maxStep , genNode , genEdge );
 		String path = createFolder(folder , nameNewFolder) ;	
 	}
 		
-	public static String getPath () {	return path; }
+	public static String getPath () {return path; }
 	
 	// create new folder where stored all dgs files and return new path
 	private String createFolder (String folder, String nameNewFolder ) {

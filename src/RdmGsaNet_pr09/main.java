@@ -4,32 +4,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.swingViewer.ViewPanel;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
-import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
-import RdmGsaNet_pr09.generateNetNodeGradient.layoutSeedGradient;
+import RdmGsaNet_pr09.generateNetEdgeNear.whichNode;
 import RdmGsaNet_pr09.generateNetNodeGradient.splitSeed;
+import RdmGsaNet_pr09.gsAlgoDiffusion.weightType;
+import RdmGsaNet_pr09.layerNet.meanPointPlace;
+import RdmGsaNet_pr09.setupGs_Inter.disMorpType;
+import RdmGsaNet_pr09.setupGs_Inter.gsGridType;
+import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
+import RdmGsaNet_pr09.setupNetSmallGrid.typeGrid;
 
 public class main {
-	private static int stopSim = 100;
+	private static int stopSim = 1;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
 	
-	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
-	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
-	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
-	
 	// STORE DGS PARAMETERS
-	
 	private static boolean 	doStoreStartGs 	= false, 
 							doStoreStepGs 	= false,
 							doStoreStartNet = false, 
@@ -39,29 +35,30 @@ public class main {
 	private static String 	fileType = ".dgs" ,
 							fileTypeIm = "png" ;
 	
-	private static double feed , kill ;
+	private static double 	feed , kill ;
 	
 	// folder
 	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_mazes\\" ;
 
+	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ;
-	
 	private static String 	folderNew = handleNameFile.getPath();
 	
+	//name file
 	private static String 	nameStartGs , nameStartNet , nameStepGs , nameStepNet ;
 	
 	// HANDLE FILE OBJECT
 	private static handleNameFile handle ;
 	
-	/* create reaction diffusion layer ( gs = Gray Scott )
-	* 		setupGsGrid 	->	int size		=	graph size , 
-	* 							enum gsGridType	=	set type of grid ( degree 4 or 8 )  */
-	static layerGs gsLayer = new layerGs(new setupGsGrid( 50 , setupGs_Inter.gsGridType.grid8 ) ) ;
-	
-	// generate layer of Net
-//	static layerNet netLayer = new layerNet (new setupNetSmallGrid ( setupNetSmallGrid.typeGrid.grid4) );	
-//	static layerNet netLayer = new layerNet (new setupNetSeed());
-	static layerNet netLayer = new layerNet (new setupNetSmallGraph(setupNetSmallGraph.smallGraphType.star4Edge));
+	// create reaction diffusion layer ( gs = Gray Scott )
+	static layerGs gsLayer = new layerGs(
+		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
+
+	static layerNet netLayer = new layerNet (
+//		/* create only one node					*/ new setupNetSeed()	
+//		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(typeGrid.grid4)
+		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge)
+		);
 	
 	// get  Graphs ( only to test results ) 
 	protected static Graph gsGraph = layerGs.getGraph() ,
@@ -69,26 +66,27 @@ public class main {
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	static simulation run = new simulation() ;
-	
-	// initialization of rules to evolving Net	
-		// generateNetNodeThreshold ( threshold for activator, threshold for inhibitor )
-		// generateNetNodeThreshold ( ) 
 
-	// generateNetEdgeNear (  )
-	static generateNetEdge generateNetEdge = new generateNetEdge (new generateNetEdgeNear( 
-			/* radius max ?	*/				0 
-			/* which node link ? 	*/		, generateNetEdgeNear.whichNode.all )) ;
-// --------------------------------------------------------------------------------------------------------------------------------------------------		
+	static generateNetNode generateNetNode = new generateNetNode (
+//		/* threshold for activator, threshold for inhibitor 	*/	new generateNetNodeThreshold(12, 11) 
+		/* type of split seed 									*/	new generateNetNodeGradient(splitSeed.onlyOneRandom)
+			) ;
+
+	static generateNetEdge generateNetEdge = new generateNetEdge (
+			/* radius , which node to connect		*/	new generateNetEdgeNear( 0 , whichNode.all )) ;
+	
+// RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
-		handle = new handleNameFile(folder);		
+		// setup handle name file 
+		handle = new handleNameFile( false , folder);		
 
 		// setup type RD
-		setRdType(RdmType.mazes);				//System.out.println(kill + " " + feed );
+		setRdType(RdmType.mazes);			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 
-			/* enum -- reaction , diffusion ext*/		gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
+			/* enum reaction , diffusion ext	*/		gsAlgo.reactionType.ai2 , gsAlgo.diffusionType.weight , gsAlgo.extType.gsModel , 
 			/* Da 	*/									0.2,			
 			/* Di 	*/									0.1, 		
 			/* feed */									feed , 	
@@ -102,54 +100,48 @@ public class main {
 		String pathStartNet = handle.getPathStartNet();		//	System.out.println("pathStartNet " + pathStartNet);
 		String pathStartGs = handle.getPathStartGs();		//	System.out.println("pathStartGs " + pathStartGs);
 
-//-------------------------------------------------------------------------------------------------------------------------------		
-		// GENERATE LAYER GS
-	
-		/* CREATE GS GRAPH
-		 *  method to generate the graph gs
-		 *  createLayer = 	bol		setCoordinate	=
-		 *  				bol		setDefaultAtr 	=
-		 *  				bol		storedDGS		= if true , create a dgs file of started graph  */
-		gsLayer.createLayer ( false , true , doStoreStartGs ) ;
+// GENERATE LAYER GS --------------------------------------------------------------------------------------------------------------------------------		
+		// CREATE GS GRAPH
+		gsLayer.createLayer ( 
+			/* set coordinate 			*/ 	false , 
+			/* set default Atribute		*/ 	true , 
+			/* store results in folder? */	doStoreStartGs ) ;
 		
-	/* SETUP DISMORP
-	 *  setup values of distribution of gs morphogens
-	 *  setupDisMorp ->	enum	type of distribution
-	  					int 	randomSeedAct 	=	(only random)  
-	  					int 	randomSeedInh 	=	(only random)  
-	  					double 	act				=	(only homo) 
-	  					double 	inh				=	(only homo)  */
-		gsLayer.setupDisMorp(setupGs_Inter.disMorpType.homo , 12 , 34 , 1 , 0 );
+		// SETUP DISMORP
+		gsLayer.setupDisMorp(
+			/* enum	type of distribution			*/	disMorpType.homo , 
+			/* int 	randomSeedAc (only random)		*/	12 , 
+			/* int 	randomSeedInh (only random)		*/	34 , 
+			/* double 	act	(only homo)				*/	1 , 
+			/* double 	inh	(only homo)				*/	0 );
 
-//-------------------------------------------------------------------------------------------------------------------------------
-	
-	// SETUP DIFFUSION
+// SETUP DIFFUSION ----------------------------------------------------------------------------------------------------------------------------------
 //		gsAlgoDiffusion.setLaplacianMatrix ( 0.2, 0.05 ) ; // not implemented
-		gsAlgoDiffusion.setWeightType ( gsAlgoDiffusion.weightType.matrix );
+		gsAlgoDiffusion.setWeightType ( weightType.matrix );
 
-//-------------------------------------------------------------------------------------------------------------------------------		
+//  CREATE LAYER NET --------------------------------------------------------------------------------------------------------------------------------		
 		// CREATE LAYER NET
-		/* method to create the layer
-		 * createLayer (	bol 	createMeanPoint	= 	chose if we have an initial node (or a small graph ) befor starting simulation
-		 * 				 	enum	meanPointPlace	=	define were are the mean point of started net graph 	( center , border , random )
-		 * 				 	bol		setSeedMorp		= 	if true, add a fixed value for act and inh only in node in netGraph 
-		 * 				 	double	seedAct			=	act value for seed node
-		 * 				 	double	seedInh			=	inh value for seed node		
-		 * 				 	bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph
-		 *  			 	bol		storedDGS		= 	if true , create a dgs file of started graph
-		 * 				)*/
-		netLayer.createLayer ( true , layerNet.meanPointPlace.center , true , 1 , 1 , true , doStoreStartNet ); 
+		netLayer.createLayer ( 
+			/* bol 	createMeanPoint		= 	chose if we have an initial node (or a small graph ) befor starting simulation		*/ true , 
+			/* enum	meanPointPlace		=	define were are the mean point of started net graph ( center , border , random )	*/ meanPointPlace.center ,
+			/* bol		setSeedMorp		= 	if true, add a fixed value for act and inh only in node in netGraph 				*/ true ,
+			/* double	seedAct			=	act value for seed node																*/ 1 , 
+			/* double	seedInh			=	inh value for seed node	 															*/ 1 , 
+			/* bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph												*/ true ,
+			/* bol		storedDGS		= 	if true , create a dgs file of started graph										*/ doStoreStartNet
+			);
 			
-//-------------------------------------------------------------------------------------------------------------------------------		
-		/* RUN simulation
-		 * // runSim ( 	int 	stopSim 		= Max step to stop simulation , 
-		 * 				bol		printMorp		= true = print mapMorp1 ,
-		 * 				bol		genNode			= generate nodes in layer net
-		 * 				bol		genEdge			= generate edges in layer net
-		 * 				bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 
-		 *  			bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 
-		 *) 	*/		
-		run.runSim( stopSim , false , true , true , doStoreStepGs , pathStepGs, doStoreStepNet , pathStepNet );	//	
+// RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
+		simulation.runSim( 
+			/* int 		stopSim 		= Max step to stop simulation , 										*/ stopSim ,
+			/* bol		printMorp		= print mapMorp1 ,														*/ false ,
+			/* bol		genNode			= generate nodes in layer net											*/ true ,
+			/* bol		genEdge			= generate edges in layer net											*/ true ,
+			/* bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 				*/ doStoreStepGs ,
+			/* string 	path to stored step gs file 															*/ pathStepGs ,
+		 	/* bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 				*/ doStoreStepNet ,
+		 	/* string 	path to stored step net file 															*/pathStepNet
+		 	);
 
 		//get seedAlive
 		int seedAlive = getSeedAlive(false);

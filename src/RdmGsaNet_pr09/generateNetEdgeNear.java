@@ -5,17 +5,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 
-public class generateNetEdgeNear implements generateNetEdge_inter{
+public class generateNetEdgeNear implements generateNetEdge_Inter{
 
 	// ENUM
 	public enum whichNode { all , onlyOld }
@@ -83,14 +80,11 @@ public class generateNetEdgeNear implements generateNetEdge_inter{
 				createEdge(n1, idNear, netGraph);	
 			}
 		}
-	
 		catch (java.lang.NullPointerException e) {		}
 	}
 	
-// remove edge
-	@Override
-	public void removeEdgeRule( double step) {
-		// TODO Auto-generated method stub	
+	// remove edge
+	public void removeEdgeRule( double step) {	
 	}
 	
 //  PRIVATE METHODS --------------------------------------------------------------------------------------------------------
@@ -113,25 +107,6 @@ public class generateNetEdgeNear implements generateNetEdge_inter{
 			catch ( org.graphstream.graph.IdAlreadyInUseException e)	{ continue ; }
 		}	  	
 	}
-
-	// not implemented
-	private static void createEdgeIdGs ( Node n1 , Set<String> idNear , Graph netGraph, Graph gsGraph ) {
-		
-		// declare id for new node
-		String idN1 = n1.getId();								 					//	System.out.println("idN1 " + n1.getId() ) ;
-				
-		// create an edge for each new node
-		for ( String idN2 : idNear) {
-					
-			Node n2 = netGraph.getNode(idN2) ;										//	System.out.println("idN2 " + n2.getId() ) ;
-					
-			// try create an edge. It return exception whether nodes are yet connected -> continue
-			int [] arrIdEdge ;
-			
-			try 													{ 	netGraph.addEdge(  idN1 + "-" + idN2 ,  n1 , n2 );	}
-			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue; 	}
-		}	  		
-	}
 	
 // method to create map of distance
 		// map / key = (string) id of nodes n2 , (double) distance between n1 and n2
@@ -150,7 +125,8 @@ public class generateNetEdgeNear implements generateNetEdge_inter{
 			String n2Str = n2.getId();
 			String n1Str = n1.getId();
 			
-			if ( n2.getId() != n1Str ) {	mapDist.put(n2Str, gsAlgoToolkit.getDistGeom(n1, n2)) ; }
+			if ( n2.getId() != n1Str ) 	
+				mapDist.put(n2Str, gsAlgoToolkit.getDistGeom(n1, n2)) ; 
 			}
 		
 		return mapDist ;

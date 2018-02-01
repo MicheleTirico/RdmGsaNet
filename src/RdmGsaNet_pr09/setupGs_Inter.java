@@ -13,9 +13,9 @@ public interface setupGs_Inter {
 	// METHODS
 	void createLayerGs() ;
 	
-	void setCoordinate() ;
+	void setCoordinate() ; // not used in setup layer GRID, it may be important in GIS setup
 	
-	// PRIVATE METHODS
+// PRIVATE METHODS  ---------------------------------------------------------------------------------------------------------------------------------
 	
 
 }

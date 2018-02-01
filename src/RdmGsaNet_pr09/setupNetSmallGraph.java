@@ -1,15 +1,13 @@
 package RdmGsaNet_pr09;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
-import RdmGsaNet_pr08.layerNet.meanPointPlace;
-import scala.util.control.BreakControl;
+import RdmGsaNet_pr09.layerNet.meanPointPlace;
 
 //class not yet developed. 
 public class setupNetSmallGraph implements setupNet_Inter {
@@ -77,6 +75,7 @@ public class setupNetSmallGraph implements setupNet_Inter {
 		}
 	}
 
+
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
 	
@@ -117,6 +116,12 @@ public class setupNetSmallGraph implements setupNet_Inter {
 	
 		for ( String n : listNodeToAddList ) 
 			listIdGsCon.add(n);
+	}
+
+	@Override
+	public void setMeanPoint( layerNet.meanPointPlace point) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 	

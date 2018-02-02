@@ -19,7 +19,7 @@ import RdmGsaNet_pr08.generateNetNodeGradient.layoutSeedGradient;
 import RdmGsaNet_pr08.generateNetNodeGradient.splitSeed;
 
 public class main {
-	private static int stopSim = 10;
+	private static int stopSim = 5000;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -94,7 +94,7 @@ public class main {
 		handle = new handleNameFile(true , folder);		
 
 		// setup type RD
-		setRdType(RdmType.mazes);				//System.out.println(kill + " " + feed );
+		setRdType(RdmType.U_SkateWorld);				//System.out.println(kill + " " + feed );
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 

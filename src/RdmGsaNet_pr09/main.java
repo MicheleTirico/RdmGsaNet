@@ -7,21 +7,25 @@ import java.util.Map;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetExport.handleNameFile;
+import RdmGsaNetViz.handleVizStype;
+import RdmGsaNetViz.handleVizStype.stylesheet;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_pr09.generateNetEdgeNear.whichNode;
 import RdmGsaNet_pr09.generateNetNodeGradient.layoutSeed;
-import RdmGsaNet_pr09.generateNetNodeGradient.splitSeed;
+import RdmGsaNet_pr09.generateNetNodeGradientStillAlive.howChoiceNodeToAdd;
 import RdmGsaNet_pr09.gsAlgoDiffusion.weightType;
 import RdmGsaNet_pr09.layerNet.meanPointPlace;
 import RdmGsaNet_pr09.setupGs_Inter.disMorpType;
 import RdmGsaNet_pr09.setupGs_Inter.gsGridType;
 import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
-import RdmGsaNet_pr09.setupNetSmallGrid.typeGrid;
+import RdmGsaNet_pr09.generateNetNodeGradientProb.rule;
+import RdmGsaNetViz.handleVizStype;
 
 public class main {
-	private static int stopSim = 10;
+	private static int stopSim = 100 ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -62,7 +66,7 @@ public class main {
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
 //		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(typeGrid.grid4)
-		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge)
+		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -73,12 +77,13 @@ public class main {
 	protected static simulation run = new simulation() ;	
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
-//		/* threshold for activator, threshold for inhibitor 	*/	new generateNetNodeThreshold(12, 11)  
-																	new generateNetNodeGradientOnlyOneRandom( 1 , layoutSeed.allNode , "gsAct" )
-		) ;
+//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold(12, 11)  
+//											new generateNetNodeGradientStillAlive	( 8 , layoutSeed.allNode , howChoiceNodeToAdd.maxValue, "gsInh" )
+											new generateNetNodeGradientProb			( 4 , layoutSeed.allNode , rule.random    ,  "gsAct", 0.05 )
+			) ;
 	
 	protected static generateNetEdge generateNetEdge = new generateNetEdge (
-			/* radius , which node to connect		*/	new generateNetEdgeNear( 0 , whichNode.all )) ;
+			/* radius , which node to connect		*/	new generateNetEdgeNear( 10 , whichNode.all )) ;
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -89,7 +94,7 @@ public class main {
 			/* set folder 				*/ folder);		
 
 		// setup type RD
-		setRdType(RdmType.mazes);			
+		setRdType ( RdmType.solitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -161,17 +166,36 @@ public class main {
 		
 //-------------------------------------------------------------------------------------------------------------------------------		
 		// VISUALIZATION 
-
+/*
 		setupViz.setFixScale(netGraph, gsGraph);
 //		setupViz.Viz4Color( gsGraph );
-	//	setupViz.VizNodeId( netGraph );	
-		setupViz.Viz10ColorAct( gsGraph ) ;	
+		setupViz.VizNodeId( netGraph );			
 //		setupViz.Vizmorp(gsGraph, "gsAct");
-//		setupViz.Vizmorp(gsGraph, "gsInh");
-		gsGraph.display(false) ;
+//		setupViz.Vizmorp(gsGraph, "gsInh");		
+		setupViz.Viz10ColorAct( gsGraph ) ;	
+		Viewer viewer1 = gsGraph.display(false) ;		
+//		setupViz.Vizmorp(gsGraph, "gsInh");		
+//		Viewer viewer2 = gsGraph.display(false) ;
 		setupViz.VizSeedGrad(netGraph, "seedGrad");
-		netGraph.display(false) ;
+//		netGraph.display(false) ;
+	*/	
 		
+		// setup viz gsGraph
+		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz10Color) ;
+		gsViz.setupDefaultParam (gsGraph, "red", "black", 6 , 0.5 );
+		gsViz.setupIdViz(false, gsGraph, 10 , "black");
+		gsViz.setupDefaultViz(true, true, "gsAct");
+		
+		
+		// setup viz netGraph
+		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual) ;
+		netViz.setupIdViz(false, netGraph, 1,"black");
+		netViz.setupDefaultParam (netGraph, "black", "black", 5 , 0.5 );
+		netViz.setupVizBooleanAtr(true, netGraph, "seedGrad", "black", "red" ) ;
+		netViz.setupFixScaleManual(true, netGraph, 50, 0);
+		// viz display
+		gsGraph.display(false);
+		netGraph.display(false);
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------

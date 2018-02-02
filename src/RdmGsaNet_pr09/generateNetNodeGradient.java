@@ -3,14 +3,12 @@ package RdmGsaNet_pr09;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
-import RdmGsaNet_pr08.simulation;
-
-
 
 public class generateNetNodeGradient  {
 
@@ -89,24 +87,30 @@ public class generateNetNodeGradient  {
 		return listIdNeigValMax;
 	}
 	
+	// get node with the greater value of attribute in list of nodes
 	protected String getNodeGreater ( String attribute , ArrayList<Node> listNeig ) {
-		String winner = null ;
-	
-		double valWin = 0 ;
 		
+		String winner = null ;
+		double valWin = 0 ;	
 		for ( Node n : listNeig) {
 			double valTest = n.getAttribute(attribute);
 			if ( valTest >= valWin ) {
 				valWin = valTest;
 				winner = n.getId();
-			}
-				
+			}			
 		}
-		
-		
-		
 		return winner ;
 	}
+	
+	// get random node from a list of nodes 
+	protected String getRandomNode ( ArrayList<Node> listNeig ) {
+		
+		Random randomGenerator = new Random( ) ;
+		int index = randomGenerator.nextInt(listNeig.size());	
+		
+		return  listNeig.get(index).getId();	
+	}
+	
 // SET LAYOUT SEED NODES ----------------------------------------------------------------------------------------------------------------------------
 	protected void setSeedNodes ( int step , int numberMaxSeed , layoutSeed setLayoutSeed ) {
 
@@ -120,16 +124,13 @@ public class generateNetNodeGradient  {
 		
 		switch (setLayoutSeed) {
 		case allNode:
-			setLayoutSeedAllNode();
-			break;
+			setLayoutSeedAllNode();					break;
 			
 		case center :
-			setLayoutSeedCenter();
-			break;
+			setLayoutSeedCenter();					break;
 
 		case random :
-			setLayoutSeedRandom(numberMaxSeed);
-			break;
+			setLayoutSeedRandom(numberMaxSeed);		break;
 		}
 
 	}

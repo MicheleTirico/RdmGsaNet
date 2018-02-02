@@ -32,6 +32,14 @@ public class setupViz {
 	
 // VIZ METHODS --------------------------------------------------------------------------------------------------------------------------------------
 // methods of visualization
+	public static void setViz ( Graph graph , String attribute , String VizStylesheet ) {
+		
+		graph.addAttribute("ui.stylesheet", VizStylesheet);
+		
+	}
+	
+	
+	
 	public static void Viz4Color( Graph graph ) {
 		
 		graph.addAttribute("ui.stylesheet", setViz4Color ( ) );
@@ -43,7 +51,7 @@ public class setupViz {
 			double color = 0  ; //grey
 			
 			if ( act >= 0.95 && inh >= 0.95) 	{	 color =  	.25		;	} 		// red
-			if ( act >= 0.9 && inh <= 0.1) 	{	 color =  	.5		;	}		// yellow
+			if ( act >= 0.9 && inh <= 0.1) 		{	 color =  	.5		;	}		// yellow
 			if ( act <= 0.01 && inh >= 0.99) 	{	 color =  	.75		;	}		// green
 			if ( act <= 0.05 && inh <= 0.05) 	{	 color =  	1		;	}		// blue
 			
@@ -61,30 +69,10 @@ public class setupViz {
 	
 	public static void Viz5Color( Graph graph , String morp   ) {
 		
-		graph.addAttribute("ui.stylesheet", setViz4Color ( ) );
 		
-		for ( Node n : graph.getEachNode()) {
-			double act = n.getAttribute("gsAct");
-			double inh = n.getAttribute("gsInh");
-		
-			double morpColor = 0 ;
-			
-			if ( morp == "gsAct" ) 	{ morpColor = act 	;			}
-			else { if ( morp == "gsInh" ) 	{  morpColor = inh ;	} 
-			
-			double color = 0  ; //grey
-			
-			if ( morpColor >= 0.20 ) 	{	 color =  	.25		;	} 		// red
-			if ( morpColor >= 0.40 )	{	 color =  	.5		;	}		// yellow
-			if ( morpColor >= 0.60 ) 	{	 color =  	.75		;	}		// green
-			if ( morpColor >= 0.80 ) 	{	 color =  	1		;	}		// blue
-			
-			n.addAttribute("ui.color", color );
-			}
-		}
 	}
 	
-	public static void Viz10Color( Graph graph , String morp   ) {
+	public static void Viz10Color( Graph graph , String morp  ) {
 	
 	graph.addAttribute("ui.stylesheet", setViz10Color ( ) );
 	

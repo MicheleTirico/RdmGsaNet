@@ -7,13 +7,13 @@ import org.graphstream.graph.implementations.SingleGraph;
 
 import RdmGsaNetExport.expGraph;
 import RdmGsaNetViz.graphViz;
-import RdmGsaNetViz.multiViz;
+import RdmGsaNetViz._NOTIMPLmultiViz;
 import RdmGsaNetViz.setupViz;
 
 public class analysisViz extends analysisMain {
 	
 
-	static multiViz multiViz = new multiViz(
+	static _NOTIMPLmultiViz multiViz = new _NOTIMPLmultiViz(
 			/* gsViz	*/ 	true ,
 			/* netViz	*/	true 
 			);

@@ -70,7 +70,10 @@ public class simulation {
 		if ( storedDgsGsStep == true) { gsGraph.addSink(fsdGs); fsdGs.begin(pathStepGs);	}
 
 		if ( storedDgsNetStep == true) { netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);	}
-			
+		
+		// add step 0 
+		addStep0( netGraph , mapStepIdNet );
+	
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
@@ -105,6 +108,7 @@ public class simulation {
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	
 		}
+		
 		
 		// stored graph in dgs format
 		if ( storedDgsGsStep == true) { 	fsdGs.end();	}
@@ -175,6 +179,17 @@ public class simulation {
 		for ( Node n : graph.getEachNode()) {list.add(n.getId()) ; }	//	System.out.println(list);			
 		return list;	
 	}
+	
+	// add step 0 
+	private static void addStep0 ( Graph graph  , Map mapStepId ) {
+		
+		ArrayList<String> idStep0 = new ArrayList<>();
+		for ( Node n : graph.getNodeSet() )
+			idStep0.add(n.getId());
+		mapStepId.put(0.0 , idStep0 ) ;
+	}
+	
+	
 	// MAP GRAPH -----------------------------------------------------------------------------------------------------------------	
 	private static void updateMapGraph ( Map<Double , Graph > map, double step , Graph graph ) {
 		map.put(step, graph);	

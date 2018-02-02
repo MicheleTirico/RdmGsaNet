@@ -14,7 +14,7 @@ import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNet_Analysis.analysisDGS;
 
-public class multiViz {
+public class _NOTIMPLmultiViz {
 	
 	// COSTANTS
 	private boolean	gsViz ,
@@ -34,7 +34,7 @@ public class multiViz {
 	String dgsId ;
 		
 	// COSTRUCTOR 
-	public multiViz ( boolean gsViz ,boolean netViz) {
+	public _NOTIMPLmultiViz ( boolean gsViz ,boolean netViz) {
 		this.gsViz = gsViz ;
 		this.netViz = netViz ;
 	}

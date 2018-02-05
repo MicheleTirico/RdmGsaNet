@@ -7,25 +7,24 @@ import java.util.Map;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetExport.handleNameFile;
+
 import RdmGsaNetViz.handleVizStype;
+import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
-import RdmGsaNetViz.setupViz;
+
 import RdmGsaNet_pr09.generateNetEdgeNear.whichNode;
 import RdmGsaNet_pr09.generateNetNodeGradient.layoutSeed;
-import RdmGsaNet_pr09.generateNetNodeGradientStillAlive.howChoiceNodeToAdd;
 import RdmGsaNet_pr09.gsAlgoDiffusion.weightType;
 import RdmGsaNet_pr09.layerNet.meanPointPlace;
 import RdmGsaNet_pr09.setupGs_Inter.disMorpType;
 import RdmGsaNet_pr09.setupGs_Inter.gsGridType;
 import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
-import RdmGsaNet_pr09.generateNetNodeGradientProb.rule;
-import RdmGsaNetViz.handleVizStype;
+import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 
 public class main {
-	private static int stopSim = 100 ;
+	private static int stopSim = 1000 ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -35,10 +34,10 @@ public class main {
 	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
 	// STORE DGS PARAMETERS
-	private static boolean 	doStoreStartGs 	= false, 
-							doStoreStepGs 	= false,
-							doStoreStartNet = false, 
-							doStoreStepNet 	= false,
+	private static boolean 	doStoreStartGs 	= true, 
+							doStoreStepGs 	= true,
+							doStoreStartNet = true, 
+							doStoreStepNet 	= true,
 							doStoreIm		= false ;
 	
 	private static String 	fileType = ".dgs" ,
@@ -47,7 +46,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_pr9\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_pr9_gsInh\\rd_mazes\\maxValue\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -66,7 +65,7 @@ public class main {
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
 //		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(typeGrid.grid4)
-		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
+		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star8 )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -78,11 +77,11 @@ public class main {
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold(12, 11)  
-//											new generateNetNodeGradientStillAlive	( 8 , layoutSeed.allNode , howChoiceNodeToAdd.maxValue, "gsInh" )
-											new generateNetNodeGradientProb			( 4 , layoutSeed.allNode , rule.random    ,  "gsAct", 0.05 )
+//											new generateNetNodeGradientStillAlive(8, layoutSeed.allNode, rule.random, "gsInh")
+											new generateNetNodeGradientProb			( 4 , layoutSeed.allNode , rule.random    ,  "gsInh", 0.01)
 			) ;
 	
-	protected static generateNetEdge generateNetEdge = new generateNetEdge (
+	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
 			/* radius , which node to connect		*/	new generateNetEdgeNear( 10 , whichNode.all )) ;
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
@@ -90,11 +89,11 @@ public class main {
 		
 		// setup handle name file 
 		handle = new handleNameFile( 
-			/* handle file 				*/ false , 
+			/* handle file 				*/ true , 
 			/* set folder 				*/ folder);		
 
 		// setup type RD
-		setRdType ( RdmType.solitions );			
+		setRdType ( RdmType.mazes );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -103,8 +102,8 @@ public class main {
 			/* Di 									*/	0.1, 		
 			/* feed									*/	feed , 	
 			/* kill 								*/	kill ,		
-			/* HandleNaN , setIfNaN 				*/	true , 1E-5 , 			/* if true, set default value when act or inh is over NaN  */
-			/* handleMinMaxVal , minVal , maxVal 	*/	true , 1E-5 , 1 ) ; 	/* if true, set value for values over the range */
+			/* HandleNaN , setIfNaN 				*/	false , 1E-5 , 			/* if true, set default value when act or inh is over NaN  */
+			/* handleMinMaxVal , minVal , maxVal 	*/	false , 1E-5 , 1 ) ; 	/* if true, set value for values over the range */
   
 		// create path in order to stored all dgs files
 		String pathStepNet = handle.getPathStepNet() ; 		//	System.out.println("pathStepNet " + pathStepNet);		
@@ -116,7 +115,7 @@ public class main {
 		// create new layer gs
 		gsLayer.createLayer ( 
 			/* set coordinate 			*/ 	false , 
-			/* set default Atribute		*/ 	true , 
+			/* set default Attribute	*/ 	true , 
 			/* store results in folder? */	doStoreStartGs ) ;
 		
 		// Setup distribution of morphogens
@@ -136,8 +135,8 @@ public class main {
 			/* bol 		createMeanPoint	= 	chose if we have an initial node (or a small graph ) befor starting simulation		*/ true , 
 			/* enum		meanPointPlace	=	define were are the mean point of started net graph ( center , border , random )	*/ meanPointPlace.center ,
 			/* bol		setSeedMorp		= 	if true, add a fixed value for act and inh only in node in netGraph 				*/ true ,
-			/* double	seedAct			=	act value for seed node																*/ 1 , 
-			/* double	seedInh			=	inh value for seed node	 															*/ 1 , 
+			/* double	seedAct			=	act value for seed node																*/ 1 , 	// 0.5
+			/* double	seedInh			=	inh value for seed node	 															*/ 1 , 	//0.25 
 			/* bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph												*/ true ,
 			/* bol		storedDGS		= 	if true , create a dgs file of started graph										*/ doStoreStartNet
 			);
@@ -180,22 +179,27 @@ public class main {
 //		netGraph.display(false) ;
 	*/	
 		
-		// setup viz gsGraph
-		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz10Color) ;
-		gsViz.setupDefaultParam (gsGraph, "red", "black", 6 , 0.5 );
-		gsViz.setupIdViz(false, gsGraph, 10 , "black");
-		gsViz.setupDefaultViz(true, true, "gsAct");
 		
+		// setup viz gsGraph
+		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		
 		// setup viz netGraph
-		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual) ;
-		netViz.setupIdViz(false, netGraph, 1,"black");
+		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad") ;
+		netViz.setupIdViz(false, netGraph, 1 , "black");
 		netViz.setupDefaultParam (netGraph, "black", "black", 5 , 0.5 );
-		netViz.setupVizBooleanAtr(true, netGraph, "seedGrad", "black", "red" ) ;
+		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
 		netViz.setupFixScaleManual(true, netGraph, 50, 0);
+		
 		// viz display
-		gsGraph.display(false);
+		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsAct") ;
+		gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
+		gsViz.setupIdViz(false, gsGraph, 10 , "black");
+		gsViz.setupViz(true, true, palette.red);
+
 		netGraph.display(false);
+		gsGraph.display(false);
+		
+
 	}
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------

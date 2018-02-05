@@ -10,12 +10,9 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 
 public class generateNetNodeGradientStillAlive extends generateNetNodeGradient implements generateNetNode_Inter {
 
-	// local constants 
-	protected enum howChoiceNodeToAdd { maxValue , random }
-	protected howChoiceNodeToAdd rule ;
 	
 	// COSTRUTOR
-	public generateNetNodeGradientStillAlive ( int numberMaxSeed, layoutSeed setLayoutSeed , howChoiceNodeToAdd rule, String morp  ) {
+	public generateNetNodeGradientStillAlive ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp  ) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
 		this.rule = rule ;

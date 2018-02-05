@@ -6,10 +6,7 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 
 public class generateNetNodeGradientProb extends generateNetNodeGradient implements generateNetNode_Inter {
 	
-	// local constants 
-	protected enum rule { random , maxValue }
-	protected rule rule ;
-		
+
 	// COSTRUTOR
 	public generateNetNodeGradientProb ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob ) {
 		this.numberMaxSeed = numberMaxSeed ;
@@ -49,6 +46,10 @@ public class generateNetNodeGradientProb extends generateNetNodeGradient impleme
 				case maxValue: 
 					idCouldAdded = getNodeGreater(morp, listNeigValMax);							//	System.out.println(" winner " + idTheGreater);
 					break;
+				
+				case minValue :
+					idCouldAdded = getNodeSmallest(morp, listNeigValMax);
+					break ;
 				}
 				
 				// there isn't node
@@ -70,7 +71,7 @@ public class generateNetNodeGradientProb extends generateNetNodeGradient impleme
 					int hasSeed = nodeAlreadyExist.getAttribute("seedGrad");	//	System.out.println(hasSeed);
 					
 					if ( hasSeed == 1 ) 
-						continue;
+						continue ;  // continue or break ??
 					else if ( hasSeed == 0 ) {
 						nodeAlreadyExist.setAttribute("seedGrad", 1);
 						nNet.setAttribute("seedGrad", 0);	

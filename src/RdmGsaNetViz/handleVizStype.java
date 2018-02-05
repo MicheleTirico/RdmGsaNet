@@ -9,31 +9,35 @@ public class handleVizStype {
 	String colorStaticNode , colorStaticEdge ;
 	double sizeNode , sizeEdge ;
 	
+	public enum palette { red , blue , multi }
+	private palette mainColor ;
 	public enum stylesheet { viz5Color , viz10Color , manual  , booleanAtr }
 	private stylesheet styleType ;
-	
+	private String attributeToAnalyze ; 
 	// COSTRUCTOR
-	public handleVizStype (  Graph graph , stylesheet styleType ) {
+	public handleVizStype (  Graph graph , stylesheet styleType , String attributeToAnalyze ) {
 		this.styleType = styleType ;
 		this.graph = graph ;
+		this.attributeToAnalyze = attributeToAnalyze ;
+	
+		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 	}
 	
-	public void setupDefaultViz ( boolean quality , boolean antiAlias , String attribute ) {
+	public void setupViz ( boolean quality , boolean antiAlias , palette mainColor ) {
 	
 		if ( antiAlias )	graph.addAttribute("ui.antialias");
 		if ( quality )		graph.addAttribute("ui.quality");
 	   
 		switch (styleType) {
 		
-		case viz10Color: 	setViz10Color(attribute); 
+		case viz10Color: 	setViz10Color( attributeToAnalyze , mainColor); 
 			break;
 		
-		case viz5Color: 	setViz5Color ( attribute );
+		case viz5Color: 	setViz5Color ( attributeToAnalyze , mainColor );
 			break;
 		
 		case manual :		graph.addAttribute("ui.stylesheet", VizManual() );
 			break ;
-
 		}
 	}
 
@@ -58,11 +62,12 @@ public class handleVizStype {
 	}
 	
 // SETUP VIZ ----------------------------------------------------------------------------------------------------------------------------------------
-	private void  setViz5Color ( String attribute ) {
-		graph.addAttribute("ui.stylesheet", Viz5Color(styleType) );
+	private void  setViz5Color ( String attributeToAnalyze , palette multiColor  ) {
+	
+		graph.addAttribute("ui.stylesheet", Viz5Color(styleType , multiColor ) );
 		for ( Node n : graph.getEachNode()) {
 			
-			double morpColor = n.getAttribute(attribute);
+			double morpColor = n.getAttribute(attributeToAnalyze);
 			double color = 0  ; //grey
 
 			if ( morpColor >= 0.2 &&  morpColor <= 0.4) color =  	0.2		;				
@@ -74,11 +79,11 @@ public class handleVizStype {
 			}
 	}
 
-	private void setViz10Color ( String attribute ) {
-		graph.addAttribute("ui.stylesheet", Viz10Color(styleType) );
+	private void setViz10Color ( String attributeToAnalyze , palette mainColor ) {
+		graph.addAttribute("ui.stylesheet", Viz10Color(styleType , mainColor) );
 		for ( Node n : graph.getEachNode()) {
 			
-			double morpColor = n.getAttribute(attribute);
+			double morpColor = n.getAttribute(attributeToAnalyze);
 			double color = 0  ; //grey
 
 			if ( morpColor >= 0.10 &&  morpColor <= 0.20) 	{	 color =  	0.1		;	} 		// 
@@ -95,13 +100,13 @@ public class handleVizStype {
 		}
 	}
 	
-	public void setupVizBooleanAtr ( boolean viz , Graph graph , String attribute , String color0 , String color1) {
+	public void setupVizBooleanAtr ( boolean viz , Graph graph , String color0 , String color1) {
 		graph.addAttribute("ui.stylesheet", setVizBooleanAtr(   color0 ,  color1 ) );			
 		
 		for ( Node n : graph.getEachNode () ) {
 			try {
 				double color = 0 ;
-				int isTrue = n.getAttribute(attribute);
+				int isTrue = n.getAttribute(attributeToAnalyze);
 				if ( isTrue == 1 )
 					color = 1 ;
 				n.addAttribute("ui.color", color );
@@ -161,9 +166,22 @@ public class handleVizStype {
 				"}" ;
 	}
 	
-	private String Viz5Color (  stylesheet styleType ){
+	private String Viz5Color (  stylesheet styleType , palette mainColor ) {
 		
-		String color = " fill-color: gray , red , blue , green , yellow ; " ;
+		String color = null ;
+		switch ( mainColor ) {
+		case blue:
+			color = "fill-color: rgb(230, 240, 255) , rgb(179, 209, 255), rgb(102, 163, 255) , rgb(51, 133, 255), rgb(0, 71, 179) ;" ;
+			break;
+		
+		case multi :
+			color = " fill-color: gray , red , blue , green , yellow ; " ;
+			break;
+			
+		case red :
+			color = "fill-color: rgb(255, 235, 230), rgb(255, 173, 153) , rgb(255, 92, 51) , rgb(230, 46, 0) , 	rgb(179, 36, 0) ;" ;
+			break ;
+		}
 		
 		return  "node {"+
 				"	size: " + sizeNode + "px;"+
@@ -189,12 +207,32 @@ public class handleVizStype {
 				+ "}";
 	}
 	
-	protected String Viz10Color ( stylesheet styleType ) {
+	protected String Viz10Color ( stylesheet styleType , palette mainColor ) {
 		
-		String color = 	" fill-color: rgb(128,128,128), " + 
-						" rgb(255,128,0),rgb(255,255,0),rgb(128,255,0)," + 
-						" rgb(0,128,255),rgb(0,0,255),rgb(127,0,255)," + 
-						" rgb(255,0,255),rgb(255,0,128),rgb(255,0,0) ; ";
+		String color = null ;
+		switch ( mainColor ) {
+		case blue:
+			color = " fill-color: rgb(230, 240, 255)	, " + 
+					" rgb(204, 224, 255) , rgb(179, 209, 255) , rgb(128, 179, 255) , " +
+					" rgb(102, 163, 255) , rgb(77, 148, 255)  , rgb(51, 133, 255)  , " +
+					" rgb(0, 102, 255)   , rgb(0, 82, 204)    , rgb(0, 31, 77)     ; " ;
+				
+			break;
+		
+		case multi :
+			color = " fill-color: rgb(128,128,128), " + 
+					" rgb(255,128,0),rgb(255,255,0),rgb(128,255,0)," + 
+					" rgb(0,128,255),rgb(0,0,255),rgb(127,0,255)," + 
+					" rgb(255,0,255),rgb(255,0,128),rgb(255,0,0) ; ";
+			break;
+			
+		case red :
+			color = " fill-color: 	rgb(255, 235, 230), " + 
+					" rgb(255, 214, 204),  rgb(255, 194, 179) , rgb(255, 173, 153) , " + 
+					" rgb(255, 133, 102) , rgb(255, 92, 51)   , rgb(255, 51, 0)    , " + 
+					" rgb(230, 46, 0)    , rgb(179, 36, 0)    ,	rgb(102, 20, 0)	   ; " ;
+			break;
+		}
 		
 		return  "node {"+
 			"	size: " + sizeNode + "px;"+

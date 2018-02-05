@@ -12,13 +12,15 @@ import org.graphstream.stream.file.FileSourceFactory;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 
+import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNet_Analysis.analysisDGS;
+import RdmGsaNet_Analysis.analysisViz;
 
-public class _NOTIMPLmultiViz {
+public class multiViz extends analysisViz {
 	
 	// COSTANTS
-	private boolean	gsViz ,
-					netViz;
+	private boolean	doGsViz ,
+					doNetViz;
 	
 	// viz constants
 	private static FileSource gsFs ,
@@ -29,14 +31,13 @@ public class _NOTIMPLmultiViz {
 	protected static String fileType = ".dgs" ;
 	
 	protected String pathStartGs , pathStartNet ,
-						pathStepGs , pathStepNet ;
-					
-	String dgsId ;
+						pathStepGs , pathStepNet ,
+							dgsId ;
 		
 	// COSTRUCTOR 
-	public _NOTIMPLmultiViz ( boolean gsViz ,boolean netViz) {
-		this.gsViz = gsViz ;
-		this.netViz = netViz ;
+	public multiViz ( boolean doGsViz ,boolean netViz) {
+		this.doGsViz = doGsViz ;
+		this.doNetViz = doNetViz ;
 	}
 	
 	public void setPath ( String dgsId , String pathStart , String pathStep ) {
@@ -54,25 +55,28 @@ public class _NOTIMPLmultiViz {
 	public void runMultiLayerViz ( int stepMax ,int stepInc  )
 			throws IOException, InterruptedException  {
 		
-		if ( !gsViz && !netViz )
+		if ( !doGsViz && !doNetViz )
 			return ;
 		
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
+	
+		// setup viz parameters		
 
-		Graph gsGraph = new SingleGraph("gsGraph"),
-				netGraph = new SingleGraph("netGraph") ;
+		// setup net viz parameters
+		netViz.setupViz( true, true, palette.blue);
+		netViz.setupIdViz( false, netGraph, 1 , "black");
+		netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.05 );
+		netViz.setupFixScaleManual( true , netGraph, 50, 0);
 		
-		// setup viz parameters
-		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-		gsGraph.addAttribute("ui.quality");
-	    gsGraph.addAttribute("ui.antialias");
-	    netGraph.addAttribute("ui.quality");
-	    netGraph.addAttribute("ui.antialias");
-
+		// setup gs viz parameters
+		gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
+		gsViz.setupIdViz(false, gsGraph, 10 , "black");
+		gsViz.setupViz(true, true , palette.red);
+		
+		//dispay graphs 
 		Viewer gsViewer = gsGraph.display(false) ;	
 		Viewer netViewer = netGraph.display(false) ;	
-	
 		
 		// read start path
 		try {	
@@ -100,10 +104,8 @@ public class _NOTIMPLmultiViz {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
-					setupViz.setFixScaleManual(netGraph, 50 , 0);
-					setupViz.VizSeedGrad(netGraph, "seedGrad");
-					
-					setupViz.Viz10ColorAct(gsGraph);
+					netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
+					gsViz.setupViz(true, true, palette.blue);
 					
 					Thread.sleep(10);
 					

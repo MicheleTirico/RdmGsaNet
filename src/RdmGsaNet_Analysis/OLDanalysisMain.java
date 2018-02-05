@@ -62,9 +62,6 @@ public class OLDanalysisMain {
 	protected static Graph gsGraph = new SingleGraph( "gsGraph"); 
 	protected static Graph netGraph = new SingleGraph( "netGraph"); 
 		
-// CREATE CHARTS
-	private static analysisChart chart = new analysisChart();
-	
 // ANALYSIS DGS
 	public static OLDanalysisDGS dgsGs = new OLDanalysisDGS(
 			"dgsGs" , 		// id analysis dgs Gs

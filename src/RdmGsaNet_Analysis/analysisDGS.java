@@ -14,8 +14,8 @@ import RdmGsaNet_pr08.*;
 
 public interface analysisDGS  {
 	
-	static Graph gsGraph = layerGs.getGraph();
-	static Graph netGraph = layerNet.getGraph();
+	static Graph gsGraph = layerGs.getGraph(),
+					netGraph = layerNet.getGraph();
 	
 	public void computeMultipleStat ( int stepMax , int stepInc ,String pathStart , String pathStep 	) throws IOException, InterruptedException ;
 	
@@ -33,6 +33,7 @@ public interface analysisDGS  {
 	
 // common methods -----------------------------------------------------------------------------------------------------------------------------------
 	
+// degree -------------------------------------------------------------------------------------------------------------------------------------------
 	// compute frequency chart of degree
 	public static void computeFreqDegree ( int degreeFreq , Graph graph , double step , Map mapFreqDegree ) {
 			
@@ -69,16 +70,18 @@ public interface analysisDGS  {
 		}	
 	}
 	
-	// get list of step to do analysis
-	public static ArrayList<Double> getListStepToAnalyze ( double stepInc , double stepMax ) {
-			
-		ArrayList<Double> list = new ArrayList<Double>();
-		for ( double n = 1 ; n * stepInc <= stepMax ; n++ ) {	
-			list.add( n * stepInc );	
-		}	
-		return list;		
+// seed grad stat -----------------------------------------------------------------------------------------------------------------------------------
+	public static void computeStepNewSeed ( Graph graph , double step , Map mapStepNewSeed ) {
+		
+	}
+
+	public static void computeStepAveSeed ( Graph graph , double step , Map mapStepAveSeed ) {
+		
 	}
 	
+	
+	
+// morp stat ----------------------------------------------------------------------------------------------------------------------------------------
 	// method to create 2 maps of statistical distribution of morphogen's values 
 	public static void computeStepMorp ( Graph graph , double step , Map mapStepMorp , analysisType stat) {
 		
@@ -114,4 +117,17 @@ public interface analysisDGS  {
 
 	}
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+	// get list of step to do analysis
+	public static ArrayList<Double> getListStepToAnalyze ( double stepInc , double stepMax ) {
+			
+		ArrayList<Double> list = new ArrayList<Double>();
+		for ( double n = 1 ; n * stepInc <= stepMax ; n++ ) {	
+			list.add( n * stepInc );	
+		}	
+		return list;		
+	}
+	
+
 }
+

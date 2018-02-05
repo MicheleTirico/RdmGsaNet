@@ -13,7 +13,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 
 import com.sun.org.apache.xml.internal.security.utils.SignerOutputStream;
 
-public class gsAlgoDiffusion  {
+public class gsAlgoDiffusion {
 			
 		// variables
 	gsAlgo.diffusionType type;

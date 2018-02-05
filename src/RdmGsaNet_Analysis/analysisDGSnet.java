@@ -17,6 +17,7 @@ import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetViz.setupViz;
+import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNet_pr08.gsAlgo;
 import RdmGsaNet_pr08.layerGs;
 import RdmGsaNet_pr08.setupGsGrid;
@@ -42,11 +43,9 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 								computeNormalDegreeDistribution,
 								runViz ;
 	
-	// MAP FOR CHARTS
-
+// MAP FOR CHARTS
 	// private map
 	private Map <Integer , Integer >  mapNetStepNodeCount = new HashMap< Integer , Integer > ();
-		
 	
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	// COSTRUCTOR
@@ -72,19 +71,22 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 // COMPUTE MULTIPLE ANALYSIS --------------------------------------------------------------------------------------------------------------
 	public void computeMultipleStat(int stepMax, int stepInc, String pathStart, String pathStep) throws IOException, InterruptedException  {
 		
-		if ( run == false  ) { return ; }
+		if ( run == false  )  
+			return ; 
 		
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
 		 
 		// run viz
 		if ( runViz )  {
-			System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-			graph.addAttribute("ui.quality");
-		    graph.addAttribute("ui.antialias");
-
+			// setup net viz parameters
+			netViz.setupViz( true, true, palette.blue);
+			netViz.setupIdViz( false, netGraph, 1 , "black");
+			netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.05 );
+			netViz.setupFixScaleManual( true , netGraph, 50, 0);
 			Viewer viewer = graph.display(false) ;	
 		}
+		
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 
@@ -127,8 +129,7 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 				
 					// run viz
 					if ( runViz ) {
-					    setupViz.setFixScaleManual(graph, 50 , 0);
-					    setupViz.VizSeedGrad(graph, "seedGrad");
+						netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
 						Thread.sleep(50);
 					}
 					// stop iteration    

@@ -14,6 +14,7 @@ import org.graphstream.stream.file.FileSourceFactory;
 
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
 import RdmGsaNetViz.setupViz;
+import RdmGsaNetViz.handleVizStype.palette;
 
 public class analysisDGSgs extends analysisMain implements analysisDGS {
 
@@ -65,9 +66,15 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
 		
 		// run viz
-		if ( runViz ) 
-			 graph.display(false);
-				
+		if ( runViz ) {
+			// setup gs viz parameters
+			gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
+			gsViz.setupIdViz(false, gsGraph, 10 , "black");
+			gsViz.setupViz(true, true , palette.red);
+			graph.display(false);
+		}
+
+		
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 
@@ -104,7 +111,10 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 						analysisDGS.computeStepMorp(graph, step, mapGsStepAveMorp , analysisType.average );
 							
 					// run viz
-					if ( runViz )	
+					if ( runViz ) {
+						gsViz.setupViz(true, true, palette.blue);
+						
+					}
 							
 					// stop iteration    
 					if ( stepMax == step ) { break; }

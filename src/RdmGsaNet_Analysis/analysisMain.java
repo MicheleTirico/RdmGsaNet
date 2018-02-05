@@ -11,40 +11,43 @@ import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetExport.expChart;
 import RdmGsaNetExport.expChart.typeChart;
+import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.setupViz;
+import RdmGsaNetViz.handleVizStype.stylesheet;
 
 public class analysisMain {
 
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_gradient_03\\RD_solitions\\maxStep_3000_generateNetNodeGradient_generateNetEdgeNear_prob_0.09_00\\" ,
-							folderChart = folder +"chart\\" ;
+	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_pr9_gsInh\\rd_mazes\\maxValue\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.1_00\\" ,
+								folderChart = folder +"chart\\" ;
 	
 // START FILES
 	// GS graph
-	protected static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight"  ,
-							folderStartGs = folder ,
-								pathStartGs = folderStartGs + nameStartGs + fileType ;
+	protected static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.029_k_0.057_diff_weight"  ,
+								folderStartGs = folder ,
+									pathStartGs = folderStartGs + nameStartGs + fileType ;
 		
 	// NET graph
-	protected static String nameStartNet = "layerNet_start_setupNetSeed"  ,
+	protected static String nameStartNet = "layerNet_start_setupNetSmallGraph"  ,
 							folderStartNet = folder,
 								pathStartNet = folderStartNet + nameStartNet + fileType ;
 	
 // STEP FILES	
 	// GS graph
-	protected static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight" ,
-							folderStepGs = folder ,
-								pathStepGs = folderStepGs + nameStepGs + fileType ;
+	protected static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.029_k_0.057_diff_weight" ,
+								folderStepGs = folder ,
+									pathStepGs = folderStepGs + nameStepGs + fileType ;
 		
 	// NET graph
-	protected static String nameStepNet = "layerNet_step_setupNetSeed",
-							folderStepNet = folder ,
-								pathStepNet = folderStepNet + nameStepNet + fileType ;
+	protected static String nameStepNet = "layerNet_step_setupNetSmallGraph",
+								folderStepNet = folder ,
+									pathStepNet = folderStepNet + nameStepNet + fileType ;
 	
 // GRAPHS 
-	private static Graph gsGraph  = analysisDGSgs.gsGraph,
-							netGraph = analysisDGSnet.netGraph ;
+	private static Graph gsGraph  = analysisDGSgs.gsGraph ;
+
+	private static Graph netGraph = analysisDGSnet.netGraph;
 
 // MAP FOR CHARTS
 	// MAP NET
@@ -60,6 +63,10 @@ public class analysisMain {
 	
 	// CREATE CHARTS
 	static expChart xyChart = null ;
+	
+	// hnadle viz 
+	protected static handleVizStype netViz  = new handleVizStype( netGraph ,stylesheet.manual, "seedGrad") ,
+			gsViz 	= new handleVizStype( gsGraph ,stylesheet.viz10Color, "gsInh") ;
 	
 // INITIALIZE ANALYSIS ----------------------------------------------------------------------------
 	// Initialize net analysis
@@ -91,7 +98,7 @@ public class analysisMain {
 				);
 		
 		analysisGs.setWhichAnalysis(
-				/* run Viz 				*/ false ,
+				/* run Viz 				*/ true ,
 				/* computeStepMaxMorp	*/ false , 
 				/* computeStepMinMorp	*/ false ,
 				/* computeStepAveMorp 	*/ false 

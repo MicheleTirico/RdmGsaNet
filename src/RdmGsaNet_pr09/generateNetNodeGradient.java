@@ -19,6 +19,9 @@ public class generateNetNodeGradient  {
 	protected enum layoutSeed { center , random , allNode }
 	protected layoutSeed setLayoutSeed; 
 	
+	protected enum rule { random , maxValue , minValue }
+	protected rule rule ;
+	
 	protected int numberMaxSeed ; 
 	protected String morp;
 	
@@ -95,6 +98,20 @@ public class generateNetNodeGradient  {
 		for ( Node n : listNeig) {
 			double valTest = n.getAttribute(attribute);
 			if ( valTest >= valWin ) {
+				valWin = valTest;
+				winner = n.getId();
+			}			
+		}
+		return winner ;
+	}
+	
+protected String getNodeSmallest ( String attribute , ArrayList<Node> listNeig ) {
+		
+		String winner = null ;
+		double valWin = 10 ;	
+		for ( Node n : listNeig) {
+			double valTest = n.getAttribute(attribute);
+			if ( valTest <= valWin ) {
 				valWin = valTest;
 				winner = n.getId();
 			}			

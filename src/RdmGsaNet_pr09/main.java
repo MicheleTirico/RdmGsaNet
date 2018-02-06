@@ -24,7 +24,7 @@ import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 
 public class main {
-	private static int stopSim = 1000 ;
+	private static int stopSim = 3000 ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -46,7 +46,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_pr9_gsInh\\rd_mazes\\maxValue\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\maxValue\\alive\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -76,9 +76,9 @@ public class main {
 	protected static simulation run = new simulation() ;	
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
-//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold(12, 11)  
-//											new generateNetNodeGradientStillAlive(8, layoutSeed.allNode, rule.random, "gsInh")
-											new generateNetNodeGradientProb			( 4 , layoutSeed.allNode , rule.random    ,  "gsInh", 0.01)
+//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        (12, 11)  
+//											new generateNetNodeGradientOnlyOne 	(8, layoutSeed.allNode, rule.random, "gsInh")
+											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.8 , true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -93,7 +93,7 @@ public class main {
 			/* set folder 				*/ folder);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes );			
+		setRdType ( RdmType.solitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -195,9 +195,11 @@ public class main {
 		gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
 		gsViz.setupIdViz(false, gsGraph, 10 , "black");
 		gsViz.setupViz(true, true, palette.red);
-
-		netGraph.display(false);
+		
+		
 		gsGraph.display(false);
+		netGraph.display(false);
+		
 		
 
 	}

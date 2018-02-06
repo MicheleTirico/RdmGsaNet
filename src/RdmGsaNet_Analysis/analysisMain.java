@@ -19,12 +19,12 @@ public class analysisMain {
 
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_pr9_gsInh\\rd_mazes\\maxValue\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.1_00\\" ,
+	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\maxValue\\alive\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.6_00\\" ,
 								folderChart = folder +"chart\\" ;
 	
 // START FILES
 	// GS graph
-	protected static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.029_k_0.057_diff_weight"  ,
+	protected static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight"  ,
 								folderStartGs = folder ,
 									pathStartGs = folderStartGs + nameStartGs + fileType ;
 		
@@ -35,7 +35,7 @@ public class analysisMain {
 	
 // STEP FILES	
 	// GS graph
-	protected static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.029_k_0.057_diff_weight" ,
+	protected static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight" ,
 								folderStepGs = folder ,
 									pathStepGs = folderStepGs + nameStepGs + fileType ;
 		
@@ -45,9 +45,9 @@ public class analysisMain {
 									pathStepNet = folderStepNet + nameStepNet + fileType ;
 	
 // GRAPHS 
-	private static Graph gsGraph  = analysisDGSgs.gsGraph ;
+	protected static Graph gsGraph = analysisDGSgs.graph ;
 
-	private static Graph netGraph = analysisDGSnet.netGraph;
+	protected static Graph netGraph = analysisDGSnet.graph;
 
 // MAP FOR CHARTS
 	// MAP NET

@@ -14,9 +14,10 @@ import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNet_Analysis.analysisDGS;
+import RdmGsaNet_Analysis.analysisMain;
 import RdmGsaNet_Analysis.analysisViz;
 
-public class multiViz extends analysisViz {
+public class multiViz extends analysisMain {
 	
 	// COSTANTS
 	private boolean	doGsViz ,
@@ -64,15 +65,15 @@ public class multiViz extends analysisViz {
 		// setup viz parameters		
 
 		// setup net viz parameters
-		netViz.setupViz( true, true, palette.blue);
-		netViz.setupIdViz( false, netGraph, 1 , "black");
+		netViz.setupViz( true, true, palette.red);
+		netViz.setupIdViz( false , netGraph, 1 , "black");
 		netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.05 );
 		netViz.setupFixScaleManual( true , netGraph, 50, 0);
 		
 		// setup gs viz parameters
 		gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
 		gsViz.setupIdViz(false, gsGraph, 10 , "black");
-		gsViz.setupViz(true, true , palette.red);
+
 		
 		//dispay graphs 
 		Viewer gsViewer = gsGraph.display(false) ;	
@@ -105,7 +106,7 @@ public class multiViz extends analysisViz {
 					System.out.println("----------------step " + step + " ----------------" );				
 					
 					netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
-					gsViz.setupViz(true, true, palette.blue);
+					gsViz.setupViz(true, true, palette.red);
 					
 					Thread.sleep(10);
 					

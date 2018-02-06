@@ -41,7 +41,7 @@ public class expChart extends JFrame  {
     String xAxisLabel ;
     String yAxisLabel ;
   
-	// COSTRUCTOR  
+//	 COSTRUCTOR  
 	public expChart (	typeChart type ,
 						String chartTitle, String xAxisLabel , String yAxisLabel ,
 						int width , int height , 

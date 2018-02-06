@@ -1,12 +1,22 @@
 package RdmGsaNetAlgo;
+import java.util.ArrayList;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.graphstream.algorithm.Dijkstra;
@@ -15,6 +25,11 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.TreeMap;
+
+import javafx.collections.transformation.SortedList;
 
 public class gsAlgoToolkit {
 	
@@ -111,17 +126,7 @@ public class gsAlgoToolkit {
 		nodeTo.setAttribute( "xyz", nFromCoordinate[0] , nFromCoordinate[1] , nFromCoordinate[2] );		
 		}	
 	
-	// method to obtain a set of key with an assigned value
-	public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
-		   
-		return map.entrySet()
-		          .stream()
-		          .filter(entry -> Objects.equals(entry.getValue(), value))
-		          .map(Map.Entry::getKey)
-		          .collect(Collectors.toSet());
-		}
-		
-	/*	return binominal value 
+		/*	return binominal value 
 	 *	n = number of tries
 	 *	p = probability 
 	 */
@@ -153,7 +158,28 @@ public class gsAlgoToolkit {
 		fillDistanceMatrixWeigth(graph, matrix, matrixWeight);
 		return matrixWeight;	
 	}
+
+	public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String nodeTestStr , double radius ) {
+		
+		double [][] matrixWeightRad = new double [graph.getNodeCount()] [graph.getNodeCount()] ;		
+		fillDistanceMatrixInRadiusWeight (graph, nodeTestStr, radius, matrixWeightRad);
+		return matrixWeightRad;
+	}
 	
+	public static int [][] getDistanceMatrixInRadiusTopo ( Graph graph , String nodeTestStr , double radius ) {
+		int n = graph.getNodeCount();	
+		int[][] matrix = new int[n][n];
+		fillDistanceMatrixInRadiusTopo(graph, nodeTestStr, matrix , radius );
+		return matrix;	
+	}
+	
+	public static int [][] getDistanceMatrixInRadiusGeom ( Graph graph , String nodeTestStr, double radius) {
+		int n = graph.getNodeCount();	
+		int[][] matrix = new int[n][n];
+		fillDistanceMatrixInRadiusGeom(graph, nodeTestStr, matrix , radius );
+		return matrix;	
+	}
+
 // PRIVATE FILL METHODS ----------------------------------------------------------------------------------------------------------
 	
 	private static void fillDistanceMatrixTopo ( Graph graph, int [][] matrix , double [][] matrixTopo ) {
@@ -230,7 +256,6 @@ public class gsAlgoToolkit {
 		}	
 	}
 
-
 	public static ArrayList<String> getIdInRadiusTopo ( Graph graph , Node startNode , double radius) {
 		
 		ArrayList<String> nodeIdInRadius = new ArrayList<String>();
@@ -284,27 +309,7 @@ public class gsAlgoToolkit {
 		return nodeIdInRadius;
 	}
 	
-	public static double [][] getDistanceMatrixInRadiusWeight ( Graph graph, String nodeTestStr , double radius ) {
 		
-		double [][] matrixWeightRad = new double [graph.getNodeCount()] [graph.getNodeCount()] ;		
-		fillDistanceMatrixInRadiusWeight (graph, nodeTestStr, radius, matrixWeightRad);
-		return matrixWeightRad;
-	}
-	
-	public static int [][] getDistanceMatrixInRadiusTopo ( Graph graph , String nodeTestStr , double radius ) {
-		int n = graph.getNodeCount();	
-		int[][] matrix = new int[n][n];
-		fillDistanceMatrixInRadiusTopo(graph, nodeTestStr, matrix , radius );
-		return matrix;	
-	}
-	
-	public static int [][] getDistanceMatrixInRadiusGeom ( Graph graph , String nodeTestStr, double radius) {
-		int n = graph.getNodeCount();	
-		int[][] matrix = new int[n][n];
-		fillDistanceMatrixInRadiusGeom(graph, nodeTestStr, matrix , radius );
-		return matrix;	
-	}
-	
 // PRIVATE FILL METHODS ------------------------------------------------------------------------------------------------------------------
 	
 	private static void fillDistanceMatrixInRadiusWeight ( Graph graph , String nodeTestStr , double radius, double[][] matrixWeightRad ) {
@@ -389,7 +394,6 @@ public class gsAlgoToolkit {
 	// remove row with all values == 0
 		}
 
-
 	// get list of new nodes
 	public static ArrayList<String> getListNewNode ( Graph graph0 , Graph graph1  ) {
 		
@@ -433,7 +437,6 @@ public class gsAlgoToolkit {
 		return listNeig ;
 	}
 	
-
 	// get list of node with attribute
 	public static ArrayList<Node> getListNodeAttribute ( Graph graph , String attribute , int valAtr ) {
 	
@@ -448,5 +451,54 @@ public class gsAlgoToolkit {
 		return list ;
 	}
 
+	// method to create a list of nodes, sorted by value ( max -> min )
+	public static ArrayList<String> getSortedListNodeAtr (  ArrayList<Node> listToSort , String attribute ) {
+	
+		ArrayList<String> listSorted = new ArrayList<String> ( );
+		
+		Map<Node , Double> mapNodeVal = new HashMap<Node, Double >();
+		for ( Node n : listToSort)
+			mapNodeVal.put(n, n.getAttribute(attribute));
+		Map mapNodeSorted = getMapSortedByValue(mapNodeVal);
+		
+		Set<Node> list = mapNodeSorted.keySet();
 
+		for ( Node n : list ) {
+			listSorted.add(n.getId());
+		}
+		return listSorted ;		
+	}
+	
+//METHODS TO HANDLE COLLECTIONS ---------------------------------------------------------------------------------------------------------------------
+	
+	// method to obtain a set of key with an assigned value
+	public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
+			   
+		return map.entrySet()
+			      .stream()
+			      .filter(entry -> Objects.equals(entry.getValue(), value))
+			      .map(Map.Entry::getKey)
+			      .collect(Collectors.toSet());	
+		}
+
+	// method to sorted map by values 
+	private static Map<Node, Double> getMapSortedByValue(Map unsortMap) {
+		 // 1. Convert Map to List of Map
+	     List<Map.Entry<Node, Double>> list =  new LinkedList<Map.Entry<Node, Double>>(unsortMap.entrySet());
+
+	     // 2. Sort list with Collections.sort(), provide a custom Comparator
+	     //    Try switch the o1 o2 position for a different order
+	    Collections.sort(list, new Comparator<Map.Entry<Node, Double>>() {
+	    	public int compare(Map.Entry<Node, Double> o1, Map.Entry<Node, Double> o2) { 
+	    		return (o1.getValue()).compareTo(o2.getValue());	
+	    	}
+	    });
+
+	    // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
+	    Map<Node, Double> sortedMap = new LinkedHashMap<Node, Double>();
+	    for (Map.Entry<Node, Double> entry : list) {
+	    	sortedMap.put(entry.getKey(), entry.getValue());	
+	    }
+	    return sortedMap;
+	 }	
 }

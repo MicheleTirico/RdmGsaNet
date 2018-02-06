@@ -27,7 +27,7 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 	// CONSTANT
 	private String dgsId ;
 	private static FileSource fs ;
-	private static Graph graph = new SingleGraph ("graph");
+	protected static Graph graph = new SingleGraph ("graph");
 	private int degreeFreq ;
 	
 	// viz constants
@@ -81,9 +81,9 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 		if ( runViz )  {
 			// setup net viz parameters
 			netViz.setupViz( true, true, palette.blue);
-			netViz.setupIdViz( false, netGraph, 1 , "black");
-			netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.05 );
-			netViz.setupFixScaleManual( true , netGraph, 50, 0);
+			netViz.setupIdViz( false, graph, 1 , "black");
+			netViz.setupDefaultParam ( graph, "red", "black", 5 , 0.05 );
+			netViz.setupFixScaleManual( true , graph, 50, 0);
 			Viewer viewer = graph.display(false) ;	
 		}
 		
@@ -129,7 +129,7 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 				
 					// run viz
 					if ( runViz ) {
-						netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
+						netViz.setupVizBooleanAtr(true, graph,  "black", "red" ) ;
 						Thread.sleep(50);
 					}
 					// stop iteration    

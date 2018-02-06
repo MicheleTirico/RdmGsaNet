@@ -24,7 +24,7 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 	
 	private static FileSource fs ;
 	
-	private Graph graph = new SingleGraph ("graph");
+	protected static Graph graph = new SingleGraph ("graph");
 	
 	private int degreeFreq ;
 	
@@ -68,8 +68,8 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 		// run viz
 		if ( runViz ) {
 			// setup gs viz parameters
-			gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
-			gsViz.setupIdViz(false, gsGraph, 10 , "black");
+			gsViz.setupDefaultParam (graph, "red", "white", 6 , 0.5 );
+			gsViz.setupIdViz(false, graph, 10 , "black");
 			gsViz.setupViz(true, true , palette.red);
 			graph.display(false);
 		}

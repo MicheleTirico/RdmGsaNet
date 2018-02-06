@@ -8,16 +8,15 @@ import com.sun.org.apache.xml.internal.utils.ThreadControllerWrapper;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 
-public class generateNetNodeGradientStillAlive extends generateNetNodeGradient implements generateNetNode_Inter {
+public class generateNetNodeGradientOnlyOne extends generateNetNodeGradient implements generateNetNode_Inter {
 
 	
 	// COSTRUTOR
-	public generateNetNodeGradientStillAlive ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp  ) {
+	public generateNetNodeGradientOnlyOne ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp  ) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
 		this.rule = rule ;
 		this.morp = morp ;
-		
 	}
 
 	@Override

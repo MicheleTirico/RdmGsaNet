@@ -6,14 +6,16 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 
 public class generateNetNodeGradientProb extends generateNetNodeGradient implements generateNetNode_Inter {
 	
-
+	protected boolean stillAlive;
+	
 	// COSTRUTOR
-	public generateNetNodeGradientProb ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob ) {
+	public generateNetNodeGradientProb ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob , boolean stillAlive ) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
 		this.rule = rule ;
 		this.morp = morp ;
 		this.prob = prob ;
+		this.stillAlive = stillAlive ;
 	}
 	
 	@Override
@@ -30,21 +32,38 @@ public class generateNetNodeGradientProb extends generateNetNodeGradient impleme
 			// create list of nodes with value greater of nNet 
 			ArrayList<Node> listNeigValMax = createListNodeMaxNeig( gsGraph, nNet , morp); 		// 	System.out.println("listIdNeigValMax of " + nNet.getId() + " " + listNeigValMax);
 		
+			ArrayList<String> listNodeAlreadyCecked = new ArrayList<String>() ;
+			
 			int numberMaxNewNodes = listNeigValMax.size();										//	System.out.println("numberMaxNewNodes " + numberMaxNewNodes);
 			int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob);			//	System.out.println("numberNewNodes " + numberNewNodes);
 			
-			for ( int x = 1 ; x <= numberNewNodes ; x++ ) {
+			
+			if ( numberNewNodes == 0) {
+				if ( stillAlive )
+					break ;
+				if ( stillAlive == false )
+					nNet.setAttribute("seedGrad", 0 );
+			}
+			
+			//if ( numberNewNodes > 0 ) {		
+					
+			for ( int x = 0 ; x < numberNewNodes ; x++ ) {
 			
 				String idCouldAdded = null ; 
 				Node nodeCouldAdded = null ;
 				
 				switch (rule) {
 				case random:
-					idCouldAdded = getRandomNode(listNeigValMax);
+					while ( !listNodeAlreadyCecked.contains(idCouldAdded)) {
+						idCouldAdded = getRandomNode(listNeigValMax);
+						listNodeAlreadyCecked.add(idCouldAdded);
+					}
 					break;
 
-				case maxValue: 
-					idCouldAdded = getNodeGreater(morp, listNeigValMax);							//	System.out.println(" winner " + idTheGreater);
+				case maxValue: {
+					ArrayList<String> listIdNodeSorted = gsAlgoToolkit.getSortedListNodeAtr ( listNeigValMax, morp );	
+					idCouldAdded = listIdNodeSorted.get( x  );				//	System.out.println(idCouldAdded);
+					}
 					break;
 				
 				case minValue :
@@ -55,7 +74,7 @@ public class generateNetNodeGradientProb extends generateNetNodeGradient impleme
 				// there isn't node
 				try {
 					netGraph.addNode(idCouldAdded);
-					nodeCouldAdded = netGraph.getNode(idCouldAdded); //	System.out.println(idCouldAdded);
+					nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
 					nodeCouldAdded.addAttribute("seedGrad", 1);
 					nNet.setAttribute("seedGrad", 0 );
 					
@@ -66,20 +85,31 @@ public class generateNetNodeGradientProb extends generateNetNodeGradient impleme
 				}
 				
 				// if node already exist 
-				catch (org.graphstream.graph.IdAlreadyInUseException e) { 	//	System.out.println(e.getMessage());
-					Node nodeAlreadyExist = netGraph.getNode(idCouldAdded);
+				catch (org.graphstream.graph.IdAlreadyInUseException e) { 		//	System.out.println(e.getMessage());
+					nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
+					nodeCouldAdded.addAttribute("seedGrad", 1);
+					nNet.setAttribute("seedGrad", 0);
+					
+					/* complicato, ma da la stessa cosa ?
+				 	Node nodeAlreadyExist = netGraph.getNode(idCouldAdded);
+					 
 					int hasSeed = nodeAlreadyExist.getAttribute("seedGrad");	//	System.out.println(hasSeed);
 					
-					if ( hasSeed == 1 ) 
-						continue ;  // continue or break ??
+					if ( hasSeed == 1 ) {
+						nNet.setAttribute("seedGrad", 0);
+						//	continue ;  
+					}
 					else if ( hasSeed == 0 ) {
 						nodeAlreadyExist.setAttribute("seedGrad", 1);
 						nNet.setAttribute("seedGrad", 0);	
 					}
+					*/
+					
 				}
 			}
 		}	
 	}
+	
 
 	@Override
 	public void removeNodeRule(int step) {

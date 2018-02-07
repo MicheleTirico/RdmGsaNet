@@ -15,7 +15,10 @@ public class handleNameFile {
 							pathStartGs ,
 							nameStepNet ,
 							nameStepGs;
-	boolean toHandle ;
+	
+	private boolean toHandle ;
+	public enum toHandleType { main , manualFolder }
+	public toHandleType type ;
 	
 	// FOLDER PARAMETERS
 	private static String 	nameNewFolder;
@@ -26,40 +29,52 @@ public class handleNameFile {
 	private  int 	maxStep = main.getStopSim();
 	
 	// CONSTRUCTOR
-	public handleNameFile ( boolean toHandle ,String folder ) {
+	public handleNameFile ( boolean toHandle ,String folder , boolean createNewDirectory , String manualNameFolder ) {
 		this.toHandle = toHandle ;
 		
 		if ( toHandle = false )
 			return ;
 		
 		this.folder = folder ;
-		nameNewFolder = getNameNewFolder ( maxStep , genNode , genEdge );
-		String path = createFolder(folder , nameNewFolder) ;	
+		if ( createNewDirectory )
+			nameNewFolder = getNameNewFolder ( maxStep , genNode , genEdge );
+		else 
+			nameNewFolder = folder + nameNewFolder ;
+		String path = createFolder(folder , nameNewFolder , createNewDirectory ) ;
 	}
 		
 	public static String getPath () {return path; }
 	
 	// create new folder where stored all dgs files and return new path
-	private String createFolder (String folder, String nameNewFolder ) {
+	public String createFolder (String folder, String nameNewFolder , boolean createNewDirectory  ) {
 
 		if ( toHandle == false )
 			return path;
-					
-		for ( int numFol = 0 ; numFol <= 50 ; numFol++ ) {
-			if ( numFol < 10 ) 
-				path = folder + nameNewFolder + "_0" + numFol;
-			else
-				path = folder + nameNewFolder + "_" + numFol;
-
-			File file = new File(path);
 			
-			if (!file.exists()) {
-				if (file.mkdir()) 	{	System.out.println("Directory is created!");
-	            } else 				{	System.out.println("Failed to create directory!");	}
-			break ;
+		if ( createNewDirectory ) {
+			for ( int numFol = 0 ; numFol <= 50 ; numFol++ ) {
+				if ( numFol < 10 ) 
+					path = folder + nameNewFolder + "_0" + numFol;
+				else
+					path = folder + nameNewFolder + "_" + numFol;
+	
+				File file = new File(path);
+				
+				if (!file.exists()) {
+					if (file.mkdir()) 	{	System.out.println("Directory is created!");
+		            } else 				{	System.out.println("Failed to create directory!");	}
+				break ;
+				}
 			}
 		}
+		else {
+			path = folder + nameNewFolder ;
+			File file = new File(path);
+			file.mkdir() ;
+		}
 		return path;
+		
+
 	}
 	
 	// get name DGS file of Net

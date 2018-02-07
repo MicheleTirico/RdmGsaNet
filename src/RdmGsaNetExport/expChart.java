@@ -158,11 +158,11 @@ public class expChart extends JFrame  {
 		for (Entry<Double, Double> entry : map.entrySet() ) {
 			
 			double xPosition =  entry.getKey();
+			
 			double YVal = entry.getValue() ;
 	
 			ser.add(xPosition,YVal);
-		}
-		
+		}	
 		// set series in dataset
 		dataset.addSeries(ser);		
 		
@@ -199,15 +199,19 @@ public class expChart extends JFrame  {
 	// save chart ( jpeg format ) in a folder
 	public void saveChart ( boolean saveImage ,  String folder, String nameChart ) throws IOException {
 
-		if (saveImage == true ) {
-			// aggiustare le eccezioni
+		if (saveImage  ) {
+	
 		
 			// define folder 
 			String path = folder + nameChart +".jpeg" ;		
 			File lineChartFile = new File( path );  
 	    
 			// save image
+			try {
 			ChartUtilities.saveChartAsJPEG(lineChartFile, chart , width , height ) ;
+			}
+			catch (java.util.ConcurrentModificationException e) {
+			}
 		}
 	}
 		

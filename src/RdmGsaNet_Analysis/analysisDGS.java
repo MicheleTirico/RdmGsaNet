@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
@@ -40,15 +41,25 @@ public interface analysisDGS  {
 		int nFreq = degreeFreq;
 		String attribute = "degree";
 			
-		Map <Double, Double> mapDegree = graphAnalysis.getMapFrequencyDegree(graph, attribute, nFreq) ;
+		Map <Double, Double> mapDegree = graphAnalysis.getMapFrequencyDegree(graph, nFreq, false) ;
 		mapFreqDegree.put(step, mapDegree);
 	}
+	
+	// compute frequency chart of degree
+	public static void computeFreqDegreeRel ( int degreeFreq , Graph graph , double step , Map mapFreqDegreeRel ) {
+			
+		int nFreq = degreeFreq;
+		String attribute = "degree";
+			
+		Map <Double, Double> mapDegree = graphAnalysis.getMapFrequencyDegree(graph, nFreq, true) ;
+		mapFreqDegreeRel.put(step, mapDegree);
+	}
+			
 	
 	// compute average degree
 	public static void computeAverageDegree ( Graph graph , double step , Map mapStepAveDegree ) {
 	
 		double avDegree = Toolkit.averageDegree(graph);
-		//System.out.println(avDegree);
 		mapStepAveDegree.put(step, avDegree);
 	}
 	
@@ -71,8 +82,19 @@ public interface analysisDGS  {
 	}
 	
 // seed grad stat -----------------------------------------------------------------------------------------------------------------------------------
-	public static void computeStepNewSeed ( Graph graph , double step , Map mapStepNewSeed ) {
+	public static void computeStepCountNewSeed ( Graph graph , double step , Map mapStepNewSeed , boolean isRel) {
 		
+	
+		double count = graphAnalysis.getAttributeCount(graph, step, "seedGrad");
+		
+		if ( isRel == false )
+			mapStepNewSeed.put(step, count) ;
+		
+		else if ( isRel) {
+			double countRel = count / graph.getNodeCount() ;
+			mapStepNewSeed.put(step, countRel);
+		}
+			
 	}
 
 	public static void computeStepAveSeed ( Graph graph , double step , Map mapStepAveSeed ) {
@@ -112,11 +134,30 @@ public interface analysisDGS  {
 		return mapMorp;			
 	}
 	
-	// implemented in analysisDGSnet
-	public static void computeMapStepNewNode ( Graph graph , double step , Map mapStepNewNpode , ArrayList<Double> incList ) {
+// COMPUTE NEW NODES --------------------------------------------------------------------------------------------------------------------------------
+	
+	// compute % new nodes vs size graph
+	public static void computeStepNewNodeRel ( Graph graph , double step , Map mapStepNewNodeRel , Map<Integer , Integer >  mapNetStepNodeCountRel ,  int  s  ) {
 
+		mapNetStepNodeCountRel.put(s, graph.getNodeCount());
+		try {
+			mapStepNewNodeRel.put(step,(double) (graph.getNodeCount() - mapNetStepNodeCountRel.get(s-1)) / graph.getNodeCount());//	
+		} catch (java.lang.NullPointerException e) {			}
+		s++;
 	}
 
+	
+	// implemented in analysisDGSnet
+	public static void computeStepNewNode ( Graph graph , double step , Map mapStepNewNode , Map<Integer , Integer >  mapNetStepNodeCount ,  int  s  ) {
+
+		mapNetStepNodeCount.put(s, graph.getNodeCount());
+		try {
+			mapStepNewNode.put(step,(double) (graph.getNodeCount() - mapNetStepNodeCount.get(s-1)) );//	
+		} catch (java.lang.NullPointerException e) {			}
+		s++;
+	}
+
+	
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 	// get list of step to do analysis
 	public static ArrayList<Double> getListStepToAnalyze ( double stepInc , double stepMax ) {

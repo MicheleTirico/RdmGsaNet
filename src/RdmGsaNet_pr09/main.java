@@ -9,7 +9,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import RdmGsaNetExport.handleNameFile;
-
+import RdmGsaNetExport.handleNameFile.toHandleType;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
@@ -46,7 +46,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\maxValue\\alive\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_mazes\\prob\\random\\die\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -77,8 +77,8 @@ public class main {
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        (12, 11)  
-//											new generateNetNodeGradientOnlyOne 	(8, layoutSeed.allNode, rule.random, "gsInh")
-											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.8 , true )
+//											new generateNetNodeGradientOnlyOne 	( 8 , layoutSeed.allNode , rule.random, "gsInh")
+											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.8 , false )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -89,11 +89,14 @@ public class main {
 		
 		// setup handle name file 
 		handle = new handleNameFile( 
-			/* handle file 				*/ true , 
-			/* set folder 				*/ folder);		
+			/* handle file 					*/ true , 
+			/* set folder 					*/ folder ,
+			/* create new folder ? 			*/ true ,
+			/* manual name file (no in main */ " "
+			);		
 
 		// setup type RD
-		setRdType ( RdmType.solitions );			
+		setRdType ( RdmType.mazes );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

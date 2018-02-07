@@ -91,7 +91,7 @@ public class main {
 // --------------------------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
-		handle = new handleNameFile(true , folder);		
+		handle = new handleNameFile(true , folder, false, fileType);		
 
 		// setup type RD
 		setRdType(RdmType.U_SkateWorld);				//System.out.println(kill + " " + feed );

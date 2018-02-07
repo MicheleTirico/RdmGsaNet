@@ -11,8 +11,10 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
+import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
+import RdmGsaNetExport.expImage;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.handleVizStype.palette;
 
@@ -21,7 +23,7 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 	// CONSTANT
 	private String 	dgsId ,
 					morp ;
-	
+	private int stepIncIm ;
 	private static FileSource fs ;
 	
 	protected static Graph graph = new SingleGraph ("graph");
@@ -29,7 +31,7 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 	private int degreeFreq ;
 	
 	protected static boolean run ,
-							runAll ,
+							getImage  ,
 							runViz ,
 							computeStepMaxMorp ,
 							computeStepMinMorp ,
@@ -40,19 +42,25 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 	public analysisDGSgs ( String dgsId , boolean run , boolean runAll ) {
 		this.dgsId = dgsId;
 		this.run = run ;	
-		this.runAll = runAll ;
 	}
 			
 	// set parameters of analysis
-	public void setParamAnalysis ( String morp ) {
+	public void setParamAnalysis ( String morp  , int stepIncIm ) {
 		this.morp = morp ;
+		this.stepIncIm = stepIncIm ;	
 	}
 			
-	public void setWhichAnalysis (boolean runViz , boolean computeStepMaxMorp , boolean computeStepMinMorp , boolean computeStepAveMorp ) {
+	public void setWhichAnalysis (boolean runViz , boolean getImage ,boolean computeStepMaxMorp , boolean computeStepMinMorp , boolean computeStepAveMorp ) {
 		this.runViz = runViz ;
+		this.getImage = getImage ;
 		this.computeStepMaxMorp = computeStepMaxMorp ;
 		this.computeStepMinMorp = computeStepMinMorp ;
 		this.computeStepAveMorp = computeStepAveMorp ;
+		
+		if ( getImage ) {
+			handle.createFolder(folder + "analysis\\", "image", false ) ;
+		}
+			
 	}
 
 // COMPUTE MULTIPLE ANALYSIS --------------------------------------------------------------------------------------------------------------
@@ -70,8 +78,7 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 			// setup gs viz parameters
 			gsViz.setupDefaultParam (graph, "red", "white", 6 , 0.5 );
 			gsViz.setupIdViz(false, graph, 10 , "black");
-			gsViz.setupViz(true, true , palette.red);
-			graph.display(false);
+			Viewer gsViewer = graph.display(false) ;
 		}
 
 		
@@ -100,6 +107,10 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 					if ( runViz )	
 						setupViz.Viz10ColorAct(graph);
 						Thread.sleep(10);
+						
+					if ( getImage ) 
+						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
+							expImage.getImage(graph, folder + "analysis\\image\\" , "gsImage" + step + ".png" );
 					
 					if ( computeStepMaxMorp )
 						analysisDGS.computeStepMorp(graph, step, mapGsStepMaxMorp , analysisType.max );
@@ -112,7 +123,9 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 							
 					// run viz
 					if ( runViz ) {
-						gsViz.setupViz(true, true, palette.blue);
+						gsViz.setupViz(true, true, palette.red);
+						
+						Thread.sleep(10);
 						
 					}
 							

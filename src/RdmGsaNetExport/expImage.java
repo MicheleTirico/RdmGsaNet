@@ -31,17 +31,15 @@ public class expImage {
 
 	public static void createImageAtStep ( Graph graph , String folderIm, String nameIm , double  step ) throws IOException  {
 		
-		try {
+		try {		
+			String pathIm = folderIm + nameIm +  (int) step+ ".png" ;
+			setupViz.Viz10ColorAct(graph);
 			
-		
-		String pathIm = folderIm + nameIm +  (int) step+ ".png" ;
-		setupViz.Viz10ColorAct(graph);
-		
-		FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
-		pic.setLayoutPolicy(LayoutPolicy.COMPUTED_IN_LAYOUT_RUNNER);
-		pic.writeAll(graph, pathIm );
-		
-//		System.out.println(pathIm);
+			FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
+			pic.setLayoutPolicy(LayoutPolicy.COMPUTED_IN_LAYOUT_RUNNER);
+			pic.writeAll(graph, pathIm );
+			
+
 		}
 		catch (java.lang.NullPointerException e) {
 			// TODO: handle exception

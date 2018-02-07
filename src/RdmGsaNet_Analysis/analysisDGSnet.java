@@ -15,7 +15,10 @@ import org.graphstream.stream.file.FileSourceFactory;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 
+import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNetExport.expImage;
+import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNet_pr08.gsAlgo;
@@ -32,40 +35,61 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 	
 	// viz constants
 	private static ViewPanel  view ;
+	private int stepIncIm ;
 	
-	private int s = 0 ; 
+	private int s1 = 0 , s2 = 0 ; 
+	
 	
 	protected static boolean 	run ,
-								runAll ,
-								computeDegree ,
+								getImage ,
+								computeFreqDegree ,
+								computeFreqDegreeRel ,
 								computeAverageDegree , /* avD = 2 * edgeCount / nodeCount */
 								computeStepNewNode ,
 								computeNormalDegreeDistribution,
+								computeStepNewNodeRel ,
+								computeNewSeedCount ,
+								computeNewSeedCountRel ,
 								runViz ;
 	
 // MAP FOR CHARTS
 	// private map
-	private Map <Integer , Integer >  mapNetStepNodeCount = new HashMap< Integer , Integer > ();
+	private Map <Integer , Integer >  mapNetStepNodeCount = new HashMap< Integer , Integer > (),
+										mapNetStepNodeCountRel = new HashMap< Integer , Integer > () ;
 	
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	// COSTRUCTOR
-	public analysisDGSnet ( String dgsId , boolean run , boolean runAll ) {
+	public analysisDGSnet ( String dgsId , boolean run , boolean getImage ) {
 		this.dgsId = dgsId;
 		this.run = run ;
-		this.runAll = runAll ;
+		
 	}
 	
 	// set parameters of analysis
-	public void setParamAnalysis ( int degreeFreq ) {
-			this.degreeFreq = degreeFreq ;
+	public void setParamAnalysis ( int degreeFreq , int stepIncIm ) {
+		this.degreeFreq = degreeFreq ;
+		this.stepIncIm = stepIncIm ;	
 	}
 		
-	public void setWhichAnalysis (boolean runViz , boolean computeDegree , boolean computeAverageDegree , boolean computeStepNewNode, boolean computeNormalDegreeDistribution   ) {
+	public void setWhichAnalysis (	boolean runViz , boolean getImage , boolean computeFreqDegree , boolean computeFreqDegreeRel , boolean computeAverageDegree , 
+									boolean computeStepNewNode, boolean computeStepNewNodeRel, boolean computeNormalDegreeDistribution ,
+									boolean computeNewSeedCount , boolean computeNewSeedCountRel ) {
+		
 		this.runViz = runViz ;
-		this.computeDegree  = computeDegree ;	
+		this.getImage = getImage ;
+		this.computeFreqDegree  = computeFreqDegree ;	
+		this.computeFreqDegreeRel  = computeFreqDegreeRel ;	
 		this.computeAverageDegree = computeAverageDegree ;
 		this.computeStepNewNode = computeStepNewNode ;
+		this.computeStepNewNodeRel = computeStepNewNodeRel ;
 		this.computeNormalDegreeDistribution = computeNormalDegreeDistribution ;
+		this.computeNewSeedCount = computeNewSeedCount ;
+		this.computeNewSeedCountRel = computeNewSeedCountRel ;
+		
+		if ( getImage ) {
+			handle.createFolder(folder + "analysis\\", "image", false ) ;
+		}
+			
 	}
 			
 // COMPUTE MULTIPLE ANALYSIS --------------------------------------------------------------------------------------------------------------
@@ -80,11 +104,11 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 		// run viz
 		if ( runViz )  {
 			// setup net viz parameters
-			netViz.setupViz( true, true, palette.blue);
-			netViz.setupIdViz( false, graph, 1 , "black");
+			netViz.setupViz( true, true, palette.red);
+			netViz.setupIdViz( false , graph, 1 , "black");
 			netViz.setupDefaultParam ( graph, "red", "black", 5 , 0.05 );
 			netViz.setupFixScaleManual( true , graph, 50, 0);
-			Viewer viewer = graph.display(false) ;	
+			Viewer netViewer = graph.display(false) ;	
 		}
 		
 		// create list of step to create images
@@ -110,23 +134,45 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
-					if ( computeDegree  ) 
+					if ( getImage ) 	
+						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
+							expImage.getImage(graph, folder + "analysis\\image\\" , "netImage" + step + ".png" );
+						
+					if ( computeFreqDegree  ) 
 						analysisDGS.computeFreqDegree( degreeFreq, graph , step , mapNetFreqDegree );	
+					
+					if ( computeFreqDegree  ) 
+						analysisDGS.computeFreqDegreeRel( degreeFreq, graph , step , mapNetFreqDegreeRel );	
 							
 					if ( computeAverageDegree )
 						analysisDGS.computeAverageDegree( graph, step, mapNetAverageDegree);
 					
 					if ( computeStepNewNode ) {
-						mapNetStepNodeCount.put(s, graph.getNodeCount());
+						mapNetStepNodeCount.put(s1, graph.getNodeCount());
 						try {
-							mapNetStepNewNode.put(step,(double) graph.getNodeCount() - mapNetStepNodeCount.get(s-1));//		System.out.println(nodeCount0);
+							mapNetStepNewNode.put(step,(double) graph.getNodeCount() - mapNetStepNodeCount.get(s1-1));//		System.out.println(nodeCount0);
 						} catch (java.lang.NullPointerException e) {			}
-						s++;
+						s1++;
 					}
-				
+					
+					if ( computeStepNewNodeRel) {
+						mapNetStepNodeCountRel.put(s2, graph.getNodeCount());
+						try {
+							mapNetStepNewNodeRel.put(step,(double) ( graph.getNodeCount() - mapNetStepNodeCountRel.get(s2-1) ) /  graph.getNodeCount() );//		System.out.println(nodeCount0);
+						} catch (java.lang.NullPointerException e) {			}
+						s2++;	
+					}
+								
 					if ( computeNormalDegreeDistribution) 	
 						analysisDGS.computeStepNormalDegreeDistribution(graph, step, mapNetStepNormalDistributionDegree, true , 9 );
 				
+					if ( computeNewSeedCount )
+						analysisDGS.computeStepCountNewSeed(graph, step, mapNetStepNewSeed, false);
+					
+					if ( computeNewSeedCountRel )
+						analysisDGS.computeStepCountNewSeed(graph, step, mapNetStepNewSeedRel, true);
+					
+					
 					// run viz
 					if ( runViz ) {
 						netViz.setupVizBooleanAtr(true, graph,  "black", "red" ) ;
@@ -138,5 +184,6 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 			}
 		} catch (IOException e) {		}				
 		fs.end();	
+		System.out.println(mapNetStepNodeCount);
 	}
 }

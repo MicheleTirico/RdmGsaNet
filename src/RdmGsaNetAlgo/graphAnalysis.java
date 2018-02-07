@@ -25,7 +25,7 @@ public class graphAnalysis {
 
 	private Map<String, Double > mapIdLisa = new HashMap<String , Double >() ;
 	
-	public enum analysisType { average , max , min }
+	public enum analysisType { average , max , min , count }
 	public enum spatialAutoCor { moran, lisa }
 	
 	private static double [][] matrixLisa ;
@@ -102,13 +102,27 @@ public class graphAnalysis {
 		ArrayList<Double> arrAttr = new ArrayList<Double>();
 		
 		for ( Node n : graph.getEachNode()) {
-			double attrVal = n.getAttribute(attribute);												//	System.out.println(arrMorp);
-			arrAttr.add(attrVal);
+			try {
+				double attrVal = (double) n.getAttribute(attribute);												//	System.out.println(arrMorp);
+				arrAttr.add(attrVal);
+			}
+			catch (java.lang.NullPointerException e) {
+				// TODO: handle exception
+			}
 		}	
 		switch (type) {
-			case average: {				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).average().getAsDouble();		break;}
-			case max : {				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).max().getAsDouble();			break;}
-			case min : {				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).min().getAsDouble();			break;}
+			case average: 				
+				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).average().getAsDouble();		
+				break;
+			case max : 				
+				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).max().getAsDouble();			
+				break;
+			case min :
+				statisticVal = arrAttr.stream().mapToDouble(valstat -> valstat).min().getAsDouble();			
+				break;
+			case count : 
+				statisticVal =  arrAttr.stream().mapToDouble(valstat -> valstat).count();			
+				break ;
 		}
 		return statisticVal;
 	}
@@ -185,22 +199,20 @@ public class graphAnalysis {
 		return mapFrequency;		
 	}
 	
-	public static Map getMapFrequencyDegree ( Graph graph , String attribute , int numberFrequency ) {
+	public static Map getMapFrequencyDegree ( Graph graph ,  int numberFrequency , boolean isRel ) {
 		
 		Map<Double, Double> mapFrequency = new HashMap<>();
+		Map<Double, Double> mapFrequencyRel = new HashMap<>();
 		Map <Node, Double> mapIdAtr = new HashMap<>();
 		ArrayList<Double> listAtr = new ArrayList<>();
 		
 		for ( Node n : graph.getEachNode() ) {	
-				double val = n.getDegree();
-				
+			double val = n.getDegree();
 			mapIdAtr.put(n, val);
 			listAtr.add(val);
-		}		
-		//	System.out.println("listAtr " + listAtr);	
+		}
 		
 		double maxAtr = listAtr.stream().mapToDouble(valstat -> valstat).max().getAsDouble();
-	
 		double minAtr = 1;
 		
 		double gap = maxAtr - minAtr;
@@ -216,7 +228,32 @@ public class graphAnalysis {
 			
 			mapFrequency.put( key  ,  freq );
 		}
-		return mapFrequency;		
+		
+		if ( isRel) {
+			for ( Double key : mapFrequency.keySet()) {
+				mapFrequencyRel.put(key, mapFrequency.get(key)  /graph.getNodeCount() )  ;
+			}
+			return mapFrequencyRel ;	
+		}
+		else {
+			return mapFrequency;		
+		}
+	}
+
+	public static  double getAttributeCount (Graph graph , double step , String attribute ) {
+		
+		ArrayList<Integer> listAttr = new ArrayList();
+		for ( Node n : graph.getEachNode()) {
+			try {
+				int valAtr = n.getAttribute(attribute) ;
+				if ( valAtr == 1 ) 
+					listAttr.add(n.getAttribute(attribute));
+			}
+			catch (java.lang.NullPointerException e) {
+				// TODO: handle exception
+			}
+		}
+		return listAttr.size() ;
 	}
 	
 	// get map of normal degree distribution // map <degree , normal distribution >  

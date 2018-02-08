@@ -13,6 +13,9 @@ import org.graphstream.graph.Node;
 		private static Map<String, ArrayList<Double>> mapMorp0 = simulation.getmapMorp0(); 
 		private static Map<String, ArrayList<Double>> mapMorp1 = simulation.getmapMorp1(); 
 		
+		private static boolean storeGsValues = layerGs.storeGsValues ;
+		
+		
 		// declare enum type
 		public enum morphogen {activator, inhibitor }
 //		public enum interaction {reaction , diffusion, ext }
@@ -122,6 +125,14 @@ import org.graphstream.graph.Node;
 					if ( inh1 >= 1  )  		{	inh1 = maxVal ;	}
 				}
 		
+				if ( storeGsValues ) {
+					n.setAttribute("gsRea", reaction);
+					n.setAttribute("gsDifAct", diffusionAct);
+					n.setAttribute("gsDifInh", diffusionInh);
+					n.setAttribute("gsExtFeed", extFeed);
+					n.setAttribute("gsExtKill", extKill);
+				}
+					
 				// create a list of values act an inh
 				ArrayList<Double> ArList1 = new ArrayList<Double>() ;
 				

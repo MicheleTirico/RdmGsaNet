@@ -119,7 +119,8 @@ public class main {
 		gsLayer.createLayer ( 
 			/* set coordinate 			*/ 	false , 
 			/* set default Attribute	*/ 	true , 
-			/* store results in folder? */	doStoreStartGs ) ;
+			/* store results in folder? */	doStoreStartGs ,
+			/* store gs values			*/  true ) ;
 		
 		// Setup distribution of morphogens
 		gsLayer.setupDisMorp (

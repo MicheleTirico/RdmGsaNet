@@ -17,6 +17,7 @@ public class layerGs {
 	// STORING GRAPH EVENTS
 	static FileSinkDGS fsd = new FileSinkDGS();
 	private handleNameFile handle = main.getHandle();
+	protected static boolean storeGsValues;
 	
 	// VARIABLES
 	private static setupGs_Inter layout ;
@@ -35,7 +36,7 @@ public class layerGs {
 	}
 	
 	// method to create layer gs
-	public void createLayer ( boolean setCoordinate, boolean setDefaultAtr , boolean storedDGS) throws IOException {
+	public void createLayer ( boolean setCoordinate, boolean setDefaultAtr , boolean storedDGS , boolean storeGsValues ) throws IOException {
 		layout.createLayerGs () ; 
 		if (setCoordinate == true ) { layout.setCoordinate () ; }
 		if (setDefaultAtr == true ) { setDefaultAtr () ; }	
@@ -44,6 +45,7 @@ public class layerGs {
 			graph.write(fsd, pathStart);		
 		}
 		setEdgeLength();
+		this.storeGsValues = storeGsValues ;
 	}
 			
 	// methods to define characteristics of layer gs
@@ -80,6 +82,13 @@ public class layerGs {
 			n.addAttribute( "gsAct" , 0 );
 			n.addAttribute( "gsInh" , 0 );
 			n.addAttribute( "con" , 0 );
+			if ( storeGsValues ) {
+				n.setAttribute("gsRea", 0 );
+				n.setAttribute("gsDifAct", 0 );
+				n.setAttribute("gsDifInh", 0 );
+				n.setAttribute("gsExtFeed", 0 );
+				n.setAttribute("gsExtKill", 0 );
+			}
 		}
 	}
 

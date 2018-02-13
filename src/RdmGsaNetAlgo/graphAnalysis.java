@@ -269,6 +269,18 @@ public class graphAnalysis {
 		return mapDegreeNormalDistr;	
 	}
 	
+	// return map of nodes with clustering coefficient
+	public static Map getMapNodeClustering ( Graph graph ) {
+		Map<Node, Double > map = new HashMap<Node, Double>() ;
+		
+		for ( Node n : graph.getEachNode() ) {
+			Double val = Toolkit.clusteringCoefficient(n);
+			map.put(n, val) ;
+		}
+		return map;
+	}
+	
+	
 // PRIVATE METHODS ---------------------------------------------------------------------------------------------------------------------------------------------------
 	// set for each nodes an attribute that means the value of correlation
 	private static void setCorValInGraph ( Graph graph , double val , String corAttributeStr) {		

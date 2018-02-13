@@ -1,5 +1,4 @@
-package RdmGsaNetViz;
-
+package RdmGsaNet_Analysis;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,11 +16,12 @@ import RdmGsaNet_Analysis.analysisDGS;
 import RdmGsaNet_Analysis.analysisMain;
 import RdmGsaNet_Analysis.analysisCombinedLayer;
 
-public class multiViz extends analysisMain {
-	
+public class analysisDGSCombinedLayer extends analysisMain {
+
 	// COSTANTS
 	private boolean	doGsViz ,
-					doNetViz;
+					doNetViz ,
+					computeGsActivedNodes ;
 	
 	// viz constants
 	private static FileSource gsFs ,
@@ -36,7 +36,7 @@ public class multiViz extends analysisMain {
 							dgsId ;
 		
 	// COSTRUCTOR 
-	public multiViz ( boolean doGsViz ,boolean doNetViz) {
+	public analysisDGSCombinedLayer ( boolean doGsViz ,boolean doNetViz) {
 		this.doGsViz = doGsViz ;
 		this.doNetViz = doNetViz ;
 	}
@@ -53,7 +53,7 @@ public class multiViz extends analysisMain {
 		}
 	}
 	
-	public void runMultiLayerViz ( int stepMax ,int stepInc  )
+	public void runCombinedLayerStat ( int stepMax ,int stepInc  )
 			throws IOException, InterruptedException  {
 		
 		if ( !doGsViz && !doNetViz )
@@ -61,8 +61,6 @@ public class multiViz extends analysisMain {
 		
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
-	
-		// setup viz parameters		
 
 		// setup net viz parameters
 		netViz.setupViz( true, true, palette.red);
@@ -106,7 +104,7 @@ public class multiViz extends analysisMain {
 					System.out.println("----------------step " + step + " ----------------" );				
 					
 					netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
-					gsViz.setupViz(true, true, palette.red);
+					gsViz.setupViz(true, true, palette.blue);
 					
 					Thread.sleep(10);
 					

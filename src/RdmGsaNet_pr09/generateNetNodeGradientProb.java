@@ -21,7 +21,7 @@ public class generateNetNodeGradientProb extends generateNetNodeGradient impleme
 	@Override
 	public void generateNodeRule(int step) {
 		
-		// set seed nodes 
+		// set seed nodes ( only first step )
 		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 				
 		// CREATE LIST OF SEEDGRAD 
@@ -36,8 +36,7 @@ public class generateNetNodeGradientProb extends generateNetNodeGradient impleme
 			
 			int numberMaxNewNodes = listNeigValMax.size();										//	System.out.println("numberMaxNewNodes " + numberMaxNewNodes);
 			int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob);			//	System.out.println("numberNewNodes " + numberNewNodes);
-			
-			
+						
 			if ( numberNewNodes == 0) {
 				if ( stillAlive )
 					break ;

@@ -35,11 +35,12 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 							runViz ,
 							computeStepMaxMorp ,
 							computeStepMinMorp ,
-							computeStepAveMorp ; 
+							computeStepAveMorp,
+							computeGsActivedNodes ; 
 	
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	// COSTRUCTOR
-	public analysisDGSgs ( String dgsId , boolean run , boolean runAll ) {
+	public analysisDGSgs ( String dgsId , boolean run ) {
 		this.dgsId = dgsId;
 		this.run = run ;	
 	}
@@ -50,22 +51,25 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 		this.stepIncIm = stepIncIm ;	
 	}
 			
-	public void setWhichAnalysis (boolean runViz , boolean getImage ,boolean computeStepMaxMorp , boolean computeStepMinMorp , boolean computeStepAveMorp ) {
+	public void setWhichGlobalAnalysis (boolean runViz , boolean getImage ,
+										boolean computeStepMaxMorp , boolean computeStepMinMorp , boolean computeStepAveMorp ,
+										boolean computeGsActivedNodes ) {
 		this.runViz = runViz ;
 		this.getImage = getImage ;
 		this.computeStepMaxMorp = computeStepMaxMorp ;
 		this.computeStepMinMorp = computeStepMinMorp ;
 		this.computeStepAveMorp = computeStepAveMorp ;
+		this.computeGsActivedNodes = computeGsActivedNodes ; 
 		
 		if ( getImage ) {
 			handle.createFolder(folder + "analysis\\", "image", false ) ;
-		}
-			
+		}			
 	}
 
 // COMPUTE MULTIPLE ANALYSIS --------------------------------------------------------------------------------------------------------------
 	
-	public void computeMultipleStat(int stepMax, int stepInc, String pathStart, String pathStep) throws IOException, InterruptedException {
+	public void computeGlobalStat (int stepMax, int stepInc, String pathStart, String pathStep) 
+			throws IOException, InterruptedException {
 
 		if ( run == false ) 
 			return ; 
@@ -80,7 +84,6 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 			gsViz.setupIdViz(false, graph, 10 , "black");
 			Viewer gsViewer = graph.display(false) ;
 		}
-
 		
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
@@ -120,6 +123,10 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 					
 					if ( computeStepAveMorp )
 						analysisDGS.computeStepMorp(graph, step, mapGsStepAveMorp , analysisType.average );
+					
+					if ( computeGsActivedNodes ) 
+						analysisDGS.computeGsActivedNodes (graph, step, mapGsActivedNodes  );
+					
 							
 					// run viz
 					if ( runViz ) {
@@ -135,5 +142,12 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 			}
 		} catch (IOException e) {		}				
 		fs.end();	
+	}
+
+	@Override
+	public void computeLocalStat(int stepMax, int stepInc, String pathStart, String pathStep)
+			throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
+		
 	}
 }

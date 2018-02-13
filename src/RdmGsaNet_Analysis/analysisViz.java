@@ -1,30 +1,48 @@
- package RdmGsaNet_Analysis;
+package RdmGsaNet_Analysis;
 
 import java.io.IOException;
 
-import RdmGsaNetViz.multiViz;
+import RdmGsaNetExport.handleNameFile;
+import RdmGsaNetViz.handleVizStype;
+import RdmGsaNetViz.handleVizStype.stylesheet;
 
 public class analysisViz extends analysisMain {
+
+	// costants 
 	
-	static multiViz multiViz = new multiViz(
-			
-			/* gsViz	*/ 	true ,
-			/* netViz	*/	true
-			
+	private static analysisDGSnet analysisNet = new analysisDGSnet(
+			/* id dgs 					*/		"dgsNet" , 
+			/* run analysis	global		*/		false ,
+			/* run analysis	local		*/		true 
 			);
+	
+	// HANDLE FILE OBJECT
+	protected static handleNameFile handle ;
+	protected static handleVizStype netLocalViz  = new handleVizStype( netGraph , stylesheet.viz10Color , "clusteringCoef") ;
+		
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+	public static void main(String[] args) throws IOException, InterruptedException {
+		
+		// setup handle name file 
+		handle = new handleNameFile( 
+			/* handle file 						*/ true , 
+			/* set folder 						*/ folder ,
+			/* create new folder ? 				*/ false , 
+			/*  manual name file (no in main )	*/ "analysis"
+		);		
 
-	
-	
-			
-	public static void main ( String[ ] args ) throws IOException, InterruptedException {
-			
-		multiViz.setPath( "dgsNet" , pathStartNet, pathStepNet);
-		multiViz.setPath( "dgsGs" , pathStartGs, pathStepGs);
-	
-		multiViz.runMultiLayerViz( 5000 , 5 );
+				
+// SET WHICH LOCAL ANALYSIS TO COMPUTE --------------------------------------------------------------------------------------------------------------
+		analysisNet.setWhichLocalAnalysis(
+				/* runVizLocal				*/ false , 
+				/* computeLocalClustering	*/ true 
+				);
 		
 		
-	
+// RUN LOCAL ANALYSIS ------------------------------------------------------------------------------------------------------------------------------
+
+		analysisNet.computeLocalStat(3000, 5, pathStartNet, pathStepNet );
+			
 	}
+	
 }
-

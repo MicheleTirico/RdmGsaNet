@@ -46,7 +46,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_mazes\\prob\\random\\die\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_mazes\\prob\\maxValue\\alive\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -77,8 +77,8 @@ public class main {
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        (12, 11)  
-//											new generateNetNodeGradientOnlyOne 	( 8 , layoutSeed.allNode , rule.random, "gsInh")
-											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.8 , false )
+//											new generateNetNodeGradientOnlyOne 	( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
+											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.9 , true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (

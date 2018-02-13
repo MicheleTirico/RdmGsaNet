@@ -21,11 +21,11 @@ public class analysisMain {
 
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_mazes\\prob\\maxValue\\die\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.6_00\\" ;
+	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_holes\\prob\\random\\alive\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.4_00\\" ;
 									
 // START FILES
 	// GS graph
-	protected static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.029_k_0.057_diff_weight"  ,
+	protected static String nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.039_k_0.058_diff_weight"  ,
 								folderStartGs = folder ,
 									pathStartGs = folderStartGs + nameStartGs + fileType ;
 		
@@ -36,7 +36,7 @@ public class analysisMain {
 	
 // STEP FILES	
 	// GS graph
-	protected static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.029_k_0.057_diff_weight" ,
+	protected static String nameStepGs = "layerGs_step_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.039_k_0.058_diff_weight" ,
 								folderStepGs = folder ,
 									pathStepGs = folderStepGs + nameStepGs + fileType ;
 		
@@ -59,12 +59,15 @@ public class analysisMain {
 										mapNetStepNormalDistributionDegree = new HashMap (),
 											mapNetStepNewNodeRel = new HashMap(),
 												mapNetStepNewSeed = new HashMap(),
-													mapNetStepNewSeedRel = new HashMap();
+													mapNetStepNewSeedRel = new HashMap() , 
+														mapNetStepGlobalClustering  = new HashMap() ,
+															mapNetStepGlobalDensity = new HashMap() ;
 		
 	// MAP GS
 	protected static Map mapGsStepMaxMorp = new HashMap () , 
 							mapGsStepMinMorp = new HashMap () , 
-								mapGsStepAveMorp = new HashMap () ;
+								mapGsStepAveMorp = new HashMap () ,
+									mapGsActivedNodes = new HashMap () ;
 	
 	// CREATE CHARTS
 	static expChart xyChart = null ;
@@ -77,15 +80,14 @@ public class analysisMain {
 	// Initialize net analysis
 	private static analysisDGSnet analysisNet = new analysisDGSnet(
 			/* id dgs 					*/		"dgsNet" , 
-			/* run analysis				*/		true , 
-			/* run all analysis			*/		true 
+			/* run analysis	global		*/		true ,
+			/* run analysis	local		*/		true 
 			);
 	
 	// Initialize net analysis
 	private static analysisDGSgs analysisGs = new analysisDGSgs(
 			/* id dgs 					*/		"dgsGs" , 
-			/* run analysis				*/		false , 
-			/* run all analysis			*/		true 
+			/* run analysis				*/		false 
 			);
 
 	// HANDLE FILE OBJECT
@@ -103,66 +105,78 @@ public class analysisMain {
 		);		
 
 		
-// SET WHICH CHARTS WE WANT TO HAVE ---------------------------------------------------------------
-		analysisNet.setWhichAnalysis(
+// SET WHICH STAT TO COMPUTE ------------------------------------------------------------------------------------------------------------------------
+	
+		// global analysis
+		analysisNet.setWhichGlobalAnalysis(
 				/* run Viz 							*/ true ,
 				/* getImage							*/ true ,
 				/* computeDegree					*/ true ,
-				/* computeDegreeRel					*/ true ,
+				/* computeDegreeRel					*/ false ,	// return the same result of normal degree distribution
 				/* computeAverageDegree				*/ true ,
 				/* computeNewNode					*/ true ,
 				/* computeStepNewNodeRel			*/ true ,
 				/* computeNormalDegreeDistribution 	*/ true ,
 				/* computeNewSeedCount				*/ true ,
-				/* computeNewSeedCountRel			*/ true
+				/* computeNewSeedCountRel			*/ true ,
+				/* computeStepGlobalClustering		*/ true ,
+				/* compute Global Density			*/ true
 				);
 		
-		analysisGs.setWhichAnalysis(
-				/* run Viz 				*/ false ,
-				/* getImage				*/ true ,
-				/* computeStepMaxMorp	*/ true , 
-				/* computeStepMinMorp	*/ true ,
-				/* computeStepAveMorp 	*/ true 
+		analysisGs.setWhichGlobalAnalysis(
+				/* run Viz 					*/ false ,
+				/* getImage					*/ false ,
+				/* computeStepMaxMorp		*/ true , 
+				/* computeStepMinMorp		*/ true ,
+				/* computeStepAveMorp 		*/ true ,
+				/* computeGsActivedNodes	*/ false 
 				);
+		
+		// local analysis 
+		analysisNet.setWhichLocalAnalysis(
+				/* runVizLocal				*/ false , 
+				/* computeLocalClustering	*/ false
+				);
+				
 		
 // SET PARAMETERS OF ANALYSIS ---------------------------------------------------------------------
 		analysisNet.setParamAnalysis( 
-				/* degree frequency 	*/ 10 ,
-				
+				/* degree frequency 	*/ 9 ,
 				/* step in im 			*/ 200 
 				);
 		
 		analysisGs.setParamAnalysis(
-				/* morp 				*/ "gsAct",
+				/* morp 				*/ "gsAct",	// not yet used
 				/* step in im 			*/ 100);
 		
 	
-// RUN ANALYSIS -----------------------------------------------------------------------------------
-		analysisNet.computeMultipleStat	(3000 , 5 , pathStartNet, pathStepNet);
+// RUN GLOBAL ANALYSIS ------------------------------------------------------------------------------------------------------------------------------
+		analysisNet.computeGlobalStat	(3000 , 5 , pathStartNet, pathStepNet);
 	
-		analysisGs.computeMultipleStat	(30, 5, pathStartGs, pathStepGs);
+		analysisGs.computeGlobalStat	(3000, 5, pathStartGs, pathStepGs); 
 		
-
-//
 		
-		// System.out.println(mapNetStepNewSeed);
+			
+// 		System.out.println(mapNetStepNewSeed);
 //		System.out.println(mapNetStepNormalDistributionDegree);
 		
 // 	CREATE CHARTS ---------------------------------------------------------------------------------
 		createChartsNet(
-				/* storedCharts 							*/ true ,
-				/* createChartDegree 						*/ true ,
-				/* createChartDegreeRel						*/ true , 
-				/*create chart Average Degree 				*/ true ,
-				/* createChartNewNodes						*/ true ,
-				/* createChartNewNodesRel					*/ true ,
+				/* stored Charts 							*/ true ,
+				/* create Chart Degree 						*/ true ,
+				/* create Chart DegreeRel					*/ false , 
+				/* create chart Average Degree 				*/ true ,
+				/* create Chart NewNodes					*/ true ,
+				/* create Chart NewNodes Rel				*/ true ,
 				/* create chart normal degree distribution 	*/ true	,
 				/* create chart NewSeedCount				*/ true , 
-				/* create chart NewSeedCountRel				*/ true
+				/* create chart NewSeedCountRel				*/ true ,
+				/* create chart clustering					*/ true ,
+				/* create chart density 					*/ true
 				);
 
 		createChartsGs(
-				/* storeCharts 			*/ false  ,
+				/* storeCharts 			*/ true  ,
 				/* createChartMax		*/ true , 
 				/* createChartMin		*/ true ,
 				/* createChartAve		*/ true
@@ -183,11 +197,12 @@ public class analysisMain {
 			boolean createChartFreqDegreeRel , boolean createChartAverageDegree , 
 			boolean createChartNewNode , boolean createChartNewNodeRel ,
 			boolean createCharNormalDegreeDistribution ,
-			boolean createChartNewSeedCount	, boolean createChartNewSeedCountRel ) throws IOException {
-		
+			boolean createChartNewSeedCount	, boolean createChartNewSeedCountRel ,
+			boolean createChartGlobalClustering , boolean createChartDensity ) 
+					throws IOException {
 	
 		// exit method 
-		if ( !analysisDGSnet.run || storeCharts == false  ) return ;
+		if ( !analysisDGSnet.runGlobal || storeCharts == false  ) return ;
 		
 		handle.createFolder(folder + "analysis\\", "chart", false ) ;
 		String folderChartNet = folder + "analysis\\chart\\";
@@ -202,7 +217,7 @@ public class analysisMain {
 		if ( createChartFreqDegreeRel ) {
 			xyChart = new expChart(typeChart.XYchartMultipleLine , "frequency degree Net rel", "Step (t)" , " freq degree (%)" , 800, 600 ,	mapNetFreqDegreeRel );
 			xyChart.setVisible(true);
-			xyChart.saveChart(storeCharts ,  folderChartNet, "Net Freq Degree rel " );	
+			xyChart.saveChart(storeCharts ,  folderChartNet, "Net Freq Degree rel" );	
 		}
 	
 		// create chart average degree
@@ -233,25 +248,37 @@ public class analysisMain {
 			xyChart.saveChart(storeCharts ,  folderChartNet, "Net normal degree distribution" );		
 		}
 		
+		// seed stat
 		if (  createChartNewSeedCount	) {
 			xyChart = new expChart(typeChart.XYchartSingleLine , "count seed ", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepNewSeed );
 			xyChart.setVisible(true);
-			xyChart.saveChart(storeCharts ,  folderChartNet, "Net count seed " );	
+			xyChart.saveChart(storeCharts ,  folderChartNet, "Net count seed" );	
 		}
 		
+		// seed stat
 		if (  createChartNewSeedCountRel	) {
 			xyChart = new expChart(typeChart.XYchartSingleLine , "count seed rel", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepNewSeedRel );
 			xyChart.setVisible(true);
 			xyChart.saveChart(storeCharts ,  folderChartNet, "Net count seed rel" );	
 		}
+		// clustering 
+		if (createChartGlobalClustering ) {
+			xyChart = new expChart(typeChart.XYchartSingleLine , "average clustering", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepGlobalClustering );
+			xyChart.setVisible(true);
+			xyChart.saveChart(storeCharts ,  folderChartNet, "Net average clustering" );	
+		}
+		// density
+		if ( createChartDensity ) 
+			xyChart = new expChart(typeChart.XYchartSingleLine , "density", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepGlobalDensity );
+			xyChart.setVisible(true);
+			xyChart.saveChart(storeCharts ,  folderChartNet, "Net density" );	
 	}
 	
 	private static void createChartsGs ( boolean storeCharts, boolean createChartMax , boolean createChartMin , boolean createChartAve ) throws IOException {
 		
 		// exit method 
 		if ( !analysisDGSgs.run || storeCharts == false  ) return ;
-		
-
+	
 		handle = new handleNameFile( 
 				/* handle file 						*/ true , 
 				/* set folder 						*/ folder + "analysis\\" ,

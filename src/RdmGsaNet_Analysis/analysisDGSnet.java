@@ -8,6 +8,7 @@ import java.util.concurrent.SynchronousQueue;
 
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSource;
@@ -20,12 +21,14 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetExport.expImage;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.setupViz;
+import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
+import RdmGsaNetViz.handleVizStype.stylesheet;
 import RdmGsaNet_pr08.gsAlgo;
 import RdmGsaNet_pr08.layerGs;
 import RdmGsaNet_pr08.setupGsGrid;
 
-public class analysisDGSnet extends analysisMain  implements analysisDGS  {
+public class analysisDGSnet extends  analysisMain implements analysisDGS  {
 
 	// CONSTANT
 	private String dgsId ;
@@ -40,17 +43,23 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 	private int s1 = 0 , s2 = 0 ; 
 	
 	
-	protected static boolean 	run ,
-								getImage ,
-								computeFreqDegree ,
-								computeFreqDegreeRel ,
-								computeAverageDegree , /* avD = 2 * edgeCount / nodeCount */
-								computeStepNewNode ,
-								computeNormalDegreeDistribution,
-								computeStepNewNodeRel ,
-								computeNewSeedCount ,
-								computeNewSeedCountRel ,
-								runViz ;
+	protected static  boolean 	
+	/* global compute boolean*/		runGlobal ,
+									getImage,
+									computeFreqDegree ,
+									computeFreqDegreeRel ,
+									computeAverageDegree ,
+									computeStepNewNode ,
+									computeNormalDegreeDistribution ,
+									computeStepNewNodeRel ,
+									computeNewSeedCount ,	
+									computeNewSeedCountRel ,
+									runVizGlobal ,
+									computeGlobalClustering ,
+									computeGlobalDensity ,
+	/* local compute boolean*/		runLocal,
+									runVizLocal ,
+									computeLocalClustering;
 	
 // MAP FOR CHARTS
 	// private map
@@ -59,10 +68,10 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 	
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	// COSTRUCTOR
-	public analysisDGSnet ( String dgsId , boolean run , boolean getImage ) {
+	public analysisDGSnet ( String dgsId , boolean runGlobal , boolean runLocal ) {
 		this.dgsId = dgsId;
-		this.run = run ;
-		
+		this.runGlobal = runGlobal ;
+		this.runLocal = runLocal ;		
 	}
 	
 	// set parameters of analysis
@@ -71,11 +80,18 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 		this.stepIncIm = stepIncIm ;	
 	}
 		
-	public void setWhichAnalysis (	boolean runViz , boolean getImage , boolean computeFreqDegree , boolean computeFreqDegreeRel , boolean computeAverageDegree , 
-									boolean computeStepNewNode, boolean computeStepNewNodeRel, boolean computeNormalDegreeDistribution ,
-									boolean computeNewSeedCount , boolean computeNewSeedCountRel ) {
+
+	public void setWhichLocalAnalysis ( boolean runVizLocal , boolean computeLocalClustering ) {
+		this.runVizLocal = runVizLocal ;
+		this.computeLocalClustering = computeLocalClustering ;	
+	}	
+	
+	public void setWhichGlobalAnalysis (boolean runVizGlobal , boolean getImage , boolean computeFreqDegree , boolean computeFreqDegreeRel , boolean computeAverageDegree , 
+										boolean computeStepNewNode, boolean computeStepNewNodeRel, boolean computeNormalDegreeDistribution ,
+										boolean computeNewSeedCount , boolean computeNewSeedCountRel ,
+										boolean computeGlobalClustering , boolean computeGlobalDensity ) {
 		
-		this.runViz = runViz ;
+		this.runVizGlobal = runVizGlobal ;
 		this.getImage = getImage ;
 		this.computeFreqDegree  = computeFreqDegree ;	
 		this.computeFreqDegreeRel  = computeFreqDegreeRel ;	
@@ -85,6 +101,8 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 		this.computeNormalDegreeDistribution = computeNormalDegreeDistribution ;
 		this.computeNewSeedCount = computeNewSeedCount ;
 		this.computeNewSeedCountRel = computeNewSeedCountRel ;
+		this.computeGlobalClustering = computeGlobalClustering  ;
+		this.computeGlobalDensity = computeGlobalDensity ;
 		
 		if ( getImage ) {
 			handle.createFolder(folder + "analysis\\", "image", false ) ;
@@ -93,16 +111,17 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 	}
 			
 // COMPUTE MULTIPLE ANALYSIS --------------------------------------------------------------------------------------------------------------
-	public void computeMultipleStat(int stepMax, int stepInc, String pathStart, String pathStep) throws IOException, InterruptedException  {
+	public void computeGlobalStat (int stepMax, int stepInc, String pathStart, String pathStep) 
+			throws IOException, InterruptedException  {
 		
-		if ( run == false  )  
+		if ( runGlobal == false  )  
 			return ; 
 		
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
 		 
 		// run viz
-		if ( runViz )  {
+		if ( runVizGlobal )  {
 			// setup net viz parameters
 			netViz.setupViz( true, true, palette.red);
 			netViz.setupIdViz( false , graph, 1 , "black");
@@ -141,9 +160,10 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 					if ( computeFreqDegree  ) 
 						analysisDGS.computeFreqDegree( degreeFreq, graph , step , mapNetFreqDegree );	
 					
-					if ( computeFreqDegree  ) 
+					// return same result of degree distribution
+					if ( computeFreqDegreeRel  ) 
 						analysisDGS.computeFreqDegreeRel( degreeFreq, graph , step , mapNetFreqDegreeRel );	
-							
+						
 					if ( computeAverageDegree )
 						analysisDGS.computeAverageDegree( graph, step, mapNetAverageDegree);
 					
@@ -172,11 +192,16 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 					if ( computeNewSeedCountRel )
 						analysisDGS.computeStepCountNewSeed(graph, step, mapNetStepNewSeedRel, true);
 					
+					if ( computeGlobalClustering  )
+						analysisDGS.computeGlobalClustering(graph, step, mapNetStepGlobalClustering);
+					
+					if ( computeGlobalDensity )
+						analysisDGS.computeGlobalDensity(graph, step, mapNetStepGlobalDensity);
 					
 					// run viz
-					if ( runViz ) {
+					if ( runVizGlobal ) {
 						netViz.setupVizBooleanAtr(true, graph,  "black", "red" ) ;
-						Thread.sleep(50);
+						Thread.sleep(10);
 					}
 					// stop iteration    
 					if ( stepMax == step ) { break; }
@@ -184,6 +209,73 @@ public class analysisDGSnet extends analysisMain  implements analysisDGS  {
 			}
 		} catch (IOException e) {		}				
 		fs.end();	
-		System.out.println(mapNetStepNodeCount);
+	}
+
+
+	public void computeLocalStat (int stepMax, int stepInc, String pathStart, String pathStep )
+			throws IOException, InterruptedException {
+		
+		if ( runLocal == false  )  
+			return ; 
+		
+		// get graph through dgsId of graph
+		graph = analysisDGS.returnGraphAnalysis(dgsId);
+		
+		// create list of step to create images
+		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
+		  handleVizStype netLocalViz  = new handleVizStype( graph , stylesheet.viz10Color , "clusteringCoef") ;
+		
+		// setup net viz parameters
+		netLocalViz.setupDefaultParam (graph, "red", "white", 6 , 0.5 );
+		netLocalViz.setupIdViz(false , graph , 10 , "black");
+		Viewer netViewer = graph.display(false) ;
+		netLocalViz.setupFixScaleManual( true , graph, 50, 0);
+		
+		// import start graph
+		try 														{	graph.read(pathStart);		} 
+		catch (	ElementNotFoundException | 
+				GraphParseException | 
+				org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
+				
+		// set file Source for file step
+		fs = FileSourceFactory.sourceFor(pathStep);
+		fs.addSink(graph);
+		// import file step
+		
+		try {
+			fs.begin(pathStep);
+			while ( fs.nextStep()) {
+				double step = graph.getStep();							//	System.out.println(step);
+				
+				if ( incList.contains(step)) {
+					// add methods to run for each step in incList
+					System.out.println("----------------step " + step + " ----------------" );				
+					
+					Map<Node, Double > mapNodeClustering = graphAnalysis.getMapNodeClustering(graph);
+					
+					for ( Node n : mapNodeClustering.keySet() ) {
+						graph.getNode(n.getId()).addAttribute("clusteringCoef", mapNodeClustering.get(n)) ;
+						
+					}
+					netLocalViz.setupViz(true, true, palette.blue);
+					
+					Thread.sleep(10);
+					
+					
+					
+					
+					
+					
+					
+					// stop iteration    
+					if ( stepMax == step ) { break; }
+				}
+			}
+		} catch (IOException e) {		}				
+		fs.end();	
+	
+		
 	}
 }
+
+

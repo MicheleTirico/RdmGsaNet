@@ -18,7 +18,9 @@ public interface analysisDGS  {
 	static Graph gsGraph = layerGs.getGraph(),
 					netGraph = layerNet.getGraph();
 	
-	public void computeMultipleStat ( int stepMax , int stepInc ,String pathStart , String pathStep 	) throws IOException, InterruptedException ;
+	public void computeGlobalStat ( int stepMax , int stepInc ,String pathStart , String pathStep 	) throws IOException, InterruptedException ;
+	
+	public void computeLocalStat ( int stepMax , int stepInc ,String pathStart , String pathStep 	) throws IOException, InterruptedException ;
 	
 	public static Graph returnGraphAnalysis ( String dgsId ) {
 		
@@ -32,7 +34,7 @@ public interface analysisDGS  {
 		return graphAnalysis ;
 	}
 	
-// common methods -----------------------------------------------------------------------------------------------------------------------------------
+// GLOBAL STAT METHODS  -----------------------------------------------------------------------------------------------------------------------------
 	
 // degree -------------------------------------------------------------------------------------------------------------------------------------------
 	// compute frequency chart of degree
@@ -45,7 +47,7 @@ public interface analysisDGS  {
 		mapFreqDegree.put(step, mapDegree);
 	}
 	
-	// compute frequency chart of degree
+	// compute frequency chart of degree REL .  return the same result of normal degree distribution
 	public static void computeFreqDegreeRel ( int degreeFreq , Graph graph , double step , Map mapFreqDegreeRel ) {
 			
 		int nFreq = degreeFreq;
@@ -54,8 +56,7 @@ public interface analysisDGS  {
 		Map <Double, Double> mapDegree = graphAnalysis.getMapFrequencyDegree(graph, nFreq, true) ;
 		mapFreqDegreeRel.put(step, mapDegree);
 	}
-			
-	
+				
 	// compute average degree
 	public static void computeAverageDegree ( Graph graph , double step , Map mapStepAveDegree ) {
 	
@@ -63,6 +64,7 @@ public interface analysisDGS  {
 		mapStepAveDegree.put(step, avDegree);
 	}
 	
+	//compute normal degree distribution of each step. return the same result of freq degree rel
 	public static void computeStepNormalDegreeDistribution ( Graph graph , double step , Map mapStepNormalDistributionDegree , boolean setNumberLine , int numberLine ) {
 	
 		if ( setNumberLine ) {
@@ -72,7 +74,7 @@ public interface analysisDGS  {
 			
 			for ( double x = numberOfDegreeFreq ; x <= maxNewNullVal + numberOfDegreeFreq ; x++ ) {
 				mapNormDegDist.put(x  , 0.0 ) ;
-			}	//	System.out.println(mapNormDegDist);
+			}	
 			mapStepNormalDistributionDegree.put(step, mapNormDegDist);
 		} 
 		else {
@@ -82,27 +84,21 @@ public interface analysisDGS  {
 	}
 	
 // seed grad stat -----------------------------------------------------------------------------------------------------------------------------------
-	public static void computeStepCountNewSeed ( Graph graph , double step , Map mapStepNewSeed , boolean isRel) {
-		
+	public static void computeStepCountNewSeed ( Graph graph , double step , Map mapStepNewSeed , boolean isRel ) {
 	
-		double count = graphAnalysis.getAttributeCount(graph, step, "seedGrad");
+		double count = graphAnalysis.getAttributeCount(graph , step , "seedGrad" ) ;
 		
 		if ( isRel == false )
 			mapStepNewSeed.put(step, count) ;
 		
-		else if ( isRel) {
+		else if ( isRel ) {
 			double countRel = count / graph.getNodeCount() ;
-			mapStepNewSeed.put(step, countRel);
-		}
-			
+			mapStepNewSeed.put(step, countRel) ;
+		}		
 	}
 
-	public static void computeStepAveSeed ( Graph graph , double step , Map mapStepAveSeed ) {
+	public static void computeStepAveSeed ( Graph graph , double step , Map mapStepAveSeed ) {		}
 		
-	}
-	
-	
-	
 // morp stat ----------------------------------------------------------------------------------------------------------------------------------------
 	// method to create 2 maps of statistical distribution of morphogen's values 
 	public static void computeStepMorp ( Graph graph , double step , Map mapStepMorp , analysisType stat) {
@@ -134,8 +130,11 @@ public interface analysisDGS  {
 		return mapMorp;			
 	}
 	
-// COMPUTE NEW NODES --------------------------------------------------------------------------------------------------------------------------------
+	public static void  computeGsActivedNodes ( Graph graph , double step , Map mapGsActivedNodes ) {
+		
+	}
 	
+// COMPUTE NEW NODES --------------------------------------------------------------------------------------------------------------------------------	
 	// compute % new nodes vs size graph
 	public static void computeStepNewNodeRel ( Graph graph , double step , Map mapStepNewNodeRel , Map<Integer , Integer >  mapNetStepNodeCountRel ,  int  s  ) {
 
@@ -145,7 +144,6 @@ public interface analysisDGS  {
 		} catch (java.lang.NullPointerException e) {			}
 		s++;
 	}
-
 	
 	// implemented in analysisDGSnet
 	public static void computeStepNewNode ( Graph graph , double step , Map mapStepNewNode , Map<Integer , Integer >  mapNetStepNodeCount ,  int  s  ) {
@@ -169,6 +167,25 @@ public interface analysisDGS  {
 		return list;		
 	}
 	
+// LOCAL STAT METHODS -------------------------------------------------------------------------------------------------------------------------------
+	// return map of step with map of nodes and clustering
+	public static void computeLocalClustering ( Graph graph , double step , Map mapStepMapNodeClustering ) {
+		Map map =graphAnalysis.getMapNodeClustering(graph);
+		mapStepMapNodeClustering.put(step, map);
+	}
+
+	// global (average) clustering
+	public static void computeGlobalClustering ( Graph graph, double step , Map mapStepGlobalClustering ) {
+		double clustering = Toolkit.averageClusteringCoefficient(graph);
+		mapStepGlobalClustering.put(step, clustering);
+	}
+
+	// global density 
+	public static void computeGlobalDensity ( Graph graph, double step , Map mapStepGlobalDensity ) {
+		double density = Toolkit.density(graph);
+		mapStepGlobalDensity.put(step, density);
+	}
+
 
 }
 

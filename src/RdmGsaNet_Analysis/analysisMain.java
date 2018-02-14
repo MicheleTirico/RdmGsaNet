@@ -21,7 +21,7 @@ public class analysisMain {
 
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_holes\\prob\\random\\alive\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.4_00\\" ;
+	protected static String folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_holes\\prob\\random\\alive\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.6_00\\" ;
 									
 // START FILES
 	// GS graph

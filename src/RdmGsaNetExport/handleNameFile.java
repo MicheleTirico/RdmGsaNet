@@ -38,7 +38,7 @@ public class handleNameFile {
 		this.folder = folder ;
 		if ( createNewDirectory )
 			nameNewFolder = getNameNewFolder ( maxStep , genNode , genEdge );
-		else 
+		else if ( createNewDirectory == false )
 			nameNewFolder = folder + nameNewFolder ;
 		String path = createFolder(folder , nameNewFolder , createNewDirectory ) ;
 	}

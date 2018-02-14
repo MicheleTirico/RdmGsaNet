@@ -18,7 +18,6 @@ public class analysisViz extends analysisMain {
 	
 	// HANDLE FILE OBJECT
 	protected static handleNameFile handle ;
-	protected static handleVizStype netLocalViz  = new handleVizStype( netGraph , stylesheet.viz10Color , "clusteringCoef") ;
 		
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	public static void main(String[] args) throws IOException, InterruptedException {

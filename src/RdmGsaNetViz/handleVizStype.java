@@ -7,18 +7,23 @@ public class handleVizStype {
 	
 	private Graph graph;
 	String colorStaticNode , colorStaticEdge ;
+	private double stretchFreq  ;
 	double sizeNode , sizeEdge ;
 	
 	public enum palette { red , blue , multi }
 	private palette mainColor ;
+	
 	public enum stylesheet { viz5Color , viz10Color , manual  , booleanAtr }
 	private stylesheet styleType ;
+	
 	private String attributeToAnalyze ; 
+	
 	// COSTRUCTOR
-	public handleVizStype (  Graph graph , stylesheet styleType , String attributeToAnalyze ) {
+	public handleVizStype (  Graph graph , stylesheet styleType , String attributeToAnalyze  , double stretchFreq ) {
 		this.styleType = styleType ;
 		this.graph = graph ;
 		this.attributeToAnalyze = attributeToAnalyze ;
+		this.stretchFreq = stretchFreq ;
 	
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 	}
@@ -43,6 +48,7 @@ public class handleVizStype {
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------	
 	public void setupDefaultParam ( Graph graph , String colorStaticNode , String colorStaticEdge , double sizeNode , double sizeEdge ) {
+		
 		this.colorStaticNode = colorStaticNode ;
 		this.colorStaticEdge = colorStaticEdge ;
 		this.sizeEdge = sizeEdge ;
@@ -61,6 +67,20 @@ public class handleVizStype {
 		}	
 	}
 	
+	public void setupLabelViz ( boolean vizLabel , Graph graph , double sizeTestId , String colorId , String attribute ) {
+		
+		if ( vizLabel == false )
+			return ;
+		
+		graph.addAttribute("ui.stylesheet", vizNodeId ( sizeTestId , colorId) );
+		
+		for ( Node n : graph.getEachNode()) {
+			double val = n.getAttribute(attribute);
+			
+			n.addAttribute("ui.label", roundValLabel(val) );
+		}	
+	}
+	
 // SETUP VIZ ----------------------------------------------------------------------------------------------------------------------------------------
 	private void  setViz5Color ( String attributeToAnalyze , palette multiColor  ) {
 	
@@ -70,31 +90,32 @@ public class handleVizStype {
 			double morpColor = n.getAttribute(attributeToAnalyze);
 			double color = 0  ; //grey
 
-			if ( morpColor >= 0.2 &&  morpColor <= 0.4) color =  	0.2		;				
-			if ( morpColor >= 0.4 &&  morpColor <= 0.6) color =  	0.4		;	 
-			if ( morpColor >= 0.6 &&  morpColor <= 0.8) color =  	0.6		;	
-			if ( morpColor >= 0.8 &&  morpColor <= 1.0) color =  	0.8		;	
+			if ( morpColor >= 0.2 &&  morpColor <= 0.4) color =  	0.2	* stretchFreq	;				
+			if ( morpColor >= 0.4 &&  morpColor <= 0.6) color =  	0.4	* stretchFreq	;	 
+			if ( morpColor >= 0.6 &&  morpColor <= 0.8) color =  	0.6	* stretchFreq	;	
+			if ( morpColor >= 0.8 &&  morpColor <= 1.0) color =  	0.8	* stretchFreq	;	
 			
 			n.addAttribute("ui.color", color );
 			}
 	}
 
 	private void setViz10Color ( String attributeToAnalyze , palette mainColor ) {
+	
 		graph.addAttribute("ui.stylesheet", Viz10Color(styleType , mainColor) );
 		for ( Node n : graph.getEachNode()) {
 			
 			double morpColor = n.getAttribute(attributeToAnalyze);
 			double color = 0  ; //grey
 
-			if ( morpColor >= 0.10 &&  morpColor <= 0.20) 	{	 color =  	0.1		;	} 		// 
-			if ( morpColor >= 0.20 &&  morpColor <= 0.30)	{	 color =  	0.2		;	}		// 
-			if ( morpColor >= 0.30 &&  morpColor <= 0.40) 	{	 color =  	0.3		;	}		// 
-			if ( morpColor >= 0.40 &&  morpColor <= 0.50) 	{	 color =  	0.4		;	}		// 
-			if ( morpColor >= 0.50 &&  morpColor <= 0.60) 	{	 color =  	0.5		;	} 		// 
-			if ( morpColor >= 0.60 &&  morpColor <= 0.70)	{	 color =  	0.6		;	}		// 
-			if ( morpColor >= 0.70 &&  morpColor <= 0.80) 	{	 color =  	0.7		;	}		// 
-			if ( morpColor >= 0.80 &&  morpColor <= 0.90) 	{	 color =  	0.8		;	}		// 
-			if ( morpColor >= 0.90 &&  morpColor <= 1.00) 	{	 color =  	0.9		;	}		// 
+			if ( morpColor >= 0.10 &&  morpColor <= 0.20) 	{	 color =  	0.1		* stretchFreq	;	} 		// 
+			if ( morpColor >= 0.20 &&  morpColor <= 0.30)	{	 color =  	0.2		* stretchFreq	;	}		// 
+			if ( morpColor >= 0.30 &&  morpColor <= 0.40) 	{	 color =  	0.3		* stretchFreq	;	}		// 
+			if ( morpColor >= 0.40 &&  morpColor <= 0.50) 	{	 color =  	0.4		* stretchFreq	;	}		// 
+			if ( morpColor >= 0.50 &&  morpColor <= 0.60) 	{	 color =  	0.5		* stretchFreq	;	} 		// 
+			if ( morpColor >= 0.60 &&  morpColor <= 0.70)	{	 color =  	0.6		* stretchFreq	;	}		// 
+			if ( morpColor >= 0.70 &&  morpColor <= 0.80) 	{	 color =  	0.7		* stretchFreq	;	}		// 
+			if ( morpColor >= 0.80 &&  morpColor <= 0.90) 	{	 color =  	0.8		* stretchFreq	;	}		// 
+			if ( morpColor >= 0.90 &&  morpColor <= 1.00) 	{	 color =  	0.9		* stretchFreq	;	}		// 
 			
 			n.addAttribute("ui.color", color );
 		}
@@ -116,7 +137,7 @@ public class handleVizStype {
 		}
 	}
 	
-	public void setupFixScaleManual ( boolean setScale,   Graph graph , double XYmax , double XYMin ) {
+	public void setupFixScaleManual ( boolean setScale,  Graph graph , double XYmax , double XYMin ) {
 		
 		if ( setScale == false )
 			return ;
@@ -245,6 +266,11 @@ public class handleVizStype {
 			"	size: " + sizeEdge + "px;"+
 			"	fill-color:"+colorStaticEdge+" ;"+
 			"}" ;
+	}
+	
+// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
+	private double roundValLabel ( double val ) {
+		return	Math.floor(val*100)/ 100 ;
 	}
 	
 }

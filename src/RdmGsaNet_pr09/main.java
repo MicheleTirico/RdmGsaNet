@@ -46,7 +46,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_mazes\\prob\\maxValue\\alive\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\random\\alive\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -78,7 +78,7 @@ public class main {
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        (12, 11)  
 //											new generateNetNodeGradientOnlyOne 	( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
-											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.9 , true )
+											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.7 , true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -96,7 +96,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes );			
+		setRdType ( RdmType.solitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -188,14 +188,14 @@ public class main {
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		
 		// setup viz netGraph
-		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad") ;
+		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
 		netViz.setupIdViz(false, netGraph, 1 , "black");
 		netViz.setupDefaultParam (netGraph, "black", "black", 5 , 0.5 );
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
 		netViz.setupFixScaleManual(true, netGraph, 50, 0);
 		
 		// viz display
-		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsAct") ;
+		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsAct", 1) ;
 		gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
 		gsViz.setupIdViz(false, gsGraph, 10 , "black");
 		gsViz.setupViz(true, true, palette.red);

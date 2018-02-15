@@ -16,6 +16,7 @@ import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.graphAnalysis;
+import RdmGsaNetAlgo.graphIndicators;
 import RdmGsaNetExport.expImage;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
@@ -52,8 +53,11 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 									computeGlobalClustering ,
 									computeGlobalDensity ,
 									runViz ,
-	/* local compute boolean*/				
-									computeLocalClustering;
+	/* local compute boolean*/
+	computeLocalClustering , computeLocalCloseness ;
+							
+	private enum localAnalysis { computeLocalClustering , computeLocalCloseness };
+	
 	
 // MAP FOR CHARTS
 	// private map
@@ -74,9 +78,10 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 	}
 		
 
-	public void setWhichLocalAnalysis ( boolean runVizLocal , boolean computeLocalClustering ) {
+	public void setWhichLocalAnalysis ( boolean runVizLocal , boolean computeLocalClustering , boolean computeLocalCloseness) {
 		this.runViz = runViz ;
 		this.computeLocalClustering = computeLocalClustering ;	
+		this.computeLocalCloseness = computeLocalCloseness ;
 	}	
 	
 	public void setWhichGlobalAnalysis (boolean runViz, boolean getImage , boolean computeFreqDegree , boolean computeFreqDegreeRel , boolean computeAverageDegree , 
@@ -114,14 +119,11 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
-		 
+		handleVizStype netViz  = null ;
 		// run viz
 		if ( runViz )  {
 			// setup net viz parameters
-			analysisGlobal.netViz.setupViz( true, true, palette.red);
-			analysisGlobal.netViz.setupIdViz( false , graph, 1 , "black");
-			analysisGlobal.netViz.setupDefaultParam ( graph, "red", "black", 5 , 0.05 );
-			analysisGlobal.netViz.setupFixScaleManual( true , graph, 50, 0);
+			netViz  = new handleVizStype( netGraph ,stylesheet.manual, "seedGrad", 1) ;
 			Viewer netViewer =  graph.display(false) ;	
 		}
 		
@@ -195,7 +197,11 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					
 					// run viz
 					if ( runViz ) {
-						analysisGlobal.netViz.setupVizBooleanAtr(true, graph,  "black", "red" ) ;
+						netViz.setupDefaultParam ( graph, "red", "black", 5 , .1 );
+						netViz.setupVizBooleanAtr(true, graph,  "black", "red" ) ;
+						netViz.setupViz( true, true, palette.red);
+						netViz.setupIdViz( false , graph, 1 , "black");
+						netViz.setupFixScaleManual( true , graph, 50, 0);
 						Thread.sleep( thread );
 					}
 					// stop iteration    
@@ -219,8 +225,6 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
 		
-		
-
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 		
@@ -228,12 +232,14 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 		handleVizStype netViz = null ;
 		String indicator = null ;
 		
-		if ( computeLocalClustering ) 
-			 indicator =  analysisLocal.getIndicator(nodeIndicators.clustering) ;
-			
-		netViz = new handleVizStype( graph , stylesheet.viz10Color , indicator , 1.5 )  ;
-		netViz.setupDefaultParam (graph, "red", "black", 8 , .2 );
+		if 		( computeLocalClustering ) 
+			indicator =  analysisLocal.getIndicator(nodeIndicators.clustering) ;
 		
+		else if ( computeLocalCloseness )
+			indicator = analysisLocal.getIndicator(nodeIndicators.closeness ) ;
+			
+		netViz = new handleVizStype( graph , stylesheet.viz10Color , indicator , .1 )  ;
+		netViz.setupDefaultParam (graph, "red", "black", 8 , .5 );
 		
 		netViz.setupFixScaleManual( false , graph, 50, 0);	
 		
@@ -262,9 +268,13 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					// create Map
 					Map<Node, Double > mapToUpdate = new HashMap<>() ;
 					
-					if ( computeLocalClustering ) 
-						mapToUpdate = graphAnalysis.getMapNodeClustering(graph);
 					
+					
+					if 		( computeLocalClustering ) 
+						mapToUpdate = graphIndicators.getMapNodeClustering(graph);
+					
+					else if ( computeLocalCloseness )
+						mapToUpdate = graphIndicators.getMapCloseness(graph, indicator);
 					
 					// add value to attribute
 					for ( Node n : mapToUpdate.keySet() ) {
@@ -272,9 +282,10 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 						
 					}
 					netViz.setupIdViz( false , graph , 1 , "black");
-					netViz.setupLabelViz(true, graph, 0.1, "black", indicator);
-					netViz.setupViz(true, true, palette.blue);
+					netViz.setupLabelViz(true , graph, 0.1, "black", indicator);
+					netViz.setupViz(true, true, palette.multi);
 		
+//					System.out.println(mapToUpdate);
 					Thread.sleep( thread );
 		
 					// stop iteration    

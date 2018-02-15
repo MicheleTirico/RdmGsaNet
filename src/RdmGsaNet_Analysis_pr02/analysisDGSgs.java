@@ -15,8 +15,10 @@ import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
 import RdmGsaNetExport.expImage;
+import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.handleVizStype.palette;
+import RdmGsaNetViz.handleVizStype.stylesheet;
 import RdmGsaNet_Analysis_pr02.analysisGlobal;
 
 public class analysisDGSgs  extends analysisMain implements analysisDGS  {
@@ -80,12 +82,12 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 		
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
-		
+		handleVizStype viz 	= null ;
 		// run viz
 		if ( runViz ) {
+			viz = new handleVizStype( gsGraph ,stylesheet.viz10Color, "gsInh", 1) ;
 			// setup gs viz parameters
-			analysisGlobal.gsViz.setupDefaultParam (graph, "red", "white", 6 , 0.5 );
-			analysisGlobal.gsViz.setupIdViz(false, graph, 10 , "black");
+			viz.setupDefaultParam (graph, "red", "white", 6 , 0.5 );
 			Viewer gsViewer = graph.display(false) ;
 		}
 		
@@ -134,8 +136,8 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 							
 					// run viz
 					if ( runViz ) {
-						analysisGlobal.gsViz.setupViz(true, true, palette.red);
-						
+						viz.setupViz(true, true, palette.red);
+						viz.setupIdViz(false, graph, 10 , "black");
 						Thread.sleep(thread);
 						
 					}

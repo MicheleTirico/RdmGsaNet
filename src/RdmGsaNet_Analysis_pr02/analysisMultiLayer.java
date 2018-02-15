@@ -9,8 +9,8 @@ import RdmGsaNet_Analysis.analysisDGSCombinedLayer;
 public class analysisMultiLayer extends analysisMain  {
 
 	// hnadle viz 
-	protected static handleVizStype netViz  = new handleVizStype( netGraph ,stylesheet.manual, "seedGrad") ,
-									gsViz 	= new handleVizStype( gsGraph ,stylesheet.viz10Color, "gsInh") ;
+	protected static handleVizStype netViz  = new handleVizStype( netGraph , stylesheet.manual , "seedGrad", 1) ,
+									gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ;
 		
 	static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer (
 				/* gsViz	*/ 	true ,
@@ -19,7 +19,7 @@ public class analysisMultiLayer extends analysisMain  {
 		
 	public static void main ( String[ ] args ) throws IOException, InterruptedException {
 
-		combinedAnalysis.computeGlobalStat (3000, 5, pathStart, pathStep , 10 );
+		combinedAnalysis.computeGlobalStat (3000 , 5 , pathStart , pathStep , 10 );
 			
 			
 		

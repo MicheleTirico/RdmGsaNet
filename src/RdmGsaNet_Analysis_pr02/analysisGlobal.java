@@ -11,11 +11,7 @@ import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.stylesheet;
 
 public class analysisGlobal extends analysisMain {
-
-	// hnadle viz 
-	protected static handleVizStype netViz  = new handleVizStype( netGraph ,stylesheet.manual, "seedGrad") ,
-									gsViz 	= new handleVizStype( gsGraph ,stylesheet.viz10Color, "gsInh") ;
-		
+	
 	// MAP FOR CHARTS
 	// MAP NET
 	protected static Map	mapNetFreqDegree = new HashMap () , 
@@ -49,9 +45,7 @@ public class analysisGlobal extends analysisMain {
 				/* run analysis				*/		false 
 				);
 
-
-		
-	// --------------------------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------------------------
 	public static void main(String[] args) throws IOException, InterruptedException {
 			
 			// setup handle name file 
@@ -63,10 +57,10 @@ public class analysisGlobal extends analysisMain {
 			);		
 
 			
-	// SET WHICH STAT TO COMPUTE ------------------------------------------------------------------------------------------------------------------------
+// SET WHICH STAT TO COMPUTE ------------------------------------------------------------------------------------------------------------------------
 		
-			// global analysis
-			analysisNet.setWhichGlobalAnalysis(
+		// global analysis
+		analysisNet.setWhichGlobalAnalysis(
 					/* run Viz 							*/ true ,
 					/* getImage							*/ true ,
 					/* computeDegree					*/ true ,
@@ -81,8 +75,8 @@ public class analysisGlobal extends analysisMain {
 					/* compute Global Density			*/ true
 					);
 			
-			analysisGs.setWhichGlobalAnalysis(
-					/* run Viz 					*/ true ,
+		analysisGs.setWhichGlobalAnalysis(
+					/* run Viz 					*/ false ,
 					/* getImage					*/ true ,
 					/* computeStepMaxMorp		*/ true , 
 					/* computeStepMinMorp		*/ true ,
@@ -91,29 +85,29 @@ public class analysisGlobal extends analysisMain {
 					);
 				
 			
-	// SET PARAMETERS OF ANALYSIS ---------------------------------------------------------------------
-			analysisNet.setParamAnalysis( 
+// SET PARAMETERS OF ANALYSIS ---------------------------------------------------------------------
+		analysisNet.setParamAnalysis( 
 					/* degree frequency 	*/ 9 ,
 					/* step in im 			*/ 200 
 					);
 			
-			analysisGs.setParamAnalysis(
+		analysisGs.setParamAnalysis(
 					/* morp 				*/ "gsAct",	// not yet used
 					/* step in im 			*/ 100);
 			
 		
-	// RUN GLOBAL ANALYSIS ------------------------------------------------------------------------------------------------------------------------------
-			analysisNet.computeGlobalStat	(3000 , 5 , pathStart, pathStep , 10 );
+// RUN GLOBAL ANALYSIS ------------------------------------------------------------------------------------------------------------------------------
+		analysisNet.computeGlobalStat	(3000 , 5 , pathStart, pathStep , 10 );
 		
-			analysisGs.computeGlobalStat	(3000 , 5 , pathStart, pathStep , 10 ); 
+		analysisGs.computeGlobalStat	(3000 , 5 , pathStart, pathStep , 1 ); 
 			
 			
 				
 //	 		System.out.println(mapNetStepNewSeed);
 //			System.out.println(mapNetStepNormalDistributionDegree);
 			
-//	 	CREATE CHARTS ---------------------------------------------------------------------------------
-			createChartsNet(
+//	 CREATE CHARTS ---------------------------------------------------------------------------------
+		createChartsNet(
 					/* stored Charts 							*/ true ,
 					/* create Chart Degree 						*/ true ,
 					/* create Chart DegreeRel					*/ false , 
@@ -127,8 +121,8 @@ public class analysisGlobal extends analysisMain {
 					/* create chart density 					*/ true
 					);
 
-			createChartsGs(
-					/* storeCharts 			*/ false  ,
+		createChartsGs(
+					/* storeCharts 			*/ true  ,
 					/* createChartMax		*/ true , 
 					/* createChartMin		*/ true ,
 					/* createChartAve		*/ true
@@ -144,7 +138,7 @@ public class analysisGlobal extends analysisMain {
 		}	
 			
 	// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
-		private static void createChartsNet ( boolean storeCharts, 
+	private static void createChartsNet ( boolean storeCharts, 
 				boolean createChartFreqDegree , 
 				boolean createChartFreqDegreeRel , boolean createChartAverageDegree , 
 				boolean createChartNewNode , boolean createChartNewNodeRel ,

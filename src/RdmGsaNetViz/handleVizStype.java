@@ -270,7 +270,7 @@ public class handleVizStype {
 	
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
 	private double roundValLabel ( double val ) {
-		return	Math.floor(val*100)/ 100 ;
+		return	Math.floor(val*1000)/ 1000 ;
 	}
 	
 }

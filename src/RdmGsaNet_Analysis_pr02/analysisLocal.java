@@ -12,7 +12,7 @@ import RdmGsaNetViz.handleVizStype.stylesheet;
 public  class analysisLocal extends analysisMain  {
 	
 	// Costants 
-	protected enum nodeIndicators { clustering , test } 
+	protected enum nodeIndicators { clustering , closeness } 
 	
 	
 	// handle viz 
@@ -54,7 +54,8 @@ public  class analysisLocal extends analysisMain  {
 	// SET WHICH LOCAL ANALYSIS TO COMPUTE --------------------------------------------------------------------------------------------------------------
 			analysisNet.setWhichLocalAnalysis(
 					/* runVizLocal				*/ false , 
-					/* computeLocalClustering	*/ true 
+					/* computeLocalClustering	*/ false ,
+					/* compute closeness 		*/ true 
 					);
 			
 			

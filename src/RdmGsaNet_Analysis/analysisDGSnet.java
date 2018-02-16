@@ -221,7 +221,7 @@ public class analysisDGSnet extends  analysisMain implements analysisDGS  {
 		
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
-		handleVizStype netLocalViz  = new handleVizStype( graph , stylesheet.viz10Color , "clusteringCoef") ;
+		handleVizStype netLocalViz  = new handleVizStype( graph , stylesheet.viz10Color , "clusteringCoef", 1) ;
 		
 		// setup net viz parameters
 		netLocalViz.setupDefaultParam (graph, "red", "black", 8 , 0.2 );
@@ -275,6 +275,20 @@ public class analysisDGSnet extends  analysisMain implements analysisDGS  {
 		} catch (IOException e) {		}				
 		fs.end();	
 	
+		
+	}
+
+	@Override
+	public void computeGlobalStat(int stepMax, int stepInc, String pathStart, String pathStep, int thread)
+			throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void computeLocalStat(int stepMax, int stepInc, String pathStart, String pathStep, int thread)
+			throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
 		
 	}
 }

@@ -9,8 +9,7 @@ import RdmGsaNet_Analysis.analysisDGSCombinedLayer;
 public class analysisMultiLayer extends analysisMain  {
 
 	// hnadle viz 
-	protected static handleVizStype netViz  = new handleVizStype( netGraph , stylesheet.manual , "seedGrad", 1) ,
-									gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ;
+	
 		
 	static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer (
 				/* gsViz	*/ 	true ,

@@ -147,13 +147,22 @@ public class handleVizStype {
 
 			graph.addNode(idNode);
 			graph.getNode(idNode).setAttribute( "xyz", XYmax , XYmax, 0 );
+//			graph.removeNode(idNode);
 			
 			idNode = "setScale" + 2;
 			graph.addNode(idNode);
 			graph.getNode(idNode).setAttribute( "xyz", XYMin , XYMin, 0 );
+//			graph.removeNode(idNode);
 		
 		} catch (org.graphstream.graph.IdAlreadyInUseException e) { return ;	}
-	}
+		/*
+		Node n1 = graph.getNode("setScale1");
+		Node n2 = graph.getNode("setScale1");
+		graph.removeNode(n1);
+		graph.removeNode(n2);
+	*/
+	
+		}
 // SET STYLESHEET -----------------------------------------------------------------------------------------------------------------------------------
 	private String setVizBooleanAtr ( String color0 , String color1 ) {
 		return  "node {"+

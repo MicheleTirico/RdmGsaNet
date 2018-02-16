@@ -64,7 +64,7 @@ public class analysisGlobal extends analysisMain {
 					/* run Viz 							*/ true ,
 					/* getImage							*/ true ,
 					/* computeDegree					*/ true ,
-					/* computeDegreeRel					*/ false ,	// return the same result of normal degree distribution
+					/* computeDegreeRel					*/ true ,	// return the same result of normal degree distribution
 					/* computeAverageDegree				*/ true ,
 					/* computeNewNode					*/ true ,
 					/* computeStepNewNodeRel			*/ true ,
@@ -110,7 +110,7 @@ public class analysisGlobal extends analysisMain {
 		createChartsNet(
 					/* stored Charts 							*/ true ,
 					/* create Chart Degree 						*/ true ,
-					/* create Chart DegreeRel					*/ false , 
+					/* create Chart DegreeRel					*/ true , 
 					/* create chart Average Degree 				*/ true ,
 					/* create Chart NewNodes					*/ true ,
 					/* create Chart NewNodes Rel				*/ true ,
@@ -207,12 +207,14 @@ public class analysisGlobal extends analysisMain {
 				xyChart.setVisible(true);
 				xyChart.saveChart(storeCharts ,  folderChartNet, "Net count seed rel" );	
 			}
+			
 			// clustering 
 			if (createChartGlobalClustering ) {
 				xyChart = new expChart(typeChart.XYchartSingleLine , "average clustering", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepGlobalClustering );
 				xyChart.setVisible(true);
 				xyChart.saveChart(storeCharts ,  folderChartNet, "Net average clustering" );	
 			}
+			
 			// density
 			if ( createChartDensity ) 
 				xyChart = new expChart(typeChart.XYchartSingleLine , "density", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepGlobalDensity );
@@ -226,6 +228,7 @@ public class analysisGlobal extends analysisMain {
 			if ( !analysisDGSgs.run || storeCharts == false  ) return ;
 		
 			handle = new handleNameFile( 
+					
 					/* handle file 						*/ true , 
 					/* set folder 						*/ folder + "analysis\\" ,
 					/* create new folder ? 				*/ false , 

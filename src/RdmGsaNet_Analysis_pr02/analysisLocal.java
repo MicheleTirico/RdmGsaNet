@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import RdmGsaNetAlgo.graphIndicators;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.stylesheet;
@@ -12,12 +13,8 @@ import RdmGsaNetViz.handleVizStype.stylesheet;
 public  class analysisLocal extends analysisMain  {
 	
 	// Costants 
-	protected enum nodeIndicators { clustering , closeness } 
-	
-	
-	// handle viz 
-	
-	
+	protected enum nodeIndicators { clustering , closeness , betweenness } 
+
 	// MAP FOR CHARTS
 	protected static Map	
 	// MAP NET						
@@ -39,9 +36,10 @@ public  class analysisLocal extends analysisMain  {
 			/* run analysis				*/		true 
 			);
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	// ----------------------------------------------------------------------------------------------------------------------------------------------
 		public static void main(String[] args) throws IOException, InterruptedException {
-		
+	
 			// setup handle name file 
 			handle = new handleNameFile( 
 					/* handle file 						*/ true , 
@@ -50,27 +48,36 @@ public  class analysisLocal extends analysisMain  {
 					/*  manual name file (no in main )	*/ "analysis"
 				);		
 
-					
-	// SET WHICH LOCAL ANALYSIS TO COMPUTE --------------------------------------------------------------------------------------------------------------
+	// SET PARAMETERS ANALYSIS ----------------------------------------------------------------------------------------------------------------------
+			analysisNet.setParamAnalysisLocal(
+					/* normalize closeness		*/ true , 
+					/* normalize betweenness 	*/ true
+					);
+			
+	// SET WHICH LOCAL ANALYSIS TO COMPUTE ----------------------------------------------------------------------------------------------------------	
 			analysisNet.setWhichLocalAnalysis(
-					/* runVizLocal				*/ false , 
-					/* computeLocalClustering	*/ false ,
-					/* compute closeness 		*/ true 
+					/* runVizLocal				*/ true  , 
+					/* getImage					*/ false , 	// doesn't work
+					/* computeLocalClustering	*/ false ,	
+					/* compute closeness 		*/ true ,	// doesn't work with fix scale  
+					/* compute betweenness 		*/ false
 					);
 			
 			
-	// RUN LOCAL ANALYSIS ------------------------------------------------------------------------------------------------------------------------------
+	// RUN LOCAL ANALYSIS ---------------------------------------------------------------------------------------------------------------------------
 
-			analysisNet.computeLocalStat(3000, 5, pathStart, pathStep , 10 );
+			analysisNet.computeLocalStat( 3000, 5 , pathStart, pathStep , 10);
 				
 		}
 
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
-		// GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
-		public static String getIndicator ( nodeIndicators ind ) {
-			return ind.toString();
-		}
+		
+
+// GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
+	public static String getIndicator ( nodeIndicators ind ) {
+		return ind.toString();
+	}
 
 	
 }

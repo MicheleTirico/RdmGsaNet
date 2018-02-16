@@ -150,4 +150,18 @@ public class analysisDGSgs extends analysisMain implements analysisDGS {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void computeGlobalStat(int stepMax, int stepInc, String pathStart, String pathStep, int thread)
+			throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void computeLocalStat(int stepMax, int stepInc, String pathStart, String pathStep, int thread)
+			throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
+		
+	}
 }

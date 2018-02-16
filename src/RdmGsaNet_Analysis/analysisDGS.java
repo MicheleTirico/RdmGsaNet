@@ -183,6 +183,9 @@ public interface analysisDGS  {
 		mapStepGlobalDensity.put(step, density);
 	}
 
+	void computeLocalStat(int stepMax, int stepInc, String pathStart, String pathStep)
+			throws IOException, InterruptedException;
+
 
 }
 

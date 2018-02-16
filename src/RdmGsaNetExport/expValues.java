@@ -16,8 +16,8 @@ import org.graphstream.graph.Node;
 public class expValues {
 	
 	// method to export in a folder generic map after simulation
-	public static void writeMap ( Boolean writeRun, Map map , String folderMap, String nameMap ) throws IOException {
-		if ( writeRun == true ) {
+	public static void writeMap ( Boolean writeRun , Map map , String folderMap, String nameMap ) throws IOException {
+		if ( writeRun ) {
 			
 			String path = folderMap + nameMap; 
 			File file = new File(path);
@@ -35,7 +35,7 @@ public class expValues {
 		
 		Map map = new HashMap();
 		
-		if ( readRun == true ) {
+		if ( readRun ) {
 			String path = folderExp + nameFileExp; 
 			File file = new File(path);
 			

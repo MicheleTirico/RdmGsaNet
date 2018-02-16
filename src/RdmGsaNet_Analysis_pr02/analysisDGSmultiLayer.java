@@ -10,7 +10,9 @@ import org.graphstream.stream.file.FileSourceFactory;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 
+import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
+import RdmGsaNetViz.handleVizStype.stylesheet;
 
 public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 
@@ -47,17 +49,11 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
-
-			// setup net viz parameters
-			analysisMultiLayer.netViz.setupViz( true, true, palette.red);
-			analysisMultiLayer.netViz.setupIdViz( false , netGraph, 1 , "black");
-			analysisMultiLayer.netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.05 );
-			analysisMultiLayer.netViz.setupFixScaleManual( true , netGraph, 50, 0);
+			handleVizStype	netViz  = new handleVizStype( netGraph , stylesheet.manual , "seedGrad", 1) ,
+					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ;
 			
-			// setup gs viz parameters
-			analysisMultiLayer.gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
-			analysisMultiLayer.gsViz.setupIdViz(false, gsGraph, 10 , "black");
-
+			netViz.setupFixScaleManual( true , netGraph , 50 , 0 );
+			
 			
 			//dispay graphs 
 			if ( doGsViz ) {
@@ -93,8 +89,19 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 						// add methods to run for each step in incList
 						System.out.println("----------------step " + step + " ----------------" );				
 						
-						analysisMultiLayer.netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
-						analysisMultiLayer.gsViz.setupViz(true, true, palette.blue);
+						// setup net viz parameters
+						
+						netViz.setupViz( true, true, palette.red);
+						netViz.setupIdViz( false , netGraph, 1 , "black");
+						netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.05 );
+						
+						
+						// setup gs viz parameters
+						gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
+						gsViz.setupIdViz(false, gsGraph, 10 , "black");
+						
+						netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
+						gsViz.setupViz(true, true, palette.blue);
 						
 						Thread.sleep(thread);
 						

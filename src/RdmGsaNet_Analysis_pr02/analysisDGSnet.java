@@ -17,7 +17,7 @@ import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphIndicators;
-import RdmGsaNetExport.expImage;
+import RdmGsaNetExport.*;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
@@ -25,6 +25,7 @@ import RdmGsaNet_Analysis_pr02.analysisLocal.nodeIndicators;
 import RdmGsaNet_Analysis_pr02.analysisMain ;
 
 public  class analysisDGSnet extends analysisMain implements analysisDGS     {
+
 
 	// CONSTANT
 	private String dgsId ;
@@ -39,26 +40,26 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 	private int s1 = 0 , s2 = 0 ; 
 		
 	protected static  boolean 	
-	/* global compute boolean*/		run,
-									getImage,
-									computeFreqDegree ,
-									computeFreqDegreeRel ,
-									computeAverageDegree ,
-									computeStepNewNode ,
-									computeNormalDegreeDistribution ,
-									computeStepNewNodeRel ,
-									computeNewSeedCount ,	
-									computeNewSeedCountRel ,
-									runVizGlobal ,
-									computeGlobalClustering ,
-									computeGlobalDensity ,
-									runViz ,
-	/* local compute boolean*/
-	computeLocalClustering , computeLocalCloseness ;
-							
-	private enum localAnalysis { computeLocalClustering , computeLocalCloseness };
+	/* common boolean 		*/ 		run,  getImage, runViz;
 	
+	protected boolean 
+	/* global compute boolean*/		computeFreqDegree, 
+									computeFreqDegreeRel, 
+									computeAverageDegree,
+									computeStepNewNode, 
+									computeNormalDegreeDistribution, 
+									computeStepNewNodeRel, 
+									computeNewSeedCount, 
+									computeNewSeedCountRel,
+									computeGlobalClustering,
+									computeGlobalDensity;
+	protected boolean
+	/* local compute boolean*/		computeLocalClustering,
+									computeLocalCloseness,
+									computeLocalBetweenness;
 	
+	// set parameter analysis
+	private boolean closenessNormalize , betweennessNormalize ;
 // MAP FOR CHARTS
 	// private map
 	private Map <Integer , Integer >  	mapNetStepNodeCount = new HashMap< Integer , Integer > (),
@@ -76,18 +77,27 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 		this.degreeFreq = degreeFreq ;
 		this.stepIncIm = stepIncIm ;	
 	}
+	
+	// set parameters of analysis
+	public void setParamAnalysisLocal ( boolean closenessNormalize , boolean betweennessNormalize ) {
+			this.closenessNormalize = closenessNormalize;
+			this.betweennessNormalize = betweennessNormalize ;			
+		}
 		
-
-	public void setWhichLocalAnalysis ( boolean runVizLocal , boolean computeLocalClustering , boolean computeLocalCloseness) {
+	public void setWhichLocalAnalysis ( boolean runViz , boolean getImage , 
+			boolean computeLocalClustering , boolean computeLocalCloseness , boolean computeLocalBetweenness ) {
 		this.runViz = runViz ;
+		this.getImage = getImage ;
 		this.computeLocalClustering = computeLocalClustering ;	
 		this.computeLocalCloseness = computeLocalCloseness ;
+		this.computeLocalBetweenness = computeLocalBetweenness ;
 	}	
 	
-	public void setWhichGlobalAnalysis (boolean runViz, boolean getImage , boolean computeFreqDegree , boolean computeFreqDegreeRel , boolean computeAverageDegree , 
-										boolean computeStepNewNode, boolean computeStepNewNodeRel, boolean computeNormalDegreeDistribution ,
-										boolean computeNewSeedCount , boolean computeNewSeedCountRel ,
-										boolean computeGlobalClustering , boolean computeGlobalDensity ) {
+	public void setWhichGlobalAnalysis (boolean runViz, boolean getImage , 
+			boolean computeFreqDegree , boolean computeFreqDegreeRel , boolean computeAverageDegree , 
+			boolean computeStepNewNode, boolean computeStepNewNodeRel, boolean computeNormalDegreeDistribution ,
+			boolean computeNewSeedCount , boolean computeNewSeedCountRel ,
+			boolean computeGlobalClustering , boolean computeGlobalDensity ) {
 		
 		this.runViz = runViz ;
 		this.getImage = getImage ;
@@ -237,11 +247,11 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 		
 		else if ( computeLocalCloseness )
 			indicator = analysisLocal.getIndicator(nodeIndicators.closeness ) ;
-			
-		netViz = new handleVizStype( graph , stylesheet.viz10Color , indicator , .1 )  ;
-		netViz.setupDefaultParam (graph, "red", "black", 8 , .5 );
 		
-		netViz.setupFixScaleManual( false , graph, 50, 0);	
+		else if ( computeLocalBetweenness )
+			indicator = analysisLocal.getIndicator(nodeIndicators.betweenness ) ;
+			
+			
 		
 		Viewer netViewer = graph.display(false) ;
 		
@@ -254,8 +264,8 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 		// set file Source for file step
 		fs = FileSourceFactory.sourceFor(pathStep);
 		fs.addSink(graph);
-		// import file step
 		
+		// import file step
 		try {
 			fs.begin(pathStep);
 			while ( fs.nextStep()) {
@@ -265,33 +275,48 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
+					netViz = new handleVizStype( graph , stylesheet.viz10Color , indicator , 1 )  ;
+					netViz.setupDefaultParam (graph, "red", "black", 8 , .5 );		
+					netViz.setupFixScaleManual( false , graph, 50, 0);	
+					
 					// create Map
-					Map<Node, Double > mapToUpdate = new HashMap<>() ;
-					
-					
+					Map<Node, Double > mapToUpdate = new HashMap<>() ;			
 					
 					if 		( computeLocalClustering ) 
 						mapToUpdate = graphIndicators.getMapNodeClustering(graph);
 					
 					else if ( computeLocalCloseness )
-						mapToUpdate = graphIndicators.getMapCloseness(graph, indicator);
+						mapToUpdate = graphIndicators.getMapCloseness(graph, indicator ,closenessNormalize);
 					
+					else if ( computeLocalBetweenness )
+						mapToUpdate = graphIndicators.getMapBetweenness(graph, indicator , betweennessNormalize);
+								
 					// add value to attribute
-					for ( Node n : mapToUpdate.keySet() ) {
+					for ( Node n : mapToUpdate.keySet() ) 
 						graph.getNode(n.getId()).addAttribute(indicator, mapToUpdate.get(n)) ;
-						
-					}
+					
 					netViz.setupIdViz( false , graph , 1 , "black");
-					netViz.setupLabelViz(true , graph, 0.1, "black", indicator);
-					netViz.setupViz(true, true, palette.multi);
-		
-//					System.out.println(mapToUpdate);
+					netViz.setupLabelViz(false , graph, 0.1, "black", indicator);
+					netViz.setupViz(true, true, palette.red);
+
+					/* doesn't work 
+					if ( getImage ) 	
+						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
+							expImage.getImage(graph, "D:\\ownCloud\\RdmGsaNet_exp\\test\\" , "peppe" + step + ".png" );
+			
+					 	*/
+				
+					// System.out.println(mapToUpdate);
+					
 					Thread.sleep( thread );
-		
+//					RdmGsaNetExport.expValues.writeMap(true, mapToUpdate, "D:\\ownCloud\\RdmGsaNet_exp\\test\\", "nameMap"+ step );
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}
+			
 			}
+			
+			
 		} catch (IOException e) {		}				
 		fs.end();	
 	

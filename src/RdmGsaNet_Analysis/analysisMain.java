@@ -73,8 +73,8 @@ public class analysisMain {
 	static expChart xyChart = null ;
 	
 	// hnadle viz 
-	protected static handleVizStype netViz  = new handleVizStype( netGraph ,stylesheet.manual, "seedGrad") ,
-									gsViz 	= new handleVizStype( gsGraph ,stylesheet.viz10Color, "gsInh") ;
+	protected static handleVizStype netViz  = new handleVizStype( netGraph ,stylesheet.manual, "seedGrad", 1) ,
+									gsViz 	= new handleVizStype( gsGraph ,stylesheet.viz10Color, "gsInh", 1) ;
 	
 // INITIALIZE ANALYSIS ----------------------------------------------------------------------------
 	// Initialize net analysis

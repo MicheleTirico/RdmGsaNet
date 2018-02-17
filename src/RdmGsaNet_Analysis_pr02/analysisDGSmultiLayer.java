@@ -20,11 +20,11 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 		private boolean	doGsViz ,
 						doNetViz ,
 						computeGsActivedNodes ;
-		
+		/*
 		// viz constants
 		private static FileSource gsFs , netFs ;
-		
 		private static ViewPanel  gsView , netView ;
+		*/
 		
 		protected String dgsId ;
 			
@@ -112,7 +112,6 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			} catch (IOException e) {		}				
 			gsFs.end() ;	
 			netFs.end() ;
-			
 		}
 
 		@Override

@@ -29,7 +29,6 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 
 	// CONSTANT
 	private String dgsId ;
-	private static FileSource fs ;
 	protected static Graph graph = new SingleGraph ("graph");
 	private int degreeFreq ;
 	

@@ -26,9 +26,9 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 	// CONSTANT
 	private String 	dgsId ,
 					morp ;
+
 	private int stepIncIm ;
-	private static FileSource fs ;
-	
+
 	protected static Graph graph = new SingleGraph ("graph");
 	
 	private int degreeFreq ;

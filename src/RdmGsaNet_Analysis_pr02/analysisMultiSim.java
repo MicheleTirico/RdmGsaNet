@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import RdmGsaNetExport.handleNameFile;
+import RdmGsaNet_Analysis_pr02.analysisDGSmultiSim.layerToAnalyze;
+import RdmGsaNet_Analysis_pr02.analysisDGSmultiSim.typeIndicator;
 import RdmGsaNet_Analysis_pr02.analysisLocal.nodeIndicators;
 
 public class analysisMultiSim extends analysisMain {
@@ -23,8 +25,9 @@ public class analysisMultiSim extends analysisMain {
 		// HANDLE FILE OBJECT
 		protected static handleNameFile handle ;
 
-		private static analysisDGSmultiSim multiSim = new analysisDGSmultiSim(
-				
+		private static analysisDGSmultiSim multiSim = new analysisDGSmultiSim( 
+				/* id analysis		*/ "id" , 
+				/* run analysis ? 	*/ true
 				) ;
 		
 		
@@ -45,14 +48,15 @@ public class analysisMultiSim extends analysisMain {
 						);
 				
 		// SET WHICH LOCAL ANALYSIS TO COMPUTE ----------------------------------------------------------------------------------------------------------	
-				multiSim.setWhichLocalAnalysis(
-
+				multiSim.setWhichGlobalAnalysis(
+						/* typeIndicator			*/ typeIndicator.probability , 
+						/* layerToAnalyze			*/ layerToAnalyze.net
 						);
 				
 				
 		// RUN LOCAL ANALYSIS ---------------------------------------------------------------------------------------------------------------------------
 
-				multiSim.computeGlobalMultiSim(3000, 5, folderMultiSim);
+				multiSim.computeGlobalMultiSim(30, 5, folderMultiSim);
 					
 			}
 

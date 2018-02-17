@@ -135,4 +135,53 @@ public class handleNameFile {
 		pathStartGs = path + "\\" + nameStartGs + fileType ;
 		return pathStartGs;
 	} 
+	
+	public static String getCompletePathInFolder ( String folder , String testName ) {
+		
+		String nameFileComplete = null ;
+		File path = new File( folder );
+		File [] files = path.listFiles();
+		int lengthPath = folder.length();
+	
+		 for (int i = 0; i < files.length; i++){					//	System.out.println(files[i]);
+			 String name = files[i].toString();				// System.out.println(name);
+			 String firstChar = null ;
+			 try {
+			  firstChar = getFirstletterString(name, lengthPath , lengthPath+testName.length());	//	System.out.println(firstChar);
+			} catch (java.lang.StringIndexOutOfBoundsException e) {	continue ;}
+			 boolean test = firstChar.equals(testName);
+			 if ( test ) {
+				nameFileComplete = name;
+				break ;
+			 }
+		 }
+		 return nameFileComplete;		
+	}
+	
+	public static String getCompleteNameInFolder ( String folder , String testName ) {
+		
+		String nameFileComplete = null ;
+		File path = new File( folder );		
+		File [] files = path.listFiles();
+		int lengthPath = folder.length();
+	
+		 for (int i = 0; i < files.length; i++){					//	System.out.println(files[i]);
+			 String name = files[i].toString();						// System.out.println(name);
+			 String firstChar = null ;
+			 try {
+				 firstChar = getFirstletterString(name, lengthPath , lengthPath+testName.length()); //  System.out.println(firstChar);
+			} catch (java.lang.StringIndexOutOfBoundsException e) {	continue ;}
+			boolean test = firstChar.equals(testName);
+			 if ( test ) {
+				nameFileComplete = files[i].getName().toString();
+				break ;
+			 }
+		 }
+		 return nameFileComplete;		
+	}
+	
+	// private met
+		public static String getFirstletterString ( String string , int startCharPos ,int finalCharPos ) {
+			return string.substring(startCharPos, finalCharPos); 		
+		}
 }

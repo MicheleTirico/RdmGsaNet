@@ -29,7 +29,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 
 	// CONSTANT
 	private String dgsId ;
-	protected static Graph graph = new SingleGraph ("graph");
+	
 	private int degreeFreq ;
 	
 	// viz constants
@@ -69,7 +69,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 	public analysisDGSnet ( String dgsId , boolean run ) {
 		this.dgsId = dgsId;
 		this.run = run ;
-	}
+	} 
 	
 	// set parameters of analysis
 	public void setParamAnalysis ( int degreeFreq , int stepIncIm ) {
@@ -167,7 +167,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 						analysisDGS.computeFreqDegree( degreeFreq, graph , step , analysisGlobal.mapNetFreqDegree );	
 					
 					// return same result of degree distribution
-					if ( computeFreqDegreeRel  ) 
+					if ( computeFreqDegreeRel  )  
 						analysisDGS.computeFreqDegreeRel( degreeFreq, graph , step , analysisGlobal.mapNetFreqDegreeRel );	
 						
 					if ( computeAverageDegree )
@@ -192,7 +192,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					if ( computeNormalDegreeDistribution) 	
 						analysisDGS.computeStepNormalDegreeDistribution(graph, step, analysisGlobal.mapNetStepNormalDistributionDegree, true , 9 );
 				
-					if ( computeNewSeedCount )
+					if ( computeNewSeedCount ) 
 						analysisDGS.computeStepCountNewSeed(graph, step, analysisGlobal.mapNetStepNewSeed, false);
 					
 					if ( computeNewSeedCountRel )

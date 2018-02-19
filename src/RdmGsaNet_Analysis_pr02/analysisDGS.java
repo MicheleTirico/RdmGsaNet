@@ -96,7 +96,7 @@ public interface analysisDGS  {
 	}
 	
 	public static void computeStepAveSeed ( Graph graph , double step , Map mapStepAveSeed ) {		}
-	
+	 
 	//morp stat ----------------------------------------------------------------------------------------------------------------------------------------
 	// method to create 2 maps of statistical distribution of morphogen's values 
 	public static void computeStepMorp ( Graph graph , double step , Map mapStepMorp , analysisType stat) {
@@ -169,7 +169,7 @@ public interface analysisDGS  {
 	public static void computeGlobalClustering ( Graph graph, double step , Map mapStepGlobalClustering ) {
 		double clustering = Toolkit.averageClusteringCoefficient(graph);
 		mapStepGlobalClustering.put(step, clustering);
-	}
+	} 
 	
 	// global density 
 	public static void computeGlobalDensity ( Graph graph, double step , Map mapStepGlobalDensity ) {

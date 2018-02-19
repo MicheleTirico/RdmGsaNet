@@ -27,14 +27,14 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class expChart extends JFrame  {
 	
 	public enum morp { activator, inhibitor }
-	public enum typeChart { XYchart2Morp,  XYchartMultipleLine , XYchartSingleLine }
+	public enum typeChart { XYchart2Morp,  XYchartMultipleLine , XYchartSingleLine , XYchartSer_xy }
 	
 	public typeChart type; 
 
 	public morp typeMorp ;
 	
 	public int width , height ;
-	
+	 
 	JFreeChart chart ;
 	
 	String chartTitle ;
@@ -47,7 +47,7 @@ public class expChart extends JFrame  {
 						int width , int height , 
 						Map map  ) {
 		
-		super ( chartTitle ) ;
+		super ( chartTitle ) ; 
 		
 		this.width = width; 
 		this.height = height ;
@@ -61,6 +61,7 @@ public class expChart extends JFrame  {
 			
 			case XYchartSingleLine :	{ chartPanel =  createChartPanelXYSingleLine ( chartTitle , xAxisLabel , yAxisLabel , map ) ; 	break ; }
 				
+			case XYchartSer_xy : 		{ chartPanel =  createChartPanelXY_ser_xy ( chartTitle , xAxisLabel , yAxisLabel , map ) ; 	break ; }
 			}
 			
 			add(chartPanel, BorderLayout.CENTER);
@@ -88,6 +89,44 @@ public class expChart extends JFrame  {
 		return new ChartPanel(chart);
 	}
 	
+	private JPanel createChartPanelXY_ser_xy ( String chartTitle , String xAxisLabel , String yAxisLabel ,  Map<Double, Map<Double,Double>> map ) {
+		this.xAxisLabel = xAxisLabel ;
+	    this.yAxisLabel = yAxisLabel; 
+	    
+	    // covert map to mapChart
+	  //  Map <Double, ArrayList<Double>> mapChart = getSortedMap( map );	//        System.out.println(mapChart);
+	    
+	    XYDataset dataset = createDatasetMultipleLine_ser_xy ( map );
+	
+	    chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataset);
+	    
+		return new ChartPanel(chart);
+	}
+	
+	// create dataset of values ( which is a map java collection ) 
+		private XYDataset createDatasetMultipleLine_ser_xy (  Map<Double, Map<Double,Double>> mapChart  ) 	{
+			 
+			// create dataset
+			XYSeriesCollection dataset = new XYSeriesCollection();
+		
+			for ( double serName = 0.0 ; serName < mapChart.size() ; serName++ ) {
+				
+				// create series
+				XYSeries ser = new XYSeries(serName) ;
+				Map<Double,Double> map = mapChart.get(serName) ;
+				System.out.println(map);
+				
+				for ( Entry<Double, Double> entry : map.entrySet()) {
+					double xVal = entry.getKey();
+					double yVal = entry.getValue() ;
+					ser.add(xVal, yVal);
+				}
+				dataset.addSeries(ser);		
+			}
+			return dataset;	 
+		}
+	
+	
 	private JPanel createChartPanelXYMultipleLine ( String chartTitle , String xAxisLabel , String yAxisLabel ,  Map<Double, Map<Double,Double>> map ) {
 		
 		this.xAxisLabel = xAxisLabel ;
@@ -111,7 +150,7 @@ public class expChart extends JFrame  {
 		Random rand = new Random();
 		Double randKey = (Double) keys[ rand.nextInt(keys.length) ];
 		ArrayList<Double> randList = mapChart.get(randKey);
-		
+		 
 		// create dataset
 		XYSeriesCollection dataset = new XYSeriesCollection();
 	
@@ -135,7 +174,7 @@ public class expChart extends JFrame  {
 	}
 	
 	private JPanel createChartPanelXY2Morp ( String chartTitle, String xAxisLabel , String yAxisLabel ,  Map map ) {
-		
+		 
         this.xAxisLabel = xAxisLabel ;
         this.yAxisLabel = yAxisLabel;
     
@@ -242,7 +281,4 @@ public class expChart extends JFrame  {
 	    }
 	    return mapChart; 
 	}
-
-	
-	
 }

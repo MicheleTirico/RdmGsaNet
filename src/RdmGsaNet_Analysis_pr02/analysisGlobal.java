@@ -29,7 +29,7 @@ public class analysisGlobal extends analysisMain {
 							mapGsStepMinMorp = new HashMap () , 
 							mapGsStepAveMorp = new HashMap () ,
 							mapGsActivedNodes = new HashMap () ;
-
+ 
 	// CREATE CHARTS
 	static expChart xyChart = null ;
 		
@@ -44,7 +44,7 @@ public class analysisGlobal extends analysisMain {
 				/* id dgs 					*/		"dgsGs" , 
 				/* run analysis				*/		false 
 				);
-
+ 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 	public static void main(String[] args) throws IOException, InterruptedException {
 			
@@ -67,7 +67,7 @@ public class analysisGlobal extends analysisMain {
 					/* computeDegreeRel					*/ true ,	// return the same result of normal degree distribution
 					/* computeAverageDegree				*/ true ,
 					/* computeNewNode					*/ true ,
-					/* computeStepNewNodeRel			*/ true ,
+					/* computeStepNewNodeRel			*/ true , 
 					/* computeNormalDegreeDistribution 	*/ true ,
 					/* computeNewSeedCount				*/ true ,
 					/* computeNewSeedCountRel			*/ true ,
@@ -129,7 +129,7 @@ public class analysisGlobal extends analysisMain {
 					);
 		
 			
-			
+			 
 			
 	// SET VIZ ----------------------------------------------------------------------------------------
 			// net viz 
@@ -199,7 +199,7 @@ public class analysisGlobal extends analysisMain {
 				xyChart = new expChart(typeChart.XYchartSingleLine , "count seed ", "Step (t)" , " new node (n)" , 800, 600 ,	mapNetStepNewSeed );
 				xyChart.setVisible(true);
 				xyChart.saveChart(storeCharts ,  folderChartNet, "Net count seed" );	
-			}
+			} 
 			
 			// seed stat
 			if (  createChartNewSeedCountRel	) {

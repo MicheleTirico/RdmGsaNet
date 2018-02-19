@@ -19,12 +19,6 @@ public class analysisMultiLayer extends analysisMain  {
 		
 	public static void main ( String[ ] args ) throws IOException, InterruptedException {
 	
-		
-
-
-		//	nameStartGs = "layerGs_start_setupGsGrid_grid8_size_50_Da_0.2_Di_0.1_f_0.03_k_0.062_diff_weight" ;
-					//handleNameFile.getCompleteNameInFolder(folder, "layerGs_Start")  ;
-
 		combinedAnalysis.computeGlobalStat (3000 , 5 , pathStart , pathStep , 10 );
 			
 			

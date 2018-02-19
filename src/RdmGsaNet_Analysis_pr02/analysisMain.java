@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
@@ -22,6 +23,8 @@ import RdmGsaNetViz.handleVizStype.stylesheet;
 
 public  class  analysisMain   {
 	
+	protected static Graph graph = new SingleGraph ("graph");
+	
 	// HANDLE FILE OBJECT
 	protected static handleNameFile handle ;
 
@@ -33,8 +36,8 @@ public  class  analysisMain   {
 	
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder  = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\maxValue\\alive\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.6_00\\" ;
-	protected static String folderMultiSim = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\maxValue\\alive\\" ;								
+	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\random\\alive\\maxStep_3000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.2_00\\" ;
+	protected static String folderMultiSim = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\random\\alive\\" ;								
 	
 	// START FILES
 	// GS graph

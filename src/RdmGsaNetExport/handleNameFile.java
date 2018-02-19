@@ -39,7 +39,7 @@ public class handleNameFile {
 		if ( createNewDirectory )
 			nameNewFolder = getNameNewFolder ( maxStep , genNode , genEdge );
 		else if ( createNewDirectory == false )
-			nameNewFolder = folder + nameNewFolder ;
+			nameNewFolder = manualNameFolder ;
 		String path = createFolder(folder , nameNewFolder , createNewDirectory ) ;
 	}
 		
@@ -48,8 +48,7 @@ public class handleNameFile {
 	// create new folder where stored all dgs files and return new path
 	public String createFolder (String folder, String nameNewFolder , boolean createNewDirectory  ) {
 
-		if ( toHandle == false )
-			return path;
+		if ( toHandle == false )		return path;
 			
 		if ( createNewDirectory ) {
 			for ( int numFol = 0 ; numFol <= 50 ; numFol++ ) {
@@ -73,9 +72,16 @@ public class handleNameFile {
 			file.mkdir() ;
 		}
 		return path;
-		
-
 	}
+	
+	// create new folder where stored all dgs files and return new path
+		public static String createNewGenericFolder (String folder, String nameNewFolder  ) {
+ 
+			path = folder + nameNewFolder ;
+			File file = new File(path);
+			file.mkdir() ;	
+			return path;
+		}
 	
 	// get name DGS file of Net
 	private static String getNameNet ( boolean isStart) {

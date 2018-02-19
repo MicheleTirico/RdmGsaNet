@@ -22,11 +22,11 @@ public class expValues {
 			String path = folderMap + nameMap; 
 			File file = new File(path);
 			
-			FileOutputStream fos = new FileOutputStream(file) ;
+			FileOutputStream fos = new FileOutputStream(file) ; 
 			ObjectOutputStream oos = new ObjectOutputStream(fos) ;
 			
 			oos.writeObject(map) ;
-			oos.flush();
+			oos.flush(); 
 		}
 	}
 	

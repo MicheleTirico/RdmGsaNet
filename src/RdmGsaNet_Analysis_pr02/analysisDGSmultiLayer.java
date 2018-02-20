@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.graphstream.graph.ElementNotFoundException;
+import org.graphstream.graph.Node;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 
+import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
@@ -17,9 +19,11 @@ import RdmGsaNetViz.handleVizStype.stylesheet;
 public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 
 	// COSTANTS
-		private boolean	doGsViz ,
+		private boolean	run ,
+						doGsViz ,
 						doNetViz ,
-						computeGsActivedNodes ;
+						computeGsActivedNodes ,
+						computeGlobalCorrelation ;
 		/*
 		// viz constants
 		private static FileSource gsFs , netFs ;
@@ -29,16 +33,33 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 		protected String dgsId ;
 			
 		// COSTRUCTOR 
-		public analysisDGSmultiLayer ( boolean doGsViz ,boolean doNetViz) {
+		public analysisDGSmultiLayer (boolean run ,  boolean doGsViz ,boolean doNetViz , boolean computeGlobalCorrelation ) {
+			this.run = run ;
 			this.doGsViz = doGsViz ;
 			this.doNetViz = doNetViz ;
+			this.computeGlobalCorrelation = computeGlobalCorrelation ;
+		}
+		
+		// correlation parameters 
+		protected enum correlationValGs  { gsAct , gsInh 	}
+		protected enum correlationValNet { degree , seed }
+		protected correlationValGs valGs ;
+		protected correlationValNet valNet ; 
+		
+		protected int depth ;
+		
+		public void setParametersCorrelation ( correlationValGs valGs , correlationValNet valNet , int depth ) {
+			this.valGs = valGs ;
+			this.valNet = valNet;
+			this.depth = depth ; 
+				
 		}
 
 		@Override
 		public void computeGlobalStat(int stepMax, int stepInc, String[] pathStartArr, String[] pathStepArr , int thread )
 				throws IOException, InterruptedException {
 
-			if ( !doGsViz && !doNetViz )
+			if ( !run )
 				return ;
 
 			String pathStartGs = pathStartArr[0];
@@ -49,11 +70,11 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
+			
 			handleVizStype	netViz  = new handleVizStype( netGraph , stylesheet.manual , "seedGrad", 1) ,
 					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ;
 			
-			netViz.setupFixScaleManual( true , netGraph , 50 , 0 );
-			
+			netViz.setupFixScaleManual( true , netGraph , 100 , 0 );
 			
 			//dispay graphs 
 			if ( doGsViz ) {
@@ -89,21 +110,31 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 						// add methods to run for each step in incList
 						System.out.println("----------------step " + step + " ----------------" );				
 						
-						// setup net viz parameters
 						
-						netViz.setupViz( true, true, palette.red);
-						netViz.setupIdViz( false , netGraph, 1 , "black");
-						netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.05 );
+						if ( computeGlobalCorrelation ) {
+							for ( Node n : netGraph.getEachNode() ) {
+//								double degreeDouble = (double) n.getDegree() ;
+								n.addAttribute("degree",  (double) n.getDegree());
+								}		
+ 							analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  analysisMultiLayer.mapGlobalCorrelation );
+						}
+	
 						
-						
-						// setup gs viz parameters
-						gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
-						gsViz.setupIdViz(false, gsGraph, 10 , "black");
-						
-						netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
-						gsViz.setupViz(true, true, palette.blue);
-						
-						Thread.sleep(thread);
+						if ( doNetViz ) {
+							// setup net viz parameters
+							netViz.setupViz( true, true, palette.red);
+							netViz.setupIdViz( false , netGraph, 1 , "black");
+							netViz.setupDefaultParam ( netGraph, "red", "black", 2 , 0.05 );
+							netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
+						}
+						if ( doGsViz ) {
+							gsViz.setupDefaultParam (gsGraph, "red", "white", 4 , 0.5 );
+							gsViz.setupIdViz(false, gsGraph, 10 , "black");
+							gsViz.setupViz(true, true, palette.blue);
+						}
+							
+						if ( doGsViz | doNetViz )
+							Thread.sleep(thread);
 						
 						// stop iteration    
 						if ( stepMax == step ) { break; }

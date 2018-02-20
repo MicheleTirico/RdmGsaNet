@@ -58,15 +58,15 @@ public  class analysisLocal extends analysisMain  {
 			analysisNet.setWhichLocalAnalysis(
 					/* runVizLocal				*/ true  , 
 					/* getImage					*/ false , 	// doesn't work
-					/* computeLocalClustering	*/ false ,	
-					/* compute closeness 		*/ true ,	// doesn't work with fix scale  
+					/* computeLocalClustering	*/ true ,	
+					/* compute closeness 		*/ false ,	// doesn't work with fix scale  
 					/* compute betweenness 		*/ false
 					);
 			
 			
 	// RUN LOCAL ANALYSIS ---------------------------------------------------------------------------------------------------------------------------
 
-			analysisNet.computeLocalStat( 3000, 5 , pathStart, pathStep , 10);
+			analysisNet.computeLocalStat( 5000, 5 , pathStart, pathStep , 10);
 				
 		}
 

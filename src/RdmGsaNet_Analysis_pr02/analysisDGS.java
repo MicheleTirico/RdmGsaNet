@@ -2,11 +2,13 @@ package RdmGsaNet_Analysis_pr02;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
 import RdmGsaNetAlgo.graphAnalysis;
@@ -97,7 +99,7 @@ public interface analysisDGS  {
 	
 	public static void computeStepAveSeed ( Graph graph , double step , Map mapStepAveSeed ) {		}
 	 
-	//morp stat ----------------------------------------------------------------------------------------------------------------------------------------
+//morp stat ----------------------------------------------------------------------------------------------------------------------------------------
 	// method to create 2 maps of statistical distribution of morphogen's values 
 	public static void computeStepMorp ( Graph graph , double step , Map mapStepMorp , analysisType stat) {
 	
@@ -132,15 +134,14 @@ public interface analysisDGS  {
 	
 	}
 	
-	//COMPUTE NEW NODES --------------------------------------------------------------------------------------------------------------------------------	
+//COMPUTE NEW NODES --------------------------------------------------------------------------------------------------------------------------------	
 	// compute % new nodes vs size graph
 	public static void computeStepNewNodeRel ( Graph graph , double step , Map mapStepNewNodeRel , Map<Integer , Integer >  mapNetStepNodeCountRel ,  int  s  ) {
 	
-		mapNetStepNodeCountRel.put(s, graph.getNodeCount());
+		mapNetStepNodeCountRel.put(s, graph.getNodeCount()); //	System.out.println(mapNetStepNodeCountRel);
 		try {
 			mapStepNewNodeRel.put(step,(double) (graph.getNodeCount() - mapNetStepNodeCountRel.get(s-1)) / graph.getNodeCount());//	
 		} catch (java.lang.NullPointerException e) {			}
-		s++;
 	}
 	
 	// implemented in analysisDGSnet
@@ -154,7 +155,7 @@ public interface analysisDGS  {
 	}
 	
 	
-	//---------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------
 	// get list of step to do analysis
 	public static ArrayList<Double> getListStepToAnalyze ( double stepInc , double stepMax ) {
 		
@@ -165,7 +166,7 @@ public interface analysisDGS  {
 		return list;		
 	}
 	
-		// global (average) clustering
+	// global (average) clustering
 	public static void computeGlobalClustering ( Graph graph, double step , Map mapStepGlobalClustering ) {
 		double clustering = Toolkit.averageClusteringCoefficient(graph);
 		mapStepGlobalClustering.put(step, clustering);
@@ -177,6 +178,21 @@ public interface analysisDGS  {
 		mapStepGlobalDensity.put(step, density);
 	}
 
+	// global density regular grid
+	public static void computeGlobalDensityRegularGraph ( Graph graph, double step , Map mapStepGlobalDensityGrid , int regularGraphDegree ) {
+		
+		int nodeCount = graph.getNodeCount() ;
+		
+		double sumDegree = 0.0 ;
+		for ( Node n : graph.getEachNode() ) {
+			double degree = n.getDegree();
+			sumDegree = sumDegree + degree ;
+		}
+		double densityRegularGraph = sumDegree / ( nodeCount * regularGraphDegree) ;
+		
+		mapStepGlobalDensityGrid.put(step, densityRegularGraph) ;				//	System.out.println(mapStepGlobalDensityGrid);
+	}
+	
 //LOCAL STAT METHODS -------------------------------------------------------------------------------------------------------------------------------
 	// return map of step with map of nodes and clustering
 	public static void computeMapLocalClustering ( Graph graph , double step , Map mapStepMapNodeClustering ) {
@@ -190,7 +206,42 @@ public interface analysisDGS  {
 	
 // GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
 
+// CORRELATION METHODS ------------------------------------------------------------------------------------------------------------------------------
+	
+	// global correlation 
+	public static void computeGlobalCorrelation ( Graph graph0 , Graph graph1 , String atr0 , String atr1 , double step , int depth , Map mapGlobalCorrelation ) {
 
+		Collection<Node> nodeSet0 = graph0.getNodeSet();	//	System.out.println(nodeSet0.size());
+		Collection<Node> nodeSet1 = graph1.getNodeSet();	//	System.out.println(nodeSet1.size());
+		
+		ArrayList<String> idSet0 = new ArrayList<String>();
+		ArrayList<String> idSet1 = new ArrayList<String>();
+	
+		for ( Node n : nodeSet0) 
+			idSet0.add(n.getId());
+		
+		for ( Node n : nodeSet1) 
+			idSet1.add(n.getId());
+		
+		Map<Node , Double > map0 = new HashMap<Node, Double>();
+		Map<Node , Double > map1 = new HashMap<Node, Double>();
+
+		for ( Node n : graph0.getEachNode()) {
+			if ( idSet1.contains(n.getId()))	 	
+				map0.put(n, n.getAttribute(atr0)) ;
+		}
+		
+//		System.out.println(map0.size());
+		
+		for ( Node n : graph1.getEachNode())  {
+			if ( idSet0.contains(n.getId()))
+				map1.put(n, (double) n.getAttribute(atr1)) ;
+		}
+		double globalCor = graphAnalysis.getGlobalCorrelation(map0, map1);		//	System.out.println(globalCor);
+		
+		mapGlobalCorrelation.put(step, globalCor);
+
+	}
 
 
 }

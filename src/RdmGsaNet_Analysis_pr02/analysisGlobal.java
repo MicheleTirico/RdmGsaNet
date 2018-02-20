@@ -61,7 +61,7 @@ public class analysisGlobal extends analysisMain {
 		
 		// global analysis
 		analysisNet.setWhichGlobalAnalysis(
-					/* run Viz 							*/ true ,
+					/* run Viz 							*/ false ,
 					/* getImage							*/ true ,
 					/* computeDegree					*/ true ,
 					/* computeDegreeRel					*/ true ,	// return the same result of normal degree distribution
@@ -93,13 +93,13 @@ public class analysisGlobal extends analysisMain {
 			
 		analysisGs.setParamAnalysis(
 					/* morp 				*/ "gsAct",	// not yet used
-					/* step in im 			*/ 100);
+					/* step in im 			*/ 200);
 			
 		
 // RUN GLOBAL ANALYSIS ------------------------------------------------------------------------------------------------------------------------------
-		analysisNet.computeGlobalStat	(3000 , 5 , pathStart, pathStep , 10 );
+		analysisNet.computeGlobalStat	(5000 , 5 , pathStart, pathStep , 10 );
 		
-		analysisGs.computeGlobalStat	(3000 , 5 , pathStart, pathStep , 1 ); 
+		analysisGs.computeGlobalStat	(5000 , 5 , pathStart, pathStep , 1 ); 
 			
 			
 				

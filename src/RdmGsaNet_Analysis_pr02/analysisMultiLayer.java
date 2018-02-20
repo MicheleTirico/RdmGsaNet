@@ -1,28 +1,41 @@
 package RdmGsaNet_Analysis_pr02;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import RdmGsaNetExport.expValues;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.stylesheet;
 import RdmGsaNet_Analysis.analysisDGSCombinedLayer;
+import RdmGsaNet_Analysis_pr02.analysisDGSmultiLayer.correlationValGs;
+import RdmGsaNet_Analysis_pr02.analysisDGSmultiLayer.correlationValNet;
 
 public class analysisMultiLayer extends analysisMain  {
-
-	// hnadle viz 
 	
-		
-	static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer (
-				/* gsViz	*/ 	true ,
-				/* netViz	*/	true	
-				);
+	protected static Map	mapGlobalCorrelation = new HashMap () ; 
+			
+	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
+			/* run								*/	true ,
+			/* gsViz							*/ 	false ,
+			/* netViz							*/	false ,	
+			/* compute Global correlatation 	*/	true
+			);
+	
+	
 		
 	public static void main ( String[ ] args ) throws IOException, InterruptedException {
 	
-		combinedAnalysis.computeGlobalStat (3000 , 5 , pathStart , pathStep , 10 );
-			
-			
+		combinedAnalysis.setParametersCorrelation(correlationValGs.gsInh, correlationValNet.degree, 1 );
 		
+		combinedAnalysis.computeGlobalStat (5000 , 5 , pathStart , pathStep , 10 );
+			
+//		System.out.println(mapGlobalCorrelation);
+			
+
+	//		expValues.writeMap(true, mapGlobalCorrelation , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netClustering\\" , "globalCorrelation"); 
+	
 	}
 	
 

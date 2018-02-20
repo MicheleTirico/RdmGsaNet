@@ -15,9 +15,8 @@ import RdmGsaNetExport.expValues;
 public class dataAnalysisGlobal extends dataAnalysisMain {
 	
 	protected static boolean run ;
-	private double  prob = 0.0 ,
-					stepInt = 0.0 ;
-	
+	private double  prob = 0.0 ;
+		
 	
 	public dataAnalysisGlobal( boolean run ) {
 		this.run = run ;
@@ -26,10 +25,11 @@ public class dataAnalysisGlobal extends dataAnalysisMain {
 	public Map getMapComputed ( String folder ) throws ClassNotFoundException, IOException {
 		
 		Map toReturn = new HashMap() ;
-		if ( run == false ) 	return toReturn; 
+		
+		if ( run == false ) 	
+			return toReturn; 
 			
 		File path = new File( folder );
-		
 		File [] files = path.listFiles();							
 		
 		ArrayList<File> fileArray = new ArrayList<File>(Arrays.asList(files));
@@ -47,18 +47,15 @@ public class dataAnalysisGlobal extends dataAnalysisMain {
 		 if ( run == false ) 	
 			 return ; 
 			
-		 File path = new File( folder );
-		
-		 File [] files = path.listFiles();							
-		
+		 File path = new File( folder );	
+		 File [] files = path.listFiles();								
 		 ArrayList<File> fileArray = new ArrayList<File>(Arrays.asList(files));
+		 
 	
-		 for ( File f : fileArray ) {
+		 for ( File f : fileArray ) {														//	 System.out.println(f);
 			 Map<Double, Double > map = expValues.readMap(run, folder, f.getName());
-			 mapToUpdate.put(prob, map);
+			 mapToUpdate.put(prob, map);													//	 System.out.println(map);
 			 prob++ ;
-			}
-	
-		 }
-
+		}																					//	 System.out.println(mapToUpdate);
+	 }
 }

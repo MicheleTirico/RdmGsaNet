@@ -114,7 +114,6 @@ public class expChart extends JFrame  {
 				// create series
 				XYSeries ser = new XYSeries(serName) ;
 				Map<Double,Double> map = mapChart.get(serName) ;
-				System.out.println(map);
 				
 				for ( Entry<Double, Double> entry : map.entrySet()) {
 					double xVal = entry.getKey();

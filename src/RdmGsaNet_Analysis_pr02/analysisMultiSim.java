@@ -18,18 +18,20 @@ public class analysisMultiSim extends analysisMain {
 							nameFolderMap = "mapToAnalyze" 
 							;  
 			
-		// HANDLE FILE OBJECT
-		protected static handleNameFile handle ;
 
-		private static analysisDGSmultiSim multiSim = new analysisDGSmultiSim( 
+	// HANDLE FILE OBJECT
+	protected static handleNameFile handle ;
+
+	private static analysisDGSmultiSim multiSim = new analysisDGSmultiSim( 
 				/* id analysis		*/ "id" , 
 				/* run analysis ? 	*/ true
 				) ;
 		
+	
 		
 		
-		// ----------------------------------------------------------------------------------------------------------------------------------------------
-		public static void main(String[] args) throws IOException, InterruptedException {
+// ----------------------------------------------------------------------------------------------------------------------------------------------
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
 				// setup handle name file 
 				handle = new handleNameFile( 
@@ -46,20 +48,28 @@ public class analysisMultiSim extends analysisMain {
 				
 		// SET WHICH LOCAL ANALYSIS TO COMPUTE ----------------------------------------------------------------------------------------------------------	
 				multiSim.setWhichGlobalAnalysis(
-						/* layerToAnalyze			*/ layerToAnalyze.net,		 
-						/* typeMultiSim 			*/ typeMultiSim.probability,
-						/* compute Clustering 		*/ true , 
-						/* compute Density 			*/ true ,
-						/* compute Average Degree	*/ true , 
-						/* compute NewNodeRel  		*/ true ,
-						/* compute SeedCountRel		*/ true
+						/* layerToAnalyze				*/ layerToAnalyze.multiLayer,		 
+						/* typeMultiSim 				*/ typeMultiSim.probability
+						);
+				
+				multiSim.setWhichGlobalAnalysisNet(
+						/* compute Clustering 			*/ true , 
+						/* compute Density 				*/ true,
+						/* compute Average Degree		*/ true, 
+						/* compute NewNodeRel  			*/ true ,
+						/* compute SeedCountRel			*/ true ,
+						/* compute DensityRegularGraph 	*/ true 
+						);
+				
+				multiSim.setWhichGlobalAnalysisMultiLayer(
+						/* compute GlobalCorrelation	*/ true
 						);
 				
 			 	
 		// RUN LOCAL ANALYSIS ---------------------------------------------------------------------------------------------------------------------------
 
-				multiSim.computeGlobalMultiSim(3000, 1, folderMultiSim );
-					
+				multiSim.computeGlobalMultiSim(50, 5, folderMultiSim );
+				
 			}
 
 

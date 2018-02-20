@@ -24,7 +24,7 @@ import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 
 public class main {
-	private static int stopSim = 3000 ;
+	private static int stopSim = 5000 ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
 	private static RdmType type ;
@@ -46,7 +46,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\completeTest_01\\rd_solitions\\prob\\random\\alive\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive\\rd_mazes\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -60,7 +60,7 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 	static layerGs gsLayer = new layerGs(
-		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
+		/* size grid , type grid 				*/	new setupGsGrid( 100 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
@@ -78,7 +78,7 @@ public class main {
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        (12, 11)  
 //											new generateNetNodeGradientOnlyOne 	( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
-											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.7 , true )
+											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.4 , true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -96,7 +96,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.solitions );			
+		setRdType ( RdmType.mazes );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -190,9 +190,9 @@ public class main {
 		// setup viz netGraph
 		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
 		netViz.setupIdViz(false, netGraph, 1 , "black");
-		netViz.setupDefaultParam (netGraph, "black", "black", 5 , 0.5 );
+		netViz.setupDefaultParam (netGraph, "black", "black", 3 , 0.5 );
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
-		netViz.setupFixScaleManual(true, netGraph, 50, 0);
+		netViz.setupFixScaleManual(true, netGraph, 100, 0);
 		
 		// viz display
 		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsAct", 1) ;

@@ -210,7 +210,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 						netViz.setupVizBooleanAtr(true, graph,  "black", "red" ) ;
 						netViz.setupViz( true, true, palette.red);
 						netViz.setupIdViz( false , graph, 1 , "black");
-						netViz.setupFixScaleManual( true , graph, 50, 0);
+						netViz.setupFixScaleManual( true , graph, 100, 0);
 						Thread.sleep( thread );
 					}
 					// stop iteration    
@@ -275,8 +275,8 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					System.out.println("----------------step " + step + " ----------------" );				
 					
 					netViz = new handleVizStype( graph , stylesheet.viz10Color , indicator , 1 )  ;
-					netViz.setupDefaultParam (graph, "red", "black", 8 , .5 );		
-					netViz.setupFixScaleManual( false , graph, 50, 0);	
+					netViz.setupDefaultParam (graph, "red", "black", 4 , .5 );		
+					netViz.setupFixScaleManual( true , graph, 100, 0);	
 					
 					// create Map
 					Map<Node, Double > mapToUpdate = new HashMap<>() ;			

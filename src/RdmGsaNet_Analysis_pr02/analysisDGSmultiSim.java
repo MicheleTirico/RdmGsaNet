@@ -16,6 +16,7 @@ import javax.print.attribute.HashAttributeSet;
 
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSourceFactory;
@@ -37,7 +38,7 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 	// private static Map< Double , Double > mapStepClustering = new HashMap();
 	protected static Map mapNetStepNodeCountRel = new HashMap() ;
 
-	private static int s2 = 0 ;
+	
 	private String analysisId;
 	private static File extF  ; 
 	
@@ -46,9 +47,11 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 					computeDensity , 
 					computeAverageDegree ,
 					computeNewNodeRel ,
-					computeSeedCountRel	;
+					computeSeedCountRel ,
+					computeDensityRegularGraph ,
+					computeGlobalCorrelation ;
 
-	protected enum layerToAnalyze { gs , net , both }
+	protected enum layerToAnalyze { gs , net , multiLayer }
 	protected static layerToAnalyze layerToAnalyze ;
 	
 	protected enum typeMultiSim { probability , test }
@@ -67,17 +70,31 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 	
 	public void  setParamAnalysisLocal () { }
 	
-	public void setWhichGlobalAnalysis ( layerToAnalyze layerToAnalyze , typeMultiSim typeMultiSim  , 
+	public void setWhichGlobalAnalysisNet ( 
 			boolean computeClustering , boolean computeDensity , boolean computeAverageDegree ,
-			boolean computeNewNodeRel , boolean computeSeedCountRel) {
-		
-		this.layerToAnalyze = layerToAnalyze ;	
-		this.typeMultiSim = typeMultiSim ;
+			boolean computeNewNodeRel , boolean computeSeedCountRel , boolean computeDensityRegularGraph 
+			) {
 		this.computeClustering = computeClustering ;
 		this.computeDensity = computeDensity ;
 		this.computeAverageDegree= computeAverageDegree ;
 		this.computeNewNodeRel = computeNewNodeRel ;
 		this.computeSeedCountRel = computeSeedCountRel ;
+		this.computeDensityRegularGraph = computeDensityRegularGraph ;
+	}
+	
+	public void setWhichGlobalAnalysisMultiLayer ( 
+			boolean computeGlobalCorrelation
+			) {
+		this.computeGlobalCorrelation = computeGlobalCorrelation ;
+	}
+	
+	public void setWhichGlobalAnalysisGs ( 	) {}
+	
+	public void setWhichGlobalAnalysis ( 
+			layerToAnalyze layerToAnalyze , typeMultiSim typeMultiSim   
+			) {
+		this.layerToAnalyze = layerToAnalyze ;	
+		this.typeMultiSim = typeMultiSim ;	
 	}
 
 	public void setWhichLocalAnalysis ( ) {	}
@@ -116,21 +133,35 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 			 
 			 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\", analysisMultiSim.nameFolderMap);
 			 
-			 if ( computeClustering ) 
-				 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netClustering");
-			
-			 if ( computeDensity )
-				 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netDensity");
-			
-			 if ( computeAverageDegree )
-				 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netAverageDegree");
+			 if ( layerToAnalyze == layerToAnalyze.net ) {
+ 
+				 if ( computeClustering ) 
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netClustering");
+				
+				 if ( computeDensity )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netDensity");
+				
+				 if ( computeAverageDegree )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netAverageDegree");
+				 
+				 if ( computeNewNodeRel )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netNewNodeRel");
+				
+				 if ( computeSeedCountRel )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netSeedCountRel");
+				
+				 if ( computeDensityRegularGraph )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netDensityRegularGraph");
+			 }
+
+			 else if ( layerToAnalyze == layerToAnalyze.multiLayer ) {
+				 if ( computeGlobalCorrelation )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "multiLayerGlobalCorrelation");
+			 }
 			 
-			 if ( computeNewNodeRel )
-				 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netNewNodeRel");
-			
-			 if ( computeSeedCountRel )
-				 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "netSeedCountRel");
-			
+			 else if ( layerToAnalyze == layerToAnalyze.gs ) {
+				 
+			 }
 			 computeGlobalStat(stepMax, stepInc, localPathStartArr, localPathStepArr, thread);
 		}
 	 }
@@ -154,7 +185,9 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 				mapLocalStepDensity = new HashMap() ,
 				mapLocalAverageDegree = new HashMap(),
 				mapNewNodeRel  = new HashMap(),
-				mapSeedCountRel  = new HashMap();
+				mapSeedCountRel  = new HashMap() , 
+				mapDensityRegularGraph = new HashMap() ,
+				mapGlobalCorrelation = new HashMap()  ;
 	
 		switch ( layerToAnalyze ) {
 			case gs: {
@@ -164,35 +197,37 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 			case net :	{
 				computeGlobalStatNet ( "dgsNet" ,  stepMax,  stepInc, pathStartNet,  pathStepNet , 
 						mapLocalStepClustering , mapLocalStepDensity , mapLocalAverageDegree ,
-						mapNewNodeRel , mapSeedCountRel  ) ;
+						mapNewNodeRel , mapSeedCountRel  , mapDensityRegularGraph ) ;
+				
+				if ( computeClustering ) 
+					expValues.writeMap(true, mapLocalStepClustering, folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netClustering\\" , "netClustering_" + extF.getName() ); 
+				
+				if ( computeDensity ) 
+					expValues.writeMap(true, mapLocalStepDensity, folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netDensity\\" , "netDensity_" + extF.getName() );
+				
+				if ( computeAverageDegree )
+					expValues.writeMap(true, mapLocalAverageDegree , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netAverageDegree\\" , "netAverageDegree_" + extF.getName() );
+			
+				if ( computeNewNodeRel )
+					expValues.writeMap(true, mapNewNodeRel , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netNewNodeRel\\" , "netNewNodeRel_" + extF.getName() );
 
+				if ( computeSeedCountRel )
+					expValues.writeMap(true, mapSeedCountRel , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netSeedCountRel\\" , "netSeedCountRel_" + extF.getName() );
+
+				if ( computeDensityRegularGraph )
+					expValues.writeMap(true, mapDensityRegularGraph , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netDensityRegularGraph\\" , "netSDensityRegularGraph_" + extF.getName() );
 			} break;
 
-	
-			case both : {
-			
+			case multiLayer : {
+				computeGlobalStatMultiLayer ( "dgsMultiLayer" ,  stepMax,  stepInc, pathStartNet,  pathStepNet , pathStartGs,  pathStepGs , 
+						mapGlobalCorrelation) ;
+				
+				if ( computeGlobalCorrelation )
+					expValues.writeMap(true, mapGlobalCorrelation , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\multiLayerGlobalCorrelation\\" , "multiLayerGlobalCorrelation_" + extF.getName() );		
 			} break ;
 		}
-	//	System.out.println(mapLocalStepClustering); 
-	//	System.out.println(mapLocalStepDensity); 
-		if ( computeClustering ) 
-			expValues.writeMap(true, mapLocalStepClustering, folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netClustering\\" , "netClustering_" + extF.getName() ); 
-		
-		if ( computeDensity ) 
-			expValues.writeMap(true, mapLocalStepDensity, folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netDensity\\" , "netDensity_" + extF.getName() );
-		
-		if ( computeAverageDegree )
-			expValues.writeMap(true, mapLocalAverageDegree , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netAverageDegree\\" , "netAverageDegree_" + extF.getName() );
-	
-		if ( computeNewNodeRel )
-			expValues.writeMap(true, mapNewNodeRel , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netNewNodeRel\\" , "netNewNodeRel_" + extF.getName() );
+			
 
-		if ( computeSeedCountRel)
-			expValues.writeMap(true, mapSeedCountRel , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netSeedCountRel\\" , "netSeedCountRel_" + extF.getName() );
-
-		
-		
-		// create map to store	
 
 	//	ArrayList <Double> arr = new ArrayList<Double>( mapLocalStepClustering.values() ) ;
 
@@ -208,11 +243,6 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	private static void setVal ( File i , String[] pathStartArr ) {
-		String s = i.toString() ;
-	//	pathStartArr[i.toString()];
-	}
 
 	// PRIVATE METHODS ------------------------------------------------------------------------------------------------------------------------------
 	private static Map computeGlobalStatGs ( String dgsId , int stepMax, int stepInc, String pathStart, String pathStep , typeIndicator typeIndicator ) {//		System.out.println( "layer "+ layerToAnalyze );		System.out.println("indic " + typeIndicator );
@@ -221,9 +251,64 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 		return mapToStore ;
 	}
 	
+	
+	private static void computeGlobalStatMultiLayer (String dgsId , int stepMax, int stepInc, String pathStartNet, String pathStepNet , String pathStartGs, String pathStepGs  ,
+			 Map mapGlobalCorrelation
+			) throws IOException {
+		
+		Graph gsGraph = new SingleGraph("gsGraph");
+		Graph netGraph = new SingleGraph("netGraph");
+		
+		// create list of step to create images
+		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
+		
+		// read start path
+		try {	
+			gsGraph.read(pathStartGs);
+			netGraph.read(pathStartNet);
+		} 
+		catch (	ElementNotFoundException | GraphParseException |org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
+						
+		// set file Source for file step
+		gsFs = FileSourceFactory.sourceFor(pathStepGs);
+		gsFs.addSink(gsGraph);
+				
+		netFs = FileSourceFactory.sourceFor(pathStepNet);
+		netFs.addSink(netGraph);
+
+		// import file step
+		try {
+			gsFs.begin(pathStepGs);
+			netFs.begin(pathStepNet);
+			while ( gsFs.nextStep() && netFs.nextStep()  ) {
+						
+				double step = gsGraph.getStep();							//	System.out.println(step);
+						
+				if ( incList.contains(step)) {
+					// add methods to run for each step in incList
+					System.out.println("----------------step " + step + " ----------------" );				
+					
+					
+					if ( computeGlobalCorrelation ) {
+						for ( Node n : netGraph.getEachNode() ) 
+							n.addAttribute("degree",  (double) n.getDegree());	
+						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  mapGlobalCorrelation);
+					}
+					
+					
+					// stop iteration    
+					if ( stepMax == step ) { break; }
+				}
+			}
+		} catch (IOException e) {		}				
+		gsFs.end() ;	
+		netFs.end() ;	
+	}
+	
+	
 	private static void computeGlobalStatNet (String dgsId , int stepMax, int stepInc, String pathStart, String pathStep , 
 			Map mapLocalStepClustering  , Map mapLocalStepDensity , Map mapLocalAverageDegree , 
-			Map mapNewNodeRel , Map mapSeedCountRel 
+			Map mapNewNodeRel , Map mapSeedCountRel , Map mapDensityRegularGraph
 			) throws IOException {
 	
 	
@@ -249,7 +334,7 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 		} catch ( java.lang.NullPointerException e) { // e.printStackTrace();	
 			return ;
 		}
-		
+		int s = 0 ;
 		// import file step
 		try {
 			fs.begin(pathStep);
@@ -270,25 +355,24 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 						analysisDGS.computeAverageDegree(graph, step, mapLocalAverageDegree);
 					
 					if ( computeNewNodeRel ) {
-						analysisDGS.computeStepNewNodeRel(graph, step, mapNewNodeRel, mapNetStepNodeCountRel, s2);
+						analysisDGS.computeStepNewNodeRel(graph, step, mapNewNodeRel, mapNetStepNodeCountRel, s);
+						s++;
 						}
 						
 					if ( computeSeedCountRel )
 						analysisDGS.computeStepCountNewSeed(graph, step, mapSeedCountRel, true);
+					
+					if ( computeDensityRegularGraph )
+						analysisDGS.computeGlobalDensityRegularGraph(graph, step, mapDensityRegularGraph, 8);
 					}
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}
-			
 		} 
 		catch (IOException | 
 				org.graphstream.graph.IdAlreadyInUseException |
 				java.lang.NullPointerException e) { 	}
 	
 		fs.end();	
-		
-		
-	
-
 	}
 }

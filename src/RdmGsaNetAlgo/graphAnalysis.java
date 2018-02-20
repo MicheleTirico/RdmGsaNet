@@ -1,6 +1,8 @@
 package RdmGsaNetAlgo;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -92,6 +94,121 @@ public class graphAnalysis {
 	public static void spatialAutoCorMoran () {
 		
 		System.out.println("spatial auto correlation moran");
+	}
+
+// SPATIAL CORRELATION (multi graph) ----------------------------------------------------------------------------------------------------------------
+	public static double getGlobalCorrelation ( Map <Node , Double > map0 ,  Map <Node , Double > map1  ) {
+		
+		double stDev0 = getStandardDeviationGraph(map0) ;			//	System.out.println(stDev0);
+		double stDev1 = getStandardDeviationGraph(map1) ;			//	System.out.println(stDev1);
+		double covariance = getCovarianceFromGraph(map0, map1);		//	System.out.println(covariance);
+	
+		return  covariance / ( stDev0 * stDev1) ;
+	}
+	
+	public static double getLocalCorrelation ( Node node ,  Map <Node , Double > map0 ,  Map <Node , Double > map1 ) {
+		
+		ArrayList<Double> listVal0 = new ArrayList<Double>( map0.values()) ; 	
+		ArrayList<Double> listVal1 = new ArrayList<Double>( map1.values()) ; 
+		
+		double aveVal0 = listVal0.stream().mapToDouble(val->val).average().getAsDouble() ;
+		double aveVal1 = listVal1.stream().mapToDouble(val->val).average().getAsDouble() ;
+		
+		double stDev0 = getStandardDeviationGraph(map0) ;
+		double stDev1 = getStandardDeviationGraph(map1) ;
+		
+		double val0node = map0.get(node);
+		double val1node = map1.get(node);
+		
+		double localCov = ( val0node - aveVal0 ) * ( val1node - aveVal1 ); 
+	
+		return localCov / ( stDev0 * stDev1) ;
+	}
+
+	
+	public static double getStandardDeviationGraph ( Map <Node , Double > map  ) {
+
+		ArrayList<Double> listVal = new ArrayList<Double>( map.values()) ;
+		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble();
+		
+		double val = 0.0 ;
+		for ( Node n : map.keySet() ) {
+			 val = val +  Math.pow(( map.get(n) - aveVal ) , 2  ) ;
+		}
+		return Math.pow( val , 0.5  )  ;
+	}
+
+	public static double getCovarianceFromGraph (  Map <Node , Double > map0 ,  Map <Node , Double > map1  ) {
+		
+		if ( map0.size() != map1.size() ) 
+			System.out.println("size list not equals");
+		
+//		System.out.println(map0.size());
+//		System.out.println(map1.size());
+		ArrayList<Double> listVal0 = new ArrayList<Double>( map0.values()) ;				//		System.out.println(listVal0);
+		ArrayList<Double> listVal1 = new ArrayList<Double>( map1.values()) ;  				//		System.out.println(listVal1);
+		
+		double aveVal0 = listVal0.stream().mapToDouble(val->val).average().getAsDouble() ;	//		System.out.println(aveVal0);
+		double aveVal1 = listVal1.stream().mapToDouble(val->val).average().getAsDouble() ;	//		System.out.println(aveVal1);
+		
+		Map<String, Double > mapId1 = new HashMap<String, Double >();
+		
+		for ( Node n : map1.keySet() ) 
+			mapId1.put(n.getId(), map1.get(n));
+	
+		double cov = 0.0 ;
+		for ( Node n : map0.keySet() ) {	
+			cov = cov + ( map0.get(n) - aveVal0 ) * ( mapId1.get(n.getId()) - aveVal1) ;	
+		}																					//	System.out.println(cov);
+		return cov ;
+	}
+	
+// statistical correlation --------------------------------------------------------------------------------------------------------------------------	
+	public static double getStandardDeviation ( ArrayList<Double> listVal  ) {
+
+		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble();
+		
+		double val2 = 0.0 ;
+		for ( double val : listVal ) {	 
+			 val2 = val2 +  Math.pow(( val - aveVal ) , 2  ) ;
+		}
+		return Math.pow( val2 , 0.5  )  ;
+	}
+	
+	public static double getCovarianceFromArray ( double[] arrayVal0 , double[] arrayVal1  ) {
+		
+		if ( arrayVal0.length != arrayVal1.length ) {
+			System.out.println("size list not equals");
+			return 0;
+		}
+		ArrayList<Double> listVal0 = (ArrayList<Double>) Arrays.stream(arrayVal0) ; 
+		
+		ArrayList<Double> listVal1 = (ArrayList<Double>) Arrays.stream(arrayVal1) ; 
+		
+		double aveVal0 = listVal0.stream().mapToDouble(val->val).average().getAsDouble() ;
+		double aveVal1 = listVal1.stream().mapToDouble(val->val).average().getAsDouble() ;
+		double cov = 0 ;
+		for ( double val0 : listVal0 ) {
+			cov = cov + ( val0 - aveVal0 ) * ( listVal1.indexOf(val0) - aveVal1) ;
+		}	
+		return cov ;
+	}
+	
+	public static double getCovarianceFromList ( ArrayList<Double> listVal0 , ArrayList<Double> listVal1  ) {
+		
+		if ( listVal0.size() != listVal1.size()) {
+			System.out.println("size list not equals");
+			return 0;
+		}
+		
+		double aveVal0 = listVal0.stream().mapToDouble(val->val).average().getAsDouble() ;
+		double aveVal1 = listVal1.stream().mapToDouble(val->val).average().getAsDouble() ;
+		double cov = 0 ;
+		for ( double val0 : listVal0 ) {
+			cov = cov + ( val0 - aveVal0 ) * ( listVal1.indexOf(val0) - aveVal1) ;
+		}
+		
+		return cov ;
 	}
 
 // DATA ANALYSIS ------------------------------------------------------------------------------------------------------------------------------------	

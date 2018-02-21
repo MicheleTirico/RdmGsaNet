@@ -128,11 +128,16 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
-		handleVizStype netViz  = null ;
+		handleVizStype netViz = new handleVizStype( graph ,stylesheet.manual , "seedGrad", 1) ;
 		// run viz
 		if ( runViz )  {
+			
 			// setup net viz parameters
-			netViz  = new handleVizStype( netGraph ,stylesheet.manual, "seedGrad", 1) ;
+			netViz.setupIdViz(false, graph, 1 , "black");
+			netViz.setupDefaultParam (graph, "black", "gray", 3 , 0);
+			
+			netViz.setupFixScaleManual(true, graph, 100, 0);
+
 			Viewer netViewer =  graph.display(false) ;	
 		}
 		
@@ -159,9 +164,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
-					if ( getImage ) 	
-						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
-							expImage.getImage(graph, folder + "analysis\\image\\" , "netImage" + step + ".png" );
+					netViz.setupVizBooleanAtr(true, graph, "black", "red" ) ;
 						
 					if ( computeFreqDegree  ) 
 						analysisDGS.computeFreqDegree( degreeFreq, graph , step , analysisGlobal.mapNetFreqDegree );	
@@ -206,13 +209,15 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					
 					// run viz
 					if ( runViz ) {
-						netViz.setupDefaultParam ( graph, "red", "black", 5 , .1 );
-						netViz.setupVizBooleanAtr(true, graph,  "black", "red" ) ;
-						netViz.setupViz( true, true, palette.red);
-						netViz.setupIdViz( false , graph, 1 , "black");
-						netViz.setupFixScaleManual( true , graph, 100, 0);
+						
+						
 						Thread.sleep( thread );
 					}
+					
+					if ( getImage ) 	
+						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
+							expImage.getImage(graph, folder + "analysis\\image\\" , "netImage" + step + ".png" );
+					
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}

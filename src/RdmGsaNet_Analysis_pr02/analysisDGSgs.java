@@ -11,6 +11,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
+import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
 
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
@@ -27,6 +28,8 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 	private String 	dgsId ,
 					morp ;
 
+	// viz constants
+	private static ViewPanel  view ;
 	private int stepIncIm ;
 
 	protected static Graph graph = new SingleGraph ("graph");
@@ -64,9 +67,9 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 		this.computeStepAveMorp = computeStepAveMorp ;
 		this.computeGsActivedNodes = computeGsActivedNodes ; 
 		
-		if ( getImage ) {
+		if ( getImage ) 
 			analysisGlobal.handle.createFolder(folder + "analysis\\", "image", false ) ;
-		}			
+					
 	}
 
 // COMPUTE MULTIPLE ANALYSIS --------------------------------------------------------------------------------------------------------------
@@ -81,13 +84,14 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 		String pathStep = pathStepArr[0];
 		
 		// get graph through dgsId of graph
-		graph = analysisDGS.returnGraphAnalysis(dgsId);
+		graph = analysisDGS.returnGraphAnalysis(dgsId);		
 		handleVizStype viz 	= null ;
+		
 		// run viz
-		if ( runViz ) {
-			viz = new handleVizStype( gsGraph ,stylesheet.viz10Color, "gsInh", 1) ;
+		if ( runViz ) {			
 			// setup gs viz parameters
-			viz.setupDefaultParam (graph, "red", "white", 6 , 0.5 );
+			viz = new handleVizStype( graph ,stylesheet.viz10Color, "gsInh", 1) ;
+			viz.setupDefaultParam (graph, "red", "white", 3 , 0.5 );
 			Viewer gsViewer = graph.display(false) ;
 		}
 		
@@ -112,11 +116,14 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 				if ( incList.contains(step)) {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
-			
-					if ( runViz )	
-						setupViz.Viz10ColorAct(graph);
-						Thread.sleep(thread);
-						
+				
+					// run viz
+					if ( runViz ) {	
+						viz.setupViz(true, true, palette.blue );
+						viz.setupIdViz(false, graph, 10 , "black");
+						Thread.sleep(thread);			
+					}
+					
 					if ( getImage ) 
 						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
 							expImage.getImage(graph, folder + "analysis\\image\\" , "gsImage" + step + ".png" );
@@ -132,16 +139,7 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 					
 					if ( computeGsActivedNodes ) 
 						analysisDGS.computeGsActivedNodes (graph, step, analysisGlobal.mapGsActivedNodes  );
-					
-							
-					// run viz
-					if ( runViz ) {
-						viz.setupViz(true, true, palette.red);
-						viz.setupIdViz(false, graph, 10 , "black");
-						Thread.sleep(thread);
-						
-					}
-							
+								
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}

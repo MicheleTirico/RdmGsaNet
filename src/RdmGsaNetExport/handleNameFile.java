@@ -165,7 +165,7 @@ public class handleNameFile {
 	}
 	
 	public static String getCompleteNameInFolder ( String folder , String testName ) {
-		
+	
 		String nameFileComplete = null ;
 		File path = new File( folder );		
 		File [] files = path.listFiles();

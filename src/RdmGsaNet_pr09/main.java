@@ -78,7 +78,7 @@ public class main {
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        (12, 11)  
 //											new generateNetNodeGradientOnlyOne 	( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
-											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.4 , true )
+											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.9 , true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (

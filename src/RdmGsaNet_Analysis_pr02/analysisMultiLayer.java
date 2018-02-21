@@ -18,9 +18,9 @@ public class analysisMultiLayer extends analysisMain  {
 			
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
 			/* run								*/	true ,
-			/* gsViz							*/ 	false ,
-			/* netViz							*/	false ,	
-			/* compute Global correlatation 	*/	true
+			/* gsViz							*/ 	true ,
+			/* netViz							*/	true ,	
+			/* compute Global correlatation 	*/	false
 			);
 	
 	
@@ -29,13 +29,8 @@ public class analysisMultiLayer extends analysisMain  {
 	
 		combinedAnalysis.setParametersCorrelation(correlationValGs.gsInh, correlationValNet.degree, 1 );
 		
-		combinedAnalysis.computeGlobalStat (5000 , 5 , pathStart , pathStep , 10 );
-			
-//		System.out.println(mapGlobalCorrelation);
-			
-
-	//		expValues.writeMap(true, mapGlobalCorrelation , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\netClustering\\" , "globalCorrelation"); 
-	
+		combinedAnalysis.computeGlobalStat (5000 , 5 , pathStart , pathStep , 1 );
+				
 	}
 	
 

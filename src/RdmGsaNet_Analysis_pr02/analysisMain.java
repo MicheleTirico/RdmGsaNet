@@ -33,11 +33,10 @@ public  class  analysisMain   {
 			
 	private static ViewPanel view , gsView , netView ;
 	
-	
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive\\rd_holes\\maxStep_5000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.8_00\\" ;
-	protected static String folderMultiSim = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive\\rd_mazes\\" ;								
+	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive\\rd_mazes\\maxStep_5000_generateNetNodeGradientProb_generateNetEdgeNear_prob_0.9_00\\" ;
+	protected static String folderMultiSim = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive\\rd_movingSpots\\" ;								
 	
 	// START FILES
 	// GS graph

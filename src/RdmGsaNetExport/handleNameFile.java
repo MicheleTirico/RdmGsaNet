@@ -1,6 +1,7 @@
 package RdmGsaNetExport;
 
 import java.io.File;
+
 import RdmGsaNet_pr09.*;
 //import RdmGsaNet_pr08.*;
 
@@ -18,28 +19,34 @@ public class handleNameFile {
 	
 	private boolean toHandle ;
 	public enum toHandleType { main , manualFolder }
+	public enum typeFile { stepGs , stepNet , startGs , startNet }
+	
 	public toHandleType type ;
+	public typeFile typeFile ;
 	
 	// FOLDER PARAMETERS
 	private static String 	nameNewFolder;
-	private String   genNode = generateNetNode.getGenerateType (),
+	
+	private String   	genNode = generateNetNode.getGenerateType (),
 						genEdge = generateNetEdge.getGenerateType ();
 	
 	static String path = null ;
 	private  int 	maxStep = main.getStopSim();
 	
 	// CONSTRUCTOR
-	public handleNameFile ( boolean toHandle ,String folder , boolean createNewDirectory , String manualNameFolder ) {
+	public handleNameFile ( boolean toHandle , String folder , boolean createNewDirectory , String manualNameFolder ) {
 		this.toHandle = toHandle ;
 		
 		if ( toHandle = false )
 			return ;
 		
 		this.folder = folder ;
+		
 		if ( createNewDirectory )
 			nameNewFolder = getNameNewFolder ( maxStep , genNode , genEdge );
 		else if ( createNewDirectory == false )
 			nameNewFolder = manualNameFolder ;
+		
 		String path = createFolder(folder , nameNewFolder , createNewDirectory ) ;
 	}
 		
@@ -117,6 +124,36 @@ public class handleNameFile {
 				 "_" + genEdge +
 				 "_prob_" + generateNetNodeGradient.getProb();
 		}
+	
+	public static  String getPathFile ( typeFile typeFile , boolean setManualPath , String manualPath ) {
+		
+		String pathToReturn = null ;
+		String nameFile = null ;
+		switch (typeFile) {
+		case startGs:
+			nameFile = getNameGs(true) ;
+			break;
+		case startNet :
+			nameFile  = getNameNet(true) ;
+			break ; 
+		case stepGs :
+			nameFile = getNameGs(false) ;
+			break ;
+		case stepNet :
+			nameFile = getNameNet(false) ;
+			break ;
+		}
+		if ( setManualPath ) {
+			createNewGenericFolder(manualPath  , "commonFiles\\");
+			
+			pathToReturn =  manualPath + "\\" + nameStepGs + fileType;
+		}
+		
+		else if ( !setManualPath )
+			pathToReturn =  path + "\\" + nameFile + fileType;
+		return pathToReturn;
+		
+	}
 	
 	public static String getPathStepNet( ) 	{ 
 		nameStepNet = getNameNet(false);

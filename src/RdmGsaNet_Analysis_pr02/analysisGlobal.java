@@ -36,13 +36,13 @@ public class analysisGlobal extends analysisMain {
 	// Initialize net analysis
 	private static analysisDGSnet analysisNet = new analysisDGSnet(
 				/* id dgs 					*/		"dgsNet" , 
-				/* run analysis	global		*/		false 
+				/* run analysis	global		*/		true 
 				);
 		
 	// Initialize net analysis
 	private static analysisDGSgs analysisGs = new analysisDGSgs(
 				/* id dgs 					*/		"dgsGs" , 
-				/* run analysis				*/		true 
+				/* run analysis				*/		false 
 				);
  
 // --------------------------------------------------------------------------------------------------------------------------------------------------

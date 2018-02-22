@@ -25,6 +25,9 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
+
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -418,24 +421,47 @@ public class gsAlgoToolkit {
 	public static String getCenterGrid ( Graph graph ) {
 		 
 		int nodeCount = graph.getNodeCount();
-		System.out.println(nodeCount);
 		double gridSize = Math.pow(nodeCount, ( 0.5 ) ) ;
 		int idCenter = (int)  Math.floor(gridSize / 2) ;			
 
 		return idCenter + "_" + idCenter ;	
 	}
 
-	// get list of neigboard
-	public static ArrayList<Node> getListNeighbor ( Graph graph , Node n ) {
-		ArrayList<Node> listNeig = new ArrayList<Node>();
+	// get list of neighbor String
+	public static ArrayList<String> getListNeighborString ( Graph graph , String idNode ) {
 		
-		Iterator<Node> iter = n.getNeighborNodeIterator() ;	
+		Node node = graph.getNode(idNode) ;
+		
+		ArrayList<String> listNeig = new ArrayList<String>();
+		
+		Iterator<Node> iter = node.getNeighborNodeIterator() ;	
 		while (iter.hasNext()) {		 
 			Node neig = iter.next() ;	
-			listNeig.add(neig);
+			
+	//		System.out.println(neig.getId() + neig.getAttributeKeySet());
+			if ( !listNeig.contains(neig.getId()))
+				listNeig.add(neig.getId());
 		}
+
+
 		return listNeig ;
 	}
+	
+	// get list of neighbor String
+		public static ArrayList<Node> getListNeighbor( Graph graph , Node n ) {
+			
+			ArrayList<Node> listNeig = new ArrayList<Node>();
+			
+			Iterator<Node> iter = n.getNeighborNodeIterator() ;	
+			while (iter.hasNext()) {		 
+				Node neig = iter.next() ;	
+			//	System.out.println(neig.getId() + neig.getAttributeKeySet());
+				listNeig.add(neig);
+			}
+
+
+			return listNeig ;
+		}
 	
 	// get list of node with attribute
 	public static ArrayList<Node> getListNodeAttribute ( Graph graph , String attribute , int valAtr ) {
@@ -468,6 +494,78 @@ public class gsAlgoToolkit {
 		}
 		return listSorted ;		
 	}
+	
+	/*	method to return autocorrelation with neigbords
+	 * < 0 -> autocorrelation negative
+	 * = 0 -> no correlation	
+	 * > 0 -> autocorrelation
+	 */
+	public static double getAutoCorrelationAttr ( Graph graph, String idNode , String attribute ) {
+		
+		Node node = graph.getNode(idNode) ;
+		double autoCor = 0 ;
+		double valNode = node.getAttribute(attribute) ;
+	
+//		System.out.println(valNode);
+		System.out.println(node.getAttributeKeySet());
+		 
+		Iterator<Node> iter =  node.getNeighborNodeIterator() ;		//	System.out.println("id " + n);
+		double sumVal = 0 ;
+		while ( iter.hasNext()) {				
+			
+			Node neig = iter.next() ;			
+			
+			 System.out.println(neig.getAttributeKeySet());
+				double valNeig = neig.getAttribute(attribute);	
+				double val = valNeig - valNode ;
+				
+				sumVal = sumVal + val ;
+				}
+		autoCor = sumVal / node.getDegree() ;
+		return  autoCor;
+	}
+	
+public static double getAutoCorrelationAttrInListNeig ( Graph graph ,ArrayList<String> listNeig, Node node , String attribute , boolean isRel ) {
+		
+		double autoCor = 0 ;
+		double valNode = node.getAttribute(attribute) ;
+	
+		double normal= 0.0 , minVal= 1.0 , maxVal = 0.0 ;
+		
+		if ( valNode > 1 )
+			valNode = 1 ;
+//		System.out.println(valNode);
+//		System.out.println(node.getAttributeKeySet());
+		 
+		double sumVal = 0 ;
+		for ( String idNode : listNeig ) {
+			
+	
+			Node neig = graph.getNode(idNode) ;
+
+			double valNeig = neig.getAttribute(attribute);	
+			if ( valNeig <= minVal)
+				minVal = valNeig ;
+			
+			if ( valNeig >= maxVal )
+				maxVal = valNeig ;
+			//	System.out.println(neig.getId() + " " + valNeig);
+			double val = valNeig - valNode ;
+				
+			sumVal = sumVal + val ;	
+		}
+		
+		autoCor = sumVal / node.getDegree() ;
+		
+		if ( isRel ) {
+			normal = maxVal - minVal ;
+			autoCor = autoCor * normal ;
+			
+		}
+		
+		return  autoCor;
+	}
+	 
 	
 //METHODS TO HANDLE COLLECTIONS ---------------------------------------------------------------------------------------------------------------------
 	

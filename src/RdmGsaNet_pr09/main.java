@@ -10,6 +10,7 @@ import org.graphstream.graph.Node;
 
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.handleNameFile.toHandleType;
+import RdmGsaNetExport.handleNameFile.typeFile;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
@@ -24,9 +25,9 @@ import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 
 public class main {
-	private static int stopSim = 5000 ;
+	private static int stopSim = 10 ;
 	
-	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 }
+	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
 	private static RdmType type ;
 	
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
@@ -46,7 +47,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive\\rd_mazes\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\testDelta\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -60,7 +61,7 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 	static layerGs gsLayer = new layerGs(
-		/* size grid , type grid 				*/	new setupGsGrid( 100 , gsGridType.grid8 ) ) ;
+		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
@@ -69,16 +70,17 @@ public class main {
 		);
 	
 	// get  Graphs ( only to test results ) 
-	protected static Graph gsGraph = layerGs.getGraph() ,
+	protected static Graph 	gsGraph = layerGs.getGraph() ,
 							netGraph = layerNet.getGraph() ;
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	protected static simulation run = new simulation() ;	
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
-//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        (12, 11)  
-//											new generateNetNodeGradientOnlyOne 	( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
-											new generateNetNodeGradientProb		( 4 , layoutSeed.allNode , rule.random , "gsInh", 0.9 , true )
+//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        	(12, 11)  
+//											new generateNetNodeGradientOnlyOne 		( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
+//											new generateNetNodeGradientProb	    	( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.4 , true )
+											new generateNetNodeGradientProbDelta 	(8, layoutSeed.allNode, rule.maxValue, "gsInh", 1 , true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -96,7 +98,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes );			
+		setRdType ( RdmType.spotsAndLoops );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -109,10 +111,10 @@ public class main {
 			/* handleMinMaxVal , minVal , maxVal 	*/	false , 1E-5 , 1 ) ; 	/* if true, set value for values over the range */
   
 		// create path in order to stored all dgs files
-		String pathStepNet = handle.getPathStepNet() ; 		//	System.out.println("pathStepNet " + pathStepNet);		
-		String PathStepGs = handle.getPathStepGs();			//	System.out.println("PathStepGs " + PathStepGs);		
-		String pathStartNet = handle.getPathStartNet();		//	System.out.println("pathStartNet " + pathStartNet);
-		String pathStartGs = handle.getPathStartGs();		//	System.out.println("pathStartGs " + pathStartGs);
+		String pathStepNet = handle.getPathFile(typeFile.stepNet, false , folder) ; 		//	System.out.println("pathStepNet " + pathStepNet);		
+		String PathStepGs = handle.getPathFile(typeFile.stepGs, true , folder) ;			//	System.out.println("PathStepGs " + PathStepGs);		
+		String pathStartNet = handle.getPathFile(typeFile.startNet, true , folder) ;			//	System.out.println("pathStartNet " + pathStartNet);
+		String pathStartGs = handle.getPathFile(typeFile.startGs, true , folder) ;	;		//	System.out.println("pathStartGs " + pathStartGs);
 
 // GENERATE LAYER GS --------------------------------------------------------------------------------------------------------------------------------		
 		// create new layer gs
@@ -192,7 +194,7 @@ public class main {
 		netViz.setupIdViz(false, netGraph, 1 , "black");
 		netViz.setupDefaultParam (netGraph, "black", "black", 3 , 0.5 );
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
-		netViz.setupFixScaleManual(true, netGraph, 100, 0);
+		netViz.setupFixScaleManual(true, netGraph, 50, 0);
 		
 		// viz display
 		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsAct", 1) ;
@@ -268,6 +270,10 @@ public class main {
 			case U_SkateWorld :			{ feed = 0.062 ; kill = 0.061 ; } 
 										break ;
 			case f055_k062 :			{ feed = 0.055 ; kill = 0.062 ; } 
+										break ;
+			case chaos :				{ feed = 0.026 ; kill = 0.051 ; } 
+										break ;
+			case spotsAndLoops :		{ feed = 0.018 ; kill = 0.051 ; } 
 										break ;
 		}
 		

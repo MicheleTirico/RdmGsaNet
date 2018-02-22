@@ -16,6 +16,8 @@ public class generateNetNodeGradient  {
 	protected  enum splitSeed { onlyOneRandom , splitMax , splitMaxThreshold , splitProbability }
 	protected splitSeed type ;
 	
+	protected boolean stillAlive;
+	
 	protected enum layoutSeed { center , random , allNode }
 	protected layoutSeed setLayoutSeed; 
 	
@@ -38,7 +40,7 @@ public class generateNetNodeGradient  {
 	// create list (node) of neigbohord with max value of morphogen
 	protected ArrayList<Node> createListNodeMaxNeig (Graph graph , Node n , String morp ) {
 		
-		Node nGs = gsGraph.getNode(n.getId());
+		Node nGs = graph.getNode(n.getId());
 		double val = 0 ;
 
 		ArrayList<Node> listIdNeigValMax = new ArrayList<Node>();
@@ -105,7 +107,7 @@ public class generateNetNodeGradient  {
 		return winner ;
 	}
 	
-protected String getNodeSmallest ( String attribute , ArrayList<Node> listNeig ) {
+	protected String getNodeSmallest ( String attribute , ArrayList<Node> listNeig ) {
 		
 		String winner = null ;
 		double valWin = 10 ;	

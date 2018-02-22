@@ -123,11 +123,11 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 			 String s = f.getAbsolutePath();	 // System.out.println(s);
 	
 			 System.out.println(f.getName());
-			 String localPathStepGs = handle.getCompletePathInFolder(s+"\\",  "layerGs_step") ;
+			 String localPathStepGs = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_step") ;
 			 String localPathStepNet = handle.getCompletePathInFolder(s+"\\",  "layerNet_step") ;
-			 String localPathStartGs = handle.getCompletePathInFolder(s+"\\",  "layerGs_start") ;
-			 String localPathStartNet = handle.getCompletePathInFolder(s+"\\",  "layerNet_start") ;
-			 
+			 String localPathStartGs = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_start") ;
+			 String localPathStartNet = handle.getCompletePathInFolder(folderCommonFiles,  "layerNet_start") ;
+			
 			 String[] localPathStartArr = {localPathStartGs,localPathStartNet} ;
 			 String[] localPathStepArr = {localPathStepGs,localPathStepNet} ;
 			 

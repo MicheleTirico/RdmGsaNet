@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.graphstream.graph.Node;
 
+import com.sun.javafx.sg.prism.NGShape3D;
+
 import RdmGsaNetAlgo.gsAlgoToolkit;
 
 public class generateNetNodeGradientProbDelta extends generateNetNodeGradient implements generateNetNode_Inter {
@@ -19,11 +21,10 @@ public class generateNetNodeGradientProbDelta extends generateNetNodeGradient im
 		this.stillAlive = stillAlive ;
 	}
 	
-	
 	@Override
 	public void generateNodeRule(int step) {
 
-		System.out.println(netGraph.getNodeCount());
+//		System.out.println(netGraph.getNodeCount());
 		// set seed nodes ( only first step )
 		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 				
@@ -39,34 +40,34 @@ public class generateNetNodeGradientProbDelta extends generateNetNodeGradient im
 				nDgsDegree = 8 ;
 			
 			// list of neig
-			ArrayList <String> listNeigString = gsAlgoToolkit.getListNeighborString ( gsGraph, nNet.getId() ) ;
+			ArrayList <String> listNeigString = gsAlgoToolkit.getListNeighborStr ( gsGraph, nNet.getId() ) ;
 		
 			ArrayList<Node> listNeigNode = new ArrayList<Node>();
+			
 			for ( String s : listNeigString) 
 				listNeigNode.add(gsGraph.getNode(s)) ;
 		
-		//	System.out.println(listNeigString);
 			ArrayList<String> listNodeAlreadyCecked = new ArrayList<String>() ;
 		
-			double delta = gsAlgoToolkit.getAutoCorrelationAttrInListNeig(gsGraph, listNeigString, nGs, morp ,true) ;
-			int numberNewNodes = 0 ;
-			
-//			System.out.println( "delta " + delta );
+			double delta = gsAlgoToolkit.getDeltaPow( gsGraph , listNeigString, nGs, morp ) ;
+		
+			int numberNewNodes = 0 , numberMaxNewNodes = 0  ;	//	System.out.println(nDgsDegree);//				System.out.println( "delta " + delta );
 			
 			if ( delta <= 0 )
 				continue ;
 			
 			else if ( delta > 0 ) 
-				numberNewNodes = (int) (Math.round( delta * nDgsDegree)  ) ;
-			
+				numberMaxNewNodes = (int) (Math.round( delta * nDgsDegree)  ) ;								//			System.out.println(netGraph.getNodeCount());
+
+			numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob);
+				
 			if ( numberNewNodes == 0) {
 				if ( stillAlive )
 					continue ;
+				
 				else if ( stillAlive == false )
 					nNet.setAttribute("seedGrad", 0 );
-			}
-//			System.out.println(nDgsDegree);
-			System.out.println( "numberNewNodes " + numberNewNodes );
+			}																								//			System.out.println(nDgsDegree); 	System.out.println( "numberNewNodes " + numberNewNodes );
 			
 			for ( int x = 0 ; x < numberNewNodes ; x++ ) {
 				
@@ -110,11 +111,26 @@ public class generateNetNodeGradientProbDelta extends generateNetNodeGradient im
 					nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
 					nodeCouldAdded.addAttribute("seedGrad", 1);
 					nNet.setAttribute("seedGrad", 0);
+					
+					/* complicato, ma da la stessa cosa ?
+				 	Node nodeAlreadyExist = netGraph.getNode(idCouldAdded);
+					 
+					int hasSeed = nodeAlreadyExist.getAttribute("seedGrad");	//	System.out.println(hasSeed);
+					
+					if ( hasSeed == 1 ) {
+						nNet.setAttribute("seedGrad", 0);
+						//	continue ;  
+					}
+					else if ( hasSeed == 0 ) {
+						nodeAlreadyExist.setAttribute("seedGrad", 1);
+						nNet.setAttribute("seedGrad", 0);	
+					}
+					*/
+					
 				}
-			
 			}
-			
-		}
+		}	
+		
 					
 				
 		

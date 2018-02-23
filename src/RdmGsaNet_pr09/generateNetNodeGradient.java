@@ -130,6 +130,14 @@ public class generateNetNodeGradient  {
 		return  listNeig.get(index).getId();	
 	}
 	
+protected String getRandomNodeId ( ArrayList<String> listNeig ) {
+		
+		Random randomGenerator = new Random( ) ;
+		int index = randomGenerator.nextInt(listNeig.size());	
+		
+		return  listNeig.get(index);	
+	}
+	
 // SET LAYOUT SEED NODES ----------------------------------------------------------------------------------------------------------------------------
 	protected void setSeedNodes ( int step , int numberMaxSeed , layoutSeed setLayoutSeed ) {
 

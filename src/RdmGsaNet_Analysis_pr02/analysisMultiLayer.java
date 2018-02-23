@@ -29,7 +29,7 @@ public class analysisMultiLayer extends analysisMain  {
 	
 		combinedAnalysis.setParametersCorrelation(correlationValGs.gsInh, correlationValNet.degree, 1 );
 		
-		combinedAnalysis.computeGlobalStat (5000 , 5 , pathStart , pathStep , 1 );
+		combinedAnalysis.computeGlobalStat (5000 , 5 , pathStart , pathStep , 10 );
 				
 	}
 	

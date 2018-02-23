@@ -85,7 +85,8 @@ public class setupNetSmallGraph implements setupNet_Inter {
 	private static void createEdge ( Graph graph,  Node n1 , Node n2 ) {
 	
 		String idEdge = n1.getId() + "-" + n2.getId() ;
-		graph.addEdge(idEdge, n1, n2 );
+		if ( n1.getId() != n2.getId() )
+			graph.addEdge(idEdge, n1, n2 );
 	}
 	
 	// set layout star 8

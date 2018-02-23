@@ -25,7 +25,8 @@ import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 
 public class main {
-	private static int stopSim = 10 ;
+	private static int stopSim = 50
+			;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
 	private static RdmType type ;
@@ -47,7 +48,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\testDelta\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\test_controlSeed\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -65,8 +66,8 @@ public class main {
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
-//		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(typeGrid.grid4)
-		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star8 )
+		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
+//		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -77,10 +78,11 @@ public class main {
 	protected static simulation run = new simulation() ;	
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
-//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        	(12, 11)  
-//											new generateNetNodeGradientOnlyOne 		( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
-//											new generateNetNodeGradientProb	    	( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.4 , true )
-											new generateNetNodeGradientProbDelta 	(8, layoutSeed.allNode, rule.maxValue, "gsInh", 1 , true )
+//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        				(12, 11)  
+//											new generateNetNodeGradientOnlyOne 					( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
+//											new generateNetNodeGradientProb	    				( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.4 , true )
+//											new generateNetNodeGradientProbDelta 				(8, layoutSeed.allNode, rule.random, "gsAct", .8, false )
+											new generateNetNodeGradientProbDeltaControlSeed 	(5, layoutSeed.random, rule.random, "gsInh", 1, true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -98,7 +100,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.spotsAndLoops );			
+		setRdType ( RdmType.solitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -194,10 +196,10 @@ public class main {
 		netViz.setupIdViz(false, netGraph, 1 , "black");
 		netViz.setupDefaultParam (netGraph, "black", "black", 3 , 0.5 );
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
-		netViz.setupFixScaleManual(true, netGraph, 50, 0);
+		netViz.setupFixScaleManual(true , netGraph, 50, 0);
 		
 		// viz display
-		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsAct", 1) ;
+		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsInh", 1) ;
 		gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.5 );
 		gsViz.setupIdViz(false, gsGraph, 10 , "black");
 		gsViz.setupViz(true, true, palette.red);

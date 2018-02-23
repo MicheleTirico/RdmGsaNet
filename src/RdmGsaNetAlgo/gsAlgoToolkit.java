@@ -428,24 +428,44 @@ public class gsAlgoToolkit {
 	}
 
 	// get list of neighbor String
-	public static ArrayList<String> getListNeighborString ( Graph graph , String idNode ) {
+	public static ArrayList<String> getListNeighborStr ( Graph graph , String idNode ) {
 		
-		Node node = graph.getNode(idNode) ;
-		
+		Node node = graph.getNode(idNode) ;	
 		ArrayList<String> listNeig = new ArrayList<String>();
 		
 		Iterator<Node> iter = node.getNeighborNodeIterator() ;	
 		while (iter.hasNext()) {		 
-			Node neig = iter.next() ;	
-			
-	//		System.out.println(neig.getId() + neig.getAttributeKeySet());
+			Node neig = iter.next() ;		//		System.out.println(neig.getId() + neig.getAttributeKeySet());
 			if ( !listNeig.contains(neig.getId()))
 				listNeig.add(neig.getId());
 		}
-
-
 		return listNeig ;
 	}
+	
+	// get list of neighbor String
+	public static ArrayList<String> getListNeighborStrCeckAtr ( Graph graph0 , Graph graph1 , String idNode , String attribute ) {
+			
+		Node node = graph0.getNode(idNode) ;	
+		ArrayList<String> listNeig = new ArrayList<String>();
+			
+		Iterator<Node> iter = node.getNeighborNodeIterator() ;	
+		while (iter.hasNext()) {		 
+			Node neig0 = iter.next() ;		//		
+			Node neig1 = graph0.getNode(neig0.getId());
+			
+		//	System.out.println(neig0.getId() + neig0.getAttributeKeySet());
+			
+		//	System.out.println(neig1.getId() + neig1.getAttributeKeySet()) ;
+			
+			int neigAtr = neig1.getAttribute(attribute) ;
+		//	System.out.println(neigAtr);
+			if ( !listNeig.contains(neig0.getId() ) && neigAtr ==  1 )
+				listNeig.add(neig0.getId());
+		}
+		
+		return listNeig ;
+	}
+		
 	
 	// get list of neighbor String
 		public static ArrayList<Node> getListNeighbor( Graph graph , Node n ) {
@@ -473,6 +493,19 @@ public class gsAlgoToolkit {
 			int valTest =  n.getAttribute(attribute) ;
 			if ( valTest == valAtr )
 				list.add(n) ;	
+		}
+		return list ;
+	}
+	
+	public static ArrayList<String> getListStringNodeAttribute ( Graph graph , String attribute , int valAtr ) {
+		
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for ( Node n : graph.getEachNode() ) {
+			
+			int valTest =  n.getAttribute(attribute) ;
+			if ( valTest == valAtr )
+				list.add(n.getId()) ;	
 		}
 		return list ;
 	}
@@ -525,7 +558,51 @@ public class gsAlgoToolkit {
 		return  autoCor;
 	}
 	
-public static double getAutoCorrelationAttrInListNeig ( Graph graph ,ArrayList<String> listNeig, Node node , String attribute , boolean isRel ) {
+	public static double getDeltaPowCeckSeed ( Graph graph , ArrayList<String> listNeig, String idNode , String attribute ) {
+		
+		Node node = graph.getNode(idNode) ;
+		double delta = 0.0 , sumVal = 0.0 , sumValPow = 0.0 ; ;
+		
+		return delta ;
+	}
+	
+	
+	public static double getDeltaPow ( Graph graph , ArrayList<String> listNeig, Node node , String attribute ) {
+		
+		double delta = 0.0 , sumVal = 0.0 , sumValPow = 0.0 , numValues = 0 ;
+		double nodeVal = node.getAttribute(attribute) ;
+		
+		if ( nodeVal > 1 )
+			nodeVal = 1 ;
+		
+		System.out.println("valNode " + nodeVal ); 
+		
+		for ( String idNode : listNeig ) {
+		//	System.out.println(idNode);
+			Node neig = graph.getNode(idNode) ;
+
+			double neigVal = neig.getAttribute(attribute);
+			if ( neigVal < 0 )
+				neigVal = 0 ; 
+			if ( neigVal > 1 )
+				neigVal = 1 ; 
+			System.out.println("neigVal " + neigVal );
+			sumVal = sumVal + neigVal - nodeVal;
+			sumValPow = sumValPow + Math.pow(neigVal - nodeVal, 2 ) ;
+			numValues++;
+		}
+		System.out.println("sumVal " + sumVal );
+		System.out.println("sumValPow " + sumValPow );
+		System.out.println("numValues " + numValues );
+		
+		delta = sumVal / sumValPow / numValues ;
+		if (  Double.isNaN(delta) )
+			delta = 0.0 ;
+//		System.out.println("delta " + delta );
+		return delta ;
+	}
+	
+	public static double getAutoCorrelationAttrInListNeig ( Graph graph ,ArrayList<String> listNeig, Node node , String attribute , boolean isRel ) {
 		
 		double autoCor = 0 ;
 		double valNode = node.getAttribute(attribute) ;

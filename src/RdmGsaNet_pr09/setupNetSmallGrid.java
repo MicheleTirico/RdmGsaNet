@@ -59,7 +59,9 @@ public class setupNetSmallGrid implements setupNet_Inter {
 			}
 			
 		for ( String idNeig : neigList ) {	
-			try 													{ 	netGraph.addEdge(  nNet.getId() + "-" + idNeig ,  nNet , netGraph.getNode(idNeig) );	}
+			try 													{ 	
+				if ( nNet != netGraph.getNode(idNeig)  )
+					netGraph.addEdge(  nNet.getId() + "-" + idNeig ,  nNet , netGraph.getNode(idNeig) );	}
 			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue;	}
 			}	
 		}	

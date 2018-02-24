@@ -125,6 +125,7 @@ public class graphAnalysis {
 		return localCov / ( stDev0 * stDev1) ;
 	}
 
+	// nooooooooooooooo
 	public static double getStandardDeviationGraph ( Map <Node , Double > map  ) {
 
 		ArrayList<Double> listVal = new ArrayList<Double>( map.values()) ;

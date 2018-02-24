@@ -72,9 +72,9 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 			
 			handleVizStype	netViz  = new handleVizStype( netGraph , stylesheet.manual , "seedGrad", 1) ,
-					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsAct", 1) ;
+					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ;
 			
-			netViz.setupFixScaleManual( true , netGraph , 100 , 0 );
+			netViz.setupFixScaleManual( true , netGraph , 50 , 0 );
 			
 			//dispay graphs 
 			if ( doGsViz ) {
@@ -124,11 +124,11 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 							// setup net viz parameters
 							netViz.setupViz( true, true, palette.red);
 							netViz.setupIdViz( false , netGraph, 1 , "black");
-							netViz.setupDefaultParam ( netGraph, "red", "white", 2 , 0.05 );
+							netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.3 );
 							netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
 						}
 						if ( doGsViz ) {
-							gsViz.setupDefaultParam (gsGraph, "red", "white", 4 , 0.5 );
+							gsViz.setupDefaultParam (gsGraph, "red", "white", 5 , 0.5 );
 							gsViz.setupIdViz(false, gsGraph, 10 , "black");
 							gsViz.setupViz(true, true, palette.blue);
 						}

@@ -35,9 +35,9 @@ public  class  analysisMain   {
 	
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive _delta\\rd_movingSpots\\maxStep_5000_generateNetNodeGradientProbDelta_generateNetEdgeNear_prob_0.4_00\\" ,
+	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\rd_spotsAndLoops\\maxStep_5000_generateNetNodeGradientProbDeltaControlSeed_generateNetEdgeNear_prob_0.4_00\\" ,
 							
-							folderMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive _delta\\rd_movingSpots\\" ,
+							folderMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\rd_mazes\\" ,
 							folderMultiSim = folderMain ,
 							folderCommonFiles = folderMain + "commonFiles\\" ;								
 	

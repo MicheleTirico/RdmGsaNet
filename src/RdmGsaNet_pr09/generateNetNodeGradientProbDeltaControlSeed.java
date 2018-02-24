@@ -24,12 +24,12 @@ public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNode
 	public void generateNodeRule(int step) {
 
 		System.out.println(netGraph.getNodeCount());
+	
 		// set seed nodes ( only first step )
 		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 				
 		// CREATE LIST OF SEEDGRAD 
-		ArrayList<String> listNodeSeedGrad = 	gsAlgoToolkit.getListStringNodeAttribute(netGraph, "seedGrad" , 1 );		
-//		System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
+		ArrayList<String> listNodeSeedGrad = 	gsAlgoToolkit.getListStringNodeAttribute(netGraph, "seedGrad" , 1 );			//		System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
 
 		for ( String idNode : listNodeSeedGrad ) {
 		
@@ -56,37 +56,33 @@ public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNode
 				
 					if ( seed == 1 )
 						listNeigGsStrSeed.add(id);
-					
 					else if ( seed != 1 )
 						listNeigGsStrNotSeed.add(id);
 				} 
 				catch (java.lang.NullPointerException e) {	
 				}
-			}																//	System.out.println("listNeigGsStrSeed " + listNeigGsStrSeed);
+			}																							//	System.out.println("listNeigGsStrSeed " + listNeigGsStrSeed);
 			
-			ArrayList<String> listForDelta = new ArrayList<String>();			//	System.out.println(listNeigGsStr);
+			ArrayList<String> listForDelta = new ArrayList<String>();									//	System.out.println(listNeigGsStr);
 			for ( String s : listNeigGsStr) {
 				if ( !listNeigGsStrSeed.contains(s))
 					listForDelta.add(s);
-				
-			}
-		
-	//		listForDelta.remove(listNeigGsStrSeed);					//		
-	//		System.out.println(idNode + listForDelta);
+			}																							//		listForDelta.remove(listNeigGsStrSeed);	//		System.out.println(idNode + listForDelta);
 			
-			double delta = gsAlgoToolkit.getDeltaPow( gsGraph , listForDelta, nGs, morp ) ;		//	
-			System.out.println("delta " + delta + "\n") ;
-			
+			double delta = gsAlgoToolkit.getValStad ( gsGraph , listForDelta, nGs, morp , true ) ;		//	System.out.println("delta " + delta ) ; 	System.out.println(listForDelta.size());
 			int numberNewNodes = 0 , numberMaxNewNodes = 0  ;
 			
 			if ( delta <= 0 )
 				continue ;
 			
-			else if ( delta > 0 ) 
-				numberMaxNewNodes = (int) (Math.round( delta * nGsDegree)  ) ;								//			System.out.println(netGraph.getNodeCount());
+			else if ( delta >=1 )
+				 numberMaxNewNodes = listForDelta.size() ;
+			
+			else if ( delta > 0 && delta < 1  ) 
+				numberMaxNewNodes = (int) (Math.round( delta * listForDelta.size() )  ) ;								//			System.out.println(netGraph.getNodeCount());
 
 			numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob);
-			System.out.println( "numberNewNodes " + numberNewNodes );
+	//		System.out.println( "numberNewNodes " + numberNewNodes );
 			
 			if ( numberNewNodes == 0) {
 				if ( stillAlive )
@@ -102,31 +98,13 @@ public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNode
 				Node nodeCouldAdded = null ;
 				
 				switch (rule) {
-				case random:
-					idCouldAdded = getRandomNodeId(listForDelta);
-					
-					/*
-					  for ( String s : listForDelta ) {
-					 
-						
-						idCouldAdded = getRandomNodeId(listForDelta);
-						
-						if ( !listNodeAlreadyCecked.contains(idCouldAdded) )
-							
-						else 
-							listNodeAlreadyCecked.add(idCouldAdded);
-							
-							*/
-					
-					
-					
-					break;
+					case random: 	//	System.out.println(listForDelta);
+						idCouldAdded = listForDelta.get(x);
+					 break;
 
-				case maxValue: {
-					
-					}
+				case maxValue:
 					break;
-				}
+				}																//	System.out.println(idCouldAdded);
 				
 				// there isn't node
 				try {

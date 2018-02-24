@@ -136,7 +136,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 			netViz.setupIdViz(false, graph, 1 , "black");
 			netViz.setupDefaultParam (graph, "black", "gray", 3 , 0);
 			
-			netViz.setupFixScaleManual(true, graph, 100, 0);
+			netViz.setupFixScaleManual(true, graph, 50, 0);
 
 			Viewer netViewer =  graph.display(false) ;	
 		}

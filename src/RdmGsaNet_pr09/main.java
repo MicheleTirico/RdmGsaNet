@@ -25,7 +25,8 @@ import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 
 public class main {
-	private static int stopSim = 50
+	private static int stopSim = 5000
+			
 			;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -48,7 +49,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\test_controlSeed\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\rd_mazes\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -82,7 +83,7 @@ public class main {
 //											new generateNetNodeGradientOnlyOne 					( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
 //											new generateNetNodeGradientProb	    				( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.4 , true )
 //											new generateNetNodeGradientProbDelta 				(8, layoutSeed.allNode, rule.random, "gsAct", .8, false )
-											new generateNetNodeGradientProbDeltaControlSeed 	(5, layoutSeed.random, rule.random, "gsInh", 1, true )
+											new generateNetNodeGradientProbDeltaControlSeed 	(8, layoutSeed.random, rule.random, "gsInh", .1, true )
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -100,7 +101,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.solitions );			
+		setRdType ( RdmType.mazes );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

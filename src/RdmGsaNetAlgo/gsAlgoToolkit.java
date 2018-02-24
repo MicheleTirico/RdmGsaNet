@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.graphstream.algorithm.Dijkstra;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import javafx.collections.transformation.SortedList;
+import scala.util.parsing.combinator.testing.Str;
 
 public class gsAlgoToolkit {
 	
@@ -466,7 +468,6 @@ public class gsAlgoToolkit {
 		return listNeig ;
 	}
 		
-	
 	// get list of neighbor String
 		public static ArrayList<Node> getListNeighbor( Graph graph , Node n ) {
 			
@@ -557,15 +558,36 @@ public class gsAlgoToolkit {
 		autoCor = sumVal / node.getDegree() ;
 		return  autoCor;
 	}
+
 	
-	public static double getDeltaPowCeckSeed ( Graph graph , ArrayList<String> listNeig, String idNode , String attribute ) {
+	public static double getValStad ( Graph graph , ArrayList<String> listNeig, Node node , String attribute , boolean isCorrect ) {
 		
-		Node node = graph.getNode(idNode) ;
-		double delta = 0.0 , sumVal = 0.0 , sumValPow = 0.0 ; ;
+		double stdVal , nodeVal = node.getAttribute(attribute) ;										//	System.out.println("nodeVal " + nodeVal);
 		
-		return delta ;
+		if ( nodeVal > 1 )	nodeVal = 1 ; 
+		if ( nodeVal < 0 )	nodeVal = 0 ; 																//		System.out.println("nodeVal " + nodeVal);
+		
+		ArrayList<Double> listVal = new ArrayList<Double>(Arrays.asList(nodeVal));
+		
+		for ( String idNode : listNeig ) {
+			double valNeig = graph.getNode(idNode).getAttribute(attribute) ;
+			
+			if ( valNeig > 1.0 )
+				listVal.add(1.0);
+			else if ( valNeig < 0 )
+				listVal.add(0.0 ) ;
+			else 
+				listVal.add(valNeig);
+		}																								//		System.out.println("listVal " + listVal);
+		
+		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble();				//		System.out.println("aveVal " + aveVal);
+		double stdDev = getStandarDeviation(isCorrect, listVal);										//		System.out.println("stdDev " + stdDev);
+		stdVal  = ( nodeVal - aveVal) / stdDev;
+		
+		if (  Double.isNaN(stdVal) )
+			stdVal = 0.0 ;
+		return stdVal ;
 	}
-	
 	
 	public static double getDeltaPow ( Graph graph , ArrayList<String> listNeig, Node node , String attribute ) {
 		
@@ -573,32 +595,25 @@ public class gsAlgoToolkit {
 		double nodeVal = node.getAttribute(attribute) ;
 		
 		if ( nodeVal > 1 )
-			nodeVal = 1 ;
+			nodeVal = 1 ;												//	System.out.println("valNode " + nodeVal ); 
 		
-		System.out.println("valNode " + nodeVal ); 
-		
-		for ( String idNode : listNeig ) {
-		//	System.out.println(idNode);
+		for ( String idNode : listNeig ) {								//	System.out.println(idNode);
 			Node neig = graph.getNode(idNode) ;
 
 			double neigVal = neig.getAttribute(attribute);
 			if ( neigVal < 0 )
 				neigVal = 0 ; 
 			if ( neigVal > 1 )
-				neigVal = 1 ; 
-			System.out.println("neigVal " + neigVal );
+				neigVal = 1 ; 											//	System.out.println("neigVal " + neigVal );
+			
 			sumVal = sumVal + neigVal - nodeVal;
 			sumValPow = sumValPow + Math.pow(neigVal - nodeVal, 2 ) ;
 			numValues++;
-		}
-		System.out.println("sumVal " + sumVal );
-		System.out.println("sumValPow " + sumValPow );
-		System.out.println("numValues " + numValues );
+		}																//	System.out.println("sumVal " + sumVal );		//	System.out.println("sumValPow " + sumValPow );		//	System.out.println("numValues " + numValues );
 		
 		delta = sumVal / sumValPow / numValues ;
 		if (  Double.isNaN(delta) )
-			delta = 0.0 ;
-//		System.out.println("delta " + delta );
+			delta = 0.0 ;				//		System.out.println("delta " + delta );
 		return delta ;
 	}
 	
@@ -610,14 +625,11 @@ public class gsAlgoToolkit {
 		double normal= 0.0 , minVal= 1.0 , maxVal = 0.0 ;
 		
 		if ( valNode > 1 )
-			valNode = 1 ;
-//		System.out.println(valNode);
-//		System.out.println(node.getAttributeKeySet());
+			valNode = 1 ;//		System.out.println(valNode);//		System.out.println(node.getAttributeKeySet());
 		 
 		double sumVal = 0 ;
 		for ( String idNode : listNeig ) {
-			
-	
+		
 			Node neig = graph.getNode(idNode) ;
 
 			double valNeig = neig.getAttribute(attribute);	
@@ -625,10 +637,9 @@ public class gsAlgoToolkit {
 				minVal = valNeig ;
 			
 			if ( valNeig >= maxVal )
-				maxVal = valNeig ;
-			//	System.out.println(neig.getId() + " " + valNeig);
-			double val = valNeig - valNode ;
-				
+				maxVal = valNeig ;		//	System.out.println(neig.getId() + " " + valNeig);
+			
+			double val = valNeig - valNode ;		
 			sumVal = sumVal + val ;	
 		}
 		
@@ -636,14 +647,27 @@ public class gsAlgoToolkit {
 		
 		if ( isRel ) {
 			normal = maxVal - minVal ;
-			autoCor = autoCor * normal ;
-			
-		}
-		
+			autoCor = autoCor * normal ;	
+		}	
 		return  autoCor;
 	}
 	 
-	
+	public static double getStandarDeviation ( boolean isCorrect , ArrayList<Double> listVal ) {
+
+		double stdDev = 0.0 , sumVal = 0.0 ;													//	System.out.println("listVal " + listVal) ; 
+		int numVal = listVal.size();															//		System.out.println("numVal " + numVal);
+		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble() ;		//		System.out.println("aveVal " + aveVal) ; 
+		
+		for ( double val : listVal) 	
+			sumVal = sumVal + Math.pow(val - aveVal , 2 ) ;		//	System.out.println(sumVal);
+		
+		if ( isCorrect )
+			stdDev = Math.pow( sumVal / ( numVal - 1 ) , 0.5 )  ;
+		else if ( !isCorrect )
+			stdDev = Math.pow( sumVal / ( numVal  ) , 0.5 )  ;
+		
+		return stdDev ;
+	}
 //METHODS TO HANDLE COLLECTIONS ---------------------------------------------------------------------------------------------------------------------
 	
 	// method to obtain a set of key with an assigned value

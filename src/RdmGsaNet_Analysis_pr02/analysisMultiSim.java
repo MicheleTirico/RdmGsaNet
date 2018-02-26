@@ -18,7 +18,6 @@ public class analysisMultiSim extends analysisMain {
 							nameFolderMap = "mapToAnalyze" 
 							;  
 			
-
 	// HANDLE FILE OBJECT
 	protected static handleNameFile handle ;
 
@@ -26,9 +25,6 @@ public class analysisMultiSim extends analysisMain {
 				/* id analysis		*/ "id" , 
 				/* run analysis ? 	*/ true
 				) ;
-		
-	
-		
 		
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -42,9 +38,7 @@ public class analysisMultiSim extends analysisMain {
 					);		
 
 		// SET PARAMETERS ANALYSIS ----------------------------------------------------------------------------------------------------------------------
-				multiSim.setParamAnalysisLocal(
-				
-						);
+				multiSim.setParamAnalysisLocal(				);
 				
 		// SET WHICH LOCAL ANALYSIS TO COMPUTE ----------------------------------------------------------------------------------------------------------	
 				multiSim.setWhichGlobalAnalysis(
@@ -54,21 +48,23 @@ public class analysisMultiSim extends analysisMain {
 				
 				multiSim.setWhichGlobalAnalysisNet(
 						/* compute Clustering 			*/ true , 
-						/* compute Density 				*/ true,
-						/* compute Average Degree		*/ true, 
+						/* compute Density 				*/ true ,
+						/* compute Average Degree		*/ true , 
 						/* compute NewNodeRel  			*/ true ,
 						/* compute SeedCountRel			*/ true ,
 						/* compute DensityRegularGraph 	*/ true 
 						);
 				
 				multiSim.setWhichGlobalAnalysisMultiLayer(
-						/* compute GlobalCorrelation	*/ true
+						/* compute GlobalCorrelation Degree-gsInh	*/ false ,
+						/* compute GlobalCorrelation Seed -gsInh	*/ true
+						
 						);
 				
 			 	
 		// RUN LOCAL ANALYSIS ---------------------------------------------------------------------------------------------------------------------------
 
-				multiSim.computeGlobalMultiSim(5000, 5, folderMultiSim );
+				multiSim.computeGlobalMultiSim(50, 5, folderMultiSim );
 				
 			}
 

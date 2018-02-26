@@ -7,6 +7,7 @@ import java.util.Map;
 import RdmGsaNetAlgo.graphIndicators;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.handleVizStype;
+import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
 
 
@@ -46,8 +47,27 @@ public  class analysisLocal extends analysisMain  {
 					/* set folder 						*/ folder ,
 					/* create new folder ? 				*/ false , 
 					/*  manual name file (no in main )	*/ "analysis"
-				);		
-
+				);	
+			
+			analysisNet.setParamVizNet(
+					/* setScale					*/ 100 ,
+					/* sizeNode, 				*/ 3.0 ,
+					/* sizeEdge, 				*/ 0.1 ,
+					/* colorStaticNode, 		*/ "black" ,
+					/* colorStaticEdge, 		*/ "gray" ,
+					/* colorBooleanNodeTrue, 	*/ "red" ,
+					/* colorBooleanNodeFalse	*/ "black" ,
+					/* palette color 			*/ palette.blue
+					);
+			
+			analysisGs.setParamVizGs(
+					/* sizeNode, 				*/ 4.0 ,
+					/* sizeEdge, 				*/ 0.1 ,
+					/* palette color 			*/ palette.red
+					);
+			
+			
+			
 	// SET PARAMETERS ANALYSIS ----------------------------------------------------------------------------------------------------------------------
 			analysisNet.setParamAnalysisLocal(
 					/* normalize closeness		*/ true , 
@@ -61,7 +81,7 @@ public  class analysisLocal extends analysisMain  {
 					/* computeLocalClustering	*/ true ,	
 					/* compute closeness 		*/ false ,	// doesn't work with fix scale  
 					/* compute betweenness 		*/ false
-					);
+					); 
 			
 			
 	// RUN LOCAL ANALYSIS ---------------------------------------------------------------------------------------------------------------------------

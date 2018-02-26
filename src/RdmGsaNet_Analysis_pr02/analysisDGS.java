@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
@@ -13,6 +14,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
+import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_pr09.layerGs;
 import RdmGsaNet_pr09.layerNet;
 
@@ -209,7 +211,7 @@ public interface analysisDGS  {
 // CORRELATION METHODS ------------------------------------------------------------------------------------------------------------------------------
 	
 	// global correlation 
-	public static void computeGlobalCorrelation ( Graph graph0 , Graph graph1 , String atr0 , String atr1 , double step , int depth , Map mapGlobalCorrelation ) {
+	public static void computeGlobalCorrelation2 ( Graph graph0 , Graph graph1 , String atr0 , String atr1 , double step , int depth , Map mapGlobalCorrelation , boolean isCorrect ) {
 
 		Collection<Node> nodeSet0 = graph0.getNodeSet();	//	System.out.println(nodeSet0.size());
 		Collection<Node> nodeSet1 = graph1.getNodeSet();	//	System.out.println(nodeSet1.size());
@@ -231,17 +233,70 @@ public interface analysisDGS  {
 				map0.put(n, n.getAttribute(atr0)) ;
 		}
 		
-//		System.out.println(map0.size());
-		
 		for ( Node n : graph1.getEachNode())  {
 			if ( idSet0.contains(n.getId()))
+				try {
 				map1.put(n, (double) n.getAttribute(atr1)) ;
-		}
-		double globalCor = graphAnalysis.getGlobalCorrelation(map0, map1);		//	System.out.println(globalCor);
+				}
+			catch (java.lang.ClassCastException e) {
+				int atr =  n.getAttribute(atr1);
+				double val = 0.0 ;
+				if ( atr == 1 )
+					val = 1.0;
+				else if ( atr == 0)
+					val = 0.0 ;
+				map1.put(n,  val) ;
+			}
+				}
+		double globalCor = graphAnalysis.getGlobalCorrelation(map0, map1 , isCorrect);		//	System.out.println(globalCor);
 		
 		mapGlobalCorrelation.put(step, globalCor);
 
 	}
-
-
+	
+	public static void computeGlobalCorrelation ( Graph graph0 , Graph graph1 , String attr0 , String attr1 , boolean  normVal0 , boolean normVal1 , Map mapGlobalCorrelation , double step ) {
+		
+		double 	covariance = 0 ,
+				aveVal0 , 
+				aveVal1 ,
+				stDev0 ,
+				stDev1;
+		
+		ArrayList<Double> 	listVal0 = new ArrayList<Double>(), 
+							listVal1 = new ArrayList<Double>() ;
+		
+		Map <String , Double> 	mapIdAttr0 , 
+								mapIdAttr1 ;
+		
+		mapIdAttr0 = gsAlgoToolkit.getMapIdAttr(graph0, attr0, normVal0) ;
+		mapIdAttr1 = gsAlgoToolkit.getMapIdAttr( graph1 , attr1 , normVal1 ) ;
+		
+//		System.out.println(mapIdAttr0.size());
+		//System.out.println(mapIdAttr1.size());
+		
+		for ( String id : mapIdAttr0.keySet()) 
+			listVal0.add(mapIdAttr0.get(id));
+		
+		for ( String id : mapIdAttr1.keySet()) 
+			listVal1.add(mapIdAttr1.get(id));
+		
+		System.out.println(listVal1);
+		aveVal0 = listVal0.stream().mapToDouble(val->val).average().getAsDouble() ;	//		System.out.println(aveVal0);
+		aveVal1 = listVal1.stream().mapToDouble(val->val).average().getAsDouble() ;	//		System.out.println(aveVal1);
+		
+		ArrayList<String> listIdCommon = gsAlgoToolkit.getListIdCommon(mapIdAttr0, mapIdAttr1);
+	//	System.out.println(listIdCommon.size());
+		stDev0 = gsAlgoToolkit.getStandarDeviation( false, listVal0);
+		stDev1 = gsAlgoToolkit.getStandarDeviation( false, listVal1);
+	
+		for ( String s : listIdCommon ) {
+			
+			double val0 = mapIdAttr0.get(s);
+			//System.out.println(val0);
+			double val1 = mapIdAttr1.get(s);
+		//	System.out.println(val1);
+			covariance = covariance + ( val0 - aveVal0) * ( val1 - aveVal1) ;
+		}	
+		mapGlobalCorrelation.put(step,  covariance / ( stDev0 * stDev1 ) );
+	}
 }

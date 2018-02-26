@@ -36,7 +36,13 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 	private static ViewPanel  view ;
 	private int stepIncIm ;
 	
-	private int s1 = 0 , s2 = 0 ; 
+	private int s1 = 0 , s2 = 0 ;
+	
+	// parameters of viz 
+	private int setScale ; 
+	private double sizeNode , sizeEdge ; 
+	private String colorStaticNode , colorStaticEdge , colorBooleanNodeTrue , colorBooleanNodeFalse;
+	private palette paletteColor ;
 		
 	protected static  boolean 	
 	/* common boolean 		*/ 		run,  getImage, runViz;
@@ -75,6 +81,20 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 	public void setParamAnalysis ( int degreeFreq , int stepIncIm ) {
 		this.degreeFreq = degreeFreq ;
 		this.stepIncIm = stepIncIm ;	
+	}
+	
+	// setup viz parameters 
+	public void setParamVizNet ( int setScale , double sizeNode , double sizeEdge , 
+			String colorStaticNode , String colorStaticEdge , 
+			String colorBooleanNodeTrue ,String colorBooleanNodeFalse, palette paletteColor ) {
+		this.setScale = setScale ; 
+		this.sizeNode = sizeNode ;
+		this.sizeEdge = sizeEdge ;
+		this.colorStaticNode = colorStaticNode ;
+		this.colorStaticEdge = colorStaticEdge ;
+		this.colorBooleanNodeTrue = colorBooleanNodeTrue ;
+		this.colorBooleanNodeFalse = colorBooleanNodeFalse ;
+		this.paletteColor = paletteColor ;
 	}
 	
 	// set parameters of analysis
@@ -129,14 +149,15 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 		// get graph through dgsId of graph
 		graph = analysisDGS.returnGraphAnalysis(dgsId);
 		handleVizStype netViz = new handleVizStype( graph ,stylesheet.manual , "seedGrad", 1) ;
+		
 		// run viz
 		if ( runViz )  {
 			
 			// setup net viz parameters
 			netViz.setupIdViz(false, graph, 1 , "black");
-			netViz.setupDefaultParam (graph, "black", "gray", 3 , 0);
+			netViz.setupDefaultParam (graph, colorStaticNode, colorStaticEdge , sizeNode , sizeEdge );
 			
-			netViz.setupFixScaleManual(true, graph, 50, 0);
+			netViz.setupFixScaleManual( true, graph, setScale , 0);
 
 			Viewer netViewer =  graph.display(false) ;	
 		}
@@ -164,7 +185,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
-					netViz.setupVizBooleanAtr(true, graph, "black", "red" ) ;
+					netViz.setupVizBooleanAtr(true, graph, colorBooleanNodeFalse ,colorBooleanNodeTrue ) ;
 						
 					if ( computeFreqDegree  ) 
 						analysisDGS.computeFreqDegree( degreeFreq, graph , step , analysisGlobal.mapNetFreqDegree );	
@@ -208,12 +229,9 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 						analysisDGS.computeGlobalDensity(graph, step, analysisGlobal.mapNetStepGlobalDensity);
 					
 					// run viz
-					if ( runViz ) {
-						
-						
+					if ( runViz ) 	
 						Thread.sleep( thread );
-					}
-					
+						
 					if ( getImage ) 	
 						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
 							expImage.getImage(graph, folder + "analysis\\image\\" , "netImage" + step + ".png" );
@@ -280,8 +298,8 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					System.out.println("----------------step " + step + " ----------------" );				
 					
 					netViz = new handleVizStype( graph , stylesheet.viz10Color , indicator , 1 )  ;
-					netViz.setupDefaultParam (graph, "red", "black", 4 , .5 );		
-					netViz.setupFixScaleManual( true , graph, 100, 0);	
+					netViz.setupDefaultParam (graph, "red", "black", sizeNode , sizeEdge );		
+					netViz.setupFixScaleManual( true , graph, setScale, 0);	
 					
 					// create Map
 					Map<Node, Double > mapToUpdate = new HashMap<>() ;			
@@ -301,7 +319,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					
 					netViz.setupIdViz( false , graph , 1 , "black");
 					netViz.setupLabelViz(false , graph, 0.1, "black", indicator);
-					netViz.setupViz(true, true, palette.red);
+					netViz.setupViz(true, true, paletteColor );
 
 					/* doesn't work 
 					if ( getImage ) 	

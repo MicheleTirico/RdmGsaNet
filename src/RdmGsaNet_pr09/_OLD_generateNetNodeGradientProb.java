@@ -1,18 +1,13 @@
 package RdmGsaNet_pr09;
 
 import java.util.ArrayList;
-
 import org.graphstream.graph.Node;
-
-import com.sun.javafx.sg.prism.NGShape3D;
-
 import RdmGsaNetAlgo.gsAlgoToolkit;
 
-public class generateNetNodeGradientProbDelta extends generateNetNodeGradient implements generateNetNode_Inter {
+public class _OLD_generateNetNodeGradientProb extends generateNetNodeGradient implements generateNetNode_Inter {
 	
-	public generateNetNodeGradientProbDelta(int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob 
-			 , boolean stillAlive 
-			) {
+	// COSTRUTOR
+	public _OLD_generateNetNodeGradientProb ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob , boolean stillAlive ) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
 		this.rule = rule ;
@@ -23,73 +18,51 @@ public class generateNetNodeGradientProbDelta extends generateNetNodeGradient im
 	
 	@Override
 	public void generateNodeRule(int step) {
-
-//		System.out.println(netGraph.getNodeCount());
+		
 		// set seed nodes ( only first step )
 		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 				
 		// CREATE LIST OF SEEDGRAD 
 		ArrayList<Node> listNodeSeedGrad = 	gsAlgoToolkit.getListNodeAttribute(netGraph, "seedGrad" , 1 );		// System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
 
-		for ( Node nNet : listNodeSeedGrad ) {
-		
-			Node nGs = gsGraph.getNode(nNet.getId());
-			int nDgsDegree = nGs.getDegree() ;
+		for ( Node nNet : listNodeSeedGrad ) {		
 			
-			if ( nDgsDegree > 8)
-				nDgsDegree = 8 ;
-			
-			// list of neig
-			ArrayList <String> listNeigString = gsAlgoToolkit.getListNeighborStr ( gsGraph, nNet.getId() ) ;
-		
-			ArrayList<Node> listNeigNode = new ArrayList<Node>();
-			
-			for ( String s : listNeigString) 
-				listNeigNode.add(gsGraph.getNode(s)) ;
+			// create list of nodes with value greater of nNet 
+			ArrayList<Node> listNeigValMax = createListNodeMaxNeig( gsGraph, nNet , morp); 		// 	System.out.println("listIdNeigValMax of " + nNet.getId() + " " + listNeigValMax);
 		
 			ArrayList<String> listNodeAlreadyCecked = new ArrayList<String>() ;
-		
-			double delta = gsAlgoToolkit.getDeltaPow( gsGraph , listNeigString, nGs, morp ) ;
-		
-			int numberNewNodes = 0 , numberMaxNewNodes = 0  ;	//	System.out.println(nDgsDegree);//				System.out.println( "delta " + delta );
 			
-			if ( delta <= 0 )
-				continue ;
-			
-			else if ( delta > 0 ) 
-				numberMaxNewNodes = (int) (Math.round( delta * nDgsDegree)  ) ;								//			System.out.println(netGraph.getNodeCount());
-
-			numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob);
-				
+			int numberMaxNewNodes = listNeigValMax.size();										//	System.out.println("numberMaxNewNodes " + numberMaxNewNodes);
+			int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob);			//	System.out.println("numberNewNodes " + numberNewNodes);
+						
 			if ( numberNewNodes == 0) {
 				if ( stillAlive )
 					continue ;
-				
 				else if ( stillAlive == false )
 					nNet.setAttribute("seedGrad", 0 );
-			}																								//			System.out.println(nDgsDegree); 	System.out.println( "numberNewNodes " + numberNewNodes );
-			
+			}		
+					
 			for ( int x = 0 ; x < numberNewNodes ; x++ ) {
-				
+			
 				String idCouldAdded = null ; 
 				Node nodeCouldAdded = null ;
 				
 				switch (rule) {
 				case random:
 					while ( !listNodeAlreadyCecked.contains(idCouldAdded)) {
-						idCouldAdded = getRandomNode(listNeigNode);
+						idCouldAdded = getRandomNode(listNeigValMax);
 						listNodeAlreadyCecked.add(idCouldAdded);
 					}
 					break;
 
 				case maxValue: {
-					ArrayList<String> listIdNodeSorted = gsAlgoToolkit.getSortedListNodeAtr ( listNeigNode, morp );	
+					ArrayList<String> listIdNodeSorted = gsAlgoToolkit.getSortedListNodeAtr ( listNeigValMax, morp );	
 					idCouldAdded = listIdNodeSorted.get( x  );				//	System.out.println(idCouldAdded);
 					}
 					break;
 				
 				case minValue :
-					idCouldAdded = getNodeSmallest(morp, listNeigNode);
+					idCouldAdded = getNodeSmallest(morp, listNeigValMax);
 					break ;
 				}
 				
@@ -130,11 +103,8 @@ public class generateNetNodeGradientProbDelta extends generateNetNodeGradient im
 				}
 			}
 		}	
-		
-					
-				
-		
 	}
+	
 
 	@Override
 	public void removeNodeRule(int step) {

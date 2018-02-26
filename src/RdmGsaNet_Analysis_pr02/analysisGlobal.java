@@ -8,6 +8,7 @@ import RdmGsaNetExport.expChart;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.expChart.typeChart;
 import RdmGsaNetViz.handleVizStype;
+import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
 
 public class analysisGlobal extends analysisMain {
@@ -90,7 +91,24 @@ public class analysisGlobal extends analysisMain {
 					/* degree frequency 	*/ 9 ,
 					/* step in im 			*/ 200 
 					);
-			
+	
+		analysisNet.setParamVizNet(
+				/* setScale					*/ 100 ,
+				/* sizeNode, 				*/ 3.0 ,
+				/* sizeEdge, 				*/ 0.1 ,
+				/* colorStaticNode, 		*/ "black" ,
+				/* colorStaticEdge, 		*/ "white" ,
+				/* colorBooleanNodeTrue, 	*/ "red" ,
+				/* colorBooleanNodeFalse	*/ "white", 
+				/* palette color 			*/ palette.blue
+				);
+		
+		analysisGs.setParamVizGs(
+				/* sizeNode, 				*/ 4.0 ,
+				/* sizeEdge, 				*/ 0.1 ,
+				/* palette color 			*/ palette.red
+				);
+		
 		analysisGs.setParamAnalysis(
 					/* morp 				*/ "gsAct",	// not yet used
 					/* step in im 			*/ 200);

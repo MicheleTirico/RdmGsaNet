@@ -24,11 +24,12 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 						doNetViz ,
 						computeGsActivedNodes ,
 						computeGlobalCorrelation ;
-		/*
-		// viz constants
-		private static FileSource gsFs , netFs ;
-		private static ViewPanel  gsView , netView ;
-		*/
+		
+		// parameters of viz 
+		private int setScale ; 
+		private double sizeNodeNet , sizeEdgeNet , sizeNodeGs , sizeEdgeGs ; 
+		private String colorStaticNode , colorStaticEdge , colorBooleanNodeTrue , colorBooleanNodeFalse;
+		private palette paletteColor;
 		
 		protected String dgsId ;
 			
@@ -51,9 +52,27 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 		public void setParametersCorrelation ( correlationValGs valGs , correlationValNet valNet , int depth ) {
 			this.valGs = valGs ;
 			this.valNet = valNet;
-			this.depth = depth ; 
-				
+			this.depth = depth ; 		
 		}
+		
+		// setup viz parameters 
+		public void setParamVizNet ( int setScale , double sizeNodeNet , double sizeEdgeNet , 
+				String colorStaticNode , String colorStaticEdge , 
+				String colorBooleanNodeTrue ,String colorBooleanNodeFalse ) {
+			this.setScale = setScale ; 
+			this.sizeNodeNet = sizeNodeNet ;
+			this.sizeEdgeNet = sizeEdgeNet ;
+			this.colorStaticNode = colorStaticNode ;
+			this.colorStaticEdge = colorStaticEdge ;
+			this.colorBooleanNodeTrue = colorBooleanNodeTrue ;
+			this.colorBooleanNodeFalse = colorBooleanNodeFalse ;
+		}
+		
+		public void setParamVizGs ( double sizeNodeGs , double sizeEdgeGs , palette paletteColor ) { 
+			this.sizeNodeGs = sizeNodeGs ;
+			this.sizeEdgeGs = sizeEdgeGs ;
+			this.paletteColor = paletteColor ;
+		}	
 
 		@Override
 		public void computeGlobalStat(int stepMax, int stepInc, String[] pathStartArr, String[] pathStepArr , int thread )
@@ -74,7 +93,7 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			handleVizStype	netViz  = new handleVizStype( netGraph , stylesheet.manual , "seedGrad", 1) ,
 					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ;
 			
-			netViz.setupFixScaleManual( true , netGraph , 50 , 0 );
+			netViz.setupFixScaleManual( true , netGraph , setScale , 0 );
 			
 			//dispay graphs 
 			if ( doGsViz ) {
@@ -116,21 +135,21 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 //								double degreeDouble = (double) n.getDegree() ;
 								n.addAttribute("degree",  (double) n.getDegree());
 								}		
- 							analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  analysisMultiLayer.mapGlobalCorrelation );
+ 							analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  analysisMultiLayer.mapGlobalCorrelation, false  );
 						}
-	
 						
 						if ( doNetViz ) {
 							// setup net viz parameters
 							netViz.setupViz( true, true, palette.red);
 							netViz.setupIdViz( false , netGraph, 1 , "black");
-							netViz.setupDefaultParam ( netGraph, "red", "black", 5 , 0.3 );
-							netViz.setupVizBooleanAtr(true, netGraph,  "black", "red" ) ;
+							netViz.setupDefaultParam ( netGraph, colorStaticNode, colorStaticEdge, sizeNodeNet , sizeEdgeNet );
+							netViz.setupVizBooleanAtr(true, netGraph,  colorBooleanNodeFalse, colorBooleanNodeTrue ) ;
 						}
 						if ( doGsViz ) {
-							gsViz.setupDefaultParam (gsGraph, "red", "white", 5 , 0.5 );
+							gsViz.setupDefaultParam (gsGraph, "red", "white", sizeNodeGs , sizeEdgeGs );
 							gsViz.setupIdViz(false, gsGraph, 10 , "black");
-							gsViz.setupViz(true, true, palette.blue);
+							
+							gsViz.setupViz(true, true, paletteColor);
 						}
 							
 						if ( doGsViz | doNetViz )

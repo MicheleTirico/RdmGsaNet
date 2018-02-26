@@ -7,6 +7,7 @@ import java.util.List;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -28,6 +29,8 @@ import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
+import RdmGsaNet_pr08.gsAlgo.reactionType;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -399,6 +402,7 @@ public class gsAlgoToolkit {
 	// remove row with all values == 0
 		}
 
+
 	// get list of new nodes
 	public static ArrayList<String> getListNewNode ( Graph graph0 , Graph graph1  ) {
 		
@@ -559,7 +563,6 @@ public class gsAlgoToolkit {
 		return  autoCor;
 	}
 
-	
 	public static double getValStad ( Graph graph , ArrayList<String> listNeig, Node node , String attribute , boolean isCorrect ) {
 		
 		double stdVal , nodeVal = node.getAttribute(attribute) ;										//	System.out.println("nodeVal " + nodeVal);
@@ -668,6 +671,53 @@ public class gsAlgoToolkit {
 		
 		return stdDev ;
 	}
+
+	public static Map getMapIdAttr ( Graph graph , String attribute , boolean normVal ) {
+		
+		Map <String , Double> mapIdAttr = new HashMap<String, Double>();	
+		Map <String , Double> mapIdAttrNorm = new HashMap<String, Double>();	
+		
+		double range ;
+		
+		for ( Node n : graph.getEachNode()) {
+			double val = 0.0 ; 
+			
+			if ( attribute == "degree" ) 
+				 val = (double) n.getDegree() ;
+			
+			double intVal = (double) n.getAttribute(attribute);
+
+			mapIdAttr.put(n.getId(), val ) ; 
+		}
+		ArrayList<Double> list = new  ArrayList<Double> (mapIdAttr.values());
+		if ( normVal ) {
+			
+			double 	maxVal = list.stream().mapToDouble(val->val).max().getAsDouble() ,
+					minVal = list.stream().mapToDouble(val->val).min().getAsDouble() ;
+			range  = maxVal - minVal ;
+			System.out.println(range);
+			for ( String id : mapIdAttr.keySet()) 
+				mapIdAttrNorm.put(id, ( mapIdAttr.get(id) / range ) ) ;
+		
+			 mapIdAttr = mapIdAttrNorm ;
+		}
+		
+		return mapIdAttr ;
+	}
+	
+	public static ArrayList<String> getListIdCommon (  Map<String, Double> map0,  Map<String, Double>  map1 ) {
+		
+		ArrayList<String> list = new ArrayList<String>() ;
+		
+		
+		for ( String s : map1.keySet() ) {
+			if ( map0.keySet().contains(s) )
+				list.add(s);
+		}
+		return list;
+	}
+	
+
 //METHODS TO HANDLE COLLECTIONS ---------------------------------------------------------------------------------------------------------------------
 	
 	// method to obtain a set of key with an assigned value

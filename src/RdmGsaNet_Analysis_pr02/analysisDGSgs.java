@@ -31,6 +31,11 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 	// viz constants
 	private static ViewPanel  view ;
 	private int stepIncIm ;
+	
+	// parameters of viz 
+
+	private double sizeNodeGs , sizeEdgeGs ; 
+	private palette paletteColor;
 
 	protected static Graph graph = new SingleGraph ("graph");
 	
@@ -50,7 +55,13 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 		this.dgsId = dgsId;
 		this.run = run ;	
 	}
-			
+		
+	public void setParamVizGs ( double sizeNodeGs , double sizeEdgeGs , palette paletteColor ) { 
+		this.sizeNodeGs = sizeNodeGs ;
+		this.sizeEdgeGs = sizeEdgeGs ;
+		this.paletteColor = paletteColor ;
+	}	
+
 	// set parameters of analysis
 	public void setParamAnalysis ( String morp  , int stepIncIm ) {
 		this.morp = morp ;
@@ -91,7 +102,7 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 		if ( runViz ) {			
 			// setup gs viz parameters
 			viz = new handleVizStype( graph ,stylesheet.viz10Color, "gsInh", 1) ;
-			viz.setupDefaultParam (graph, "red", "white", 3 , 0.5 );
+			viz.setupDefaultParam (graph, "red", "white", sizeNodeGs , sizeEdgeGs );
 			Viewer gsViewer = graph.display(false) ;
 		}
 		
@@ -119,7 +130,7 @@ public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 				
 					// run viz
 					if ( runViz ) {	
-						viz.setupViz(true, true, palette.blue );
+						viz.setupViz(true, true, paletteColor );
 						viz.setupIdViz(false, graph, 10 , "black");
 						Thread.sleep(thread);			
 					}

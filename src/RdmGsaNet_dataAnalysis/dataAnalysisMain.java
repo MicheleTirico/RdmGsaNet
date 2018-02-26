@@ -27,7 +27,8 @@ public class dataAnalysisMain {
 										dataAnalysisSeedCountRel		= new dataAnalysisGlobal(true) ,
 										dataAnalysisDensityRegularGraph = new dataAnalysisGlobal(true) ,
 										
-										dataAnalysisMultiLayerGlobalCorrelation = new dataAnalysisGlobal(true)
+										dataAnalysisMultiLayerGlobalCorrelationDegreeInh = new dataAnalysisGlobal(true) ,
+										dataAnalysisMultiLayerGlobalCorrelationSeedInh = new dataAnalysisGlobal(true)
 										; 
 	
 	// Maps to create chart
@@ -37,16 +38,17 @@ public class dataAnalysisMain {
 				mapStepProbNewNodeRel  = new HashMap( ) ,
 				mapStepProbSeedCountRel	 = new HashMap( ) ,
 				mapDensityRegularGraph = new HashMap() ,
-				mapMultiLayerGlobalCorrelation  = new HashMap();
+				mapMultiLayerGlobalCorrelationDegreeInh  = new HashMap() ,
+				mapMultiLayerGlobalCorrelationSeedInh  = new HashMap() ;
 	
 
  	// CREATE CHARTS
 	static expChart xyChart = null ;
 	
-	// COSTANTS
+	// COSTANTS 
 	
 	// folder
-	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\rd_mazes\\multiSimAnalysis\\" ,
+	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\grid_100\\rd_chaos\\multiSimAnalysis\\" ,
 							folderMapToAnayze = "mapToAnalyze\\" ,
 							pathMapToAnalyze = pathMain + folderMapToAnayze ,
 							
@@ -56,7 +58,8 @@ public class dataAnalysisMain {
 							folderNewNodeRel = "netNewNodeRel\\" ,
 							folderSeedCountRel = "netSeedCountRel\\" ,
 							folderDensityRegularGraph = "netDensityRegularGraph\\" ,
-							folderMultiLayerGlobalCorrelation = "multiLayerGlobalCorrelation\\",
+							folderMultiLayerGlobalCorrelationDegreeInh = "multiLayerGlobalCorrelationDegreeInh\\",
+							folderMultiLayerGlobalCorrelationSeedInh   = "multiLayerGlobalCorrelationSeedInh\\",
 							
 							folderChart = "chart\\" ,
 							
@@ -66,7 +69,8 @@ public class dataAnalysisMain {
 							pathNewNodeRel =  pathMapToAnalyze + folderNewNodeRel ,
 							pathSeedCountRel =  pathMapToAnalyze + folderSeedCountRel ,
 							pathDensityRegularGraph = pathMapToAnalyze + folderDensityRegularGraph ,
-							pathmultiLayerGlobalCorrelation = pathMapToAnalyze + folderMultiLayerGlobalCorrelation
+							pathmultiLayerGlobalCorrelationDegreeInh = pathMapToAnalyze + folderMultiLayerGlobalCorrelationDegreeInh,
+							pathmultiLayerGlobalCorrelationSeedInh   = pathMapToAnalyze + folderMultiLayerGlobalCorrelationSeedInh
 							;
 	
 	public static void main ( String[] args ) throws ClassNotFoundException, IOException {
@@ -86,26 +90,27 @@ public class dataAnalysisMain {
 		dataAnalysisSeedCountRel.computeAnalysis(pathSeedCountRel, mapStepProbSeedCountRel);
 		dataAnalysisDensityRegularGraph.computeAnalysis(pathDensityRegularGraph, mapDensityRegularGraph);
 		
-		dataAnalysisMultiLayerGlobalCorrelation.computeAnalysis(pathmultiLayerGlobalCorrelation, mapMultiLayerGlobalCorrelation);
-		
-		System.out.println(mapMultiLayerGlobalCorrelation);
+		dataAnalysisMultiLayerGlobalCorrelationDegreeInh.computeAnalysis( pathmultiLayerGlobalCorrelationDegreeInh, mapMultiLayerGlobalCorrelationDegreeInh);
+		dataAnalysisMultiLayerGlobalCorrelationSeedInh.computeAnalysis( pathmultiLayerGlobalCorrelationSeedInh, mapMultiLayerGlobalCorrelationSeedInh);
+	//	System.out.println(mapMultiLayerGlobalCorrelationDegreeInh);
 		
 		createCharts(
-				/* store chart ? 								*/ true, 
-				/* create chart clustering						*/ true , 
-				/* create chart density							*/ true, 
-				/* create chart average Degree					*/ true ,
-				/* create chart New Node Rel					*/ true ,
-				/* create chart Seed Count Rel					*/ true ,
-				/* create chart DensityRegularGraph				*/ true ,
-				/* create chart multiLayerGlobalCorrelation		*/ true 
+				/* store chart ? 										*/ true, 
+				/* create chart clustering								*/ true , 
+				/* create chart density									*/ true, 
+				/* create chart average Degree							*/ true ,
+				/* create chart New Node Rel							*/ true ,
+				/* create chart Seed Count Rel							*/ true ,
+				/* create chart DensityRegularGraph						*/ true ,
+				/* create chart multiLayerGlobalCorrelation degree inh	*/ true ,
+				/* create chart multiLayerGlobalCorrelation seed inh	*/ true
 				);
 		
 	}
 		private static void createCharts ( boolean storeCharts , 
 				boolean createChartClustering , boolean createChartDensity , boolean createChartAverageDegree ,
 				boolean createChartNewNodeRel , boolean createChartSeedCountRel , boolean createChartDensityRegularGraph,
-				boolean createChartMultiLayerGlobalCorrelation
+				boolean createChartMultiLayerGlobalCorrelationDegreeInh , boolean createChartMultiLayerGlobalCorrelationSeedInh 
 			 ) 	throws IOException {
 		
 			// exit method 
@@ -145,10 +150,17 @@ public class dataAnalysisMain {
 				xyChart.setVisible(true);
 				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "DensityRegularGraph" );	
 			}
-			if ( createChartMultiLayerGlobalCorrelation ) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "multi layer global correlation ", "Step (t)" , " regular grid (n)" , 800, 600 ,	mapMultiLayerGlobalCorrelation );
+			
+			if ( createChartMultiLayerGlobalCorrelationDegreeInh ) {
+				xyChart = new expChart(typeChart.XYchartSer_xy , "multi layer global correlation degree inh", "Step (t)" , " correlation (%)" , 800, 600 ,	mapMultiLayerGlobalCorrelationDegreeInh );
 				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "MultiLayerGlobalCorrelation " );	
+				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "MultiLayerGlobalCorrelation degree inh" );	
+			}
+			
+			if ( createChartMultiLayerGlobalCorrelationSeedInh ) {
+				xyChart = new expChart(typeChart.XYchartSer_xy , "multi layer global correlation seed inh", "Step (t)" , " correlation (%)" , 800, 600 ,	mapMultiLayerGlobalCorrelationSeedInh );
+				xyChart.setVisible(true);
+				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "MultiLayerGlobalCorrelation seed inh" );	
 			}
 		}
 }

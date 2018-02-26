@@ -49,7 +49,8 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 					computeNewNodeRel ,
 					computeSeedCountRel ,
 					computeDensityRegularGraph ,
-					computeGlobalCorrelation ;
+					computeGlobalCorrelationDegreeInh ,
+					computeGlobalCorrelationSeedInh ;
 
 	protected enum layerToAnalyze { gs , net , multiLayer }
 	protected static layerToAnalyze layerToAnalyze ;
@@ -58,6 +59,8 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 	protected static typeMultiSim typeMultiSim ;
 	
 	protected enum typeIndicator { clustering  , density }
+	
+	
 	protected static typeIndicator typeIndicator;
 	
 	// COSTRUCTOR 
@@ -83,10 +86,13 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 	}
 	
 	public void setWhichGlobalAnalysisMultiLayer ( 
-			boolean computeGlobalCorrelation
+			boolean computeGlobalCorrelationDegreeInh , boolean computeGlobalCorrelationSeedInh
 			) {
-		this.computeGlobalCorrelation = computeGlobalCorrelation ;
+		this.computeGlobalCorrelationDegreeInh = computeGlobalCorrelationDegreeInh ;
+		this.computeGlobalCorrelationSeedInh = computeGlobalCorrelationSeedInh ;
 	}
+	
+	public void setWhichGlobalCorrelation ( ) {}
 	
 	public void setWhichGlobalAnalysisGs ( 	) {}
 	
@@ -155,8 +161,11 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 			 }
 
 			 else if ( layerToAnalyze == layerToAnalyze.multiLayer ) {
-				 if ( computeGlobalCorrelation )
-					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "multiLayerGlobalCorrelation");
+				 if ( computeGlobalCorrelationDegreeInh )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "multiLayerGlobalCorrelationDegreeInh");
+				 
+				 if ( computeGlobalCorrelationSeedInh )
+					 handleNameFile.createNewGenericFolder(folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\", "multiLayerGlobalCorrelationSeedInh");
 			 }
 			 
 			 else if ( layerToAnalyze == layerToAnalyze.gs ) {
@@ -187,7 +196,8 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 				mapNewNodeRel  = new HashMap(),
 				mapSeedCountRel  = new HashMap() , 
 				mapDensityRegularGraph = new HashMap() ,
-				mapGlobalCorrelation = new HashMap()  ;
+				mapGlobalCorrelationDegreeInh = new HashMap() ,
+				mapGlobalCorrelationSeedInh = new HashMap()   ;
 	
 		switch ( layerToAnalyze ) {
 			case gs: {
@@ -220,21 +230,17 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 
 			case multiLayer : {
 				computeGlobalStatMultiLayer ( "dgsMultiLayer" ,  stepMax,  stepInc, pathStartNet,  pathStepNet , pathStartGs,  pathStepGs , 
-						mapGlobalCorrelation) ;
+						mapGlobalCorrelationDegreeInh , mapGlobalCorrelationSeedInh  ) ;
 				
-				if ( computeGlobalCorrelation )
-					expValues.writeMap(true, mapGlobalCorrelation , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\multiLayerGlobalCorrelation\\" , "multiLayerGlobalCorrelation_" + extF.getName() );		
+				if ( computeGlobalCorrelationDegreeInh )
+					expValues.writeMap(true, mapGlobalCorrelationDegreeInh , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\multiLayerGlobalCorrelationDegreeInh\\" , "multiLayerGlobalCorrelationDegreeInh_" + extF.getName() );		
+				
+				if ( computeGlobalCorrelationSeedInh )
+					expValues.writeMap(true, mapGlobalCorrelationSeedInh , folderMultiSim + "\\multiSimAnalysis\\" + analysisMultiSim.nameFolderMap + "\\multiLayerGlobalCorrelationSeedInh\\" , "multiLayerGlobalCorrelationSeedInh_" + extF.getName() );		
+		
+			
 			} break ;
 		}
-			
-
-
-	//	ArrayList <Double> arr = new ArrayList<Double>( mapLocalStepClustering.values() ) ;
-
-		// ,System.out.println(arr);
-		// store map methods 
-		
-		
 	}
 
 	// not simple to implement
@@ -253,7 +259,7 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 	
 	
 	private static void computeGlobalStatMultiLayer (String dgsId , int stepMax, int stepInc, String pathStartNet, String pathStepNet , String pathStartGs, String pathStepGs  ,
-			 Map mapGlobalCorrelation
+			 Map mapGlobalCorrelationDegreeInh , Map mapGlobalCorrelationSeedInh
 			) throws IOException {
 		
 		Graph gsGraph = new SingleGraph("gsGraph");
@@ -288,12 +294,19 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
+					for ( Node n : netGraph.getEachNode() ) 
+						n.addAttribute("degree",  (double) n.getDegree());	
 					
-					if ( computeGlobalCorrelation ) {
-						for ( Node n : netGraph.getEachNode() ) 
-							n.addAttribute("degree",  (double) n.getDegree());	
-						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  mapGlobalCorrelation);
+					if ( computeGlobalCorrelationDegreeInh ) {
+					//	analysisDGS.computeGlobalCorrelation2(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  mapGlobalCorrelationDegreeInh , false);
+						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree", false, true , mapGlobalCorrelationDegreeInh, step);
 					}
+					
+					if ( computeGlobalCorrelationSeedInh ) {
+//						analysisDGS.computeGlobalCorrelation2(gsGraph, netGraph, "gsInh", "seedGrad" , step , 1 ,  mapGlobalCorrelationSeedInh , false);
+						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "seedGrad", false, true , mapGlobalCorrelationDegreeInh, step);
+					}
+					
 					
 					
 					// stop iteration    

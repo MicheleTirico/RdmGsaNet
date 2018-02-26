@@ -46,16 +46,22 @@ public class dataAnalysisGlobal extends dataAnalysisMain {
 	
 		 if ( run == false ) 	
 			 return ; 
-			
-		 File path = new File( folder );	
-		 File [] files = path.listFiles();								
-		 ArrayList<File> fileArray = new ArrayList<File>(Arrays.asList(files));
+		
+		 try {
+			 File path = new File( folder );	
+			 File [] files = path.listFiles();								
+			 ArrayList<File> fileArray = new ArrayList<File>(Arrays.asList(files));
 		 
 	
-		 for ( File f : fileArray ) {														//	 System.out.println(f);
-			 Map<Double, Double > map = expValues.readMap(run, folder, f.getName());
-			 mapToUpdate.put(prob, map);													//	 System.out.println(map);
-			 prob++ ;
-		}																					//	 System.out.println(mapToUpdate);
+			 for ( File f : fileArray ) {														//	 System.out.println(f);
+				 Map<Double, Double > map = expValues.readMap(run, folder, f.getName());
+				 mapToUpdate.put(prob, map);													//	 System.out.println(map);
+				 prob++ ;
+			 }																					//	 System.out.println(mapToUpdate);
+		 } catch ( java.lang.NullPointerException e ) {
+		 return ;
 	 }
+	}
+	
+	
 }

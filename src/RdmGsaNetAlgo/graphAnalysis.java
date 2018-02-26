@@ -97,16 +97,16 @@ public class graphAnalysis {
 	}
 
 // SPATIAL CORRELATION (multi graph) ----------------------------------------------------------------------------------------------------------------
-	public static double getGlobalCorrelation ( Map <Node , Double > map0 ,  Map <Node , Double > map1  ) {
+	public static double getGlobalCorrelation ( Map <Node , Double > map0 ,  Map <Node , Double > map1 , boolean isCorrect  ) {
 		
-		double stDev0 = getStandardDeviationGraph(map0) ;			//	System.out.println(stDev0);
-		double stDev1 = getStandardDeviationGraph(map1) ;			//	System.out.println(stDev1);
+		double stDev0 = getStandardDeviationGraph(map0 , isCorrect ) ;			//	System.out.println(stDev0);
+		double stDev1 = getStandardDeviationGraph(map1 , isCorrect ) ;			//	System.out.println(stDev1);
 		double covariance = getCovarianceFromGraph(map0, map1);		//	System.out.println(covariance);
 	
 		return  covariance / ( stDev0 * stDev1) ;
 	}
 	
-	public static double getLocalCorrelation ( Node node ,  Map <Node , Double > map0 ,  Map <Node , Double > map1 ) {
+	public static double getLocalCorrelation ( Node node ,  Map <Node , Double > map0 ,  Map <Node , Double > map1 , boolean isCorrect ) {
 		
 		ArrayList<Double> listVal0 = new ArrayList<Double>( map0.values()) ; 	
 		ArrayList<Double> listVal1 = new ArrayList<Double>( map1.values()) ; 
@@ -114,8 +114,8 @@ public class graphAnalysis {
 		double aveVal0 = listVal0.stream().mapToDouble(val->val).average().getAsDouble() ;
 		double aveVal1 = listVal1.stream().mapToDouble(val->val).average().getAsDouble() ;
 		
-		double stDev0 = getStandardDeviationGraph(map0) ;
-		double stDev1 = getStandardDeviationGraph(map1) ;
+		double stDev0 = getStandardDeviationGraph(map0 , isCorrect ) ;
+		double stDev1 = getStandardDeviationGraph(map1 , isCorrect ) ;
 		
 		double val0node = map0.get(node);
 		double val1node = map1.get(node);
@@ -125,17 +125,11 @@ public class graphAnalysis {
 		return localCov / ( stDev0 * stDev1) ;
 	}
 
-	// nooooooooooooooo
-	public static double getStandardDeviationGraph ( Map <Node , Double > map  ) {
+	public static double getStandardDeviationGraph ( Map <Node , Double > map ,  boolean isCorrect ) {
 
 		ArrayList<Double> listVal = new ArrayList<Double>( map.values()) ;
-		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble();
 		
-		double val = 0.0 ;
-		for ( Node n : map.keySet() ) {
-			 val = val +  Math.pow(( map.get(n) - aveVal ) , 2  ) ;
-		}
-		return Math.pow( val , 0.5  )  ;
+		return gsAlgoToolkit.getStandarDeviation(isCorrect, listVal);
 	}
 
 	public static double getCovarianceFromGraph (  Map <Node , Double > map0 ,  Map <Node , Double > map1  ) {
@@ -143,8 +137,6 @@ public class graphAnalysis {
 		if ( map0.size() != map1.size() ) 
 			System.out.println("size list not equals");
 		
-//		System.out.println(map0.size());
-//		System.out.println(map1.size());
 		ArrayList<Double> listVal0 = new ArrayList<Double>( map0.values()) ;				//		System.out.println(listVal0);
 		ArrayList<Double> listVal1 = new ArrayList<Double>( map1.values()) ;  				//		System.out.println(listVal1);
 		

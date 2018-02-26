@@ -38,7 +38,7 @@ public class generateNetNodeGradient  {
 // COMMON METHODS FOR ALL CLASS WITH GRADIENT APPROACH ----------------------------------------------------------------------------------------------
 	
 	// create list (node) of neigbohord with max value of morphogen
-	protected ArrayList<Node> createListNodeMaxNeig (Graph graph , Node n , String morp ) {
+	protected ArrayList<Node> createListNodeMaxNeig (Graph graph , Node n , String morp  ) {
 		
 		Node nGs = graph.getNode(n.getId());
 		double val = 0 ;
@@ -55,6 +55,31 @@ public class generateNetNodeGradient  {
 				if ( morpVal  >= val  ) {	
 					val = morpVal; 
 					listIdNeigValMax.add( neig ) ;
+				}
+			} catch (java.lang.NullPointerException e) {
+				// e.printStackTrace();
+				continue ;
+			}
+		}	
+		return listIdNeigValMax;
+	}
+protected ArrayList<String> createListNodeMaxNeigStr (Graph graph , Node n , String morp  ) {
+		
+		Node nGs = graph.getNode(n.getId());
+		double val = 0 ;
+
+		ArrayList<String> listIdNeigValMax = new ArrayList<String>();
+		
+		Iterator<Node> iter = nGs.getNeighborNodeIterator() ;		//	System.out.println("id " + n);
+		
+		while ( iter.hasNext()) {				
+			
+			Node neig = iter.next() ;			
+			try {
+				double morpVal = neig.getAttribute(morp);	
+				if ( morpVal  >= val  ) {	
+					val = morpVal; 
+					listIdNeigValMax.add( neig.getId() ) ;
 				}
 			} catch (java.lang.NullPointerException e) {
 				// e.printStackTrace();
@@ -193,6 +218,32 @@ protected String getRandomNodeId ( ArrayList<String> listNeig ) {
 
 // --------------------------------------------------------------------------------------
 
+	protected String getIdCouldAdded ( rule rule , ArrayList<String> list , int numberOfTry ) {
+	
+		String idCouldAdded = null ; 
+		
+		switch (rule) {
+		case random: {
+			idCouldAdded = list.get(numberOfTry);
+			}break;
+
+		case maxValue: {
+			System.out.println("not implem");
+			/*
+			ArrayList<String> listIdNodeSorted = gsAlgoToolkit.getSortedListNodeAtr ( listNeigNode, morp );	
+			idCouldAdded = listIdNodeSorted.get( x  );				//	System.out.println(idCouldAdded);
+			*/
+			} break;
+		
+		case minValue : {
+			System.out.println("not implem");
+			/*
+			 idCouldAdded = getNodeSmallest(morp, listNeigNode);
+			 */
+			}
+		}
+		return idCouldAdded ;
+	}
 
 
 

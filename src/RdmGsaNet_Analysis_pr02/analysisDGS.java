@@ -254,49 +254,90 @@ public interface analysisDGS  {
 
 	}
 	
-	public static void computeGlobalCorrelation ( Graph graph0 , Graph graph1 , String attr0 , String attr1 , boolean  normVal0 , boolean normVal1 , Map mapGlobalCorrelation , double step ) {
+	
+	public static void computeGlobalCorrelation3 ( Map map0 , Map map1 , Map mapGlobalCorrelation , double step , boolean isSampling ) {
+		
+	}
+	
+	
+	
+	
+	
+	public static void computeGlobalCorrelation ( Graph graph0 , Graph graph1 , String attr0 , String attr1 , boolean  normVal0 , boolean normVal1 , Map mapGlobalCorrelation , double step  , boolean isSampling ) {
 		
 		double 	covariance = 0 ,
 				aveVal0 , 
 				aveVal1 ,
 				stDev0 ,
-				stDev1;
+				stDev1 ;
 		
 		ArrayList<Double> 	listVal0 = new ArrayList<Double>(), 
-							listVal1 = new ArrayList<Double>() ;
+							listVal1 = new ArrayList<Double>() ,
+							listVal0Common = new ArrayList<Double>() ,
+							listVal1Common = new ArrayList<Double>();
 		
 		Map <String , Double> 	mapIdAttr0 , 
 								mapIdAttr1 ;
 		
-		mapIdAttr0 = gsAlgoToolkit.getMapIdAttr(graph0, attr0, normVal0) ;
-		mapIdAttr1 = gsAlgoToolkit.getMapIdAttr( graph1 , attr1 , normVal1 ) ;
+		mapIdAttr0 = gsAlgoToolkit.getMapIdAttr(graph0, attr0, normVal0 ) ;
+		mapIdAttr1 = gsAlgoToolkit.getMapIdAttr( graph1 , attr1 , normVal1) ;
 		
-//		System.out.println(mapIdAttr0.size());
-		//System.out.println(mapIdAttr1.size());
+	//	System.out.println(mapIdAttr0);
+	//	System.out.println(mapIdAttr1);
 		
 		for ( String id : mapIdAttr0.keySet()) 
 			listVal0.add(mapIdAttr0.get(id));
 		
 		for ( String id : mapIdAttr1.keySet()) 
-			listVal1.add(mapIdAttr1.get(id));
-		
-		System.out.println(listVal1);
-		aveVal0 = listVal0.stream().mapToDouble(val->val).average().getAsDouble() ;	//		System.out.println(aveVal0);
-		aveVal1 = listVal1.stream().mapToDouble(val->val).average().getAsDouble() ;	//		System.out.println(aveVal1);
-		
-		ArrayList<String> listIdCommon = gsAlgoToolkit.getListIdCommon(mapIdAttr0, mapIdAttr1);
-	//	System.out.println(listIdCommon.size());
-		stDev0 = gsAlgoToolkit.getStandarDeviation( false, listVal0);
-		stDev1 = gsAlgoToolkit.getStandarDeviation( false, listVal1);
+			listVal1.add(mapIdAttr1.get(id));															//		
 	
+//		System.out.println(listVal0.size());
+//		System.out.println(listVal1.size());
+			
+		ArrayList<String> listIdCommon = gsAlgoToolkit.getListIdCommon(mapIdAttr0, mapIdAttr1);			//		System.out.println(listIdCommon.size());
+		
+		for(String id : listIdCommon) {
+			listVal0Common.add(mapIdAttr0.get(id));
+			listVal1Common.add(mapIdAttr1.get(id));
+		}
+		
+//		System.out.println(listVal0Common.size());
+//		System.out.println(listVal1Common.size());
+		
+		aveVal0 = listVal0Common.stream().mapToDouble(val->val).average().getAsDouble() ;						//			System.out.println("aveVal0 " + aveVal0);
+		aveVal1 = listVal1Common.stream().mapToDouble(val->val).average().getAsDouble() ;						//			
+//		System.out.println("max1 " + listVal1Common.stream().mapToDouble(val->val).max().getAsDouble() );
+//		System.out.println("aveVal1 " + aveVal1);
+		
+		stDev0 = gsAlgoToolkit.getStandarDeviation( isSampling , listVal0Common);								//		System.out.println("stDev0 " + stDev0);	
+		stDev1 = gsAlgoToolkit.getStandarDeviation( isSampling , listVal1Common);										//		System.out.println("stDev1 " + stDev1);
+		//		System.out.println("covariance " + covariance);
 		for ( String s : listIdCommon ) {
 			
-			double val0 = mapIdAttr0.get(s);
-			//System.out.println(val0);
-			double val1 = mapIdAttr1.get(s);
-		//	System.out.println(val1);
-			covariance = covariance + ( val0 - aveVal0) * ( val1 - aveVal1) ;
+			double val0 = mapIdAttr0.get(s);															//				
+	//		System.out.println(s + " " + val0);
+	//		System.out.println("aveVal0 " + aveVal0);
+			
+			double val1 = mapIdAttr1.get(s);															//				System.out.println(s + " " +  val1);	
+		
+			
+			covariance = covariance + ( ( val0 - aveVal0) * ( val1 - aveVal1) );
+	//		System.out.println(( val0 - aveVal0) * ( val1 - aveVal1));
 		}	
+//		System.out.println("covariance " + covariance);
+		
+		double numberVal = 0 ;
+		
+		
+		if ( isSampling ) 
+			numberVal = listIdCommon.size() - 1 ; 
+		else if ( !isSampling )
+			numberVal = listIdCommon.size();
+		
+//		System.out.println("numberVal " + numberVal);
+		covariance = covariance / numberVal ;
+//	System.out.println("covariance " + covariance);
 		mapGlobalCorrelation.put(step,  covariance / ( stDev0 * stDev1 ) );
+	//	System.out.println(mapGlobalCorrelation);
 	}
 }

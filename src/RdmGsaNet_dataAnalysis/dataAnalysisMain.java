@@ -48,7 +48,7 @@ public class dataAnalysisMain {
 	// COSTANTS 
 	
 	// folder
-	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\grid_100\\rd_chaos\\multiSimAnalysis\\" ,
+	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\grid_100\\rd_solitions\\multiSimAnalysis\\" ,
 							folderMapToAnayze = "mapToAnalyze\\" ,
 							pathMapToAnalyze = pathMain + folderMapToAnayze ,
 							
@@ -92,7 +92,7 @@ public class dataAnalysisMain {
 		
 		dataAnalysisMultiLayerGlobalCorrelationDegreeInh.computeAnalysis( pathmultiLayerGlobalCorrelationDegreeInh, mapMultiLayerGlobalCorrelationDegreeInh);
 		dataAnalysisMultiLayerGlobalCorrelationSeedInh.computeAnalysis( pathmultiLayerGlobalCorrelationSeedInh, mapMultiLayerGlobalCorrelationSeedInh);
-	//	System.out.println(mapMultiLayerGlobalCorrelationDegreeInh);
+		System.out.println(mapMultiLayerGlobalCorrelationDegreeInh);
 		
 		createCharts(
 				/* store chart ? 										*/ true, 

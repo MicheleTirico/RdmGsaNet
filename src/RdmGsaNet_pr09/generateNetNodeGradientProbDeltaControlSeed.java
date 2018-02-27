@@ -70,12 +70,8 @@ public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNode
 						listForDelta.add(s);
 				}					
 			}
-			else if ( !controlSeed ) {
-				listForDelta = listNeigGsStr ;
-			}
-				
-			
-			//		listForDelta.remove(listNeigGsStrSeed);	//		System.out.println(idNode + listForDelta);
+			else if ( !controlSeed ) 
+				listForDelta = listNeigGsStr ;															//		System.out.println(idNode + listForDelta);
 			
 			double delta = gsAlgoToolkit.getValStad ( gsGraph , listForDelta, nGs, morp , true ) ;		//	System.out.println("delta " + delta ) ; 	System.out.println(listForDelta.size());
 			int numberNewNodes = 0 , numberMaxNewNodes = 0  ;

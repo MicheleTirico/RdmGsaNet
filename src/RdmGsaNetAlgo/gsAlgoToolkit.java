@@ -148,7 +148,6 @@ public class gsAlgoToolkit {
 		}
 	
 // GraphStream toolkit dev ----------------------------------------------------------------------------------------------------------------
-
 	public static double [][] getDistanceMatrixTopo(Graph graph) {
 		
 		int n = graph.getNodeCount();	
@@ -655,7 +654,7 @@ public class gsAlgoToolkit {
 		return  autoCor;
 	}
 	 
-	public static double getStandarDeviation ( boolean isCorrect , ArrayList<Double> listVal ) {
+	public static double getStandarDeviation ( boolean isSampling , ArrayList<Double> listVal ) {
 
 		double stdDev = 0.0 , sumVal = 0.0 ;													//	System.out.println("listVal " + listVal) ; 
 		int numVal = listVal.size();															//		System.out.println("numVal " + numVal);
@@ -664,9 +663,9 @@ public class gsAlgoToolkit {
 		for ( double val : listVal) 	
 			sumVal = sumVal + Math.pow(val - aveVal , 2 ) ;		//	System.out.println(sumVal);
 		
-		if ( isCorrect )
+		if ( isSampling )
 			stdDev = Math.pow( sumVal / ( numVal - 1 ) , 0.5 )  ;
-		else if ( !isCorrect )
+		else if ( !isSampling )
 			stdDev = Math.pow( sumVal / ( numVal  ) , 0.5 )  ;
 		
 		return stdDev ;
@@ -682,34 +681,49 @@ public class gsAlgoToolkit {
 		for ( Node n : graph.getEachNode()) {
 			double val = 0.0 ; 
 			
-			if ( attribute == "degree" ) 
-				 val = (double) n.getDegree() ;
+			if ( attribute == "degree" ) {
+				 val =  n.getDegree()  ;
+				 mapIdAttr.put(n.getId(), val ) ; 
+				 continue ;
+			}
 			
-			double intVal = (double) n.getAttribute(attribute);
-
+			 if ( attribute == "seedGrad" ) {
+				int localVal = n.getAttribute(attribute);
+				val = (double) localVal ;
+				mapIdAttr.put(n.getId(), val ) ; 
+				continue ;
+			}
+			 
+			else {
+				val =  n .getAttribute(attribute) ;
+			
+				if ( val > 1 )
+					val = 1 ;
+				
+				if ( val < 0 )
+					val = 0 ;
+			}
 			mapIdAttr.put(n.getId(), val ) ; 
-		}
+		}																							//		System.out.println(mapIdAttr);
+		
 		ArrayList<Double> list = new  ArrayList<Double> (mapIdAttr.values());
-		if ( normVal ) {
+		
+		if ( normVal ) {	
+			double 	maxVal =   list.stream().mapToDouble(val->val).max().getAsDouble() ,
+					minVal =   list.stream().mapToDouble(val->val).min().getAsDouble() ;
+			range  = maxVal - minVal ;																//				System.out.println(maxVal);			System.out.println(minVal);			System.out.println(range);
 			
-			double 	maxVal = list.stream().mapToDouble(val->val).max().getAsDouble() ,
-					minVal = list.stream().mapToDouble(val->val).min().getAsDouble() ;
-			range  = maxVal - minVal ;
-			System.out.println(range);
 			for ( String id : mapIdAttr.keySet()) 
-				mapIdAttrNorm.put(id, ( mapIdAttr.get(id) / range ) ) ;
-		
-			 mapIdAttr = mapIdAttrNorm ;
-		}
-		
+				mapIdAttrNorm.put(id,  (mapIdAttr.get(id) - minVal )  / range  ) ;
+			
+			 mapIdAttr = mapIdAttrNorm ; 
+		}																							// 	System.out.println(mapIdAttr);
 		return mapIdAttr ;
 	}
 	
 	public static ArrayList<String> getListIdCommon (  Map<String, Double> map0,  Map<String, Double>  map1 ) {
 		
 		ArrayList<String> list = new ArrayList<String>() ;
-		
-		
 		for ( String s : map1.keySet() ) {
 			if ( map0.keySet().contains(s) )
 				list.add(s);

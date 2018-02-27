@@ -135,7 +135,7 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 //								double degreeDouble = (double) n.getDegree() ;
 								n.addAttribute("degree",  (double) n.getDegree());
 								}		
- 							analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  analysisMultiLayer.mapGlobalCorrelation, false  );
+ 							analysisDGS.computeGlobalCorrelation2(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  analysisMultiLayer.mapGlobalCorrelation, false  );
 						}
 						
 						if ( doNetViz ) {

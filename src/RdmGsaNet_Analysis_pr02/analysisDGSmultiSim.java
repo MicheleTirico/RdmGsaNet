@@ -299,12 +299,14 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 					
 					if ( computeGlobalCorrelationDegreeInh ) {
 					//	analysisDGS.computeGlobalCorrelation2(gsGraph, netGraph, "gsInh", "degree" , step , 1 ,  mapGlobalCorrelationDegreeInh , false);
-						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree", false, true , mapGlobalCorrelationDegreeInh, step);
+						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "degree", true, true , mapGlobalCorrelationDegreeInh, step , true );
+				//		System.out.println(mapGlobalCorrelationDegreeInh);
 					}
 					
 					if ( computeGlobalCorrelationSeedInh ) {
 //						analysisDGS.computeGlobalCorrelation2(gsGraph, netGraph, "gsInh", "seedGrad" , step , 1 ,  mapGlobalCorrelationSeedInh , false);
-						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "seedGrad", false, true , mapGlobalCorrelationDegreeInh, step);
+						analysisDGS.computeGlobalCorrelation(gsGraph, netGraph, "gsInh", "seedGrad", true, false , mapGlobalCorrelationSeedInh, step , true );
+				//		System.out.println(mapGlobalCorrelationSeedInh);
 					}
 					
 					

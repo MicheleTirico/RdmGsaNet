@@ -11,7 +11,8 @@ import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 public class generateNetNodeGradientProb  extends generateNetNodeGradient implements generateNetNode_Inter {
 	
 	// COSTRUTOR
-	public generateNetNodeGradientProb ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob , boolean stillAlive ) {
+	public generateNetNodeGradientProb ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob , 
+			boolean stillAlive ) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
 		this.rule = rule ;
@@ -27,8 +28,7 @@ public class generateNetNodeGradientProb  extends generateNetNodeGradient implem
 		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 				
 		// CREATE LIST OF SEEDGRAD 
-		ArrayList<String> listNodeSeedGrad = 	gsAlgoToolkit.getListStringNodeAttribute(netGraph, "seedGrad" , 1 );			//		System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
-		// System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
+		ArrayList<String> listNodeSeedGrad = 	gsAlgoToolkit.getListStringNodeAttribute(netGraph, "seedGrad" , 1 );			//		System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);		// System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
 
 		for ( String idNode : listNodeSeedGrad ) {
 			
@@ -44,8 +44,7 @@ public class generateNetNodeGradientProb  extends generateNetNodeGradient implem
 			
 			ArrayList <String> listNeigGsStrSeed = new ArrayList<String>();
 			ArrayList <String> listNeigGsStrNotSeed = new ArrayList<String>();//			System.out.println(netGraph.getNodeSet() ) ;
-					
-			
+							
 			// create list of nodes with value greater of nNet 
 			ArrayList<String> listNeigValMaxStr = createListNodeMaxNeigStr( gsGraph, nNet , morp); 		// 	System.out.println("listIdNeigValMax of " + nNet.getId() + " " + listNeigValMax);
 		

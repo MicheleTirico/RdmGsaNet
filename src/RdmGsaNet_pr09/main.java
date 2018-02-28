@@ -48,7 +48,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\grid_100\\rd_mazes\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_02\\rd_spotsAndLoops\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -78,11 +78,13 @@ public class main {
 	protected static simulation run = new simulation() ;	
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
-//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        				(12, 11)  
+//		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        				( 12, 11 )  
 //											new generateNetNodeGradientOnlyOne 					( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
-//											new generateNetNodeGradientProb	    				( 4 , layoutSeed.allNode , rule.maxValue , "gsInh", 0.4 , true )
-//											new generateNetNodeGradientProbDelta 				(8, layoutSeed.allNode, rule.random, "gsAct", .8, false )
-											new generateNetNodeGradientProbDeltaControlSeed     (8, layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
+											new generateNetNodeGradientProb	    				( 8 , layoutSeed.allNode , rule.random , "gsInh", 1 , true )
+//											new generateNetNodeGradientProbDelta 				( 8, layoutSeed.allNode, rule.random, "gsAct", .8, false )
+//											new generateNetNodeGradientProbDeltaControlSeed     ( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
+								
+			
 			) ;
 	
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (
@@ -100,7 +102,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes );			
+		setRdType ( RdmType.spotsAndLoops );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

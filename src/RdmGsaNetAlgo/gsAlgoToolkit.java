@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
@@ -146,6 +147,125 @@ public class gsAlgoToolkit {
 		  }
 		  return x;
 		}
+	
+	public static int[] getCoordinateOfNodeStr ( String idNode ) {
+		
+		int pos_ = idNode.indexOf("_");
+
+		String x = idNode.substring(0, pos_);
+		String y = idNode.substring( pos_ + 1 , idNode.length());
+		
+		int posX = Integer.parseInt(x); 
+		int posY = Integer.parseInt(y);
+		
+		int[] nodeCoordinate = new int[2];
+		nodeCoordinate[0] = posX ;
+		nodeCoordinate[1] = posY ;
+		
+		return nodeCoordinate ;
+	}
+	
+	public static ArrayList<String> getListVertex ( Node n0 , Node n1 ) {
+		
+		double [] n0Coordinate = GraphPosLengthUtils.nodePosition(n0) ;
+		double [] n1Coordinate = GraphPosLengthUtils.nodePosition(n1) ;
+		
+		int x0 = (int)n0Coordinate[0];
+		int x1 = (int)n1Coordinate[0];
+		int y0 = (int)n0Coordinate[1];
+		int y1 = (int)n1Coordinate[1];
+			
+		String posRispFather = gsAlgoToolkit.getPosRelRispFather( n1 , n0 ) ;
+		
+		ArrayList<String> listVertex = new ArrayList<String>(4);
+		String nodeX = null , nodeY = null , nodeXY = null;
+		
+		if ( posRispFather.equals("E_N") ) {		//	System.out.println(gsAlgoToolkit.posRel.E_N );
+			nodeX  = ( x0 )  +"_" + ( y0 + 1 ) ;
+			nodeY  = ( x0 + 1 )  +"_" + ( y0  ) ; 
+			nodeXY = ( x0 + 1 )  +"_" + ( y0 + 1 ) ;
+		}
+		
+		else if (posRispFather.equals("W_N")) {		//	 System.out.println(posRispFather);
+			nodeX  = ( x0 - 1)  +"_" + ( y0  ) ;
+			nodeY  = ( x0  )  +"_" + ( y0 +1 ) ; 
+			nodeXY = ( x0 - 1 )  +"_" + ( y0 + 1 ) ;
+		}
+		
+		else  if (posRispFather.equals("W_S")) {	//	System.out.println(posRispFather);
+			 nodeX  = ( x0 - 1)  +"_" + ( y0  ) ;
+			nodeY  = ( x0  )  +"_" + ( y0 - 1 ) ; 
+			nodeXY = ( x0 - 1 )  +"_" + ( y0 - 1 ) ;
+		}
+		
+		else  if ( posRispFather.equals("E_S" )) {	//	 System.out.println(posRispFather);
+			nodeX  = ( x0 + 1 )  +"_" + ( y0 ) ;
+			nodeY  = ( x0 )  +"_" + ( y0 - 1 ) ; 
+			nodeXY = ( x0 + 1 )  +"_" + ( y0 - 1 ) ;
+		}
+		
+		listVertex.add(nodeX) ;
+		listVertex.add(nodeY) ;
+		listVertex.add(nodeXY) ;
+		listVertex.add(n1.getId()) ;
+		
+		return listVertex ;
+	}
+	
+	public enum posRel { E_N ,W_N, E_S, W_S} ;	
+	public static posRel getPosRelRispFatherEnum ( Node nFrom , Node nTo ) {
+		
+		String posStr = getPosRelRispFather(nFrom, nTo);
+		posRel pos = null;
+		
+		if ( posStr.toString() == "E_N") 
+			pos = posRel.E_N ;	
+		
+		else if ( posStr == "W_N") 
+			pos = posRel.W_N ;
+	
+		else  if ( posStr == "W_S") 
+			pos = posRel.W_S ;
+ 	
+		else  if ( posStr.toString() == "E_S" )
+			pos = posRel.E_S ;
+			
+		return pos ;
+	}
+
+	public static String getPosRelRispFather ( Node nFrom , Node nTo ) {
+		
+		double [] nFromCoordinate = GraphPosLengthUtils.nodePosition(nFrom) ;
+		double [] nToCoordinate = GraphPosLengthUtils.nodePosition(nTo) ;
+		
+		Random rn = new Random();
+		
+		String xPosTo = null , yPosTo = null ;
+		
+		if ( nToCoordinate[0] > nFromCoordinate[0] )
+			xPosTo = "E";
+		else if ( nToCoordinate[0] < nFromCoordinate[0] )
+			xPosTo = "W";	
+		else if ( nToCoordinate[0] == nFromCoordinate[0]  ) {
+			if ( rn.nextBoolean() ) 
+				xPosTo = "E";
+			else 
+				xPosTo = "W";
+		}
+		
+		if ( nToCoordinate[1] > nFromCoordinate[1] )
+			yPosTo= "N";
+		else if ( nToCoordinate[1] < nFromCoordinate[1] )
+			yPosTo = "S";
+		else if ( nToCoordinate[1] == nFromCoordinate[1]  ) {
+			if ( rn.nextBoolean() ) 
+				yPosTo= "N";
+			else 
+				yPosTo = "S";
+		}
+		return xPosTo + "_" + yPosTo ;
+	}
+	
 	
 // GraphStream toolkit dev ----------------------------------------------------------------------------------------------------------------
 	public static double [][] getDistanceMatrixTopo(Graph graph) {
@@ -315,8 +435,7 @@ public class gsAlgoToolkit {
 		}		
 		return nodeIdInRadius;
 	}
-	
-		
+			
 // PRIVATE FILL METHODS ------------------------------------------------------------------------------------------------------------------
 	
 	private static void fillDistanceMatrixInRadiusWeight ( Graph graph , String nodeTestStr , double radius, double[][] matrixWeightRad ) {
@@ -400,7 +519,6 @@ public class gsAlgoToolkit {
 			}
 	// remove row with all values == 0
 		}
-
 
 	// get list of new nodes
 	public static ArrayList<String> getListNewNode ( Graph graph0 , Graph graph1  ) {

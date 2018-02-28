@@ -48,7 +48,7 @@ public class dataAnalysisMain {
 	// COSTANTS 
 	
 	// folder
-	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_controlSeed\\grid_100\\rd_solitions\\multiSimAnalysis\\" ,
+	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_02\\rd_spotsAndLoops\\multiSimAnalysis\\" ,
 							folderMapToAnayze = "mapToAnalyze\\" ,
 							pathMapToAnalyze = pathMain + folderMapToAnayze ,
 							

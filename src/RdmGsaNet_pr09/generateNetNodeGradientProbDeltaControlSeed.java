@@ -10,6 +10,8 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNodeGradient implements generateNetNode_Inter {
 	
 	protected boolean controlSeed ;
+	
+	// COSTRUTOR
 	public generateNetNodeGradientProbDeltaControlSeed(int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob 
 			 , boolean stillAlive , boolean controlSeed
 			) {

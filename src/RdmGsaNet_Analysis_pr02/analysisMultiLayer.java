@@ -35,7 +35,7 @@ public class analysisMultiLayer extends analysisMain  {
 				/* colorStaticNode, 		*/ "black" ,
 				/* colorStaticEdge, 		*/ "black" ,
 				/* colorBooleanNodeTrue, 	*/ "red" ,
-				/* colorBooleanNodeFalse	*/ "white"
+				/* colorBooleanNodeFalse	*/ "black"
 				);
 		
 		combinedAnalysis.setParamVizGs(

@@ -23,9 +23,10 @@ import RdmGsaNet_pr09.setupGs_Inter.disMorpType;
 import RdmGsaNet_pr09.setupGs_Inter.gsGridType;
 import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.generateNetNodeGradient.rule;
+import RdmGsaNet_pr09.generateNetNodeGradientBreakGrid.interpolation;
 
 public class main {
-	private static int stopSim = 5000	
+	private static int stopSim = 1	
 			;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -36,10 +37,10 @@ public class main {
 	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
 	// STORE DGS PARAMETERS
-	private static boolean 	doStoreStartGs 	= true, 
-							doStoreStepGs 	= true,
-							doStoreStartNet = true, 
-							doStoreStepNet 	= true,
+	private static boolean 	doStoreStartGs 	= false, 
+							doStoreStepGs 	= false,
+							doStoreStartNet = false, 
+							doStoreStepNet 	= false,
 							doStoreIm		= false ;
 	
 	private static String 	fileType = ".dgs" ,
@@ -48,7 +49,7 @@ public class main {
 	private static double 	feed , kill ;
 	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\Sim_prob_random_alive_02\\rd_spotsAndLoops\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -62,7 +63,7 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 	static layerGs gsLayer = new layerGs(
-		/* size grid , type grid 				*/	new setupGsGrid( 100 , gsGridType.grid8 ) ) ;
+		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
@@ -80,10 +81,10 @@ public class main {
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        				( 12, 11 )  
 //											new generateNetNodeGradientOnlyOne 					( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
-											new generateNetNodeGradientProb	    				( 8 , layoutSeed.allNode , rule.random , "gsInh", 1 , true )
+//											new generateNetNodeGradientProb	    				( 8 , layoutSeed.allNode , rule.random , "gsInh", 1 , true )
 //											new generateNetNodeGradientProbDelta 				( 8, layoutSeed.allNode, rule.random, "gsAct", .8, false )
 //											new generateNetNodeGradientProbDeltaControlSeed     ( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
-								
+											new generateNetNodeGradientBreakGrid				( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , interpolation.linear )
 			
 			) ;
 	
@@ -95,7 +96,7 @@ public class main {
 		
 		// setup handle name file 
 		handle = new handleNameFile( 
-			/* handle file 					*/ true , 
+			/* handle file 					*/ false , 
 			/* set folder 					*/ folder ,
 			/* create new folder ? 			*/ true ,
 			/* manual name file (no in main */ " "
@@ -198,7 +199,7 @@ public class main {
 		netViz.setupIdViz(false, netGraph, 1 , "black");
 		netViz.setupDefaultParam (netGraph, "black", "black", 3 , 0.5 );
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
-		netViz.setupFixScaleManual(true , netGraph, 100, 0);
+		netViz.setupFixScaleManual(true , netGraph, 50, 0);
 		
 		// viz display
 		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsInh", 1) ;

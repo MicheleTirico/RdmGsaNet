@@ -26,7 +26,7 @@ import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 import RdmGsaNet_pr09.generateNetNodeGradientBreakGrid.interpolation;
 
 public class main {
-	private static int stopSim = 1	
+	private static int stopSim = 5
 			;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -42,14 +42,14 @@ public class main {
 							doStoreStartNet = false, 
 							doStoreStepNet 	= false,
 							doStoreIm		= false ;
-	
 	private static String 	fileType = ".dgs" ,
 							fileTypeIm = "png" ;
 	
 	private static double 	feed , kill ;
 	
+	
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\" ;
+	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test_02\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs ,
@@ -84,7 +84,8 @@ public class main {
 //											new generateNetNodeGradientProb	    				( 8 , layoutSeed.allNode , rule.random , "gsInh", 1 , true )
 //											new generateNetNodeGradientProbDelta 				( 8, layoutSeed.allNode, rule.random, "gsAct", .8, false )
 //											new generateNetNodeGradientProbDeltaControlSeed     ( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
-											new generateNetNodeGradientBreakGrid				( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , interpolation.linear )
+											new generateNetNodeGradientBreakGrid				( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , 
+													interpolation.meanEdge )
 			
 			) ;
 	
@@ -208,8 +209,8 @@ public class main {
 		gsViz.setupViz(true, true, palette.red);
 		
 		
-		gsGraph.display(false);
-		netGraph.display(false);
+//		gsGraph.display(false);
+//		netGraph.display(false);
 		
 		
 

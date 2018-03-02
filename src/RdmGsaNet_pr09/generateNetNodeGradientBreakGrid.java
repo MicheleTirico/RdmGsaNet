@@ -11,11 +11,11 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 
-	public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient implements generateNetNode_Inter {
+public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient implements generateNetNode_Inter {
 		
-		protected boolean controlSeed ;
+	protected boolean controlSeed ;
 
-		protected enum interpolation { linear} 
+		protected enum interpolation { meanEdge , meanDist } 
 		protected interpolation typeInterpolation ;
 		
 		// COSTRUTOR
@@ -52,11 +52,35 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 				ArrayList <String> listNeigGsStr  = gsAlgoToolkit.getListNeighborStr ( gsGraph,  idNode) ;		//	System.out.println("listNeigGsString of node " + nGs.getId() + " " + listNeigGsStr);
 				ArrayList <String> listNeigNetStr = gsAlgoToolkit.getListNeighborStr ( netGraph, idNode) ;		//	System.out.println("listNeigNetString of node " + nNet.getId() + " "  + listNeigNetStr);
 				
-				ArrayList <String> listNeigGsStrSeed = new ArrayList<String>();
-				ArrayList <String> listNeigGsStrNotSeed = new ArrayList<String>();			//			System.out.println(netGraph.getNodeSet() ) ;
+				ArrayList <String> listNeigSeed = new ArrayList<String>();
+				ArrayList <String> listNeigNotSeed = new ArrayList<String>();			//			System.out.println(netGraph.getNodeSet() ) ;
 			
-				double valInter = computeInterpolation(gsGraph, netGraph, idNode, morp);	//			System.out.println(valInter);
+				ArrayList<String> listVertex = new ArrayList<String> ();
+
+				listVertex = gsAlgoToolkit.getListVertex(nGs , nNet );		
+				
+				double valInter = computeInterpolation(gsGraph, netGraph, idNode, morp , listVertex);	//			System.out.println(valInter);
+				
+				for ( String idVertex : listVertex ) {
+					
+					handleListNeigGsSeed(idVertex, listNeigSeed, listNeigNotSeed);
+					
+					ArrayList<String> listForDelta = generateNetNodeGradient.getListForDelta(listVertex , listNeigSeed);
+					
+					System.out.println( idVertex + listForDelta);
+					double delta = gsAlgoToolkit.getValStad ( gsGraph , listForDelta, nGs, morp , true ) ;		//	
+					System.out.println("delta " + delta ) ; 	// System.out.println(listForDelta.size());
+					
+					int numberMaxNewNodes = getNumberMaxNewNodes(delta, listForDelta)  ;
+					
+					int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob); //		System.out.println( "numberNewNodes " + numberNewNodes );
+					
+					handleStillAlive(numberNewNodes, controlSeed, nNet);
+					
 			
+					
+				}
+				
 			
 			
 			}
@@ -74,12 +98,12 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 		
 
 // COMPUTE INTERPOLATION ----------------------------------------------------------------------------------------------------------------------------
-		private double computeInterpolation ( Graph graph0 , Graph graph1, String idNode , String attribute ) {
+		private double computeInterpolation ( Graph graph0 , Graph graph1, String idNode , String attribute , ArrayList<String> listVertex ) {
 			
 			Node n0 = graph0.getNode(idNode);
 			Node n1 = graph1.getNode(idNode);
 
-			ArrayList<String> listVertex = gsAlgoToolkit.getListVertex(n0 , n1 );				//			System.out.println(idNode);			System.out.println(listVertex);
+//			ArrayList<String> listVertex = gsAlgoToolkit.getListVertex(n0 , n1 );				//			System.out.println(idNode);			System.out.println(listVertex);
 			
 			int[] nodeCoord = gsAlgoToolkit.getCoordinateOfNodeStr ( idNode );
 			int nodeX = nodeCoord[0] , nodeY = nodeCoord[1];

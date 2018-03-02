@@ -245,7 +245,60 @@ protected String getRandomNodeId ( ArrayList<String> listNeig ) {
 		return idCouldAdded ;
 	}
 
+	
+	// handle listNeigGsStrSeed 8 and not seed )
+	protected static void handleListNeigGsSeed (String idNode , ArrayList<String> listNeigSeed , ArrayList<String> listNeigNotSeed ) {
+		
+		try {
+			Node localNetNode = netGraph.getNode(idNode) ;
+			int seed = localNetNode.getAttribute("seedGrad");		//System.out.println(seed);
+		
+			if ( seed == 1 )
+				listNeigSeed.add(idNode);
+			else if ( seed != 1 )
+				listNeigNotSeed.add(idNode);
+		} 
+		catch (java.lang.NullPointerException e) {	
+		}
+	}			
+	
+	
+	// handle still alive
+	protected static void handleStillAlive ( int  numberNewNodes  , boolean stillAlive , Node nNet ) {
 
+		if ( numberNewNodes == 0) {	
+			if ( stillAlive )
+				return ;
+			else if ( stillAlive == false )
+				nNet.setAttribute("seedGrad", 0 );
+		}	
+	}
+	
+	// control Seed methods 
+	protected static int getNumberMaxNewNodes (double delta , ArrayList<String> listForDelta ) {
+		
+		int numberMaxNewNodes = 0 ;
+		
+		if ( delta <= 0 )
+			return 0 ;		
+		else if ( delta >= 1 )
+			 numberMaxNewNodes = listForDelta.size() ;	
+		else if ( delta > 0 && delta < 1  ) 
+			numberMaxNewNodes = (int) (Math.round( delta * listForDelta.size() )  ) ;								//			System.out.println(netGraph.getNodeCount());
+
+		return numberMaxNewNodes ;
+	}
+	
+	protected static ArrayList<String> getListForDelta ( ArrayList<String> listNeigGsStr , ArrayList<String> listNeigGsStrSeed ) {
+		
+		ArrayList<String> listForDelta = new ArrayList<String>();									//	System.out.println(listNeigGsStr);
+	
+			for ( String s : listNeigGsStr ) 
+				if ( !listNeigGsStrSeed.contains(s))
+					listForDelta.add(s);
+								
+		return listForDelta; 
+	}
 
 //GET METHODS ---------------------------------------------------------------------------------------------------------------------------------------
 	public static double getProb() 		{ return prob; }

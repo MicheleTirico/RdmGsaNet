@@ -165,7 +165,36 @@ public class gsAlgoToolkit {
 		return nodeCoordinate ;
 	}
 	
+	public static ArrayList<String> getListVertexRound ( Node node ) {
+		
+		String idNode = node.getId();
+		ArrayList<String> listVertex = new ArrayList<String>(4);
+		double [] nodeCoordinate = GraphPosLengthUtils.nodePosition(node) ;
+		
+		
+		double x = nodeCoordinate[0];
+		
+		
+		double y = nodeCoordinate[1];
+		
+		int xMin = (int) Math.ceil(x),
+			yMin = (int) Math.ceil(y),
+			
+			xMax = (int) Math.floor(x),
+			yMax = (int) Math.floor(y) ;
+		
+		listVertex.add(xMin + "_" + yMin ) ;
+		listVertex.add(xMin + "_" + yMax ) ;
+		listVertex.add(xMax + "_" + yMin ) ;
+		listVertex.add(xMax + "_" + yMax ) ;
+		
+		return listVertex ;
+		
+	}
+	
+	
 	public static ArrayList<String> getListVertex ( Node n0 , Node n1 ) {
+		
 		
 		double [] n0Coordinate = GraphPosLengthUtils.nodePosition(n0) ;
 		double [] n1Coordinate = GraphPosLengthUtils.nodePosition(n1) ;
@@ -680,9 +709,14 @@ public class gsAlgoToolkit {
 		return  autoCor;
 	}
 
-	public static double getValStad ( Graph graph , ArrayList<String> listNeig, Node node , String attribute , boolean isCorrect ) {
+	public static double getValStad ( Graph graph , ArrayList<String> listNeig, Node node , String attribute , boolean isCorrect , double valInter) {
 		
-		double stdVal , nodeVal = node.getAttribute(attribute) ;										//	System.out.println("nodeVal " + nodeVal);
+		double stdVal , nodeVal = 0 ;
+		try {
+			nodeVal = node.getAttribute(attribute) ;										//	System.out.println("nodeVal " + nodeVal);
+		} catch (java.lang.NullPointerException e) {
+			nodeVal = valInter ;
+		}
 		
 		if ( nodeVal > 1 )	nodeVal = 1 ; 
 		if ( nodeVal < 0 )	nodeVal = 0 ; 																//		System.out.println("nodeVal " + nodeVal);

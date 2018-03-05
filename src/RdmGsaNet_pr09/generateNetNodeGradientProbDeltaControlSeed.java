@@ -75,7 +75,7 @@ public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNode
 			else if ( !controlSeed ) 
 				listForDelta = listNeigGsStr ;															//		System.out.println(idNode + listForDelta);
 			
-			double delta = gsAlgoToolkit.getValStad ( gsGraph , listForDelta, nGs, morp , true ) ;		//	System.out.println("delta " + delta ) ; 	System.out.println(listForDelta.size());
+			double delta = gsAlgoToolkit.getValStad ( gsGraph , listForDelta, nGs, morp , true , 0 ) ;		//	System.out.println("delta " + delta ) ; 	System.out.println(listForDelta.size());
 			int numberNewNodes = 0 , numberMaxNewNodes = 0  ;
 			
 			if ( delta <= 0 )

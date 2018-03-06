@@ -247,18 +247,18 @@ protected String getRandomNodeId ( ArrayList<String> listNeig ) {
 
 	
 	// handle listNeigGsStrSeed 8 and not seed )
-	protected static void handleListNeigGsSeed (String idNode , ArrayList<String> listNeigSeed , ArrayList<String> listNeigNotSeed ) {
+	protected static void handleListNeigGsSeed ( Node nodeSeed , ArrayList<String> listNeigSeed , ArrayList<String> listNeigNotSeed ) {
 		
-		try {
-			Node localNetNode = netGraph.getNode(idNode) ;
-			int seed = localNetNode.getAttribute("seedGrad");		//System.out.println(seed);
-		
-			if ( seed == 1 )
-				listNeigSeed.add(idNode);
-			else if ( seed != 1 )
-				listNeigNotSeed.add(idNode);
-		} 
-		catch (java.lang.NullPointerException e) {	
+		Iterator<Node> iter = nodeSeed.getNeighborNodeIterator() ;		
+		while (iter.hasNext()) {
+			 
+			Node neig = iter.next() ;
+			int neigValAttr = neig.getAttribute("seedGrad");
+			
+			if (neigValAttr == 1 )
+				listNeigSeed.add(neig.getId());
+			else if ( neigValAttr == 0 ) 
+				listNeigNotSeed.add(neig.getId()) ;
 		}
 	}			
 	
@@ -268,16 +268,22 @@ protected String getRandomNodeId ( ArrayList<String> listNeig ) {
 
 		if ( numberNewNodes == 0) {	
 			if ( stillAlive )
-				return ;
+				nNet.setAttribute("seedGrad", 1 );
 			else if ( stillAlive == false )
 				nNet.setAttribute("seedGrad", 0 );
 		}	
 	}
 	
 	// control Seed methods 
-	protected static int getNumberMaxNewNodes (double delta , ArrayList<String> listForDelta ) {
+	protected static int getNumberMaxNewNodes (double delta , ArrayList<String> listForDelta , boolean isDeltaAbs ) {
 		
 		int numberMaxNewNodes = 0 ;
+		
+		if ( isDeltaAbs ) 
+			delta = Math.abs(delta) ;
+		
+			
+		
 		
 		if ( delta <= 0 )
 			return 0 ;		

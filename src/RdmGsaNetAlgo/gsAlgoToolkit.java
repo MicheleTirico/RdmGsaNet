@@ -148,53 +148,112 @@ public class gsAlgoToolkit {
 		  return x;
 		}
 	
-	public static int[] getCoordinateOfNodeStr ( String idNode ) {
+	public static double[] getCoordinateOfNodeStr ( String idNode ) {
 		
 		int pos_ = idNode.indexOf("_");
 
 		String x = idNode.substring(0, pos_);
 		String y = idNode.substring( pos_ + 1 , idNode.length());
 		
-		int posX = Integer.parseInt(x); 
-		int posY = Integer.parseInt(y);
+		double posX = Double.parseDouble(x); 
+		double posY = Double.parseDouble(y);
+			
+		double[] nodeCoordinate = new double[2];
 		
-		int[] nodeCoordinate = new int[2];
 		nodeCoordinate[0] = posX ;
 		nodeCoordinate[1] = posY ;
 		
 		return nodeCoordinate ;
 	}
 	
-	public static ArrayList<String> getListVertexRound ( Node node ) {
-		
-		String idNode = node.getId();
+	public static ArrayList<String> getListVertexRoundCoord ( Graph graphSeed , Graph graphVertex ,  String idSeed ) {
+
 		ArrayList<String> listVertex = new ArrayList<String>(4);
-		double [] nodeCoordinate = GraphPosLengthUtils.nodePosition(node) ;
 		
+		Node nodeSeed = graphSeed.getNode(idSeed);
+	
+		double [] nodeSeedCoordinate = GraphPosLengthUtils.nodePosition(nodeSeed) ;
 		
-		double x = nodeCoordinate[0];
+		double xSeed = nodeSeedCoordinate[0];
+		double ySeed = nodeSeedCoordinate[1];		//	double xSeedRound = Math.floor(( xSeed * 100) / 100 ) ;	double ySeedRound = Math.floor(( ySeed * 100) / 100 ) ;
+	
+		int xMin = (int) xSeed,
+			yMin = (int) ySeed;
+			
+		String idNodeMinVertex = xMin + "_" + yMin ;			//	System.out.println("idNodeMinVertex " + idNodeMinVertex);
+		Node nodeMinVertex = graphVertex.getNode(idNodeMinVertex); 
 		
+		String node00 = null , nodeX = null , nodeY = null , nodeXY = null;
+	//	node00 = xMin + "_" + yMin  ;
 		
-		double y = nodeCoordinate[1];
+		nodeX  = ( xMin )  +"_" + ( yMin + 1 ) ;
+		nodeY  = ( xMin + 1 )  +"_" + ( yMin  ) ; 
+		nodeXY = ( xMin + 1 )  +"_" + ( yMin + 1 ) ;
+		/*
+		String posRispFather = gsAlgoToolkit.getPosRelRispFather( nodeSeed , nodeMinVertex ) ;
+		String nodeX = null , nodeY = null , nodeXY = null;
+		int x0 = xMin , y0 = yMin ; 
+		if ( posRispFather.equals("E_N") ) {		//	System.out.println(gsAlgoToolkit.posRel.E_N );
+			nodeX  = ( x0 )  +"_" + ( y0 + 1 ) ;
+			nodeY  = ( x0 + 1 )  +"_" + ( y0  ) ; 
+			nodeXY = ( x0 + 1 )  +"_" + ( y0 + 1 ) ;
+		}
+		
+		else if (posRispFather.equals("W_N")) {		//	 System.out.println(posRispFather);
+			nodeX  = ( x0 - 1)  +"_" + ( y0  ) ;
+			nodeY  = ( x0  )  +"_" + ( y0 +1 ) ; 
+			nodeXY = ( x0 - 1 )  +"_" + ( y0 + 1 ) ;
+		}
+		
+		else  if (posRispFather.equals("W_S")) {	//	System.out.println(posRispFather);
+			nodeX  = ( x0 - 1)  +"_" + ( y0  ) ;
+			nodeY  = ( x0  )  +"_" + ( y0 - 1 ) ; 
+			nodeXY = ( x0 - 1 )  +"_" + ( y0 - 1 ) ;
+		}
+		
+		else  if ( posRispFather.equals("E_S" )) {	//	 System.out.println(posRispFather);
+			nodeX  = ( x0 + 1 )  +"_" + ( y0 ) ;
+			nodeY  = ( x0 )  +"_" + ( y0 - 1 ) ; 
+			nodeXY = ( x0 + 1 )  +"_" + ( y0 - 1 ) ;
+		}
+		
+		*/
+		
+		listVertex.add(nodeX) ;
+		listVertex.add(nodeY) ;
+		listVertex.add(nodeXY) ;
+		listVertex.add( idNodeMinVertex ) ;
+		return listVertex ;
+	}
+	
+	public static ArrayList<String> getListVertexRound (  String idNode ) {
+
+		ArrayList<String> listVertex = new ArrayList<String>(4);
+			
+		int pos_ = idNode.indexOf("_");
+
+		String xStr = idNode.substring(0, pos_);
+		String yStr = idNode.substring( pos_ + 1 , idNode.length());		//		System.out.println("xStr " + xStr);	System.out.println("yStr " + yStr);
+		
+		double x = Double.parseDouble(xStr);
+		double y = Double.parseDouble(yStr);
 		
 		int xMin = (int) Math.ceil(x),
 			yMin = (int) Math.ceil(y),
 			
-			xMax = (int) Math.floor(x),
-			yMax = (int) Math.floor(y) ;
-		
+			xMax = xMin + 1 ,
+			yMax = yMin + 1 ;												//		System.out.println(xMin);
+
 		listVertex.add(xMin + "_" + yMin ) ;
 		listVertex.add(xMin + "_" + yMax ) ;
 		listVertex.add(xMax + "_" + yMin ) ;
 		listVertex.add(xMax + "_" + yMax ) ;
 		
 		return listVertex ;
-		
 	}
 	
 	
 	public static ArrayList<String> getListVertex ( Node n0 , Node n1 ) {
-		
 		
 		double [] n0Coordinate = GraphPosLengthUtils.nodePosition(n0) ;
 		double [] n1Coordinate = GraphPosLengthUtils.nodePosition(n1) ;
@@ -222,7 +281,7 @@ public class gsAlgoToolkit {
 		}
 		
 		else  if (posRispFather.equals("W_S")) {	//	System.out.println(posRispFather);
-			 nodeX  = ( x0 - 1)  +"_" + ( y0  ) ;
+			nodeX  = ( x0 - 1)  +"_" + ( y0  ) ;
 			nodeY  = ( x0  )  +"_" + ( y0 - 1 ) ; 
 			nodeXY = ( x0 - 1 )  +"_" + ( y0 - 1 ) ;
 		}
@@ -236,7 +295,7 @@ public class gsAlgoToolkit {
 		listVertex.add(nodeX) ;
 		listVertex.add(nodeY) ;
 		listVertex.add(nodeXY) ;
-		listVertex.add(n1.getId()) ;
+		listVertex.add(n0.getId()) ;
 		
 		return listVertex ;
 	}
@@ -719,12 +778,17 @@ public class gsAlgoToolkit {
 		}
 		
 		if ( nodeVal > 1 )	nodeVal = 1 ; 
-		if ( nodeVal < 0 )	nodeVal = 0 ; 																//		System.out.println("nodeVal " + nodeVal);
+		if ( nodeVal < 0 )	nodeVal = 0 ; 													//		System.out.println("nodeVal " + nodeVal);
 		
 		ArrayList<Double> listVal = new ArrayList<Double>(Arrays.asList(nodeVal));
 		
 		for ( String idNode : listNeig ) {
-			double valNeig = graph.getNode(idNode).getAttribute(attribute) ;
+			double valNeig = 0.0 ;															//		System.out.println(idNode);
+			try {
+				valNeig = graph.getNode(idNode).getAttribute(attribute) ;
+			} catch (java.lang.NullPointerException e) {
+				 valNeig = valInter ;
+			}
 			
 			if ( valNeig > 1.0 )
 				listVal.add(1.0);

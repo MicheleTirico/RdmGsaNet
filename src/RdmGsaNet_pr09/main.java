@@ -26,7 +26,7 @@ import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 import RdmGsaNet_pr09.generateNetNodeGradientBreakGrid.interpolation;
 
 public class main {
-	private static int stopSim = 20
+	private static int stopSim = 200
 			;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -82,10 +82,10 @@ public class main {
 //		/* threshold for act and  inh 	*/	new generateNetNodeThreshold        				( 12, 11 )  
 //											new generateNetNodeGradientOnlyOne 					( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
 //											new generateNetNodeGradientProb	    				( 8 , layoutSeed.allNode , rule.random , "gsInh", 1 , true )
-//											new generateNetNodeGradientProbDelta 				( 8, layoutSeed.allNode, rule.random, "gsAct", .8, false )
-//											new generateNetNodeGradientProbDeltaControlSeed     ( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
-											new generateNetNodeGradientBreakGrid				( 8, layoutSeed.allNode, rule.random, "gsInh", 1, true , 
-																								interpolation.meanEdge )
+//											new generateNetNodeGradientProbDelta 				( 8 , layoutSeed.allNode, rule.random, "gsAct", .8, false )
+//											new generateNetNodeGradientProbDeltaControlSeed     ( 8 , layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
+											new generateNetNodeGradientBreakGrid				( 9 , layoutSeed.random, rule.random, "gsInh", .5 , true , 
+																								interpolation.averageEdge )
 			
 			) ;
 	
@@ -197,9 +197,9 @@ public class main {
 		
 		// setup viz netGraph
 		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
-		netViz.setupIdViz(false, netGraph, 1 , "black");
-		netViz.setupDefaultParam (netGraph, "black", "black", 2 , 0.5 );
-		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
+		netViz.setupIdViz(false, netGraph, 4 , "black");
+		netViz.setupDefaultParam (netGraph, "black", "black", 5 , 0.5 );
+		netViz.setupVizBooleanAtr(true, netGraph, "white", "red" ) ;
 		netViz.setupFixScaleManual(true , netGraph, 50, 0);
 		
 		// viz display

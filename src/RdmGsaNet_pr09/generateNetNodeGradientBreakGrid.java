@@ -51,6 +51,7 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 			System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
 
 			ArrayList<String> listNetNodeStr = new ArrayList<String>();
+		
 			for ( Node n : netGraph.getEachNode()) 
 				listNetNodeStr.add(n.getId()) ;
 			

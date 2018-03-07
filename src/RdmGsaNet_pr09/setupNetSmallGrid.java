@@ -54,7 +54,7 @@ public class setupNetSmallGrid implements setupNet_Inter {
 			ArrayList<String> neigList = new ArrayList<String>();
 			
 			switch (type) {
-			case grid4:  {	neigList = getListInRadiusGeom(netGraph, nNet, 1.01); 	}	break;
+			case grid4: {	neigList = getListInRadiusGeom(netGraph, nNet, 1.01); 	}	break;
 			case grid8: {	neigList = getListInRadiusGeom(netGraph, nNet, 1.5);	}	break;
 			}
 			

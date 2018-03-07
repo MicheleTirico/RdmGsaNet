@@ -91,7 +91,7 @@ public class generateNetEdgeNear implements generateNetEdge_Inter {
 	
 // method to create one edge for each nodes in set and the new node
 	// set id edge like idNode1 - idNode2 ( doesn't work )
-	private static void createEdge ( Node n1 , Set<String> idNear , Graph graph) {
+	private static void createEdge ( Node n1 , Set<String> idNear , Graph graph ) {
 		
 		// declare id for new node
 		String idN1 = n1.getId();													//		System.out.println("idN1 " + n1.getId() ) ;

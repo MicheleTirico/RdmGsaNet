@@ -73,5 +73,18 @@ public interface setupNet_Inter {
 
 // GET METHODS ----------------------------------------------------------------------------------------------------------------------------	
 	public static String getMeanPointPlace ( ) { return point.getClass().getSimpleName(); }
+
+	public static String getMeanPointStr ( Graph graph ) {
+		
+		String idMeanPoint = null ;
+		
+		for ( Node nGs : graph.getEachNode()) {
+			int con = nGs.getAttribute("con") ;
+			if (  con == 1 ) 
+				idMeanPoint = nGs.getId();	
+		}
+		return idMeanPoint ;
+	}
+
 }
 

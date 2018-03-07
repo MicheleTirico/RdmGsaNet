@@ -179,7 +179,8 @@ public class gsAlgoToolkit {
 	
 		int xMin = (int) xSeed,
 			yMin = (int) ySeed;
-			
+		
+		
 		String idNodeMinVertex = xMin + "_" + yMin ;			//	System.out.println("idNodeMinVertex " + idNodeMinVertex);
 		Node nodeMinVertex = graphVertex.getNode(idNodeMinVertex); 
 		
@@ -301,6 +302,7 @@ public class gsAlgoToolkit {
 	}
 	
 	public enum posRel { E_N ,W_N, E_S, W_S} ;	
+	
 	public static posRel getPosRelRispFatherEnum ( Node nFrom , Node nTo ) {
 		
 		String posStr = getPosRelRispFather(nFrom, nTo);
@@ -354,6 +356,39 @@ public class gsAlgoToolkit {
 		return xPosTo + "_" + yPosTo ;
 	}
 	
+	public static Map <String , Double> getMapIdDist( Graph graph , Node n1 ) {
+		
+		// Initialized map of distances
+		Map <String , Double> mapDist = new HashMap<String, Double> ( ) ; 
+		
+		// iteration
+		Iterator<Node> iterNode = graph.getNodeIterator();
+		
+		while (iterNode.hasNext()) {
+
+			Node n2 = iterNode.next();
+			
+			String n2Str = n2.getId();
+			String n1Str = n1.getId();
+			
+			if ( n2.getId() != n1Str ) 	
+				mapDist.put(n2Str, gsAlgoToolkit.getDistGeom(n1, n2)) ; 
+			}
+		
+		return mapDist ;
+		}
+	
+// method to get min value in list from a map
+	public static double getMinDist ( Map <String , Double>  map ) {
+	
+		ArrayList<Double> list = new ArrayList<Double>() ;
+		list.addAll(map.values()); 														//	System.out.println(list);
+		
+		// calculate min distance
+		double minDist = Collections.min(list) ;										//	System.out.println(minDist);
+		
+		return minDist;	
+	}	
 	
 // GraphStream toolkit dev ----------------------------------------------------------------------------------------------------------------
 	public static double [][] getDistanceMatrixTopo(Graph graph) {

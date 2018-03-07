@@ -21,6 +21,7 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 
 		protected enum interpolation { averageEdge , averageDist } 
 		protected interpolation typeInterpolation ;
+		protected double sizeGridEdge ;
 		
 		// COSTRUTOR
 		public generateNetNodeGradientBreakGrid (int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob 
@@ -33,11 +34,14 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 			this.prob = prob ;
 			this.stillAlive = stillAlive ;
 			this.typeInterpolation  = typeInterpolation  ;
+			
+			
 		}
 
 		@Override
 		public void generateNodeRule(int step) {
 			System.out.println("size netGraph " +  netGraph.getNodeCount() + netGraph.getNodeSet());
+			sizeGridEdge = Math.pow( gsGraph.getNodeCount() , 0.5 ) - 1 ;
 			
 			// set seed nodes ( only first step )
 			setSeedNodes(step, numberMaxSeed, setLayoutSeed);
@@ -73,7 +77,7 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 				
 				double delta = gsAlgoToolkit.getValStad( gsGraph , listForDelta, nodeSeed , morp , true , valInter)  ;		//										System.out.println("delta " + delta ) ; 
 				
-				delta = Math.abs(delta) ;
+			//	delta = Math.abs(delta) ;
 				
 				//	System.out.println(listForDelta.size());
 			
@@ -93,66 +97,80 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 					
 					String idVertex = listVertex.get(x);
 					Node nodeVertex = gsGraph.getNode(idVertex);
-					
-//					System.out.println(idVertex);
-					
+					// System.out.println(idVertex);
+				
 					// get coordinate new node	
-					double [] 	vertexCoord = GraphPosLengthUtils.nodePosition(nodeVertex) ,
-								seedCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ;
+					
+					double [] 	vertexCoord = null ;
+					
+					try { 
+						vertexCoord = GraphPosLengthUtils.nodePosition(nodeVertex) ;
+					} catch (java.lang.NullPointerException e) {
+						nodeSeed.addAttribute("seedGrad", 1);
+						continue ;	
+					}
+					double [] 	seedCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ;
 					
 					double 	distSeedVertex = gsAlgoToolkit.getDistGeom(nodeVertex, nodeSeed) ; 
 				
-					double 	a2 = Math.pow(vertexCoord[0] - seedCoord[0] , 2 ) ,
-							c2 = Math.pow(vertexCoord[1] - seedCoord[1] , 2 ) ;
+					double  xNewNode = 0.0 , 
+							yNewNode = 0.0 ;
+			 		
+					if ( distSeedVertex == 0 ) {
+						xNewNode = vertexCoord[0] ;
+						yNewNode = vertexCoord[1] ;
+					}
+					else {
+						double 	a2 = Math.pow(vertexCoord[0] - seedCoord[0] , 2 ) ,
+								c2 = Math.pow(vertexCoord[1] - seedCoord[1] , 2 ) ;
+						
+						double val1 , val2 , distMax ;
+		
+						val1 = Math.pow(1 + a2 / c2 , 0.5);
+						val2 = Math.pow(1 + c2 / a2 , 0.5);
 					
-					double val1 , val2 , distMax ;
-	
-					val1 = Math.pow(1 + a2 / c2 , 0.5);
-					val2 = Math.pow(1 + c2 / a2 , 0.5);
-				
-					if ( vertexCoord[0] == seedCoord[0] || vertexCoord[1] == seedCoord[1]  )
-						distMax = 1 ;
-					else 
-						distMax = Math.max(val1, val2);
+						if ( vertexCoord[0] == seedCoord[0] || vertexCoord[1] == seedCoord[1]  )
+							distMax = 1 ;
+						else 
+							distMax = Math.max(val1, val2);
+						
+						if ( distMax > Math.pow(2, 0.5) )
+							distMax = Math.pow(2, 0.5) - 0.01 ;
+						
+						if  ( distMax == 0 ) {
+							nodeSeed.setAttribute("seedGrad", 1);	
+							continue ; 
+						}
+						
+						double coefDist = 0 ;
+						if ( delta >= 1) 
+							coefDist =  distMax;
+						else if (delta < 1 )
+							coefDist = delta * distMax ;							//		System.out.println("coefDist " + coefDist) ;
+						
+						xNewNode = vertexCoord[0] + distSeedVertex * ( vertexCoord[0] - seedCoord[0]) / coefDist  ; 
+						yNewNode = vertexCoord[1] + coefDist * ( vertexCoord[1] - seedCoord[1] ) / distSeedVertex  ;
+				 					
+						if ( xNewNode < 0 )		xNewNode = 0;
+						if ( yNewNode < 0 )		yNewNode = 0 ;
+						
+						if ( xNewNode > sizeGridEdge )	xNewNode = sizeGridEdge ;
+						if ( yNewNode > sizeGridEdge )	yNewNode = sizeGridEdge ;
 					
-					if ( distMax > Math.pow(2, 0.5) )
-						distMax = Math.pow(2, 0.5) - 0.01 ;
+						if (  xNewNode -  vertexCoord[0] >= 1 ) 
+							xNewNode = vertexCoord[0] + 1 ;
+
+						if (  yNewNode -  vertexCoord[1] >= 1 ) 
+							yNewNode = vertexCoord[1] + 1 ;
 					
-//					System.out.println("distMax " + distMax) ;
-					
-					if  ( distMax == 0 ) {
-						nodeSeed.setAttribute("seedGrad", 1);	
-						continue ; 
 					}
 					
-					double coefDist = 0 ;
-					if ( delta >= 1) 
-						coefDist =  distMax;
-					else if (delta < 1 )
-						coefDist = delta * distMax ;							//		System.out.println("coefDist " + coefDist) ;
-					
-					double  xNewNode = vertexCoord[0] + distSeedVertex * ( vertexCoord[0] - seedCoord[0]) / coefDist  , 
-							yNewNode = vertexCoord[1] + coefDist * ( vertexCoord[1] - seedCoord[1] ) / distSeedVertex  ;
-					
-					if ( xNewNode < 0 )
-						xNewNode = 0;
-					if ( yNewNode < 0)
-						yNewNode = 0 ;
-					
-					if ( xNewNode > 50 )
-						xNewNode = 50;
-					if ( yNewNode > 50)
-						yNewNode = 50 ;
-					
-					String 	xId = Double.toString(Math.floor(xNewNode * 100 )  / 100 ),
-							yId = Double.toString(Math.floor(yNewNode * 100 )  / 100 );		//	System.out.println(xId);
-				
+					String xId = Double.toString(Math.floor(xNewNode * 100 )  / 100 ) ;
+					String yId = Double.toString(Math.floor(yNewNode * 100 )  / 100 ) ;		//	System.out.println(xId);
 					
 					// get id node maybe add
-					String idCouldAdded = xId + "_" + yId ; 								//	System.out.println(idCouldAdded);
-					Node nodeCouldAdded = null ;
-					
-				//	System.out.println("idCouldAdded " + idCouldAdded);
+					String idCouldAdded = xId + "_" + yId ; 								//	System.out.println("idCouldAdded " + idCouldAdded);
+					Node nodeCouldAdded = null ;							
 					
 					// there isn't node
 					try {
@@ -175,99 +193,7 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 			}
 		}
 					
-				
-				
-				
-			
-			
-			
-			
-			
-			
-				
-				
-				/*
-				
-				
-				for ( String idVertex : listVertex ) {
-					
-					handleListNeigGsSeed(idVertex, listNeigSeed, listNeigNotSeed);
-					
-				//	ArrayList<String> listForDelta = generateNetNodeGradient.getListForDelta(listVertex , listNeigSeed);
-					listForDelta.add(idSeed) ;
-					
-					System.out.println( idVertex + " listForDelta " + listForDelta);
-					double delta = gsAlgoToolkit.getValStad( gsGraph , listForDelta, nodeSeed , morp , true ,valInter)  ;		//		
-//					System.out.println("delta " + delta ) ; 	// 
-//					System.out.println(listForDelta.size());
-					
-					int numberMaxNewNodes = getNumberMaxNewNodes(delta, listForDelta)  ;
-					
-					int numberNewNodes = gsAlgoToolkit.getBinomial(numberMaxNewNodes, prob); //		System.out.println( "numberNewNodes " + numberNewNodes );
-					
-					handleStillAlive(numberNewNodes, controlSeed, nodeSeed);
-					
-					for ( int x = 0 ; x < numberNewNodes ; x++ ) {
 
-						if ( delta == 0 ) {
-							nodeSeed.setAttribute("seedGrad", 1);
-							continue ; 
-						}
-						
-						Node nVertex = gsGraph.getNode(idVertex);
-						
-						// get coordinate new node						
-						double [] 	vertexCoord = GraphPosLengthUtils.nodePosition(nVertex) ,
-									seedCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ;
-						
-						double 	distSeedVertex = gsAlgoToolkit.getDistGeom(nVertex, nodeSeed) ,
-								xdistMax = Math.abs(distSeedVertex * ( vertexCoord[0] - seedCoord[0]) ),
-								ydistMax = Math.abs(distSeedVertex * ( vertexCoord[1] - seedCoord[1]) ) ,
-								distMax = Math.max(xdistMax, ydistMax);
-					
-						if  ( distMax == 0 ) {
-							nodeSeed.setAttribute("seedGrad", 1);	
-							continue ; //	System.out.println("distMax " + distMax) ;
-						}
-						
-						double coefDist = 0 ;
-						if ( delta >= 1) 
-							coefDist =  distMax;
-						else if (delta < 1 )
-							coefDist = delta * distMax ;							//	System.out.println("coefDist " + coefDist) ;
-						
-						double  xNewNode = vertexCoord[0] + distSeedVertex * ( vertexCoord[0] - seedCoord[0]) / coefDist  , 
-								yNewNode = vertexCoord[1] + coefDist * ( vertexCoord[1] - seedCoord[1] ) / distSeedVertex  ;
-						
-						String 	xId = Double.toString(Math.floor(xNewNode * 100 )  / 100 ),
-								yId = Double.toString(Math.floor(yNewNode * 100 )  / 100 );		//	System.out.println(xId);
-					
-						// get id node maybe add
-						String idCouldAdded = xId + "_" + yId ; 								//	System.out.println(idCouldAdded);
-						Node nodeCouldAdded = null ;
-							
-						// there isn't node
-						try {
-							netGraph.addNode(idCouldAdded);
-						//	System.out.println("newNode");
-							nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
-							nodeCouldAdded.addAttribute("seedGrad", 1);
-							nodeSeed.setAttribute("seedGrad", 1 );
-							
-							// set coordinate
-							nodeCouldAdded.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
-							}
-						
-						// if node already exist 
-						catch (org.graphstream.graph.IdAlreadyInUseException e) { 		//System.out.println(e.getMessage());
-							nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
-							nodeCouldAdded.addAttribute("seedGrad", 0 );
-							nodeSeed.setAttribute("seedGrad", 1);
-						}
-					}
-				}
-			}
-			*/
 		
 
 		@Override
@@ -319,6 +245,7 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 					aveY1 = Math.abs(valArr[1] - valArr[3]) * distY + Math.min(valArr[1] , valArr[3] ) ;		//	System.out.println(aveX0 = Math.abs(valArr[0] - valArr[1]) / Math.min(valArr[0] , valArr[1] ));
 			
 			double[] aveVal = new double[4] ; 
+		
 			aveVal[0] = aveX0;
 			aveVal[1] = aveX1;
 			aveVal[2] = aveY0;
@@ -327,28 +254,73 @@ public class generateNetNodeGradientBreakGrid extends generateNetNodeGradient im
 			return Arrays.stream(aveVal).average().getAsDouble();			
 		}
 		
-		private static double[] getCeckedAveValVertex ( ArrayList<String> listNetNodeStr ,Graph graph , String attribute, double minX , double minY , double maxX, double maxY ) {
-			
+		private static double[] getCeckedAveValVertex ( ArrayList<String> listNetNodeStr , Graph graph , String attribute, double minX , double minY , double maxX, double maxY ) {
+						
 			double[] arrVal = new double[4];
+			double sizeMax = Math.pow( graph.getNodeCount() , 0.5 ) ;
 			
-			Node node00 = getNodeCechedType(listNetNodeStr, graph, minX, minY),
+			if ( maxX >= sizeMax ) {
+				minX = minX - 1 ;
+				maxX = maxX - 1 ;
+			}
+			if ( maxY >= sizeMax ) {
+				minY = minY - 1 ;
+				maxY = maxY - 1 ;
+			}
+//			System.out.println(listNetNodeStr);
+/*
+			Node
+			node00 = getNodeCechedType(listNetNodeStr, graph, minX, minY),
 					node10 = getNodeCechedType(listNetNodeStr, graph, maxX, minY),
 							node01 = getNodeCechedType(listNetNodeStr, graph, minX, maxY),
 									node11 = getNodeCechedType(listNetNodeStr, graph, maxX, maxY)	;
-				
-		
 			
-			// System.out.println(node00.getId());
-		
+*/
+			Node 	node00 = null , 
+					node10 = null ,
+					node01 = null , 
+					node11 = null ; 
+												
+			String 	idNode00 = (int) minX + "_" + (int) minY ,
+					idNode10 = (int) maxX + "_" + (int) minY ,
+					idNode01 = (int) minX + "_" + (int) maxY ,
+					idNode11 = (int) maxX + "_" + (int) maxY ;
 			
-		
+				node00 = graph.getNode(idNode00) ;
+				node10 = graph.getNode(idNode10) ;
+				node01 = graph.getNode(idNode01) ; 
+				node11 = graph.getNode(idNode11) ; 
+										
 			
 				
-			arrVal[0] = node00.getAttribute(attribute) ;						
-			arrVal[1] = node01.getAttribute(attribute) ;
-			arrVal[2] = node10.getAttribute(attribute) ;								//	System.out.println( maxX + "_" + minY );
-			arrVal[3] = node11.getAttribute(attribute) ;	
 				
+			try {	
+				arrVal[0] = node00.getAttribute(attribute) ;
+				arrVal[1] = node01.getAttribute(attribute) ;
+				arrVal[2] = node10.getAttribute(attribute) ;
+				arrVal[3] = node11.getAttribute(attribute) ;
+			} catch (java.lang.NullPointerException e) 	{
+				arrVal[0] = 0 ;
+				arrVal[1] = 0 ;
+				arrVal[2] = 0 ;
+				arrVal[3] = 0 ;
+				
+				System.out.println(idNode00);
+				System.out.println(idNode10);
+				System.out.println(idNode01);
+				System.out.println(idNode11);
+				
+			}
+			/*
+			try {	arrVal[0] = node00.getAttribute(attribute) ;	} catch (java.lang.NullPointerException e) 				{		arrVal[0] = 0 ; System.out.println("idVertex " + idNode00); }
+			try {	arrVal[1] = node01.getAttribute(attribute) ;	} catch (java.lang.NullPointerException e) 				{		arrVal[1] = 0 ; System.out.println("idVertex " + idNode10); }
+			try	{	arrVal[2] = node10.getAttribute(attribute) ;	} catch (java.lang.NullPointerException e) 				{		arrVal[2] = 0 ; System.out.println("idVertex " + idNode01); }							//	System.out.println( maxX + "_" + minY );
+			try {	arrVal[3] = node11.getAttribute(attribute) ;	} catch (java.lang.NullPointerException e) 				{		arrVal[3] = 0 ; System.out.println("idVertex " + idNode11); }
+			*/
+			
+			
+			
+					
 			for ( int pos= 0 ; pos < 4 ; pos++ ) {
 				if ( arrVal[pos] <= 0 )
 					arrVal[pos] = 0 ;

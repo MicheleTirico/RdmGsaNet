@@ -6,6 +6,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
+import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetExport.handleNameFile;
@@ -40,7 +41,7 @@ public class layerNet {
 								boolean setSeedMorp , 
 								double seedAct , double seedInh , 
 								boolean setSeedMorpInGs ,
-								boolean storedDGS) throws IOException {
+								boolean storedDGS ) throws IOException {
 		
 		// setup parameter of first point in netGraph 
 		if ( createMeanPoint ) 
@@ -97,16 +98,26 @@ public class layerNet {
 			double seedAct = nNet.getAttribute( "seedAct" );
 			double seedInh = nNet.getAttribute( "seedInh" );
  			
-			Node nGs = gsGraph.getNode( idNet );
-			nGs.setAttribute("gsAct", seedAct );
-			nGs.setAttribute("gsInh", seedInh );
+			double[] nNetCoord = GraphPosLengthUtils.nodePosition( nNet) ;
+			try {
+				Node nGs = gsGraph.getNode( (int) nNetCoord[0] + "_" + (int) nNetCoord[1] );
+			
+				nGs.setAttribute("gsAct", seedAct );
+				nGs.setAttribute("gsInh", seedInh );
+			}
+		
+			catch (java.lang.NullPointerException e) {
+				// TODO: handle exception
+			}
 		}
 	}
+	
 	
 // Get Methods -----------------------------------------------------------------------------------------------------	
 	// get graph
 	public static Graph getGraph ( ) { return netGraph; }
 
+	
 
 	
 	public static String getLayout () { return layout.getClass().getSimpleName() ; }

@@ -21,13 +21,14 @@ import RdmGsaNet_pr09.gsAlgoDiffusion.weightType;
 import RdmGsaNet_pr09.layerNet.meanPointPlace;
 import RdmGsaNet_pr09.setupGs_Inter.disMorpType;
 import RdmGsaNet_pr09.setupGs_Inter.gsGridType;
+import RdmGsaNet_pr09.setupNetFistfulNodes.typeRadius;
 import RdmGsaNet_pr09.setupNetSmallGraph.smallGraphType;
 import RdmGsaNet_pr09.generateNetNodeGradient.rule;
 import RdmGsaNet_pr09.generateNetNodeGradientBreakGrid.interpolation;
 
 public class main {
-	private static int stopSim = 200
-			;
+	private static int stopSim = 2 ;
+	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
 	private static RdmType type ;
@@ -42,6 +43,7 @@ public class main {
 							doStoreStartNet = false, 
 							doStoreStepNet 	= false,
 							doStoreIm		= false ;
+	
 	private static String 	fileType = ".dgs" ,
 							fileTypeIm = "png" ;
 	
@@ -63,12 +65,13 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 	static layerGs gsLayer = new layerGs(
-		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
+		/* size grid , type grid 				*/	new setupGsGrid( 10 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
-		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
+//		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
+		/* create a fistful of node 			*/ new setupNetFistfulNodes(20, typeRadius.square , 4 )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -84,7 +87,7 @@ public class main {
 //											new generateNetNodeGradientProb	    				( 8 , layoutSeed.allNode , rule.random , "gsInh", 1 , true )
 //											new generateNetNodeGradientProbDelta 				( 8 , layoutSeed.allNode, rule.random, "gsAct", .8, false )
 //											new generateNetNodeGradientProbDeltaControlSeed     ( 8 , layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
-											new generateNetNodeGradientBreakGrid				( 9 , layoutSeed.random, rule.random, "gsInh", .5 , true , 
+											new generateNetNodeGradientBreakGrid				( 9 , layoutSeed.allNode, rule.random, "gsInh", 1 , true , 
 																								interpolation.averageEdge )
 			
 			) ;
@@ -152,7 +155,10 @@ public class main {
 			/* bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph												*/ true ,
 			/* bol		storedDGS		= 	if true , create a dgs file of started graph										*/ doStoreStartNet
 			);
+		
+		sizeGridEdge = Math.pow( gsGraph.getNodeCount() , 0.5 ) - 1 ;
 			
+		// System.out.println(sizeGridEdge);
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
 			/* bol		runSim																					*/	true,
@@ -170,8 +176,8 @@ public class main {
 		int seedAlive = getSeedAlive(false);
 		
 		ArrayList listIdNetSeedGrad = getListIdWithAttribute(false, netGraph, "seedGrad");
-		printNodeSetAttribute(false , netGraph) ;
-		printEdgeSetAttribute(false , netGraph) ;
+		printNodeSetAttribute(true , gsGraph) ;
+		printEdgeSetAttribute(true , netGraph) ;
 	
 		
 		
@@ -199,8 +205,8 @@ public class main {
 		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
 		netViz.setupIdViz(false, netGraph, 4 , "black");
 		netViz.setupDefaultParam (netGraph, "black", "black", 5 , 0.5 );
-		netViz.setupVizBooleanAtr(true, netGraph, "white", "red" ) ;
-		netViz.setupFixScaleManual(true , netGraph, 50, 0);
+		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" ) ;
+		netViz.setupFixScaleManual(true , netGraph, sizeGridEdge , 0);
 		
 		// viz display
 		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz5Color , "gsInh", 1) ;

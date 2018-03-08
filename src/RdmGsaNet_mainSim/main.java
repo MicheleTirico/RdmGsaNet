@@ -44,7 +44,7 @@ import RdmGsaNet_setupLayer.setupNetFistfulNodes.typeRadius;
 import RdmGsaNet_setupLayer.setupNetSmallGraph.smallGraphType;
 
 public class main {
-	private static int stopSim = 2 ;
+	private static int stopSim = 1000 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -84,13 +84,13 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 	static layerGs gsLayer = new layerGs(
-		/* size grid , type grid 				*/	new setupGsGrid( 10 , gsGridType.grid8 ) ) ;
+		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
 //		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-		/* create a fistful of node 			*/ new setupNetFistfulNodes( 10 , typeRadius.square , 1 )
+		/* create a fistful of node 			*/ new setupNetFistfulNodes( 100 , typeRadius.square , 2 )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -111,7 +111,7 @@ public class main {
 //		) ;
 	
 	protected static generateNetNode generateNetNode = new generateNetNode ( 
-			new generateNetNodeBreakGridThrowSeed(5 , "gsInh" , interpolation.averageEdge ) );
+			new generateNetNodeBreakGridThrowSeed( 100 , "gsAct" , .1 , interpolation.averageEdge , true , true ) );
 
 	protected static generateNetEdge generateNetEdge = new generateNetEdge (			
 			/* radius , which node to connect		*/new generateNetEdgeNear( 2 , whichNode.all )) ;
@@ -236,8 +236,8 @@ public class main {
 		gsViz.setupViz(true, true, palette.red);
 		
 		
-//		gsGraph.display(false);
-//		netGraph.display(false);
+		gsGraph.display(false);
+		netGraph.display(false);
 		
 		
 

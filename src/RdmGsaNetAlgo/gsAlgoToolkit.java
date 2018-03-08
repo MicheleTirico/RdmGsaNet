@@ -67,17 +67,30 @@ public class gsAlgoToolkit {
 	
 	// get spatial distance  from 2 nodes 
 	public static double getDistGeom ( Node n1 , Node n2 ) {	
+		
+		double [] n1Coordinate , n2Coordinate ; 
+		double x1 , y1 , z1 , x2 , y2 , z2 ;
+		
 		// coordinate of node n1
-		double [] n1Coordinate = GraphPosLengthUtils.nodePosition(n1) ;
-		double x1 = n1Coordinate [0];
-		double y1 = n1Coordinate [1];
-		double z1 = n1Coordinate [2];
+		try {
+			n1Coordinate = GraphPosLengthUtils.nodePosition(n1) ;
+			x1 = n1Coordinate [0];
+			y1 = n1Coordinate [1];
+			z1 = n1Coordinate [2];
+		} catch (java.lang.NullPointerException e) {
+			return 0  ; 
+		}
+		
 				
 		// coordinate of node n2
-		double [] n2Coordinate = GraphPosLengthUtils.nodePosition(n2) ;
-		double x2 = n2Coordinate [0];
-		double y2 = n2Coordinate [1];
-		double z2 = n2Coordinate [2];
+		try {
+			n2Coordinate = GraphPosLengthUtils.nodePosition(n2) ;
+			x2 = n2Coordinate [0];
+			y2 = n2Coordinate [1];
+			z2 = n2Coordinate [2];
+		} catch (java.lang.NullPointerException e) {
+			return 0  ; 
+		}
 				
 		// calculate distance
 		double distSq = Math.pow( ( x1 - x2 ), 2 )  + Math.pow( ( y1 - y2 ), 2 ) + Math.pow( ( z1 - z2 ), 2 ) ;

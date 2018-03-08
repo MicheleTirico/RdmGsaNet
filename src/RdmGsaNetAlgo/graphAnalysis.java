@@ -438,7 +438,7 @@ public class graphAnalysis {
 		}																								//		System.out.println("listVal " + listVal);
 		
 		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble();				//		System.out.println("aveVal " + aveVal);
-		double stdDev = getStandarDeviation(isCorrect, listVal);										//		System.out.println("stdDev " + stdDev);
+		double stdDev = getStandardDeviation(isCorrect, listVal);										//		System.out.println("stdDev " + stdDev);
 		stdVal  = ( nodeVal - aveVal) / stdDev;
 		
 		if (  Double.isNaN(stdVal) )

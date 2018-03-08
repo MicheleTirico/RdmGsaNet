@@ -156,7 +156,7 @@ public class graphAnalysis {
 	}
 	
 // statistical correlation --------------------------------------------------------------------------------------------------------------------------	
-	public static double getStandardDeviation ( ArrayList<Double> listVal  ) {
+	public static double getStandardDeviation2 ( ArrayList<Double> listVal  ) {
 
 		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble();
 		
@@ -165,6 +165,23 @@ public class graphAnalysis {
 			 val2 = val2 +  Math.pow(( val - aveVal ) , 2  ) ;
 		}
 		return Math.pow( val2 , 0.5  )  ;
+	}
+	
+	public static double getStandardDeviation ( boolean isSampling , ArrayList<Double> listVal ) {
+
+		double stdDev = 0.0 , sumVal = 0.0 ;													//	System.out.println("listVal " + listVal) ; 
+		int numVal = listVal.size();															//		System.out.println("numVal " + numVal);
+		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble() ;		//		System.out.println("aveVal " + aveVal) ; 
+		
+		for ( double val : listVal) 	
+			sumVal = sumVal + Math.pow(val - aveVal , 2 ) ;		//	System.out.println(sumVal);
+		
+		if ( isSampling )
+			stdDev = Math.pow( sumVal / ( numVal - 1 ) , 0.5 )  ;
+		else if ( !isSampling )
+			stdDev = Math.pow( sumVal / ( numVal  ) , 0.5 )  ;
+		
+		return stdDev ;
 	}
 	
 	public static double getCovarianceFromArray ( double[] arrayVal0 , double[] arrayVal1  ) {
@@ -389,6 +406,46 @@ public class graphAnalysis {
 		return map;
 	}
 	
+	// get standard values
+	public static double getValStad ( Graph graph , ArrayList<String> listNeig, Node node , String attribute , boolean isCorrect , double valInter) {
+		
+		double stdVal , nodeVal = 0 ;
+		try {
+			nodeVal = node.getAttribute(attribute) ;										//	System.out.println("nodeVal " + nodeVal);
+		} catch (java.lang.NullPointerException e) {
+			nodeVal = valInter ;
+		}
+		
+		if ( nodeVal > 1 )	nodeVal = 1 ; 
+		if ( nodeVal < 0 )	nodeVal = 0 ; 													//		System.out.println("nodeVal " + nodeVal);
+		
+		ArrayList<Double> listVal = new ArrayList<Double>(Arrays.asList(nodeVal));
+		
+		for ( String idNode : listNeig ) {
+			double valNeig = 0.0 ;															//		System.out.println(idNode);
+			try {
+				valNeig = graph.getNode(idNode).getAttribute(attribute) ;
+			} catch (java.lang.NullPointerException e) {
+				 valNeig = valInter ;
+			}
+			
+			if ( valNeig > 1.0 )
+				listVal.add(1.0);
+			else if ( valNeig < 0 )
+				listVal.add(0.0 ) ;
+			else 
+				listVal.add(valNeig);
+		}																								//		System.out.println("listVal " + listVal);
+		
+		double aveVal =  listVal.stream().mapToDouble(val -> val).average().getAsDouble();				//		System.out.println("aveVal " + aveVal);
+		double stdDev = getStandarDeviation(isCorrect, listVal);										//		System.out.println("stdDev " + stdDev);
+		stdVal  = ( nodeVal - aveVal) / stdDev;
+		
+		if (  Double.isNaN(stdVal) )
+			stdVal = 0.0 ;
+		return stdVal ;
+	}
+
 	
 // PRIVATE METHODS ---------------------------------------------------------------------------------------------------------------------------------------------------
 	// set for each nodes an attribute that means the value of correlation

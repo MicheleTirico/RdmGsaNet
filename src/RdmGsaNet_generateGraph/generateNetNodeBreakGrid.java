@@ -1,5 +1,8 @@
 package RdmGsaNet_generateGraph;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
@@ -24,32 +27,69 @@ public class generateNetNodeBreakGrid extends main {
 	protected static Graph netGraph = layerNet.getGraph(),
 							gsGraph = layerGs.getGraph();
 	
-	public generateNetNodeBreakGrid ( int numberMaxSeed , interpolation typeInterpolation  ) {
+	public generateNetNodeBreakGrid ( int numberMaxSeed , String morp, interpolation typeInterpolation  ) {
 		this.numberMaxSeed = numberMaxSeed ;
+		this.morp = morp ;
 		this.typeInterpolation  = typeInterpolation  ;
 		
 		
 		
 	}
 
-// COMMON METHODS FOR ALL CLASS WITH GRADIENT APPROACH ----------------------------------------------------------------------------------------------
 	
 
+// COMMON METHODS FOR ALL CLASS WITH GRADIENT APPROACH ----------------------------------------------------------------------------------------------	
+	
+	// handle create new node	
+	protected void handleNewNodeCreation ( Graph graph , String idCouldAdded , Node nodeSeed , double xNewNode , double yNewNode ) {
+		
+		Node nodeCouldAdded = null ;
+		// there isn't node
+		try {
+			netGraph.addNode(idCouldAdded);
+			nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
+			nodeCouldAdded.addAttribute("seedGrad", 1);
+			nodeSeed.setAttribute("seedGrad", 0 );
+			
+			// set coordinate
+			nodeCouldAdded.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
+			}
+		
+		// if node already exist 
+		catch (org.graphstream.graph.IdAlreadyInUseException e) { 		//System.out.println(e.getMessage());
+			nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
+			nodeCouldAdded.addAttribute("seedGrad", 0 );
+			nodeSeed.setAttribute("seedGrad", 1);
+		}
+	}
+	
+	// setup first step of simulation
 	protected static void setStartSeed ( Graph graph , int step ,  int numberMaxAttribute , String attribute ) {
 
-		if ( step != 1 )
-			return ;
+		// exit method
+		if ( step != 1 )					return ;
 		
 		int nodeCount = netGraph.getNodeCount();
 		
-		if ( numberMaxSeed > nodeCount )
-			numberMaxSeed = nodeCount ;
+		if ( numberMaxSeed > nodeCount )	numberMaxSeed = nodeCount ;
 		
-		for ( int x = 0 ; x < numberMaxAttribute ; x++ ) {
-			graph.getNode(x).addAttribute(attribute, 1);
-		}
-					
-		
+		for ( int x = 0 ; x < numberMaxAttribute ; x++ ) 
+			graph.getNode(x).addAttribute(attribute, 1);	
 	}
-
+	
+	// handle listNeigGsStrSeed ( and not seed )
+	protected static void handleListNeigGsSeed ( Node nodeSeed , ArrayList<String> listNeigSeed , ArrayList<String> listNeigNotSeed ) {
+			
+		Iterator<Node> iter = nodeSeed.getNeighborNodeIterator() ;		
+		while (iter.hasNext()) {
+				 
+			Node neig = iter.next() ;
+			int neigValAttr = neig.getAttribute("seedGrad");
+				
+			if (neigValAttr == 1 )
+				listNeigSeed.add(neig.getId());
+			else if ( neigValAttr == 0 ) 
+				listNeigNotSeed.add(neig.getId()) ;
+		}
+	}		
 }

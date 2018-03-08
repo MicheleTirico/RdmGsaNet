@@ -246,7 +246,7 @@ protected String getRandomNodeId ( ArrayList<String> listNeig ) {
 	}
 
 	
-	// handle listNeigGsStrSeed 8 and not seed )
+	// handle listNeigGsStrSeed ( and not seed )
 	protected static void handleListNeigGsSeed ( Node nodeSeed , ArrayList<String> listNeigSeed , ArrayList<String> listNeigNotSeed ) {
 		
 		Iterator<Node> iter = nodeSeed.getNeighborNodeIterator() ;		

@@ -1,6 +1,7 @@
 package RdmGsaNetAlgo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -134,6 +135,23 @@ public class graphToolkit {
 		return listVertex ;
 	}
 		
-	
+	// get list of neighbor String
+	public static ArrayList getListNeighbor ( Graph graph , String idNode , elementTypeToReturn elementTypeToReturn ) {
+			
+		Node node = graph.getNode(idNode) ;			
+		ArrayList listNeig = new ArrayList();
+			
+		Iterator<Node> iter = node.getNeighborNodeIterator() ;	
+		while (iter.hasNext()) {		 
+			Node neig = iter.next() ;		//		System.out.println(neig.getId() + neig.getAttributeKeySet());
+			if ( !listNeig.contains(neig.getId()))
+				if ( elementTypeToReturn. equals(elementTypeToReturn.string)) 
+					listNeig.add(neig.getId());
+				else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) 
+					listNeig.add(neig);
+			
+		}
+		return listNeig ;
+	}
 	
 }

@@ -1,4 +1,4 @@
-package RdmGsaNet_vectorField;
+package RdmGsaNet_vectorField_02;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,27 +6,54 @@ import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.graphToolkit;
-import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
-import RdmGsaNet_vectorField.vectorField.weigthDist;
+import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNet_vectorField_02.vectorField.vfNeig;
+import RdmGsaNet_vectorField_02.vectorField.weigthDist;
 
-public class vectorFieldSpatial extends vectorField implements vectorField_inter {
+public class vectorFieldSpatial implements vectorField_inter {
 
-	public vectorFieldSpatial(Graph graph, String attribute) {
-		super( graph, attribute , vfType );
+	private Graph graph ;
+	private Graph vecGraph ;
+	private String attribute ;
+	
+	public vectorFieldSpatial ( Graph graph , Graph vecGraph , String attribute ) {
+		this.graph = graph ;
+		this.vecGraph = vecGraph ;
+		this.attribute = attribute ; 
+	
+	}
+	
+	@Override
+	public void test() {
+		System.out.println("test");
+	
+//		for ( Node n : graph.getEachNode())  {//			System.out.println(n.getAttributeKeySet());//			double val = n.getAttribute(attribute);//			System.out.println(val);}
+			
+		
 	}
 
 	
+
+
+
+
 	@Override
-	public void computeVf( vfNeig vfN , weigthDist wdType ) {
+	public void computeVf( vfNeig vfN, weigthDist wdType , Graph vecGraph  ) {
+	//	System.out.println(wdType);
 		
+	
+
 		ArrayList<Node> listForVf = new ArrayList<Node> ( ) ;
 		
 		for ( Node nGra : graph.getEachNode() ) {
+			
+			vecGraph.addNode(nGra.getId()) ; 
+			Node nTo = vecGraph.getNode(nGra.getId()) ;
+			gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, nGra, nTo);
 			
 			String idnGra = nGra.getId( ) ;
 			double[] nGraCoord = GraphPosLengthUtils.nodePosition( nGra ) ; 
@@ -52,10 +79,14 @@ public class vectorFieldSpatial extends vectorField implements vectorField_inter
 			Map < Node , Double > mapIdVal = new HashMap< Node , Double > (sizeListForVf);
 			Map < Node , double[] > mapIdCoord = new HashMap< Node , double[] > (sizeListForVf);
 			
+			
+			
 			// update maps
 			for ( Node nNeig : listForVf ) {
-				double[] nNeigCoord = GraphPosLengthUtils.nodePosition( nNeig ) ;
-				double val = graph.getAttribute(attribute) ;
+				double[] nNeigCoord = GraphPosLengthUtils.nodePosition( nNeig ) ; // System.out.println(nNeig.getAttributeKeySet() );
+				
+				
+				double val = nNeig.getAttribute(attribute) ; // System.out.println(val);
 				mapIdCoord.put(nNeig, nNeigCoord ) ;
 				mapIdVal.put(nNeig, val) ;
 			}
@@ -73,7 +104,7 @@ public class vectorFieldSpatial extends vectorField implements vectorField_inter
 						distY = Math.abs(nGraCoord[1] - neigCoord[1] ) ,
 						dist  = Math.pow ( Math.pow(distX, 2) + Math.pow(distY, 2) , 0.5 ) ; 
 				
-				double 	coefWeig = getCoefWeig ( wdType, dist  ) ,
+				double 	coefWeig = vectorField.getCoefWeig ( wdType , dist  ) ,
 						inten = deltaVal * coefWeig ; 
 			
 				double 	intenX = inten * distX / dist , 
@@ -85,36 +116,49 @@ public class vectorFieldSpatial extends vectorField implements vectorField_inter
 				deltaIntenY = deltaIntenY + intenY ;
 			}
 			
-//			Node nVec = vecGraph.getNode(idnGra) ;
-//			nVec.addAttribute("inten", deltaInten);
-//			nVec.addAttribute("intenX", deltaIntenX);
-//			nVec.addAttribute("intenY", deltaIntenY);
+			
+			
+			Node nVec = vecGraph.getNode(idnGra) ;
+			nVec.addAttribute("inten", deltaInten);
+			nVec.addAttribute("intenX", deltaIntenX);
+			nVec.addAttribute("intenY", deltaIntenY);
 			
 		}
 		
 	}
 
-	@Override
-	public void getVector ( Node n ) {
-		// TODO Auto-generated method stub
 
-	}
 
-	@Override
-	public void createGraph(Graph graph) {
-//		vecGraph = graph ;
-	}
+
 
 
 	@Override
-	public void test() {
+	public void getVector(Node n) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	
 
-	
-	
+
+
+
+
+	@Override
+	public void createGraph(Graph graph , Graph vecGraph) {
+
+		for ( Node nGra : graph.getEachNode()) {
+			
+			vecGraph.addNode(nGra.getId() ) ;
+			Node nTo = vecGraph.getNode(nGra.getId()) ;
+			gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, nGra, nTo);
+			
+		}
+		
+		System.out.println(vecGraph.getNodeCount());
+		
+		
+		
+	}
+
 
 }

@@ -22,7 +22,7 @@ public class handleNameFile {
 	
 	private boolean toHandle ;
 	public enum toHandleType { main , manualFolder }
-	public enum typeFile { stepGs , stepNet , startGs , startNet }
+	public enum typeFile { stepGs , stepNet , startGs , startNet , startVec , stepVec }
 	
 	public toHandleType type ;
 	public typeFile typeFile ;
@@ -132,6 +132,7 @@ public class handleNameFile {
 		
 		String pathToReturn = null ;
 		String nameFile = null ;
+		
 		switch (typeFile) {
 		case startGs:
 			nameFile = getNameGs(true) ;
@@ -145,17 +146,23 @@ public class handleNameFile {
 		case stepNet :
 			nameFile = getNameNet(false) ;
 			break ;
+		case startVec :
+			nameFile = "layerVec_start" ;
+			break ;
+		case stepVec :
+			nameFile = "layerVec_step" ;
+			break ;
 		}
+		
 		if ( setManualPath ) {
-			createNewGenericFolder(manualPath  , "commonFiles\\");
+			createNewGenericFolder( manualPath  , "commonFiles\\");
 			
 			pathToReturn =  manualPath + "\\" + nameStepGs + fileType;
 		}
 		
-		else if ( !setManualPath )
+		else if ( !setManualPath  )
 			pathToReturn =  path + "\\" + nameFile + fileType;
-		return pathToReturn;
-		
+		return pathToReturn;	
 	}
 	
 	public static String getPathStepNet( ) 	{ 
@@ -180,6 +187,12 @@ public class handleNameFile {
 		String nameStartGs = getNameGs(true); 
 		pathStartGs = path + "\\" + nameStartGs + fileType ;
 		return pathStartGs;
+	} 
+	
+	public static String getPathStepVec( )	{
+		String nameStepVec = "layerVec_step";
+		String pathStepVec =  path + "\\" + nameStepVec + fileType;
+		return pathStepVec;
 	} 
 	
 	public static String getCompletePathInFolder ( String folder , String testName ) {

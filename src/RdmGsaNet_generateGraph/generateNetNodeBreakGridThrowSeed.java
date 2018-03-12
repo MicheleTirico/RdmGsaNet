@@ -25,7 +25,7 @@ public class generateNetNodeBreakGridThrowSeed extends generateNetNodeBreakGrid 
 	@Override
 	public void generateNodeRule(int step) {
 		
-		System.out.println("size netGraph " +  netGraph.getNodeCount() + netGraph.getNodeSet());
+	//	System.out.println("size netGraph " +  netGraph.getNodeCount() + netGraph.getNodeSet());
 		sizeGridEdge = Math.pow( gsGraph.getNodeCount() , 0.5 ) - 1 ;
 		int netGraphNodeCount = netGraph.getNodeCount() ;
 		

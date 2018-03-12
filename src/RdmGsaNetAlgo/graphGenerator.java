@@ -1,6 +1,7 @@
 package RdmGsaNetAlgo;
 
 import java.util.Random;
+import java.util.Set;
 
 import org.graphstream.algorithm.generator.BarabasiAlbertGenerator;
 import org.graphstream.algorithm.generator.Generator;
@@ -43,4 +44,10 @@ public class graphGenerator {
 			n.addAttribute(attribute, rnd.nextDouble());		
 	}
 
+	private static void createEdge ( Graph graph  , Node n0 , Node n1 ) {
+		
+		String idEdge = n0.getId() ;
+		graph.addEdge(idEdge, n0, n1 );
+		  	
+	}
 }

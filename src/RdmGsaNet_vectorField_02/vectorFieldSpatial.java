@@ -1,9 +1,11 @@
 package RdmGsaNet_vectorField_02;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
@@ -13,54 +15,48 @@ import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_vectorField_02.vectorField.vfNeig;
 import RdmGsaNet_vectorField_02.vectorField.weigthDist;
+import jdk.nashorn.internal.runtime.StoredScript;
 
 public class vectorFieldSpatial implements vectorField_inter {
 
 	private Graph graph ;
-	private Graph vecGraph ;
 	private String attribute ;
 	
-	public vectorFieldSpatial ( Graph graph , Graph vecGraph , String attribute ) {
+	public vectorFieldSpatial ( Graph graph , String attribute ) {
 		this.graph = graph ;
-		this.vecGraph = vecGraph ;
 		this.attribute = attribute ; 
-	
 	}
-	
+		
 	@Override
 	public void test() {
-		System.out.println("test");
-	
-//		for ( Node n : graph.getEachNode())  {//			System.out.println(n.getAttributeKeySet());//			double val = n.getAttribute(attribute);//			System.out.println(val);}
-			
-		
+		System.out.println("test"); //		for ( Node n : graph.getEachNode())  {//			System.out.println(n.getAttributeKeySet());//			double val = n.getAttribute(attribute);//			System.out.println(val);}	
 	}
 
-	
-
-
-
-
 	@Override
-	public void computeVf( vfNeig vfN, weigthDist wdType , Graph vecGraph  ) {
-	//	System.out.println(wdType);
+	public void computeVf( vfNeig vfN, weigthDist wdType , Graph vecGraph , boolean doStoreStepVec ) throws IOException {
 		
-	
-
 		ArrayList<Node> listForVf = new ArrayList<Node> ( ) ;
 		
 		for ( Node nGra : graph.getEachNode() ) {
 			
-			vecGraph.addNode(nGra.getId()) ; 
-			Node nTo = vecGraph.getNode(nGra.getId()) ;
-			gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, nGra, nTo);
+			// get node
+			String idn1StVec  = nGra.getId() + "_stVec";
+			String idn1EndVec = nGra.getId() + "_endVec" ;
+		
+			System.out.println(vecGraph.getNodeSet());
+			
+			Node n1stVec = vecGraph.getNode(idn1StVec) ;
+			Node n1EndVec = vecGraph.getNode(idn1EndVec) ;
+			
+			System.out.println(n1stVec.getAttributeKeySet());
+			// vecGraph.addNode(nGra.getId()) ; 
+			// Node nTo = vecGraph.getNode(nGra.getId()) ;
+			// gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, nGra, nTo);
 			
 			String idnGra = nGra.getId( ) ;
 			double[] nGraCoord = GraphPosLengthUtils.nodePosition( nGra ) ; 
 			
-			double 	graVal = nGra.getAttribute(attribute)  ,
-					nGraCoordX = nGraCoord[0] , 
-					nGraCoordY = nGraCoord[1] ; 
+			double 	graVal = nGra.getAttribute(attribute)  ; 
 			
 			// compute list of Nodes to compute vector
 			switch (vfN) {
@@ -73,19 +69,15 @@ public class vectorFieldSpatial implements vectorField_inter {
 				break;
 			}
 
-			int sizeListForVf = listForVf.size() ;
-			
 			// create map id - val and id - coord
+			int sizeListForVf = listForVf.size() ;
 			Map < Node , Double > mapIdVal = new HashMap< Node , Double > (sizeListForVf);
 			Map < Node , double[] > mapIdCoord = new HashMap< Node , double[] > (sizeListForVf);
 			
-			
-			
 			// update maps
 			for ( Node nNeig : listForVf ) {
+				
 				double[] nNeigCoord = GraphPosLengthUtils.nodePosition( nNeig ) ; // System.out.println(nNeig.getAttributeKeySet() );
-				
-				
 				double val = nNeig.getAttribute(attribute) ; // System.out.println(val);
 				mapIdCoord.put(nNeig, nNeigCoord ) ;
 				mapIdVal.put(nNeig, val) ;
@@ -116,49 +108,105 @@ public class vectorFieldSpatial implements vectorField_inter {
 				deltaIntenY = deltaIntenY + intenY ;
 			}
 			
+			// add attribute vec node
+		//	Node nVec = vecGraph.getNode(idnGra) ;
+		//	nVec.addAttribute("inten", deltaInten);
+		//	nVec.addAttribute("intenX", deltaIntenX);
+		//	nVec.addAttribute("intenY", deltaIntenY);
+		//	nVec.addAttribute("originVector", true );
 			
+			n1stVec.addAttribute("inten", deltaInten);
+			n1stVec.addAttribute("intenX", deltaIntenX);
+			n1stVec.addAttribute("intenY", deltaIntenY);
+			n1stVec.addAttribute("originVector", true );
 			
-			Node nVec = vecGraph.getNode(idnGra) ;
-			nVec.addAttribute("inten", deltaInten);
-			nVec.addAttribute("intenX", deltaIntenX);
-			nVec.addAttribute("intenY", deltaIntenY);
-			
+			if ( doStoreStepVec == true ) 	{ 	 
+				
+			}
 		}
-		
 	}
 
-
-
-
-
+	
+	@Override
+	public void createVector( Graph vecGraph ) {
+		
+		int idEdge = 0 ; 
+		// add new node
+		for ( Node n0 : vecGraph.getEachNode() ) {
+			
+			boolean orV = n0.getAttribute("originVector");
+			if (orV ) {						//	System.out.println(n0.getAttributeKeySet());	System.out.println(n0.getId());
+				double[] n0Coord = GraphPosLengthUtils.nodePosition( n0 );
+				
+				double 	inten = n0.getAttribute("inten") ,
+						intenX = n0.getAttribute("intenX") , 
+						intenY = n0.getAttribute("intenY") ;
+				
+				String idN1 = n0.getId() + "_topVec" ;
+				vecGraph.addNode( idN1 ) ;
+				
+				Node n1 = vecGraph.getNode(idN1) ;
+				double 	n1CoordX = n0Coord[0] + intenX ,
+						n1CoordY = n0Coord[1] + intenY ;
+				
+				n1.setAttribute("x", n1CoordX);
+				n1.setAttribute("y", n1CoordY);
+				
+				n1.setAttribute("originVector", false );
+				n1.setAttribute("inten" , inten ) ;
+				n1.setAttribute("intenX" , intenX ) ;
+				n1.setAttribute("intenY" , intenY ) ;
+				
+				vecGraph.addEdge(Integer.toString(idEdge), n0, n1 , true) ;
+				
+				idEdge++ ;			
+				
+			}		
+		}
+	}
 
 	@Override
-	public void getVector(Node n) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void updateVector(Graph graph , Graph vecGraph ) {
 
-
-
-
-
-
-	@Override
-	public void createGraph(Graph graph , Graph vecGraph) {
-
-		for ( Node nGra : graph.getEachNode()) {
+		for ( Node nGs : graph.getEachNode() ) {
 			
-			vecGraph.addNode(nGra.getId() ) ;
-			Node nTo = vecGraph.getNode(nGra.getId()) ;
-			gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, nGra, nTo);
+			// get node
+			String idn1StVec  = nGs.getId() + "_stVec";
+			String idn1EndVec = nGs.getId() + "_endVec" ;
+					
+			Node n1stVec = vecGraph.getNode(idn1StVec) ;
+			Node n1EndVec = vecGraph.getNode(idn1EndVec) ;
+			
+			double[] nGsCoord = GraphPosLengthUtils.nodePosition( nGs );
+			
+			double 	inten  = n1stVec.getAttribute("inten") ,
+					intenX = n1stVec.getAttribute("intenX") , 
+					intenY = n1stVec.getAttribute("intenY") ;
+		
+			double 	n1EndVecX = nGsCoord[0] + intenX ,
+					n1EndVecY = nGsCoord[1] + intenY ;
+			
+			n1EndVec.setAttribute("x", n1EndVecX);
+			n1EndVec.setAttribute("y", n1EndVecY);
+		
+			n1EndVec.setAttribute("inten" , inten ) ;
+			n1EndVec.setAttribute("intenX" , intenX ) ;
+			n1EndVec.setAttribute("intenY" , intenY ) ;		
+			
 			
 		}
+		for ( Edge e : vecGraph.getEachEdge() ) {
+			double inten = e.getNode0().getAttribute("inten") ;
+			e.setAttribute("inten", inten);
+		}
 		
-		System.out.println(vecGraph.getNodeCount());
-		
-		
+	
 		
 	}
 
 
+	
+	
+	
+	
 }

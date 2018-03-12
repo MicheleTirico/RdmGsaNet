@@ -266,7 +266,6 @@ public class gsAlgoToolkit {
 		return listVertex ;
 	}
 	
-	
 	public static ArrayList<String> getListVertex ( Node n0 , Node n1 ) {
 		
 		double [] n0Coordinate = GraphPosLengthUtils.nodePosition(n0) ;

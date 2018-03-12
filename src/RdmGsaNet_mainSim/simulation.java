@@ -10,24 +10,30 @@ import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetExport.handleNameFile;
+import RdmGsaNetExport.handleNameFile.typeFile;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_generateGraph.generateNetEdge;
 import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_gsAlgo.gsAlgo;
+import RdmGsaNet_vectorField_02.vectorField;
 
 public class simulation extends main {	
 	
-	private static Graph gsGraph = layerGs.getGraph() ;
-	private static Graph netGraph = layerNet.getGraph() ; 
-	private static int stopSim ;
-	private static int finalStep;
-	private static int step;
+	private static Graph 	gsGraph  = layerGs.getGraph() ,
+							netGraph = layerNet.getGraph() 
+							 
+							;
+	
+	private static int 	stopSim ,
+						finalStep ,
+						step;
 
 	private static handleNameFile handle = main.getHandle();
 	
 // STORING GRAPH EVENTS
-	 private static FileSinkDGS fsdGs = new FileSinkDGS();
-	 private static FileSinkDGS fsdNet = new FileSinkDGS();
+	 private static FileSinkDGS fsdGs = new FileSinkDGS()  ,
+			 					fsdNet = new FileSinkDGS() ,
+			 					fsdVec = new FileSinkDGS() ;
 
 // MAP OF GRAPH
 	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
@@ -55,10 +61,10 @@ public class simulation extends main {
 		
 	public static void  runSim ( boolean runSim ,
 								 int stopSim, boolean printMorp , 
-								 boolean genNode, boolean genEdge , 
-								 boolean storedDgsGsStep , String pathStepGs ,
-								 boolean storedDgsNetStep , String pathStepNet
-//								boolean vizMorp 
+								 boolean genNode, boolean genEdge , boolean vecRun ,
+								 boolean doStoreStepGs ,  String pathStepGs ,
+								 boolean doStoreStepNet , String pathStepNet ,
+								 boolean doStoreStepVec , String pathStepVec
 								) 
 								throws IOException, InterruptedException {
 		
@@ -67,12 +73,15 @@ public class simulation extends main {
 		
 		generateNetEdge genNetEd = generateNetEdge ;
 		generateNetNode genNetNo = generateNetNode ;
-		 
-		pathStepGs = handle.getPathStepGs();
+		vectorField vf = vectorField ;
 		
-		if ( storedDgsGsStep == true) { gsGraph.addSink(fsdGs); fsdGs.begin(pathStepGs);	}
-
-		if ( storedDgsNetStep == true) { netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);	}
+		pathStepGs  = handle.getPathStepGs();		//		System.out.println(pathStepGs);
+		pathStepVec = handle.getPathStepVec() ; 	//		System.out.println(pathStepVec);
+		
+		
+		if ( doStoreStepGs == true) 	{ gsGraph.addSink(fsdGs); fsdGs.begin(pathStepGs);		}
+		if ( doStoreStepNet == true)  	{ netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);	}
+		if ( doStoreStepVec == true)  	{ vecGraph.addSink(fsdVec); fsdVec.begin(pathStepVec);	}
 		
 		// add step 0 
 		addStep0( netGraph , mapStepIdNet );
@@ -80,8 +89,9 @@ public class simulation extends main {
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
-			if ( storedDgsGsStep == true) { 	gsGraph.stepBegins(step); }			
-			if ( storedDgsNetStep == true) { 	netGraph.stepBegins(step); }	
+			if ( doStoreStepGs == true)  { 	gsGraph.stepBegins(step);  }			
+			if ( doStoreStepNet == true) { 	netGraph.stepBegins(step); }	
+			if ( doStoreStepVec == true) { 	vecGraph.stepBegins(step); }	
 			
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
@@ -92,12 +102,14 @@ public class simulation extends main {
 			/* run gs algo to all nodes
 				boolean print : if true, print mapMorp */
 			gsAlgo.gsAlgoMain( false );
+
+			if  ( vecRun == true) { vectorField.computeVf() ; }
 			
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }
 			
 			// update net 
-			updateMapStepId(step , netGraph, mapStepIdNet);
+			updateMapStepId ( step , netGraph , mapStepIdNet );
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );
 			
 			if ( genEdge == true) {genNetEd.generateEdge( step ); }
@@ -114,8 +126,9 @@ public class simulation extends main {
 		
 		
 		// stored graph in dgs format
-		if ( storedDgsGsStep == true) { 	fsdGs.end();	}
-		if ( storedDgsNetStep == true) { 	fsdNet.end();	}
+		if ( doStoreStepGs == true) { 	fsdGs.end();	}
+		if ( doStoreStepNet == true) { 	fsdNet.end();	}
+		if ( doStoreStepVec == true) { 	fsdVec.end();	}
 		
 		finalStep = step - 1 ;	
 	}

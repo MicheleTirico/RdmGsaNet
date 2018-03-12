@@ -121,7 +121,7 @@ public class main {
   
 		// create path in order to stored all dgs files
 		String pathStepNet = handle.getPathFile(typeFile.stepNet, false , folder) ; 		//	System.out.println("pathStepNet " + pathStepNet);		
-		String PathStepGs = handle.getPathFile(typeFile.stepGs, true , folder) ;			//	System.out.println("PathStepGs " + PathStepGs);		
+		String PathStepGs = handle.getPathFile(typeFile.stepGs, false , folder) ;			//	System.out.println("PathStepGs " + PathStepGs);		
 		String pathStartNet = handle.getPathFile(typeFile.startNet, true , folder) ;			//	System.out.println("pathStartNet " + pathStartNet);
 		String pathStartGs = handle.getPathFile(typeFile.startGs, true , folder) ;	;		//	System.out.println("pathStartGs " + pathStartGs);
 

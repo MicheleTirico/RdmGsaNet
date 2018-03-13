@@ -18,7 +18,7 @@ public class generateNetNodeBreakGrid extends main {
 	protected String morp;
 	protected boolean stillAlive ; 
 	
-	public enum interpolation { averageEdge , averageDist } 
+	public enum interpolation { averageEdge , averageDist, sumVectors  } 
 	public interpolation typeInterpolation ;
 	protected double sizeGridEdge ;
 	

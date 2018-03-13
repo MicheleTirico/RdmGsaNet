@@ -6,18 +6,20 @@ import java.util.Arrays;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
+import RdmGsaNet_generateGraph.generateNetNode.rule;
 
 public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNodeGradient implements generateNetNode_Inter {
 	
 	protected boolean controlSeed ;
 	
 	// COSTRUTOR
-	public generateNetNodeGradientProbDeltaControlSeed(int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp , double prob 
+	public generateNetNodeGradientProbDeltaControlSeed( int numberMaxSeed, layoutSeed setLayoutSeed , rule ruleType, String morp , double prob 
 			 , boolean stillAlive , boolean controlSeed
 			) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
-		this.rule = rule ;
+		this.ruleType = ruleType ;
 		this.morp = morp ;
 		this.prob = prob ;
 		this.stillAlive = stillAlive ;
@@ -97,7 +99,7 @@ public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNode
 			for ( int x = 0 ; x < numberNewNodes ; x++ ) {
 
 				// get id node maybe add
-				String idCouldAdded = getIdCouldAdded(rule, listForDelta, x) ; 
+				String idCouldAdded = getIdCouldAdded(ruleType, listForDelta, x) ; 
 				Node nodeCouldAdded = null ;
 			
 				// there isn't node

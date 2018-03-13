@@ -121,16 +121,28 @@ public class handleVizStype {
 		}
 	}
 	
-	public void setupVizBooleanAtr ( boolean viz , Graph graph , String color0 , String color1) {
+	public void setupVizBooleanAtr ( boolean viz , Graph graph , String color0 , String color1 , boolean isViz0 , boolean isViz1) {
 		graph.addAttribute("ui.stylesheet", setVizBooleanAtr(   color0 ,  color1 ) );			
 		
 		for ( Node n : graph.getEachNode () ) {
 			try {
 				double color = 0 ;
 				int isTrue = n.getAttribute(attributeToAnalyze);
-				if ( isTrue == 1 )
+				if ( isTrue == 1 ) 
 					color = 1 ;
 				n.addAttribute("ui.color", color );
+				
+				if ( isViz0 ) 
+					if ( isTrue == 0 ) 
+						n.addAttribute("ui.style", "visibility-mode : hidden;"  	);
+				
+				if ( isViz1 ) 
+					if ( isTrue == 1 ) 
+						n.addAttribute("ui.style", "visibility-mode : hidden;"  	);
+				
+			
+			
+			
 			} catch (java.lang.NullPointerException e) {
 				continue ;
 			}
@@ -168,8 +180,11 @@ public class handleVizStype {
 		return  "node {"+
 				"	size: " + sizeNode + "px;"+
 				"	fill-color: "+color0 +","+color1+"; "+
+				
 				"	fill-mode: dyn-plain;"+
 				"}"+
+				
+				
 				
 				"node#setScale1 {	size: 0px; }" +
 				"node#setScale2 {	size: 0px; }" +

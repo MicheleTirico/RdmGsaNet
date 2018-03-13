@@ -19,7 +19,7 @@ public class layerNet {
 	private handleNameFile handle = main.getHandle();
 	
 	// initialization graph net
-	private static Graph netGraph = new SingleGraph("netGraph"),
+	private static Graph	netGraph = new SingleGraph("netGraph"),
 							gsGraph = layerGs.getGraph();
 	
 	public enum meanPointPlace { center , random , border }

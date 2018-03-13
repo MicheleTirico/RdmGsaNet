@@ -9,6 +9,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
+import RdmGsaNet_generateGraph.generateNetNode.rule;
 import RdmGsaNet_mainSim.layerGs;
 import RdmGsaNet_mainSim.layerNet;
 import RdmGsaNet_mainSim.main;
@@ -16,22 +18,13 @@ import RdmGsaNet_mainSim.main;
 public class generateNetNodeGradient extends main  {
 
 	// COSTANTS
-	protected  enum splitSeed { onlyOneRandom , splitMax , splitMaxThreshold , splitProbability }
-	protected splitSeed type ;
+	protected int numberMaxSeed = generateNetNode.numberMaxSeed  ;
+	protected layoutSeed setLayoutSeed ;
+	protected static rule ruleType  ;
+	protected String morp = generateNetNode.morp  ;
+	protected static double prob = 0  ;
+	protected  boolean stillAlive = generateNetNode.stillAlive  ;
 	
-	protected boolean stillAlive;
-	
-	public enum layoutSeed { center , random , allNode }
-	protected layoutSeed setLayoutSeed; 
-	
-	public enum rule { random , maxValue , minValue }
-	protected rule rule ;
-	
-	protected int numberMaxSeed ; 
-	protected String morp;
-	
-	// probability costants 
-	static double  prob = 0 ;
 	protected static String setupNet = layerNet.getLayout();
 
 	protected static Graph netGraph = layerNet.getGraph(),
@@ -167,58 +160,6 @@ public class generateNetNodeGradient extends main  {
 		return  listNeig.get(index);	
 	}
 	
-// SET LAYOUT SEED NODES ----------------------------------------------------------------------------------------------------------------------------
-	protected void setSeedNodes ( int step , int numberMaxSeed , layoutSeed setLayoutSeed ) {
-
-		if ( step != 1 )
-			return ;
-		
-		int nodeCount = netGraph.getNodeCount();
-		
-		if ( numberMaxSeed > nodeCount )
-			numberMaxSeed = nodeCount ;
-		
-		switch (setLayoutSeed) {
-		case allNode:
-			setLayoutSeedAllNode();					break;
-			
-		case center :
-			setLayoutSeedCenter();					break;
-
-		case random :
-			setLayoutSeedRandom(numberMaxSeed);		break;
-		}
-
-	}
-	
-	// set layout seed all node
-	private void setLayoutSeedAllNode ( ) {
-		for ( Node n : netGraph.getEachNode() ) 
-			n.addAttribute("seedGrad", 1);	
-	}
-	
-	// set layout seed only center
-	private void setLayoutSeedCenter ( ) {
-		String idNodeCenter = gsAlgoToolkit.getCenterGrid(gsGraph);
-		Node idNode = netGraph.getNode(idNodeCenter);
-		idNode.addAttribute("seedGrad", 1 );
-	}
-	
-	// set layout seed random ( aggiustare perche non é proprio random )
-	private void setLayoutSeedRandom ( int numberMaxSeed ) {	
-		int nodeCount = netGraph.getNodeCount();
-		int numberNewSeed = 0 ;
-		
-		for ( Node n : netGraph.getEachNode() ) {
-			int isSeed =  n.getAttribute("seedGrad") ;
-			if ( isSeed != 1 ) {
-				n.addAttribute("seedGrad", 1);
-				numberNewSeed++;	
-			}
-			if ( numberNewSeed >= numberMaxSeed )
-				return ;
-		}	
-	}
 
 // --------------------------------------------------------------------------------------
 

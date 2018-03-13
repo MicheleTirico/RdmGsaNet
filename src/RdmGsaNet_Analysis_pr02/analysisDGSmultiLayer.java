@@ -22,22 +22,24 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 		private boolean	run ,
 						doGsViz ,
 						doNetViz ,
+						doVecViz ,
 						computeGsActivedNodes ,
 						computeGlobalCorrelation ;
 		
 		// parameters of viz 
 		private int setScale ; 
-		private double sizeNodeNet , sizeEdgeNet , sizeNodeGs , sizeEdgeGs ; 
+		private double sizeNodeNet , sizeEdgeNet , sizeNodeGs , sizeEdgeGs , sizeNodeVec , sizeEdgeVec ; 
 		private String colorStaticNode , colorStaticEdge , colorBooleanNodeTrue , colorBooleanNodeFalse;
 		private palette paletteColor;
 		
 		protected String dgsId ;
 			
 		// COSTRUCTOR 
-		public analysisDGSmultiLayer (boolean run ,  boolean doGsViz ,boolean doNetViz , boolean computeGlobalCorrelation ) {
+		public analysisDGSmultiLayer (boolean run ,  boolean doGsViz ,boolean doNetViz , boolean doVecViz , boolean computeGlobalCorrelation ) {
 			this.run = run ;
 			this.doGsViz = doGsViz ;
 			this.doNetViz = doNetViz ;
+			this.doVecViz = doVecViz ;
 			this.computeGlobalCorrelation = computeGlobalCorrelation ;
 		}
 		
@@ -73,6 +75,11 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			this.sizeEdgeGs = sizeEdgeGs ;
 			this.paletteColor = paletteColor ;
 		}	
+		
+		public void setParamVizVec ( double sizeNodeVec , double sizeEdgeVec ) { 
+			this.sizeNodeVec = sizeNodeVec ;
+			this.sizeEdgeVec = sizeEdgeVec ;
+		}	
 
 		@Override
 		public void computeGlobalStat(int stepMax, int stepInc, String[] pathStartArr, String[] pathStepArr , int thread )
@@ -87,13 +94,18 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			String pathStartNet = pathStartArr[1];
 			String pathStepNet = pathStepArr[1];
 			
+			String pathStartVec = folderCommonFiles + "layerVec_start.dgs";
+			String pathStepVec = folderCommonFiles + "layerVec_step.dgs";
+			
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 			
 			handleVizStype	netViz  = new handleVizStype( netGraph , stylesheet.manual , "seedGrad", 1) ,
-					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ;
+					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ,
+					 		vecViz 	= new handleVizStype( vecGraph  , stylesheet.viz10Color , "gsInh", 1) ;
 			
 			netViz.setupFixScaleManual( true , netGraph , setScale , 0 );
+			vecViz.setupFixScaleManual( true , vecGraph , setScale , 0 );
 			
 			//dispay graphs 
 			if ( doGsViz ) {
@@ -103,10 +115,16 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 				Viewer netViewer = netGraph.display(false) ;	
 			}
 			
+			if ( doVecViz ) {
+				Viewer vecViewer = vecGraph.display(false) ;	
+			}
+			
 			// read start path
 			try {	
 				gsGraph.read(pathStartGs);
 				netGraph.read(pathStartNet);
+				vecGraph.read(pathStartVec);
+				
 			} 
 			catch (	ElementNotFoundException | GraphParseException |org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
 							
@@ -116,12 +134,16 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 					
 			netFs = FileSourceFactory.sourceFor(pathStepNet);
 			netFs.addSink(netGraph);
+			
+			vecFs = FileSourceFactory.sourceFor(pathStepVec);
+			vecFs.addSink(vecGraph);
 
 			// import file step
 			try {
 				gsFs.begin(pathStepGs);
 				netFs.begin(pathStepNet);
-				while ( gsFs.nextStep() && netFs.nextStep()  ) {
+				vecFs.begin(pathStepVec);
+				while ( gsFs.nextStep() && netFs.nextStep()  &&  vecFs.nextStep() ) {
 							
 					double step = gsGraph.getStep();							//	System.out.println(step);
 							
@@ -147,12 +169,20 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 						}
 						if ( doGsViz ) {
 							gsViz.setupDefaultParam (gsGraph, "red", "white", sizeNodeGs , sizeEdgeGs );
-							gsViz.setupIdViz(false, gsGraph, 10 , "black");
-							
+							gsViz.setupIdViz(false, gsGraph, 10 , "black");		
 							gsViz.setupViz(true, true, paletteColor);
 						}
+						
+						if ( doVecViz ) {
+							vecViz.setupIdViz(false, vecGraph, 4 , "black");
+							vecViz.setupDefaultParam (vecGraph, "black", "black", sizeNodeVec , sizeEdgeVec );
+							vecViz.setupVizBooleanAtr(true, vecGraph, "black", "red" ) ;
+						}
 							
-						if ( doGsViz | doNetViz )
+						
+						
+							
+						if ( doGsViz | doNetViz | doVecViz )
 							Thread.sleep(thread);
 						
 						// stop iteration    
@@ -162,6 +192,7 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			} catch (IOException e) {		}				
 			gsFs.end() ;	
 			netFs.end() ;
+			vecFs.end() ;
 		}
 
 		@Override

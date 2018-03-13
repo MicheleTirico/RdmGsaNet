@@ -5,13 +5,37 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 
+import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
+import RdmGsaNet_generateGraph.generateNetNodeBreakGrid.interpolation;
 import RdmGsaNet_mainSim.layerGs;
 import RdmGsaNet_mainSim.layerNet;
 import RdmGsaNet_mainSim.main;
 import RdmGsaNet_mainSim.simulation;
 
 public class generateNetNode extends main  {
+	
+//	protected  enum splitSeed { onlyOneRandom , splitMax , splitMaxThreshold , splitProbability }
+//	protected splitSeed splitSeedtype ;
+	
+	protected boolean stillAlive;
+	
+	public enum layoutSeed { center , random , allNode }
+	protected layoutSeed setLayoutSeed; 
+	
+	public enum rule { random , maxValue , minValue }
+	protected rule ruleType ;
+	
+	public enum interpolation { averageEdge , averageDist, sumVectors  } 
+	public interpolation typeInterpolation ;
+	
+	protected int numberMaxSeed ; 
+	protected String morp;
+	
+	// probability costants 
+	static double  prob = 0 ;
 	
 	// VARIABLES 
 	// map
@@ -30,12 +54,90 @@ public class generateNetNode extends main  {
 	public generateNetNode (generateNetNode_Inter type ) {
 		this.type = type ;
 	}
-	
+
 	public void generateNode ( int step )  {
 		type.generateNodeRule ( step ) ;
 	} 
 
-// PRIVATE METHODS ------------------------------------------------------------------------------------------------
+// PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
+	
+// SET LAYOUT SEED NODES ----------------------------------------------------------------------------------------------------------------------------	
+	protected void setSeedNodes ( int step , int numberMaxSeed , layoutSeed setLayoutSeed ) {
+
+		if ( step != 1 )
+			return ;
+		
+		int nodeCount = netGraph.getNodeCount();
+		
+		if ( numberMaxSeed > nodeCount )
+			numberMaxSeed = nodeCount ;
+		
+		switch (setLayoutSeed) {
+		case allNode:
+			setLayoutSeedAllNode();					break;
+			
+		case center :
+			setLayoutSeedCenter();					break;
+
+		case random :
+			setLayoutSeedRandom(numberMaxSeed);		break;
+		}
+	}
+
+		
+	// set layout seed all node
+	private void setLayoutSeedAllNode ( ) {
+		for ( Node n : netGraph.getEachNode() ) 
+			n.addAttribute("seedGrad", 1);	
+	}
+		
+	// set layout seed only center
+	private void setLayoutSeedCenter ( ) {
+		String idNodeCenter = gsAlgoToolkit.getCenterGrid(gsGraph);
+		Node idNode = netGraph.getNode(idNodeCenter);
+		idNode.addAttribute("seedGrad", 1 );
+	}
+		
+	// set layout seed random ( aggiustare perche non é proprio random )
+	private void setLayoutSeedRandom ( int numberMaxSeed ) {	
+		int nodeCount = netGraph.getNodeCount();
+		int numberNewSeed = 0 ;
+			
+		for ( Node n : netGraph.getEachNode() ) {
+			int isSeed =  n.getAttribute("seedGrad") ;
+			if ( isSeed != 1 ) {
+			n.addAttribute("seedGrad", 1);
+				numberNewSeed++;	
+			}
+			if ( numberNewSeed >= numberMaxSeed )
+				return ;
+		}	
+	}
+
+	// handle create new node	
+	protected void handleNewNodeCreation ( Graph graph , String idCouldAdded , Node nodeSeed , double xNewNode , double yNewNode ) {
+			
+		Node nodeCouldAdded = null ;
+		// there isn't node
+		try {
+			netGraph.addNode(idCouldAdded);
+			nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
+			nodeCouldAdded.addAttribute("seedGrad", 1);
+			nodeSeed.setAttribute("seedGrad", 0 );
+				
+			// set coordinate
+			nodeCouldAdded.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
+			}
+			
+		// if node already exist 
+		catch (org.graphstream.graph.IdAlreadyInUseException e) { 		//
+			System.out.println(e.getMessage());
+			nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
+			nodeCouldAdded.addAttribute("seedGrad", 0 );
+			nodeSeed.setAttribute("seedGrad", 1);
+		}
+	}	
+		
 	
 // GET METHODS --------------------------------------------------------------------------------------------------------
 	public static generateNetNode 	getGenerateNode () { return growth ; }

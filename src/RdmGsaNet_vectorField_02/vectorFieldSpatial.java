@@ -40,23 +40,23 @@ public class vectorFieldSpatial implements vectorField_inter {
 		for ( Node nGra : graph.getEachNode() ) {
 			
 			// get node
-			String idn1StVec  = nGra.getId() + "_stVec";
-			String idn1EndVec = nGra.getId() + "_endVec" ;
-		
-			System.out.println(vecGraph.getNodeSet());
+			String idn1StVec  = nGra.getId() ;
+			String idn1EndVec = nGra.getId() + "_endVec" ;				//	System.out.println(vecGraph.getNodeSet());
 			
 			Node n1stVec = vecGraph.getNode(idn1StVec) ;
 			Node n1EndVec = vecGraph.getNode(idn1EndVec) ;
-			
-			System.out.println(n1stVec.getAttributeKeySet());
-			// vecGraph.addNode(nGra.getId()) ; 
-			// Node nTo = vecGraph.getNode(nGra.getId()) ;
-			// gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, nGra, nTo);
-			
+						
 			String idnGra = nGra.getId( ) ;
 			double[] nGraCoord = GraphPosLengthUtils.nodePosition( nGra ) ; 
 			
-			double 	graVal = nGra.getAttribute(attribute)  ; 
+			double 	graVal = nGra.getAttribute(attribute)  ; //	
+			
+			if ( graVal > 1 )
+				graVal = 1 ;
+			if ( graVal < 0 )
+				graVal = 0 ;
+			
+		//	System.out.println("graVal " + graVal);
 			
 			// compute list of Nodes to compute vector
 			switch (vfN) {
@@ -67,8 +67,8 @@ public class vectorFieldSpatial implements vectorField_inter {
 			case onlyNeig : 
 				listForVf = graphToolkit.getListNeighbor ( graph, idnGra, elementTypeToReturn.element );
 				break;
-			}
-
+			}		//	System.out.println(listForVf);
+			
 			// create map id - val and id - coord
 			int sizeListForVf = listForVf.size() ;
 			Map < Node , Double > mapIdVal = new HashMap< Node , Double > (sizeListForVf);
@@ -79,16 +79,21 @@ public class vectorFieldSpatial implements vectorField_inter {
 				
 				double[] nNeigCoord = GraphPosLengthUtils.nodePosition( nNeig ) ; // System.out.println(nNeig.getAttributeKeySet() );
 				double val = nNeig.getAttribute(attribute) ; // System.out.println(val);
+				
+				if ( val > 1 ) 		val = 1 ;
+				if ( val < 0 ) 		val = 0 ;
+				
 				mapIdCoord.put(nNeig, nNeigCoord ) ;
 				mapIdVal.put(nNeig, val) ;
-			}
+			}																		//	
+	//		System.out.println(idnGra + " " + mapIdVal);
 			
 			double deltaIntenX = 0 , deltaIntenY = 0 , deltaInten = 0 ; 
 			
 			for ( Node idnNeig : listForVf ) {
 				
 				double 	neigVal = mapIdVal.get(idnNeig) ,
-						deltaVal = graVal - neigVal ;
+						deltaVal =  graVal - neigVal ;
 				
 				double[] neigCoord = mapIdCoord.get(idnNeig) ; 
 		
@@ -99,33 +104,33 @@ public class vectorFieldSpatial implements vectorField_inter {
 				double 	coefWeig = vectorField.getCoefWeig ( wdType , dist  ) ,
 						inten = deltaVal * coefWeig ; 
 			
+		//		System.out.println( "inten " + inten);
 				double 	intenX = inten * distX / dist , 
 						intenY = inten * distY / dist ;
 				
 				// update 
-				deltaInten  = deltaInten  + inten  ; 
+			//	deltaInten  = deltaInten  + inten  ; 
 				deltaIntenX = deltaIntenX + intenX ;
 				deltaIntenY = deltaIntenY + intenY ;
+		//		System.out.println(deltaInten );
 			}
 			
-			// add attribute vec node
-		//	Node nVec = vecGraph.getNode(idnGra) ;
-		//	nVec.addAttribute("inten", deltaInten);
-		//	nVec.addAttribute("intenX", deltaIntenX);
-		//	nVec.addAttribute("intenY", deltaIntenY);
-		//	nVec.addAttribute("originVector", true );
-			
+			deltaInten = Math.pow( Math.pow(deltaIntenX, 2) +  Math.pow(deltaIntenY, 2) , 0.5 ) ;  
+//						System.out.println(deltaIntenX );
+//						System.out.println(deltaIntenY );
+//						System.out.println(deltaInten );
 			n1stVec.addAttribute("inten", deltaInten);
 			n1stVec.addAttribute("intenX", deltaIntenX);
 			n1stVec.addAttribute("intenY", deltaIntenY);
 			n1stVec.addAttribute("originVector", true );
 			
-			if ( doStoreStepVec == true ) 	{ 	 
-				
-			}
+			
+		}
+		if ( doStoreStepVec == true ) 	{ 	 
+			String pathStart = handle.getPathStartNet();
+			vecGraph.write(fsd, pathStart);	
 		}
 	}
-
 	
 	@Override
 	public void createVector( Graph vecGraph ) {
@@ -171,7 +176,7 @@ public class vectorFieldSpatial implements vectorField_inter {
 		for ( Node nGs : graph.getEachNode() ) {
 			
 			// get node
-			String idn1StVec  = nGs.getId() + "_stVec";
+			String idn1StVec  = nGs.getId() ;
 			String idn1EndVec = nGs.getId() + "_endVec" ;
 					
 			Node n1stVec = vecGraph.getNode(idn1StVec) ;

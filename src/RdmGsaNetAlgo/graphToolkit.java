@@ -89,7 +89,7 @@ public class graphToolkit {
 	}
 	
 	// get list of nodes at vertex 
-	public static ArrayList<String> getListVertexRoundCoord ( elementTypeToReturn elementTypeToReturn , Graph graphSeed , Graph graphVertex ,  String idSeed ) {
+	public static ArrayList getListVertexRoundCoord ( elementTypeToReturn elementTypeToReturn , Graph graphSeed , Graph graphVertex ,  String idSeed ) {
 
 		ArrayList listVertex = new ArrayList();
 		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
@@ -134,6 +134,46 @@ public class graphToolkit {
 		}
 		return listVertex ;
 	}
+	
+	public static ArrayList getListVertexRoundPoint ( elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord ) {
+
+		ArrayList listVertex = new ArrayList();
+		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
+			 listVertex = new ArrayList<String>(4);
+		}
+		else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) {
+			listVertex = new ArrayList<Node>(4);
+		}
+			
+		double 	xSeed = nodeCoord[0], 
+				ySeed = nodeCoord[1];		
+	
+		int xMin = (int) xSeed,
+			yMin = (int) ySeed;
+		
+		String 	idNodeMinVertex = xMin + "_" + yMin ,
+				nodeXStr = null , nodeYStr = null , nodeXYStr = null;
+
+		nodeXStr  = ( xMin )  +"_" + ( yMin + 1 ) ;
+		nodeYStr  = ( xMin + 1 )  +"_" + ( yMin  ) ; 
+		nodeXYStr = ( xMin + 1 )  +"_" + ( yMin + 1 ) ;	
+			
+		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
+			listVertex.add(nodeXStr) ;
+			listVertex.add(nodeYStr) ;
+			listVertex.add(nodeXYStr) ;
+			listVertex.add( idNodeMinVertex ) ;
+		}
+		
+		else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) {
+			listVertex.add(graphVertex.getNode(nodeXStr) );
+			listVertex.add(graphVertex.getNode(nodeYStr) );
+			listVertex.add(graphVertex.getNode(nodeXYStr) );
+			listVertex.add( graphVertex.getNode(idNodeMinVertex ) );
+		}
+		return listVertex ;
+	}
+		
 		
 	// get list of neighbor String
 	public static ArrayList getListNeighbor ( Graph graph , String idNode , elementTypeToReturn elementTypeToReturn ) {

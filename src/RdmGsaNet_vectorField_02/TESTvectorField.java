@@ -22,7 +22,7 @@ public class TESTvectorField {
 	static Graph gsGraph = new SingleGraph ("grid");
 	static Graph vecGraph = new SingleGraph ("vec");
 	static String attribute = "val" ;
-	static vectorField vf = new vectorField( gsGraph , attribute , vectorFieldType.spatial , true ) ;
+	static vectorField vf = new vectorField( gsGraph , attribute , vectorFieldType.spatial ) ;
 
 	static double sizeGridEdge ;
 	
@@ -36,7 +36,7 @@ public class TESTvectorField {
 		graphGenerator.setRandomDoubleAttrToGraph( gsGraph, attribute );
 		
 		vf.computeTest();
-		vf.setParameters(vecGraph , 12, vfNeig.onlyNeig, weigthDist.inverseWeigthed, false );
+		vf.setParameters(vecGraph , 12, vfNeig.onlyNeig, weigthDist.inverseWeigthed );
 		vf.computeVf();
 		
 		

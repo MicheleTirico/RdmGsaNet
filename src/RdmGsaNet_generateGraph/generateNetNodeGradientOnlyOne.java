@@ -7,15 +7,18 @@ import org.graphstream.graph.Node;
 import com.sun.org.apache.xml.internal.utils.ThreadControllerWrapper;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
+import RdmGsaNet_generateGraph.generateNetNode.rule;
 
 public class generateNetNodeGradientOnlyOne extends generateNetNodeGradient implements generateNetNode_Inter {
 
 	
+	
 	// COSTRUTOR
-	public generateNetNodeGradientOnlyOne ( int numberMaxSeed, layoutSeed setLayoutSeed , rule rule, String morp  ) {
+	public generateNetNodeGradientOnlyOne ( int numberMaxSeed, layoutSeed setLayoutSeed , rule ruleType, String morp  ) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
-		this.rule = rule ;
+		this.ruleType = ruleType ;
 		this.morp = morp ;
 	}
 
@@ -23,7 +26,7 @@ public class generateNetNodeGradientOnlyOne extends generateNetNodeGradient impl
 	public void generateNodeRule(int step) {
 
 		// set seed nodes 
-		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
+		generateNetNode.setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 		
 		// CREATE LIST OF SEEDGRAD 
 		ArrayList<Node> listNodeSeedGrad = 	gsAlgoToolkit.getListNodeAttribute(netGraph, "seedGrad" , 1 );		// System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
@@ -36,7 +39,7 @@ public class generateNetNodeGradientOnlyOne extends generateNetNodeGradient impl
 			String idCouldAdded = null ; 
 			
 			// get neig could be added
-			switch (rule) {
+			switch (ruleType) {
 			case random:
 				idCouldAdded = getRandomNode(listNeigValMax);
 				break;

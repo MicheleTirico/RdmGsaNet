@@ -79,7 +79,7 @@ public class simulation extends main {
 		pathStepVec = handle.getPathStepVec() ; 	//		System.out.println(pathStepVec);
 		
 		
-		if ( doStoreStepGs == true) 	{ gsGraph.addSink(fsdGs); fsdGs.begin(pathStepGs);		}
+		if ( doStoreStepGs  == true) 	{ gsGraph.addSink(fsdGs);   fsdGs.begin(pathStepGs);	}
 		if ( doStoreStepNet == true)  	{ netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);	}
 		if ( doStoreStepVec == true)  	{ vecGraph.addSink(fsdVec); fsdVec.begin(pathStepVec);	}
 		
@@ -118,7 +118,7 @@ public class simulation extends main {
 			listIdNet = createListId ( netGraph );	
 			
 			// update map graph
-			updateMapGraph( mapStepNetGraph , step, netGraph);
+			updateMapGraph( mapStepNetGraph , step, netGraph );
 			
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	

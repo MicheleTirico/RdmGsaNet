@@ -25,11 +25,7 @@ public class vectorField {
 	
 	protected enum vectorFieldType { spatial , temporal }
 	protected static vectorFieldType  vfType ; 
-	
-	
-	
-	
-	
+		
 	// constructor 
 	public vectorField ( Graph graph , String attribute , vectorFieldType vfType  ) {		
 		this.graph = graph ;

@@ -17,7 +17,6 @@ public class vectorField {
 	// COSTANTS 
 		protected Graph graph ;
 		private static Graph vecGraph ;
-		private boolean viz ;
 		
 		protected String attribute  ;
 		private vectorField_inter vfInt ; 
@@ -38,13 +37,11 @@ public class vectorField {
 		private boolean doStoreStartVec ;
 		
 		// constructor 
-		public vectorField ( Graph graph , String attribute ,  vectorFieldType vfType , boolean viz ) {
+		public vectorField ( Graph graph , String attribute ,  vectorFieldType vfType ) {
 			this.graph = graph ;
 			this.attribute = attribute ; 
 			this.vfType = vfType ;
-			this.viz = viz ;
-			
-			
+					
 			switch (vfType) {
 				case spatial: 	vfInt = new vectorFieldSpatial( graph , attribute )  ;	
 					break;
@@ -71,15 +68,10 @@ public class vectorField {
 			vfInt.test( ) ;
 		}
 		
-		public void computeVf ( ) throws IOException {
-			System.out.println("peppe");
+		public void computeVf ( ) throws IOException {						//	System.out.println(super.toString());
 			vfInt.computeVf ( vfN , wdType , vecGraph , doStoreStartVec );
-		//	vfInt.createVector ( vecGraph );
-		}
-
-		
-
-		
+			vfInt.updateVector(graph, vecGraph);
+		}	
 
 		protected static double getCoefWeig ( weigthDist wdType , double dist ) {
 		
@@ -96,6 +88,7 @@ public class vectorField {
 		}
 
 		
+// get methods --------------------------------------------------------------------------------------------------------------------------------------
 		public static Graph getVecGraph() {
 			return vecGraph;
 		}

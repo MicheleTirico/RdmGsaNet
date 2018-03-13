@@ -28,20 +28,25 @@ public interface vectorField_inter {
 
 	public void updateVector (  Graph graph , Graph vecGraph ) ;
 	
+	public void createVector ( Graph vecGraph ) ;
+	
+
+	
+// static methods -----------------------------------------------------------------------------------------------------------------------------------	
 	public static void createGraph(Graph graph , Graph vecGraph , boolean doStoreStartVec ) throws IOException  {
 		
-		String pathStart = handle.getPathFile(typeFile.startVec, false , folder) ; 				//	System.out.println(pathStart);
+		String pathStart = handle.getPathFile(typeFile.startVec, false , folder) ; 				//		System.out.println(pathStart);
 		
-		for ( Node n0 : graph.getEachNode() ) {
-			
-			String idn1StVec  = n0.getId() + "_stVec";
-			String idn1EndVec = n0.getId() + "_endVec" ;
+		for ( Node n0 : graph.getEachNode() ) {													//	System.out.println(n0.getId());
+		
+			String  idn1StVec  = n0.getId() ,
+					idn1EndVec = n0.getId() + "_endVec" ;
 			
 			vecGraph.addNode( idn1StVec  ) ;
 			vecGraph.addNode( idn1EndVec ) ;
 			
-			Node n1StVec = vecGraph.getNode(idn1StVec) ;
-			Node n1EndVec = vecGraph.getNode(idn1EndVec) ;
+			Node 	n1StVec = vecGraph.getNode(idn1StVec) ,
+					n1EndVec = vecGraph.getNode(idn1EndVec) ;
 			
 			gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, n0, n1StVec);
 			gsAlgoToolkit.setNodeCoordinateFromNode(graph, vecGraph, n0, n1EndVec);
@@ -55,15 +60,16 @@ public interface vectorField_inter {
 			addAttributeNode(n1EndVec, false);
 			addAttributeEdge(e);
 			
-			if ( doStoreStartVec == true ) 	 
-				vecGraph.write(fsd, pathStart);			
+				
 		}
-	//	fsd.end();
+		if ( doStoreStartVec )
+			vecGraph.write(fsd, pathStart);
+		
 	}
 
-	public void createVector ( Graph vecGraph ) ;
 
-// private methods ----------------------------------------------------------------------------------------------------------------------------------
+
+// "private" methods ----------------------------------------------------------------------------------------------------------------------------------
 	
 	public static void addAttributeNode ( Node n , boolean isOriginVec ) {
 		n.addAttribute("inten", 0.0);

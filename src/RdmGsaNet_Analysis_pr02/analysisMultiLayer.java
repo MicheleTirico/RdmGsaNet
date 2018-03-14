@@ -22,10 +22,10 @@ public class analysisMultiLayer extends analysisMain  {
 		
 	
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
-			/* run								*/	true,
-			/* gsViz							*/ 	false,
-			/* netViz							*/	false,	
-			/* vecViz							*/	false,		
+			/* run								*/	true ,
+			/* gsViz							*/ 	true ,
+			/* netViz							*/	true ,	
+			/* vecViz							*/	true ,		
 			/* SeedViz							*/	true ,	
 			/* compute Global correlation 		*/	false
 			);
@@ -56,12 +56,12 @@ public class analysisMultiLayer extends analysisMain  {
 				);
 		
 		combinedAnalysis.setParamVizSeed(
-				/* sizeNode seed				*/ 50, 
+				/* sizeNode seed				*/ 5, 
 				/* sizeEdge seed				*/ 5
 				);
 
 		
-		combinedAnalysis.computeGlobalStat (5000 , 5 , pathStart , pathStep , 10 );
+		combinedAnalysis.computeGlobalStat (5000 , 5 , pathStart , pathStep , 1 );
 				
 	}
 	

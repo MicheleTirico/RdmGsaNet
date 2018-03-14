@@ -45,7 +45,7 @@ import RdmGsaNet_vectorField_02.vectorField.weigthDist;
 
 
 public class main {
-	private static int stopSim = 100 ;
+	private static int stopSim = 3000 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -74,7 +74,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\06\\" ;
+	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\08\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -94,7 +94,7 @@ public class main {
 //		/* create only one node					*/ new setupNetSeed()	
 //		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-		/* create a fistful of node 			*/ new setupNetFistfulNodes( 30 , typeRadius.square , 2 )
+		/* create a fistful of node 			*/ new setupNetFistfulNodes( 15 , typeRadius.square , 2 )
 		);
 	
 	// get  Graphs ( only to test results ) 

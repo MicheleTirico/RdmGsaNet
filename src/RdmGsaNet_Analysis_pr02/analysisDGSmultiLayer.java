@@ -112,7 +112,7 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			
 			String pathStartSeed = folderCommonFiles + "layerSeed_start.dgs";
 			String pathStepSeed  = folder + "layerSeed_step.dgs";
-			System.out.println(pathStartSeed);
+			System.out.println(pathStepSeed);
 			
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
@@ -147,9 +147,9 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 				gsGraph.read(pathStartGs);
 				netGraph.read(pathStartNet);
 				vecGraph.read(pathStartVec);
-				seedGraph.read(pathStartSeed);
-				
+			//	seedGraph.read(pathStartSeed);
 			} 
+			
 			catch (	ElementNotFoundException | GraphParseException |org.graphstream.graph.IdAlreadyInUseException e) 	{	e.printStackTrace();	}
 							
 			// set file Source for file step

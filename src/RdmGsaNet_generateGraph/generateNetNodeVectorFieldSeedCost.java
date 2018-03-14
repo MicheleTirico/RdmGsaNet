@@ -86,6 +86,12 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 				generateNetNode.handleNewNodeCreation(netGraph, idCouldAdded, nodeSeed, xNewNode, yNewNode , true  )	;
 			
 			if ( createSeedGraph ) {
+				nodeSeed.setAttribute( "xyz", xNewNode , yNewNode, 0 );
+			}
+				
+				
+				
+			/*	
 				seedGraph.addNode(idCouldAdded);
 				Node nodeSeedGraphCouldAdded = seedGraph.getNode(idCouldAdded) ;
 				nodeSeedGraphCouldAdded.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
@@ -93,6 +99,7 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 				seedGraph.removeNode(nodeSeed);
 			}	
 			idNum ++ ;
+		*/
 		}
 	//	System.out.println("genNode " + expTime.getTimeMethod(startTime));
 	}

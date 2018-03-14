@@ -32,7 +32,7 @@ public class generateNetNodeGradientProbDeltaControlSeed extends generateNetNode
 		//	System.out.println(netGraph.getNodeCount());
 	
 		// set seed nodes ( only first step )
-		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
+		generateNetNode.setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 				
 		// CREATE LIST OF SEEDGRAD 
 		ArrayList<String> listNodeSeedGrad = 	gsAlgoToolkit.getListStringNodeAttribute(netGraph, "seedGrad" , 1 );			//		System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);

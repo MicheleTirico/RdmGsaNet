@@ -54,9 +54,7 @@ public class vectorFieldSpatial implements vectorField_inter {
 			if ( graVal > 1 )
 				graVal = 1 ;
 			if ( graVal < 0 )
-				graVal = 0 ;
-			
-		//	System.out.println("graVal " + graVal);
+				graVal = 0 ;											//	System.out.println("graVal " + graVal);
 			
 			// compute list of Nodes to compute vector
 			switch (vfN) {
@@ -65,67 +63,67 @@ public class vectorFieldSpatial implements vectorField_inter {
 				break;
 
 			case onlyNeig : 
-				listForVf = graphToolkit.getListNeighbor ( graph, idnGra, elementTypeToReturn.element );
+				listForVf = graphToolkit.getListNeighbor ( graph, idnGra, elementTypeToReturn.element );	//	System.out.println(listForVf);
 				break;
-			}		//	System.out.println(listForVf);
+			}		
 			
 			// create map id - val and id - coord
 			int sizeListForVf = listForVf.size() ;
 			Map < Node , Double > mapIdVal = new HashMap< Node , Double > (sizeListForVf);
 			Map < Node , double[] > mapIdCoord = new HashMap< Node , double[] > (sizeListForVf);
 			
+			Map < Node , Double > mapIdInten = new HashMap< Node , Double > (sizeListForVf);
+			
 			// update maps
 			for ( Node nNeig : listForVf ) {
 				
-				double[] nNeigCoord = GraphPosLengthUtils.nodePosition( nNeig ) ; // System.out.println(nNeig.getAttributeKeySet() );
-				double val = nNeig.getAttribute(attribute) ; // System.out.println(val);
+				double[] nNeigCoord = GraphPosLengthUtils.nodePosition( nNeig ) ; 	// 	System.out.println(nNeig.getAttributeKeySet() );
+				double val = nNeig.getAttribute(attribute) ; 						// 	System.out.println(val);
 				
 				if ( val > 1 ) 		val = 1 ;
 				if ( val < 0 ) 		val = 0 ;
 				
 				mapIdCoord.put(nNeig, nNeigCoord ) ;
 				mapIdVal.put(nNeig, val) ;
-			}																		//	
-	//		System.out.println(idnGra + " " + mapIdVal);
+			}																		//	System.out.println(idnGra + " " + mapIdVal);
 			
 			double deltaIntenX = 0 , deltaIntenY = 0 , deltaInten = 0 ; 
 			
 			for ( Node idnNeig : listForVf ) {
 				
 				double 	neigVal = mapIdVal.get(idnNeig) ,
-						deltaVal =  graVal - neigVal ;
+						deltaVal =  graVal * neigVal ;
 				
 				double[] neigCoord = mapIdCoord.get(idnNeig) ; 
 		
-				double	distX = Math.abs(nGraCoord[0] - neigCoord[0] ) ,
-						distY = Math.abs(nGraCoord[1] - neigCoord[1] ) ,
+				double	distX = nGraCoord[0] - neigCoord[0] , // Math.abs(nGraCoord[0] - neigCoord[0] ) ,
+						distY = nGraCoord[1] - neigCoord[1] , // Math.abs(nGraCoord[1] - neigCoord[1] ) ,
 						dist  = Math.pow ( Math.pow(distX, 2) + Math.pow(distY, 2) , 0.5 ) ; 
 				
 				double 	coefWeig = vectorField.getCoefWeig ( wdType , dist  ) ,
-						inten = deltaVal * coefWeig ; 
-			
-		//		System.out.println( "inten " + inten);
+						inten = 0.0 ;
+				
+				if ( graVal > neigVal )
+					inten = - deltaVal * coefWeig ; 
+				else if ( graVal < neigVal )
+					inten = + deltaVal * coefWeig ; 
+				 
 				double 	intenX = inten * distX / dist , 
 						intenY = inten * distY / dist ;
 				
 				// update 
-			//	deltaInten  = deltaInten  + inten  ; 
+				deltaInten  = deltaInten  + inten  ; 
 				deltaIntenX = deltaIntenX + intenX ;
-				deltaIntenY = deltaIntenY + intenY ;
-		//		System.out.println(deltaInten );
+				deltaIntenY = deltaIntenY + intenY ;		//		System.out.println(deltaInten );
+				mapIdInten.put( idnNeig, inten );
 			}
 			
-			deltaInten = Math.pow( Math.pow(deltaIntenX, 2) +  Math.pow(deltaIntenY, 2) , 0.5 ) ;  
-//						System.out.println(deltaIntenX );
-//						System.out.println(deltaIntenY );
-//						System.out.println(deltaInten );
 			n1stVec.addAttribute("inten", deltaInten);
 			n1stVec.addAttribute("intenX", deltaIntenX);
 			n1stVec.addAttribute("intenY", deltaIntenY);
-			n1stVec.addAttribute("originVector", true );
-			
-			
+			n1stVec.addAttribute("originVector", true );		
 		}
+		
 		if ( doStoreStepVec == true ) 	{ 	 
 			String pathStart = handle.getPathStartNet();
 			vecGraph.write(fsd, pathStart);	
@@ -204,8 +202,6 @@ public class vectorFieldSpatial implements vectorField_inter {
 			double inten = e.getNode0().getAttribute("inten") ;
 			e.setAttribute("inten", inten);
 		}
-		
-	
 		
 	}
 

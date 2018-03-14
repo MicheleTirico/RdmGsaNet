@@ -44,9 +44,9 @@ public class graphGenerator {
 			n.addAttribute(attribute, rnd.nextDouble());		
 	}
 
-	private static void createEdge ( Graph graph  , Node n0 , Node n1 ) {
+	public static void createEdge ( Graph graph  , Node n0 , Node n1 ) {
 		
-		String idEdge = n0.getId() ;
+		String idEdge = n0.getId() + "-" + n1.getId() ;
 		graph.addEdge(idEdge, n0, n1 );
 		  	
 	}

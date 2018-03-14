@@ -31,9 +31,10 @@ public class simulation extends main {
 	private static handleNameFile handle = main.getHandle();
 	
 // STORING GRAPH EVENTS
-	 private static FileSinkDGS fsdGs = new FileSinkDGS()  ,
-			 					fsdNet = new FileSinkDGS() ,
-			 					fsdVec = new FileSinkDGS() ;
+	 private static FileSinkDGS fsdGs 	= new FileSinkDGS()  ,
+			 					fsdNet 	= new FileSinkDGS() ,
+			 					fsdVec 	= new FileSinkDGS() ,
+			 					fsdSeed = new FileSinkDGS() ;
 
 // MAP OF GRAPH
 	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
@@ -64,7 +65,9 @@ public class simulation extends main {
 								 boolean genNode, boolean genEdge , boolean vecRun ,
 								 boolean doStoreStepGs ,  String pathStepGs ,
 								 boolean doStoreStepNet , String pathStepNet ,
-								 boolean doStoreStepVec , String pathStepVec
+								 boolean doStoreStepVec , String pathStepVec ,
+								 boolean doStoreStartSeed ,
+								 boolean doStoreStepSeed , String pathStepSeed 
 								) 
 								throws IOException, InterruptedException {
 		
@@ -77,11 +80,12 @@ public class simulation extends main {
 		
 		pathStepGs  = handle.getPathStepGs();		//		System.out.println(pathStepGs);
 		pathStepVec = handle.getPathStepVec() ; 	//		System.out.println(pathStepVec);
+	//	pathStepSeed =  handle.getPathStepSeed () ; ; 	System.out.println(pathStepNet);
 		
-		
-		if ( doStoreStepGs  == true) 	{ gsGraph.addSink(fsdGs);   fsdGs.begin(pathStepGs);	}
-		if ( doStoreStepNet == true)  	{ netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);	}
-		if ( doStoreStepVec == true)  	{ vecGraph.addSink(fsdVec); fsdVec.begin(pathStepVec);	}
+		if ( doStoreStepGs   == true) 	{ gsGraph.addSink(fsdGs);   fsdGs.begin(pathStepGs);		}
+		if ( doStoreStepNet  == true)  	{ netGraph.addSink(fsdNet); fsdNet.begin(pathStepNet);		}
+		if ( doStoreStepVec  == true)  	{ vecGraph.addSink(fsdVec); fsdVec.begin(pathStepVec);		}
+		if ( doStoreStepSeed == true)  	{ seedGraph.addSink(fsdSeed); fsdSeed.begin(pathStepSeed);	}
 		
 		// add step 0 
 		addStep0( netGraph , mapStepIdNet );
@@ -89,9 +93,10 @@ public class simulation extends main {
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
-			if ( doStoreStepGs == true)  { 	gsGraph.stepBegins(step);  }			
-			if ( doStoreStepNet == true) { 	netGraph.stepBegins(step); }	
-			if ( doStoreStepVec == true) { 	vecGraph.stepBegins(step); }	
+			if ( doStoreStepGs  == true ) { 	gsGraph.stepBegins(step);   }			
+			if ( doStoreStepNet  == true) { 	netGraph.stepBegins(step);  }	
+			if ( doStoreStepVec  == true) { 	vecGraph.stepBegins(step);  }	
+			if ( doStoreStepSeed == true) { 	seedGraph.stepBegins(step); }
 			
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
@@ -126,9 +131,10 @@ public class simulation extends main {
 		
 		
 		// stored graph in dgs format
-		if ( doStoreStepGs == true) { 	fsdGs.end();	}
-		if ( doStoreStepNet == true) { 	fsdNet.end();	}
-		if ( doStoreStepVec == true) { 	fsdVec.end();	}
+		if ( doStoreStepGs   == true) { 	fsdGs.end();	}
+		if ( doStoreStepNet  == true) { 	fsdNet.end();	}
+		if ( doStoreStepVec  == true) { 	fsdVec.end();	}
+		if ( doStoreStepSeed == true) { 	fsdSeed.end();	}
 		
 		finalStep = step - 1 ;	
 	}

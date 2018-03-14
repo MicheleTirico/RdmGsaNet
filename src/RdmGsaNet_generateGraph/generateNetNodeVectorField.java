@@ -22,20 +22,22 @@ public class generateNetNodeVectorField extends main  {
 	protected int numberMaxSeed  ;
 	protected layoutSeed setLayoutSeed ;
 	protected interpolation typeInterpolation ; 
-
-
-
-		
-
+	protected boolean 	createSeedGraph ,
+						updateNetGraph;
+	
 	// graphs
 	protected static Graph	netGraph = layerNet.getGraph() ,
 							gsGraph  = layerGs.getGraph() , 
-							vecGraph = main.vecGraph ;	
-
-	public generateNetNodeVectorField( int numberMaxSeed, layoutSeed setLayoutSeed , interpolation typeInterpolation ) {
+							vecGraph = main.vecGraph , 
+							seedGraph = main.getSeedGraph() ;	
+							
+	// constructor
+	public generateNetNodeVectorField( int numberMaxSeed, layoutSeed setLayoutSeed , interpolation typeInterpolation , boolean createSeedGraph , boolean updateNetGraph) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
 		this.typeInterpolation = typeInterpolation ;
+		this.createSeedGraph = createSeedGraph ;
+		this.updateNetGraph = updateNetGraph ;
 	}
 	
 // COMMON METHODS FOR ALL CLASS WITH GRADIENT APPROACH ----------------------------------------------------------------------------------------------
@@ -45,12 +47,13 @@ public class generateNetNodeVectorField extends main  {
 		double[]vector = new double[2] ;
 		double vectorX = 0.0 , vectorY = 0.0 ;
 		
-		ArrayList <String> 	listVertex = new ArrayList<String> (graphToolkit.getListVertexRoundPoint(elementTypeToReturn.string, gsGraph, nodeCoord));	//	System.out.println(vecGraph.getNodeSet());
+		ArrayList <String> 	listVertex = new ArrayList<String> (graphToolkit.getListVertexRoundPoint(elementTypeToReturn.string, gsGraph, nodeCoord));	//	System.out.println(listVertex );
 		
 		switch (typeInterpolation) {
 		
 			case sumVectors: {
 				for ( String nVertex : listVertex ) {
+		//			System.out.println(nVertex);
 					Node nVec = vecGraph.getNode(nVertex); 
 					
 					double 	intenX = nVec.getAttribute("intenX") ,

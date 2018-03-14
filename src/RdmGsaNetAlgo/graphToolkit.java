@@ -115,11 +115,17 @@ public class graphToolkit {
 		
 		nodeMinVertex = graphVertex.getNode(idNodeMinVertex); 
 		
-		nodeXStr  = ( xMin )  +"_" + ( yMin + 1 ) ;
-		nodeYStr  = ( xMin + 1 )  +"_" + ( yMin  ) ; 
-		nodeXYStr = ( xMin + 1 )  +"_" + ( yMin + 1 ) ;	
-			
+		String [] idList = null ;
+		
+		idList[0] = nodeXStr  = ( xMin )  +"_" + ( yMin + 1 ) ;
+		idList[1] = nodeYStr  = ( xMin + 1 )  +"_" + ( yMin  ) ; 
+		idList[2] = nodeXYStr = ( xMin + 1 )  +"_" + ( yMin + 1 ) ;	
+		idList[3] = idNodeMinVertex ;
+		
+		
+		
 		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
+	
 			listVertex.add(nodeXStr) ;
 			listVertex.add(nodeYStr) ;
 			listVertex.add(nodeXYStr) ;
@@ -144,7 +150,11 @@ public class graphToolkit {
 		else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) {
 			listVertex = new ArrayList<Node>(4);
 		}
-			
+		
+		double sizeGrid = Math.pow(graphVertex.getNodeCount(), 0.5 ) - 1 ;
+		
+		
+		
 		double 	xSeed = nodeCoord[0], 
 				ySeed = nodeCoord[1];		
 	
@@ -157,18 +167,29 @@ public class graphToolkit {
 		nodeXStr  = ( xMin )  +"_" + ( yMin + 1 ) ;
 		nodeYStr  = ( xMin + 1 )  +"_" + ( yMin  ) ; 
 		nodeXYStr = ( xMin + 1 )  +"_" + ( yMin + 1 ) ;	
+		
+		
+		
 			
 		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
-			listVertex.add(nodeXStr) ;
-			listVertex.add(nodeYStr) ;
-			listVertex.add(nodeXYStr) ;
+			
+			if ( yMin < sizeGrid ) 	
+				listVertex.add(nodeXStr) ;
+			if ( xMin < sizeGrid  ) 
+				listVertex.add(nodeYStr) ;	
+			if ( xMin < sizeGrid &  yMin < sizeGrid ) 
+				listVertex.add(nodeXYStr) ;	
 			listVertex.add( idNodeMinVertex ) ;
-		}
+			}
 		
 		else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) {
-			listVertex.add(graphVertex.getNode(nodeXStr) );
-			listVertex.add(graphVertex.getNode(nodeYStr) );
-			listVertex.add(graphVertex.getNode(nodeXYStr) );
+			
+			if ( yMin < sizeGrid ) 	
+				listVertex.add(graphVertex.getNode(nodeXStr) );
+			if ( xMin < sizeGrid  ) 
+				listVertex.add(graphVertex.getNode(nodeYStr) );
+			if ( xMin < sizeGrid &&  yMin < sizeGrid ) 
+				listVertex.add(graphVertex.getNode(nodeXYStr) );
 			listVertex.add( graphVertex.getNode(idNodeMinVertex ) );
 		}
 		return listVertex ;

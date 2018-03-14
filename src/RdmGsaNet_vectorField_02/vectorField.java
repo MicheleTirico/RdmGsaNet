@@ -15,65 +15,65 @@ import testVectorField.vf;
 public class vectorField {
 	
 	// COSTANTS 
-		protected Graph graph ;
-		private static Graph vecGraph ;
+	protected Graph graph ;
+	private static Graph vecGraph ;
 		
-		protected String attribute  ;
-		private vectorField_inter vfInt ; 
-		private double radius ;
+	protected String attribute  ;
+	private vectorField_inter vfInt ; 
+	private double radius ;
 		
-		public enum vfNeig { inRadius , onlyNeig }
-		protected vfNeig vfN ;
+	public enum vfNeig { inRadius , onlyNeig }
+	protected vfNeig vfN ;
 		
-		public enum weigthDist { inverseWeigthed , inverseSquareWeigthed }
-		protected weigthDist wdType ;
+	public enum weigthDist { inverseWeigthed , inverseSquareWeigthed }
+	protected weigthDist wdType ;
+				
+	public enum vectorFieldType { spatial , temporal }
+	protected static vectorFieldType  vfType ; 
 		
-		public enum vectorFieldType { spatial , temporal }
-		protected static vectorFieldType  vfType ; 
+	// STORING GRAPH EVENTS
+	static FileSinkDGS fsd = new FileSinkDGS();
+	handleNameFile handle = main.getHandle(); 
+	private boolean doStoreStartVec ;
 		
-		// STORING GRAPH EVENTS
-		static FileSinkDGS fsd = new FileSinkDGS();
-		handleNameFile handle = main.getHandle(); 
-		private boolean doStoreStartVec ;
-		
-		// constructor 
-		public vectorField ( Graph graph , String attribute ,  vectorFieldType vfType ) {
-			this.graph = graph ;
-			this.attribute = attribute ; 
-			this.vfType = vfType ;
+	// constructor 
+	public vectorField ( Graph graph , String attribute ,  vectorFieldType vfType ) {
+		this.graph = graph ;
+		this.attribute = attribute ; 
+		this.vfType = vfType ;
 					
-			switch (vfType) {
+		switch (vfType) {
 				case spatial: 	vfInt = new vectorFieldSpatial( graph , attribute )  ;	
 					break;
 				
 				case temporal : 				
 					break;
-			}
 		}
+	}
 		
-		public void setParameters ( Graph vecGraph ,double radius , vfNeig vfN , weigthDist wdType  ) {
+	public void setParameters ( Graph vecGraph ,double radius , vfNeig vfN , weigthDist wdType  ) {
 			this.setVecGraph(vecGraph) ;
 			this.radius = radius ;
 			this.vfN = vfN ; 
 			this.wdType = wdType ;	
 		}
 		
-		public void createLayer (Graph graph , Graph vecGraph , boolean doStoreStartVec)  throws IOException {
+	public void createLayer (Graph graph , Graph vecGraph , boolean doStoreStartVec)  throws IOException {
 			vectorField_inter.createGraph(graph, vecGraph, doStoreStartVec );
 		}
 		
 		
 		
-		public void computeTest ( ) {
+	public void computeTest ( ) {
 			vfInt.test( ) ;
-		}
+	}
 		
-		public void computeVf ( ) throws IOException {						//	System.out.println(super.toString());
+	public void computeVf ( ) throws IOException {						//	System.out.println(super.toString());
 			vfInt.computeVf ( vfN , wdType , vecGraph , doStoreStartVec );
 			vfInt.updateVector(graph, vecGraph);
-		}	
+	}	
 
-		protected static double getCoefWeig ( weigthDist wdType , double dist ) {
+	protected static double getCoefWeig ( weigthDist wdType , double dist ) {
 		
 			double coefDist = 0.0 ;
 			switch ( wdType ) {
@@ -85,16 +85,16 @@ public class vectorField {
 					break ;	
 			}
 		return coefDist ;
-		}
+	}
 
 		
 // get methods --------------------------------------------------------------------------------------------------------------------------------------
-		public static Graph getVecGraph() {
-			return vecGraph;
-		}
+	public static Graph getVecGraph() {
+		return vecGraph;
+	}
 
-		public void setVecGraph(Graph vecGraph) {
-			this.vecGraph = vecGraph;
-		}
+	public void setVecGraph(Graph vecGraph) {
+		this.vecGraph = vecGraph;
+	}
 
 }

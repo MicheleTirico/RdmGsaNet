@@ -185,7 +185,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					// add methods to run for each step in incList
 					System.out.println("----------------step " + step + " ----------------" );				
 					
-					netViz.setupVizBooleanAtr(true, graph, colorBooleanNodeFalse ,colorBooleanNodeTrue ) ;
+					netViz.setupVizBooleanAtr(true, graph, colorBooleanNodeFalse ,colorBooleanNodeTrue , false, false ) ;
 						
 					if ( computeFreqDegree  ) 
 						analysisDGS.computeFreqDegree( degreeFreq, graph , step , analysisGlobal.mapNetFreqDegree );	

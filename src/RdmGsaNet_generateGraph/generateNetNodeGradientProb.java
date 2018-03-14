@@ -25,7 +25,7 @@ public class generateNetNodeGradientProb  extends generateNetNodeGradient implem
 	public void generateNodeRule(int step) {
 		
 		// set seed nodes ( only first step )
-		setSeedNodes(step, numberMaxSeed, setLayoutSeed);
+		generateNetNode.setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 				
 		// CREATE LIST OF SEEDGRAD 
 		ArrayList<String> listNodeSeedGrad = 	gsAlgoToolkit.getListStringNodeAttribute(netGraph, "seedGrad" , 1 );			//		System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);		// System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);

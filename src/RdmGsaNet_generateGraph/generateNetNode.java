@@ -1,5 +1,6 @@
 package RdmGsaNet_generateGraph;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.Map;
@@ -55,7 +56,7 @@ public class generateNetNode extends main  {
 		this.type = type ;
 	}
 
-	public void generateNode ( int step )  {
+	public void generateNode ( int step ) throws IOException  {
 		type.generateNodeRule ( step ) ;
 	} 
 
@@ -115,18 +116,20 @@ public class generateNetNode extends main  {
 	}
 
 	// handle create new node	
-	protected void handleNewNodeCreation ( Graph graph , String idCouldAdded , Node nodeSeed , double xNewNode , double yNewNode ) {
+	protected void handleNewNodeCreation ( Graph graph , String idCouldAdded , Node nodeSeed , double xNewNode , double yNewNode , boolean addFather  ) {
 			
 		Node nodeCouldAdded = null ;
 		// there isn't node
 		try {
-			netGraph.addNode(idCouldAdded);
+			netGraph.addNode(idCouldAdded).addAttribute("father", nodeSeed.getId());
 			nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
 			nodeCouldAdded.addAttribute("seedGrad", 1);
 			nodeSeed.setAttribute("seedGrad", 0 );
-				
+			nodeCouldAdded.addAttribute("father", nodeSeed.getId() );
+			
+	
 			// set coordinate
-			nodeCouldAdded.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
+			netGraph.getNode(idCouldAdded).setAttribute( "xyz", xNewNode , yNewNode, 0 );	
 			}
 			
 		// if node already exist 
@@ -137,6 +140,24 @@ public class generateNetNode extends main  {
 			nodeSeed.setAttribute("seedGrad", 1);
 		}
 	}	
+	
+
+	
+	
+	// cech coordinate in grid
+	protected double ceckCoordInGrid ( Graph graphGrid , double newNodeCoord  ) {
+		
+		double sizeGridEdge = Math.pow( graphGrid.getNodeCount() , 0.5 ) - 1 ;
+		
+		if ( newNodeCoord > sizeGridEdge )
+			newNodeCoord = sizeGridEdge ;
+		
+		if ( newNodeCoord < 0 )
+			newNodeCoord = 0 ;
+	
+		return newNodeCoord ;	
+	}
+	
 		
 	
 // GET METHODS --------------------------------------------------------------------------------------------------------

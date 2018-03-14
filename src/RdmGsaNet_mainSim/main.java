@@ -16,6 +16,7 @@ import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
 
 import RdmGsaNet_generateGraph.generateNetEdge;
+import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather;
 import RdmGsaNet_generateGraph.generateNetEdgeNear;
 import RdmGsaNet_generateGraph.generateNetEdgeNear.whichNode;
 
@@ -23,7 +24,7 @@ import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_generateGraph.generateNetNode.interpolation;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
-
+import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather.genEdgeType;
 import RdmGsaNet_gsAlgo.gsAlgo;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion.weightType;
@@ -44,7 +45,7 @@ import RdmGsaNet_vectorField_02.vectorField.weigthDist;
 
 
 public class main {
-	private static int stopSim = 2 ;
+	private static int stopSim = 100 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -55,13 +56,15 @@ public class main {
 	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
 	// STORE DGS PARAMETERS
-	private static boolean 	doStoreStartGs 	= true , 
-							doStoreStepGs 	= true ,
-							doStoreStartNet = true , 
-							doStoreStepNet 	= true ,
-							doStoreStartVec = true ,
-							doStoreStepVec 	= true ,
-							doStoreIm		= true ;
+	private static boolean 	doStoreStartGs 		= true , 
+							doStoreStepGs 		= true ,
+							doStoreStartNet 	= true , 
+							doStoreStepNet 		= true ,
+							doStoreStartVec 	= true ,
+							doStoreStepVec 		= true ,
+							doStoreStartSeed	= true ,
+							doStoreStepSeed		= true ,
+							doStoreIm			= false ;
 	
 	public static boolean storeGsValues = false ;
 	
@@ -71,7 +74,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\04\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\06\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -91,13 +94,14 @@ public class main {
 //		/* create only one node					*/ new setupNetSeed()	
 //		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-		/* create a fistful of node 			*/ new setupNetFistfulNodes( 10 , typeRadius.square , .5 )
+		/* create a fistful of node 			*/ new setupNetFistfulNodes( 30 , typeRadius.square , 2 )
 		);
 	
 	// get  Graphs ( only to test results ) 
-	protected static Graph 	gsGraph = layerGs.getGraph() ,
-							netGraph = layerNet.getGraph() ,
-							vecGraph = new SingleGraph ("vec");
+	protected static Graph 	gsGraph   = layerGs.getGraph() ,
+							netGraph  = layerNet.getGraph() ,
+							vecGraph  = new SingleGraph( "vecGraph" ) ,
+							seedGraph = new SingleGraph( "seedGraph" );
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	protected static simulation run = new simulation() ;	
@@ -110,7 +114,7 @@ public class main {
 //					new generateNetNodeGradientProbDeltaControlSeed ( 8 , layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
 //					new generateNetNodeBreakGridThrowSeed			( 8 , interpolation.averageEdge )	
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
-					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors )
+					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , false )
 	) ;
 	
 
@@ -120,7 +124,9 @@ public class main {
 //			new generateNetNodeBreakGridThrowSeed( 100 , "gsAct" , .1 , interpolation.averageEdge , true , true ) );
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
-			/* radius , which node to connect		*/	new generateNetEdgeNear( 2 , whichNode.all )) ;
+//			/* radius , which node to connect		*/	new generateNetEdgeNear( 2 , whichNode.all )
+					new generateNetEdgeInRadiusFather ( genEdgeType.fatherAndNodeInRadius )
+			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
@@ -136,7 +142,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.movingSpots );			
+		setRdType ( RdmType.U_SkateWorld );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -150,11 +156,13 @@ public class main {
   
 		// create path in order to stored all dgs files
 		String pathStepNet  = handle.getPathFile(typeFile.stepNet, false , getFolder()) ; 				//	System.out.println("pathStepNet " + pathStepNet);		
-		String pathStepGs   = handle.getPathFile(typeFile.stepGs,  true , getFolder()) ;					//	System.out.println("pathStepGs " + pathStepGs);		
+		String pathStepSeed = handle.getPathFile(typeFile.stepSeed, false , getFolder()) ;	 			//	System.out.println("pathStepSeed " + pathStepSeed);
+		String pathStepGs   = handle.getPathFile(typeFile.stepGs,  true , getFolder()) ;				//	System.out.println("pathStepGs " + pathStepGs);		
 		String pathStartNet = handle.getPathFile(typeFile.startNet, true , getFolder()) ;				//	System.out.println("pathStartNet " + pathStartNet);
 		String pathStartGs  = handle.getPathFile(typeFile.startGs, true , getFolder())	;				//	System.out.println("pathStartGs " + pathStartGs);
 		String pathStartVec = handle.getPathFile(typeFile.startVec, true , getFolder()) ;				//	System.out.println("pathStartVec " + pathStartGs);
 		String pathStepVec 	= handle.getPathFile(typeFile.stepVec, true , getFolder()) ;
+		
 		
 // GENERATE LAYER GS --------------------------------------------------------------------------------------------------------------------------------		
 		// create new layer gs
@@ -213,14 +221,16 @@ public class main {
 		 	/* bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 				*/ doStoreStepNet ,
 		 	/* string 	path to store step net file 															*/ pathStepNet, 
 		 	/* bol 		store vec step ? 																		*/ doStoreStepVec ,
-		 	/* string 	path to store step vec file																*/ pathStepVec 
+		 	/* string 	path to store step vec file																*/ pathStepVec ,
+		 	doStoreStartSeed ,
+		 	doStoreStepSeed, pathStepSeed 
 		 	);
 		
-		
+	
 		//get seedAlive
-		int seedAlive = getSeedAlive(false);
+	//	int seedAlive = getSeedAlive(false);
 		
-		ArrayList listIdNetSeedGrad = getListIdWithAttribute(false, netGraph, "seedGrad");
+	//	ArrayList listIdNetSeedGrad = getListIdWithAttribute( false , netGraph, "seedGrad");
 		printNodeSetAttribute(false , gsGraph) ;
 		printEdgeSetAttribute(false , netGraph) ;
 		
@@ -247,14 +257,21 @@ public class main {
 		//  setup viz vecGraph
 		handleVizStype vecViz = new handleVizStype( vecGraph ,stylesheet.manual , "seedGrad", 1) ;
 		vecViz.setupIdViz(false, vecGraph, 4 , "black");
-		vecViz.setupDefaultParam (vecGraph, "black", "black", 5 , 0.5 );
+		vecViz.setupDefaultParam (vecGraph, "black", "black", 1 , 0.5 );
 		vecViz.setupVizBooleanAtr(true, vecGraph, "black", "red" , true , false ) ;
 		vecViz.setupFixScaleManual(true , vecGraph, sizeGridEdge , 0);
+		
+		// setup viz seed graph 
+		handleVizStype seedViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1)  ; 
+		seedViz.setupIdViz(false, seedGraph, 4 , "black");
+		seedViz.setupDefaultParam (seedGraph, "black", "black", 4 , .01);
+		seedViz.setupVizBooleanAtr(false , seedGraph, "black", "red" , false , false ) ;
+		seedViz.setupFixScaleManual( true , seedGraph, sizeGridEdge , 0);
 		
 		gsGraph.display(false);
 		netGraph.display(false);
 		vecGraph.display(false);
-		
+		seedGraph.display(false);
 		
 
 	}
@@ -347,5 +364,13 @@ public class main {
 
 	public static void setFolder(String folder) {
 		main.folder = folder;
+	}
+
+	public static Graph getSeedGraph() {
+		return seedGraph;
+	}
+
+	public static void setSeedGraph(Graph seedGraph) {
+		main.seedGraph = seedGraph;
 	}
 }

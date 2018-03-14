@@ -29,15 +29,15 @@ public  class  analysisMain   {
 	protected static handleNameFile handle ;
 
 	// viz constants
-	protected static FileSource fs , gsFs , netFs , vecFs ;
+	protected static FileSource fs , gsFs , netFs , vecFs , seedFs;
 			
 	private static ViewPanel view , gsView , netView ;
 	
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\test\\03\\maxStep_2000_generateNetNodeBreakGridThrowSeed_generateNetEdgeNear_prob_0.0_00\\" ,
+	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\test\\06\\maxStep_100_generateNetNodeVectorFieldSeedCost_generateNetEdgeInRadiusFather_prob_0.0_00\\" ,
 							
-							folderMain = "D:\\ownCloud\\RdmGsaNet_exp\\test\\03\\" ,
+							folderMain = "D:\\ownCloud\\RdmGsaNet_exp\\test\\06\\" ,
 							folderMultiSim = folderMain ,
 							folderCommonFiles = folderMain + "commonFiles\\" ;								
 	
@@ -69,6 +69,8 @@ public  class  analysisMain   {
 	// GRAPHS 
 	protected static Graph 	gsGraph = analysisDGSgs.graph ,
 							netGraph = analysisDGSnet.graph ,
-							vecGraph = new SingleGraph("vecGraph");
+							vecGraph = new SingleGraph("vecGraph") 
+						//	seedGraph = new SingleGraph("seedGraph")
+							;
 	
 }

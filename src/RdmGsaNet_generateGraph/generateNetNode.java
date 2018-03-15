@@ -121,15 +121,25 @@ public class generateNetNode extends main  {
 		Node nodeCouldAdded = null ;
 		// there isn't node
 		try {
-			netGraph.addNode(idCouldAdded).addAttribute("father", nodeSeed.getId());
+		//	System.out.println(idCouldAdded);
+			netGraph.addNode(idCouldAdded) ;
+			seedGraph.addNode(idCouldAdded) ;
+			Node nNet = netGraph.getNode(idCouldAdded);
+			Node nSeed = seedGraph.getNode(idCouldAdded);				//	System.out.println(nodeSeed.getId());
+			nSeed.addAttribute("father", nodeSeed.getId());	
+			nNet.addAttribute("father", nodeSeed.getId());				//	System.out.println(n.getAttributeKeySet());
+			
 			nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
 			nodeCouldAdded.addAttribute("seedGrad", 1);
+			
 			nodeSeed.setAttribute("seedGrad", 0 );
 			nodeCouldAdded.addAttribute("father", nodeSeed.getId() );
 			
-	
 			// set coordinate
-			netGraph.getNode(idCouldAdded).setAttribute( "xyz", xNewNode , yNewNode, 0 );	
+			nNet.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
+			nSeed.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
+			
+			seedGraph.removeNode(nodeSeed);
 			}
 			
 		// if node already exist 

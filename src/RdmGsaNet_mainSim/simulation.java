@@ -20,9 +20,7 @@ import RdmGsaNet_vectorField_02.vectorField;
 public class simulation extends main {	
 	
 	private static Graph 	gsGraph  = layerGs.getGraph() ,
-							netGraph = layerNet.getGraph() 
-							 
-							;
+							netGraph = layerNet.getGraph() 	;
 	
 	private static int 	stopSim ,
 						finalStep ,
@@ -93,10 +91,10 @@ public class simulation extends main {
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
-			if ( doStoreStepGs  == true ) { 	gsGraph.stepBegins(step);   }			
-			if ( doStoreStepNet  == true) { 	netGraph.stepBegins(step);  }	
-			if ( doStoreStepVec  == true) { 	vecGraph.stepBegins(step);  }	
-			if ( doStoreStepSeed == true) { 	seedGraph.stepBegins(step); }
+			if ( doStoreStepGs  == true )  	gsGraph.stepBegins(step);   			
+			if ( doStoreStepNet  == true)  	netGraph.stepBegins(step);  	
+			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
+			if ( doStoreStepSeed == true)  	seedGraph.stepBegins(step); 
 			
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
@@ -112,6 +110,10 @@ public class simulation extends main {
 			
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }
+			
+	//		for ( Node n : netGraph.getEachNode())		System.out.println(n.getAttributeKeySet() ) ; 
+
+			dynamicSymplify.compute( step );					// dynamicSymplify.computeTest();
 			
 			// update net 
 			updateMapStepId ( step , netGraph , mapStepIdNet );
@@ -131,10 +133,10 @@ public class simulation extends main {
 		
 		
 		// stored graph in dgs format
-		if ( doStoreStepGs   == true) { 	fsdGs.end();	}
-		if ( doStoreStepNet  == true) { 	fsdNet.end();	}
-		if ( doStoreStepVec  == true) { 	fsdVec.end();	}
-		if ( doStoreStepSeed == true) { 	fsdSeed.end();	}
+		if ( doStoreStepGs   == true)  	fsdGs.end();	
+		if ( doStoreStepNet  == true)  	fsdNet.end();	
+		if ( doStoreStepVec  == true)  	fsdVec.end();	
+		if ( doStoreStepSeed == true)  	fsdSeed.end();	
 		
 		finalStep = step - 1 ;	
 	}

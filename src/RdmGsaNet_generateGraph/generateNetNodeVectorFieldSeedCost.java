@@ -2,6 +2,7 @@ package RdmGsaNet_generateGraph;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
@@ -64,7 +65,17 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 		else																													 	//	System.out.println("iter in netGraph" );
 			listNodeSeedGrad =  gsAlgoToolkit.getListNodeAttribute(netGraph, "seedGrad" , 1 )  ;									//	System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);
 			
-		int idNum = listNodeSeedGrad.size() * step  ;
+		ArrayList <Integer> list = new ArrayList<Integer> () ;
+		for ( Node n : listNodeSeedGrad ) {
+			String id = n.getId() ;
+			Integer x = Integer.parseInt(id);
+			list.add(x);
+			
+		}
+		System.out.println( Collections.max(list));
+		System.out.println( list ) ;
+		int idNum = Collections.max(list) + 1  ;
+		// int idNum = listNodeSeedGrad.size() *  step   ;
 		
 		for ( Node nodeSeed : listNodeSeedGrad ) {																					//	System.out.println(nodeSeed.getAttributeKeySet());
 			
@@ -74,7 +85,7 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 					
 			double[] vector = getVector(vecGraph, nodeCoord, typeInterpolation.sumVectors) ;										//c'é 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);
 					
-			//	String idCouldAdded = Integer.toString(netGraph.getNodeCount() );
+		//	String idCouldAdded = Integer.toString(netGraph.getNodeCount() );
 			String idCouldAdded = Integer.toString(idNum ); 	//	System.out.println(netGraph.getNodeCount());
 			Node nodeCouldAdded = null ;							
 			
@@ -88,19 +99,9 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 			if ( createSeedGraph ) {
 				nodeSeed.setAttribute( "xyz", xNewNode , yNewNode, 0 );
 			}
-				
-				
-				
-			/*	
-				seedGraph.addNode(idCouldAdded);
-				Node nodeSeedGraphCouldAdded = seedGraph.getNode(idCouldAdded) ;
-				nodeSeedGraphCouldAdded.setAttribute( "xyz", xNewNode , yNewNode, 0 );	
-				nodeSeedGraphCouldAdded.addAttribute("father", nodeSeed.getId() );				//		System.out.println(nodeSeed.getId());	//		System.out.println(seedGraph.getNodeSet() ) ;
-				seedGraph.removeNode(nodeSeed);
-			}	
-			idNum ++ ;
-		*/
-		}
+			idNum ++ ;	
+					
+		}				//		System.out.println(netGraph.getNodeCount());
 	//	System.out.println("genNode " + expTime.getTimeMethod(startTime));
 	}
 	

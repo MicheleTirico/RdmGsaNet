@@ -22,7 +22,7 @@ public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 	}
 	
 	@Override
-	public void generateEdgeRule(double step) {					long startTime = expTime.setStartTime();
+	public void generateEdgeRule(double step) {				//	long startTime = expTime.setStartTime();
 		
 		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node> (  graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element ) ) ;
 //		listNodeSeedGrad = gsAlgoToolkit.getListNodeAttribute(netGraph, "seedGrad" , 1 )  ;	//	
@@ -30,13 +30,14 @@ public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 			
 		for ( Node nodeSeed : listNodeSeedGrad ) {
 			
-			String idFather = nodeSeed.getAttribute("father") ;					//	System.out.println(nodeSeed.getId() + " " + idFather );
+		//	System.out.println("seedGraph " + nodeSeed.getId() + " " + nodeSeed.getAttributeKeySet() + " " + nodeSeed.getAttribute("father"));
+			String idFather = nodeSeed.getAttribute("father") ;					//		System.out.println(nodeSeed.getId() + " " + idFather );
 			
-			Node nodeFather = netGraph.getNode(idFather) ;	 					//	System.out.println(nodeFather.getAttributeKeySet());
+			Node nodeFather = netGraph.getNode(idFather) ;	 					//			System.out.println(nodeFather.getAttributeKeySet());
 			Node nodeSoon = netGraph.getNode(nodeSeed.getId());
 			switch (genEdgeType) {
 			case onlyFather:
-				createEdgeOnlyFather(  nodeSoon , nodeFather );
+			//	createEdgeOnlyFather(  nodeSoon , nodeFather );
 				break;
 			case fatherAndNodeInRadius :
 				;
@@ -56,7 +57,9 @@ public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 	}
 	
 	private void createEdgeOnlyFather ( Node nodeSeed , Node nodeFather ) {
-		graphGenerator.createEdge(netGraph , nodeSeed, nodeFather);  //	System.out.println(nodeSeed.getAttributeKeySet());
+//		System.out.println(nodeFather.getAttributeKeySet());	
+		graphGenerator.createEdge(netGraph , nodeSeed, nodeFather);  //	
+		
 	}
 
 }

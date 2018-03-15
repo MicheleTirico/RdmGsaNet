@@ -1,5 +1,6 @@
 package RdmGsaNetAlgo;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -122,8 +123,6 @@ public class graphToolkit {
 		idList[2] = nodeXYStr = ( xMin + 1 )  +"_" + ( yMin + 1 ) ;	
 		idList[3] = idNodeMinVertex ;
 		
-		
-		
 		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
 	
 			listVertex.add(nodeXStr) ;
@@ -144,18 +143,16 @@ public class graphToolkit {
 	public static ArrayList getListVertexRoundPoint ( elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord ) {
 
 		ArrayList listVertex = new ArrayList();
-		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
+		
+		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) 
 			 listVertex = new ArrayList<String>(4);
-		}
-		else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) {
+		
+		else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) 
 			listVertex = new ArrayList<Node>(4);
-		}
-		
-		double sizeGrid = Math.pow(graphVertex.getNodeCount(), 0.5 ) - 1 ;
 		
 		
-		
-		double 	xSeed = nodeCoord[0], 
+		double 	sizeGrid = Math.pow(graphVertex.getNodeCount(), 0.5 ) - 1 ,
+				xSeed = nodeCoord[0], 
 				ySeed = nodeCoord[1];		
 	
 		int xMin = (int) xSeed,
@@ -167,10 +164,7 @@ public class graphToolkit {
 		nodeXStr  = ( xMin )  +"_" + ( yMin + 1 ) ;
 		nodeYStr  = ( xMin + 1 )  +"_" + ( yMin  ) ; 
 		nodeXYStr = ( xMin + 1 )  +"_" + ( yMin + 1 ) ;	
-		
-		
-		
-			
+	
 		if ( elementTypeToReturn. equals(elementTypeToReturn.string)) {
 			
 			if ( yMin < sizeGrid ) 	
@@ -195,6 +189,42 @@ public class graphToolkit {
 		return listVertex ;
 	}
 		
+	// get distance between node and edge of two other nodes 
+	public static double getDistNodeEdge (Node nStart , Node nEnd , Node nPoint , boolean isRel) {
+		
+		double dist = 0 ;
+		double [] 	nStartCoord = GraphPosLengthUtils.nodePosition(nStart) ,
+					nEndCoord = GraphPosLengthUtils.nodePosition(nEnd) ,
+					nPointCoord = GraphPosLengthUtils.nodePosition(nPoint) ;
+		
+		double 	x1 = nStartCoord[0] , 
+				y1 = nStartCoord[1] , 
+				
+				x2 = nEndCoord[0] , 
+				y2 = nEndCoord[2] , 
+			
+				xp = nPointCoord[0] ,
+				yp = nPointCoord[1] ;
+									
+		double num = Math.abs(( xp - x1 ) * ( y2 - y1 ) - ( yp - y1 ) * ( x2 - x1 ) ) ;
+		double distNode = Math.pow ( Math.pow(( x2 - x1 ), 2) + Math.pow(( y2 - y1 ), 2) , 0.5 ) ;
+		
+		dist = num / distNode ; 
+				
+		if ( isRel ) 
+	
+			dist = dist / distNode ;
+
+		return dist;
+		
+	}
+	
+	
+	 
+	  public double pointToLineDistance(Point A, Point B, Point P) {
+		    double normalLength = Math.sqrt((B.x-A.x)*(B.x-A.x)+(B.y-A.y)*(B.y-A.y));
+		    return Math.abs((P.x-A.x)*(B.y-A.y)-(P.y-A.y)*(B.x-A.x))/normalLength;
+		  }
 		
 	// get list of neighbor String
 	public static ArrayList getListNeighbor ( Graph graph , String idNode , elementTypeToReturn elementTypeToReturn ) {

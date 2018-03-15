@@ -245,6 +245,7 @@ public class handleVizStype {
 		return  "node { "
 				+ "size:  1px;"
 				+ "fill-color: " + colorId + ";"
+				+ "text-size:" +sizeTestId +"px;"
 				+ "text-alignment: at-right; "
 				+ "text-color:" + colorId + ";"
 				+ "text-background-mode: plain; "

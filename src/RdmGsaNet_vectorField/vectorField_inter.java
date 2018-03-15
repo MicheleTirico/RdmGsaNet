@@ -11,9 +11,7 @@ public interface vectorField_inter {
 	public void computeVf ( vfNeig vfN , weigthDist wdType) ;
 
 	public void getVector( Node n ) ;
-	
-	public void createGraph( Graph graph  ) ;
-	
+
 	public void test ( ); 
 	
 // static methods -----------------------------------------------------------------------------------------------------------------------------------

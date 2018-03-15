@@ -35,9 +35,9 @@ public  class  analysisMain   {
 	
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder  = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\08\\maxStep_3000_generateNetNodeVectorFieldSeedCost_generateNetEdgeInRadiusFather_prob_0.0_00\\" ,
+	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedCost_01\\solitions\\maxStep_3000_generateNetNodeVectorFieldSeedCost_generateNetEdgeInRadiusFather_prob_0.0_00\\" ,
 							
-							folderMain = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\08\\" ,
+							folderMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedCost_01\\solitions\\" ,
 							folderMultiSim = folderMain ,
 							folderCommonFiles = folderMain + "commonFiles\\" ;								
 	

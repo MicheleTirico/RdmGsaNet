@@ -43,27 +43,21 @@ public class vectorField {
 		}
 	}
 	
-	
-	
-	
-	public void setParameters ( 
-			Graph vecGraph ,
-			double radius , vfNeig vfN , weigthDist wdType ) {
+	public void setParameters ( Graph vecGraph , double radius , vfNeig vfN , weigthDist wdType ) {
 		this.vecGraph = vecGraph ;
 		this.radius = radius ;
 		this.vfN = vfN ; 
-	}
-	
-	
-	
+	}	
 	
 	public void createLayerVectorField() {
-		vfInt.createGraph(graph);
 		vfInt.computeVf(vfN , wdType);
 	}
 	
+	public void computeTest() {		
+		vfInt.test();
+	}
 	
-
+//---------------------------------------------------------------------------------------------------------------------------------------------------	
 	protected static double getCoefWeig ( weigthDist wdType , double dist ) {
 	
 		double coefDist = 0.0 ;
@@ -81,14 +75,6 @@ public class vectorField {
 
 
 
-	public void computeTest() {
-		
-
-		
-		vfInt.test();
 	
-		// TODO Auto-generated method stub
-		
-	}
 
 }

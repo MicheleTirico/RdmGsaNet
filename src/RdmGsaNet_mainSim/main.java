@@ -11,6 +11,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.handleNameFile.typeFile;
+
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
@@ -25,6 +26,7 @@ import RdmGsaNet_generateGraph.generateNetNode.interpolation;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather.genEdgeType;
+
 import RdmGsaNet_gsAlgo.gsAlgo;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion.weightType;
@@ -38,14 +40,17 @@ import RdmGsaNet_setupLayer.setupNetFistfulNodes;
 import RdmGsaNet_setupLayer.setupNetFistfulNodes.typeRadius;
 import RdmGsaNet_setupLayer.setupNetSeed;
 import RdmGsaNet_setupLayer.setupNetSmallGrid;
+
 import RdmGsaNet_vectorField_02.vectorField;
 import RdmGsaNet_vectorField_02.vectorField.vectorFieldType;
 import RdmGsaNet_vectorField_02.vectorField.vfNeig;
 import RdmGsaNet_vectorField_02.vectorField.weigthDist;
 
+import dynamicGraphSimplify.dynamicSymplify;
+import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 3000 ;
+	private static int stopSim = 3 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -74,7 +79,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\08\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\07\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -94,7 +99,7 @@ public class main {
 //		/* create only one node					*/ new setupNetSeed()	
 //		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-		/* create a fistful of node 			*/ new setupNetFistfulNodes( 15 , typeRadius.square , 2 )
+		/* create a fistful of node 			*/ new setupNetFistfulNodes( 30 , typeRadius.square , 2 )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -118,17 +123,14 @@ public class main {
 	) ;
 	
 
-//	protected static generateNetNode generateNetNode = new generateNetNode ( new generateNetNodeVectorField ( generateNodeVFtype.onlyNode ) ) ;
-	
-//	protected static generateNetNode generateNetNode = new generateNetNode ( 
-//			new generateNetNodeBreakGridThrowSeed( 100 , "gsAct" , .1 , interpolation.averageEdge , true , true ) );
-
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
 //			/* radius , which node to connect		*/	new generateNetEdgeNear( 2 , whichNode.all )
 					new generateNetEdgeInRadiusFather ( genEdgeType.fatherAndNodeInRadius )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
+	
+	protected static dynamicSymplify ds = new dynamicSymplify( netGraph , 0.1 , simplifyType.deleteNode) ; 
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -142,7 +144,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.U_SkateWorld );			
+		setRdType ( RdmType.pulsatingSolitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -208,6 +210,8 @@ public class main {
 		// create layer od vector Field
 		vectorField.createLayer(gsGraph, vecGraph, doStoreStartVec);					//	System.out.println(vecGraph.getNodeCount());
 
+		ds.compute();
+		
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
 			/* bol		runSim																					*/	true,
@@ -226,7 +230,7 @@ public class main {
 		 	doStoreStepSeed, pathStepSeed 
 		 	);
 		
-	
+		
 		//get seedAlive
 	//	int seedAlive = getSeedAlive(false);
 		

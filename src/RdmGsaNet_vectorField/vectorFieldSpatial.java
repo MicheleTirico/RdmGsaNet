@@ -16,7 +16,7 @@ import RdmGsaNet_vectorField.vectorField.weigthDist;
 
 public class vectorFieldSpatial extends vectorField implements vectorField_inter {
 
-	public vectorFieldSpatial(Graph graph, String attribute) {
+	public vectorFieldSpatial(Graph graph, String attribute ) {
 		super( graph, attribute , vfType );
 	}
 
@@ -97,14 +97,7 @@ public class vectorFieldSpatial extends vectorField implements vectorField_inter
 	@Override
 	public void getVector ( Node n ) {
 		// TODO Auto-generated method stub
-
 	}
-
-	@Override
-	public void createGraph(Graph graph) {
-//		vecGraph = graph ;
-	}
-
 
 	@Override
 	public void test() {

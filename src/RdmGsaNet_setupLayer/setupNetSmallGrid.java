@@ -38,7 +38,8 @@ public class setupNetSmallGrid implements setupNet_Inter {
 				if (  con == 1 ) {
 					listIdGsCon.add(nGs.getId());	}	
 		}		//	System.out.println(listIdGsCon);
-				
+		
+		int idNet = 0 ;
 		// create seed node in netGraph and set coordinate
 		for ( String id : listIdGsCon ) {
 					
@@ -49,10 +50,11 @@ public class setupNetSmallGrid implements setupNet_Inter {
 			double [] nGsCoordinate = GraphPosLengthUtils.nodePosition(nGs) ;						//	System.out.println(nGsCoordinate[0]);
 					
 			// create node in netGraph
-			netGraph.addNode(id);
+			netGraph.addNode(Integer.toString(idNet));
+			
 					
 			// set coordinate of node in netGraph
-			Node nNet = netGraph.getNode(id); 														//	System.out.println(nNet.getId());
+			Node nNet = netGraph.getNode(Integer.toString(idNet)); 														//	System.out.println(nNet.getId());
 			nNet.setAttribute( "xyz", nGsCoordinate[0] , nGsCoordinate[1] , nGsCoordinate[2] );		//	double [] nNetCoordinate = GraphPosLengthUtils.nodePosition(nNet) ;			System.out.println(nNetCoordinate[0]);
 		
 			ArrayList<String> neigList = new ArrayList<String>();
@@ -68,7 +70,9 @@ public class setupNetSmallGrid implements setupNet_Inter {
 					netGraph.addEdge(  nNet.getId() + "-" + idNeig ,  nNet , netGraph.getNode(idNeig) );	}
 			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue;	}
 			}	
-		}	
+		idNet++;
+		}
+		
 	}
 	
 	private static ArrayList<String> getListInRadiusGeom (Graph graph, Node n , double radius ) {

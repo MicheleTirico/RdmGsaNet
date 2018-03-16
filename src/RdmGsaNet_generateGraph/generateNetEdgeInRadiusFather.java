@@ -1,7 +1,10 @@
 package RdmGsaNet_generateGraph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import RdmGsaNetAlgo.graphGenerator;
@@ -11,6 +14,7 @@ import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNetExport.expTime;
 import RdmGsaNet_generateGraph.generateNetEdge;
+import dynamicGraphSimplify.dynamicSymplify_deleteNode;
 
 public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 
@@ -24,20 +28,29 @@ public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 	@Override
 	public void generateEdgeRule(double step) {				//	long startTime = expTime.setStartTime();
 		
-		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node> (  graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element ) ) ;
-//		listNodeSeedGrad = gsAlgoToolkit.getListNodeAttribute(netGraph, "seedGrad" , 1 )  ;	//	
-//		System.out.println("number of seed " + listNodeSeedGrad.size() + " " + listNodeSeedGrad);	
+		Map< String , String > mapIdForGenerateEdge = new HashMap<String , String> () ;
+		mapIdForGenerateEdge = dynamicSymplify_deleteNode.getMapIdForGenerateEdge();
+		
+		ArrayList<String> listNodeSeedGrad = new ArrayList<String> (  
+				graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string ) ) ;						//	System.out.println("listNodeSeedGrad " + listNodeSeedGrad);	System.out.println("listNodeNet " + listNodeNet);
+		
+		ArrayList<String> listNodeNet = new ArrayList<String> (  
+				graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string ) ) ;
+
+		ArrayList<String> listNodeNetSeedAttr = new ArrayList<String> ( 
+				graphToolkit.getListElementAttribute(netGraph, element.node, elementTypeToReturn.string, "seedGrad", 1 ) );	//	System.out.println("listNodeNetSeedAttr " + listNodeNetSeedAttr);
+
+		for ( String  idNodeSeed : mapIdForGenerateEdge.keySet() ) {
 			
-		for ( Node nodeSeed : listNodeSeedGrad ) {
+			Node nNet = netGraph.getNode(idNodeSeed) ; 
+			Node nSeed = seedGraph.getNode(idNodeSeed) ; 
 			
-		//	System.out.println("seedGraph " + nodeSeed.getId() + " " + nodeSeed.getAttributeKeySet() + " " + nodeSeed.getAttribute("father"));
-			String idFather = nodeSeed.getAttribute("father") ;					//		System.out.println(nodeSeed.getId() + " " + idFather );
+			String idFather = mapIdForGenerateEdge.get(idNodeSeed) ;			//	System.out.println( "idNodeSeed " + idNodeSeed + " idFather " + idFather  ) ;	//	System.out.println( "granFat " + idGranFat  ) ;	//	System.out.println(nNet.getAttributeKeySet());	//	System.out.println(nSeed.getAttributeKeySet());
 			
-			Node nodeFather = netGraph.getNode(idFather) ;	 					//			System.out.println(nodeFather.getAttributeKeySet());
-			Node nodeSoon = netGraph.getNode(nodeSeed.getId());
+			
 			switch (genEdgeType) {
 			case onlyFather:
-			//	createEdgeOnlyFather(  nodeSoon , nodeFather );
+				createEdgeOnlyFather ( netGraph, idNodeSeed, idFather);
 				break;
 			case fatherAndNodeInRadius :
 				;
@@ -46,8 +59,7 @@ public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 			default:
 				break;
 			}
-		}
-	//	System.out.println("genEdge " +  expTime.getTimeMethod(startTime));
+		}	//	System.out.println("genEdge " +  expTime.getTimeMethod(startTime));
 	}
 
 	@Override
@@ -56,10 +68,16 @@ public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 		
 	}
 	
-	private void createEdgeOnlyFather ( Node nodeSeed , Node nodeFather ) {
-//		System.out.println(nodeFather.getAttributeKeySet());	
-		graphGenerator.createEdge(netGraph , nodeSeed, nodeFather);  //	
-		
+	public static void createEdgeOnlyFather ( Graph graph , String idNode , String idFather ) {
+
+		Node node = graph.getNode(idNode);
+		String idEdge = idNode +"-" + idFather ;	// System.out.println("idEdge " + idEdge);
+		Node nodeFather = graph.getNode(idFather);
+		try {
+			graph.addEdge(idEdge, node , nodeFather) ;
+		} catch (org.graphstream.graph.IdAlreadyInUseException | java.lang.NullPointerException e) {	
+			return ;
+		}	
 	}
 
 }

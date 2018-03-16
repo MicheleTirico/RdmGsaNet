@@ -20,19 +20,20 @@ import RdmGsaNet_mainSim.main;
 
 public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorField implements generateNetNode_Inter {
 
-	static FileSinkDGS fsd = new FileSinkDGS();
+	private static FileSinkDGS fsd = new FileSinkDGS();
 	private handleNameFile handle = main.getHandle();
 	
-	
 	protected int startStep ;
-	// protected ArrayList<Node> list;
+	
+	// CONSTRUCTOR 
 	public generateNetNodeVectorFieldSeedCost(int numberMaxSeed, layoutSeed setLayoutSeed, interpolation typeInterpolation , int startStep , boolean createSeedGraph , boolean updateNetGraph ) {
 		super(numberMaxSeed, setLayoutSeed, typeInterpolation , createSeedGraph , updateNetGraph );
 		this.startStep = startStep ;
 	}
 
 	@Override
-	public void generateNodeRule(int step) throws IOException {			//		System.out.println(super.getClass().getSimpleName());
+	public void generateNodeRule(int step) throws IOException {			//		System.out.println(super.getClass().getSimpleName());	System.out.println("node count "+ seedGraph +" " + seedGraph.getNodeCount());	System.out.println("node count "+ netGraph +" " + netGraph.getNodeCount());
+		
 		// set seed nodes 
 		long startTime = expTime.setStartTime();
 		
@@ -42,16 +43,15 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 			if ( step == 1)	{				//		System.out.println("createSeedGraph step1" );
 				ArrayList<String> list = new ArrayList<String> ( graphToolkit.getListElementAttribute( netGraph, element.node, elementTypeToReturn.string, "seedGrad", 1 ) ) ;
 				for ( String id : list ) {
+					
 					Node n = netGraph.getNode(id) ;
 					seedGraph.addNode( id );
 					Node nodeSeed = seedGraph.getNode(id) ;
 					gsAlgoToolkit.setNodeCoordinateFromNode(netGraph, seedGraph, n, nodeSeed);
 					
-					
 					String pathStart = handle.getPathStartSeed();
-					seedGraph.write(fsd, pathStart);	}
-			
-				
+					seedGraph.write(fsd, pathStart);			
+				}
 			}			
 		}	
 		
@@ -59,6 +59,7 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 			return ; 
 		
 		ArrayList<Node> listNodeSeedGrad = new ArrayList<Node> () ;
+		
 		// CREATE LIST OF SEEDGRAD 
 		if ( createSeedGraph ) 
 			listNodeSeedGrad = graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element );					//	System.out.println("createSeedGraph" );
@@ -69,29 +70,23 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 		for ( Node n : listNodeSeedGrad ) {
 			String id = n.getId() ;
 			Integer x = Integer.parseInt(id);
-			list.add(x);
-			
+			list.add(x);		
 		}
-		System.out.println( Collections.max(list));
-		System.out.println( list ) ;
-		int idNum = Collections.max(list) + 1  ;
-		// int idNum = listNodeSeedGrad.size() *  step   ;
+		
+		int idNum = Collections.max(list) + 1  ;		// int idNum = listNodeSeedGrad.size() *  step   ;
 		
 		for ( Node nodeSeed : listNodeSeedGrad ) {																					//	System.out.println(nodeSeed.getAttributeKeySet());
 			
 			String idSeed = nodeSeed.getId() ;
 				
-			double[] nodeCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ;
-					
-			double[] vector = getVector(vecGraph, nodeCoord, typeInterpolation.sumVectors) ;										//c'é 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);
-					
-		//	String idCouldAdded = Integer.toString(netGraph.getNodeCount() );
-			String idCouldAdded = Integer.toString(idNum ); 	//	System.out.println(netGraph.getNodeCount());
+			double[] 	nodeCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ,
+						vector = getVector(vecGraph, nodeCoord, typeInterpolation.sumVectors) ;										// 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);				
+
+			String idCouldAdded = Integer.toString(idNum ); 			//	String idCouldAdded = Integer.toString(netGraph.getNodeCount() );
 			Node nodeCouldAdded = null ;							
 			
 			double 	xNewNode = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[0] + vector[0] ) ,
 					yNewNode = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[1] + vector[1] ) ;
-				
 			
 			if (updateNetGraph ) 
 				generateNetNode.handleNewNodeCreation(netGraph, idCouldAdded, nodeSeed, xNewNode, yNewNode , true  )	;
@@ -100,12 +95,9 @@ public class generateNetNodeVectorFieldSeedCost extends generateNetNodeVectorFie
 				nodeSeed.setAttribute( "xyz", xNewNode , yNewNode, 0 );
 			}
 			idNum ++ ;	
-					
-		}				//		System.out.println(netGraph.getNodeCount());
-	//	System.out.println("genNode " + expTime.getTimeMethod(startTime));
+		}	//		System.out.println(netGraph.getNodeCount());	//	System.out.println("genNode " + expTime.getTimeMethod(startTime));
 	}
 	
-
 	@Override
 	public void removeNodeRule(int step) {
 		// TODO Auto-generated method stub

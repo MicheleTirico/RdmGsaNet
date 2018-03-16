@@ -50,7 +50,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 20 ;
+	private static int stopSim = 10 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -79,7 +79,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\07\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_symplify\\mazes\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -97,9 +97,9 @@ public class main {
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
-//		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
+		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-		/* create a fistful of node 			*/ new setupNetFistfulNodes( 5 , typeRadius.square , 2 )
+//		/* create a fistful of node 			*/ new setupNetFistfulNodes( 5 , typeRadius.square , 2 )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -130,7 +130,7 @@ public class main {
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
-	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( netGraph , 0.01 , simplifyType.deleteNode) ; 
+	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( netGraph , 0.1 , simplifyType.deleteNode) ; 
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -144,7 +144,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.pulsatingSolitions );			
+		setRdType ( RdmType.mazes );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -210,6 +210,7 @@ public class main {
 		// create layer od vector Field
 		vectorField.createLayer(gsGraph, vecGraph, doStoreStartVec);					//	System.out.println(vecGraph.getNodeCount());
 
+		dynamicSymplify.setParameters_fixPivot( true , 1 ) ;
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
 			/* bol		runSim																					*/	true,

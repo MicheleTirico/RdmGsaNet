@@ -11,8 +11,8 @@ public interface dynamicSymplify_inter {
 	
 	public void updateFatherAttribute ( int step , Map<String, String> mapFather ) ;
 	
-	public void computeDistance ( int step ) ;
-	
 	public void handleGraphGenerator ( int step ) ;
+	
+//	public void setPivot ( boolean createPivot , double maxDistPivot ) ;
 	
 }

@@ -25,10 +25,9 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 	
 	private static Map< String , String > mapIdForGenerateEdge = new HashMap<String , String> () ; 
 	
-	private boolean createPivot = dynamicSymplify.isCreatePivot() ;
+
 	
-	private double 	epsilon , 
-					maxDistPivot = dynamicSymplify.getMaxDistPivot() ;
+	private double 	epsilon ;
 	
 	// constructor 
 	public dynamicSymplify_deleteNode( Graph graph , double epsilon ) {
@@ -63,11 +62,11 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 	
 		mapIdForGenerateEdge.clear();
 				
-		for ( Node n : graph.getEachNode() ) {																//	System.out.println(n.getId() + n.getAttributeKeySet());
+		for ( Node node : graph.getEachNode() ) {																//	System.out.println(n.getId() + n.getAttributeKeySet());
 			
-			String id = n.getId();
+			String id = node.getId();
 			
-			String idFather = n.getAttribute("father");
+			String idFather = node.getAttribute("father");
 			Node nFat = graph.getNode(idFather) ;
 			
 			if ( idFather == null )
@@ -85,35 +84,24 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 			while ( !listNodeNet.contains(idGranFat)) 
 				idGranFat= nGranFat.getAttribute("father");													//	System.out.println( "idNodeSeed " + n.getId() + " idFather " + idFather + " granFat " + idGranFat  ) ;
 
-			double dist = graphToolkit.getDistNodeEdge(nGranFat, nFat, n, true);							//	System.out.println("dist " + dist);		System.out.println("epsilon " + epsilon );
+			double dist = graphToolkit.getDistNodeEdge(nGranFat, nFat, node, true);							//	System.out.println("dist " + dist);		System.out.println("epsilon " + epsilon );
 			
 			if ( dist > epsilon )
 				continue;
 			
 			else if ( dist < epsilon  ) {																	//	System.out.println("dist " + dist);	
 				graph.removeNode(nFat);
-				n.setAttribute("father", idGranFat);
+				node.setAttribute("father", idGranFat);
 				idFather = idGranFat ;																		//	System.out.println( "idNodeSeed " + n.getId() + " idFather " + idFather + " granFat " + idGranFat  ) ;				
 			}																								//	System.out.println(n.getId() + " " + idFather );
 		
-			setPivot(createPivot , maxDistPivot);
+		
 			//	generateNetEdgeInRadiusFather.createEdgeOnlyFather(graph, n.getId(), idFather);	
 			getMapIdForGenerateEdge().put(id, idFather);	
 		}
 	}	
 	
 
-	public void setPivot(boolean createPivot , double maxDistPivot ) {
-		
-		if ( createPivot == false )
-			return ;
-		
-		System.out.println(createPivot + " " + maxDistPivot);
-		
-		
-		
-		
-	}
 		
 		
 // GET AND SET METHODS ------------------------------------------------------------------------------------------------------------------------------	

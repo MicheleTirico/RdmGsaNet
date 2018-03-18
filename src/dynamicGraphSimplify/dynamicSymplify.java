@@ -18,10 +18,6 @@ public class dynamicSymplify {
 	// interface object
 	 dynamicSymplify_inter dsInter;
 	
-	// set parameters 
-	private static boolean createPivot ;
-	private static double maxDistPivot ;
-	
 	// constructor
 	public dynamicSymplify( Graph graph , double epsilon , simplifyType simplifyType  ) {
 		this.graph = graph ;
@@ -40,10 +36,6 @@ public class dynamicSymplify {
 		dsInter.test();
 	}
 	
-	public void setParameters_fixPivot ( boolean createPivot , double maxDistPivot  ) {
-		this.setCreatePivot(createPivot) ;
-		this.setMaxDistPivot(maxDistPivot) ;
-	}
 	
 	public void compute (  int step ) {				//	System.out.println(graph.getNodeCount() + " "  + graph.getNodeSet());
 		
@@ -51,22 +43,8 @@ public class dynamicSymplify {
 		dsInter.handleGraphGenerator( step );
 	
 	}
-
-	public static boolean isCreatePivot() {
-		return createPivot;
-	}
-
-	protected void setCreatePivot(boolean createPivot) {
-		this.createPivot = createPivot;
-	}
-
-	public static double getMaxDistPivot() {
-		return maxDistPivot;
-	}
-
-	protected void setMaxDistPivot(double maxDistPivot) {
-		this.maxDistPivot = maxDistPivot;
-	}
 	
+
+
 
 }

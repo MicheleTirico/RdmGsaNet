@@ -25,10 +25,13 @@ public interface generateNetEdge_Inter {
 //	public enum generateEdgeType { near , preferentialAttachment  }
 	
 	
+	
 	// METHODS
 	public void generateEdgeRule ( double step ) ;
 
-	void removeEdgeRule(double step);
+	public void removeEdgeRule(double step);
+
+	public void setPivot (boolean createPivot, double maxDistPivot , Graph graph , String idNode , String idFather  ) ;
 	
 	
 		

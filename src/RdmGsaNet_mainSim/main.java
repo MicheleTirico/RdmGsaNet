@@ -50,7 +50,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 10 ;
+	private static int stopSim = 5;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -79,7 +79,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test_symplify\\mazes\\" ;
+	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\09\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -93,7 +93,7 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 	static layerGs gsLayer = new layerGs(
-		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
+		/* size grid , type grid 				*/	new setupGsGrid( 10 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
@@ -130,10 +130,11 @@ public class main {
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
-	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( netGraph , 0.1 , simplifyType.deleteNode) ; 
+	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( netGraph , 0.5 , simplifyType.deleteNode) ; 
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
+		
 		
 		// setup handle name file 
 		handle = new handleNameFile( 
@@ -210,7 +211,9 @@ public class main {
 		// create layer od vector Field
 		vectorField.createLayer(gsGraph, vecGraph, doStoreStartVec);					//	System.out.println(vecGraph.getNodeCount());
 
-		dynamicSymplify.setParameters_fixPivot( true , 1 ) ;
+		generateNetEdge.setParameters_Pivot (true , 1.0);
+		
+	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
 			/* bol		runSim																					*/	true,
@@ -247,7 +250,7 @@ public class main {
 		// setup viz netGraph
 		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
 		netViz.setupIdViz(true, netGraph, 1 , "black");
-		netViz.setupDefaultParam (netGraph, "black", "black", 4 , .01);
+		netViz.setupDefaultParam (netGraph, "black", "black", 10 , .01);
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;
 		netViz.setupFixScaleManual(false , netGraph, sizeGridEdge , 0);
 		
@@ -271,10 +274,10 @@ public class main {
 		seedViz.setupVizBooleanAtr(false , seedGraph, "black", "red" , false , false ) ;
 		seedViz.setupFixScaleManual( true , seedGraph, sizeGridEdge , 0);
 		
-		gsGraph.display(false);
+//		gsGraph.display(false);
 		netGraph.display(false);
-		vecGraph.display(false);
-		seedGraph.display(false);
+//		vecGraph.display(false);
+//		seedGraph.display(false);
 		
 
 	}

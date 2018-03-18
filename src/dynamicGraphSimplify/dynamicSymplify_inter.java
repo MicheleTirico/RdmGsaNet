@@ -13,6 +13,5 @@ public interface dynamicSymplify_inter {
 	
 	public void handleGraphGenerator ( int step ) ;
 	
-//	public void setPivot ( boolean createPivot , double maxDistPivot ) ;
 	
 }

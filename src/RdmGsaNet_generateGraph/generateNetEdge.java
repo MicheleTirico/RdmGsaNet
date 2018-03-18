@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_mainSim.layerNet;
@@ -17,6 +18,9 @@ import RdmGsaNet_mainSim.main;
 public class generateNetEdge extends main {
 	
 
+	//  pivot parameters
+	private static boolean createPivot ;
+	private static double maxDistPivot ;
 	
 	private static generateNetEdge_Inter type ;
 	private static generateNetEdge growth ;
@@ -27,11 +31,24 @@ public class generateNetEdge extends main {
 	
 	public void generateEdge ( double step ) {
 		type.generateEdgeRule ( step ) ;
+		
 	}
-
+	
+	public void setParameters_Pivot ( boolean createPivot , double maxDistPivot ) {
+		this.createPivot = createPivot ;
+		this.maxDistPivot = maxDistPivot ;
+	}
+	
+	
+	
 //--------------------------------------------------------------------------------------------------------------------
 	// private methods
 
+	private static void setPivot ( boolean createPivot , double maxDistPivot  ) {
+		
+		
+	}
+	
 	// method to create one edge for each nodes in set and the new node
 			// set id edge like idNode1 - idNode2 ( doesn't work )
 			protected static void createEdgeInSetNear ( Node n1 , Set<String> idNear , Graph graph ) {
@@ -93,5 +110,12 @@ public class generateNetEdge extends main {
 	public static String 			getGenerateType () 	{ return type.getClass().getSimpleName(); }
 
 
+	public static boolean getCreatePivot ( ) {
+		return createPivot ; 
+	}
+	
+	static double getMaxDistPivot () {
+		return maxDistPivot ;
+	}
 
 }

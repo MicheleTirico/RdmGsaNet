@@ -116,11 +116,12 @@ public class layerNet {
 	
 // Get Methods -----------------------------------------------------------------------------------------------------	
 	// get graph
-	public static Graph getGraph ( ) { return netGraph; }
-
+	public static Graph getGraph ( ) { 
+		return netGraph; 	
+	}
 	
-
-	
-	public static String getLayout () { return layout.getClass().getSimpleName() ; }
+	public static String getLayout () { 
+		return layout.getClass().getSimpleName() ; 		
+	}
 	
 }

@@ -31,7 +31,7 @@ public interface generateNetEdge_Inter {
 
 	public void removeEdgeRule(double step);
 
-	public void setPivot (boolean createPivot, double maxDistPivot , Graph graph , String idNode , String idFather  ) ;
+	public void setPivot (boolean createPivot, double maxDistPivot  ) ;
 	
 	
 		

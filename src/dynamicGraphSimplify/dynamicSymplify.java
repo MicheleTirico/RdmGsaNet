@@ -11,6 +11,7 @@ public class dynamicSymplify {
 	protected Map<String , String > mapFather = new HashMap < String, String> ( ) ;
 	protected Graph graph = new SingleGraph("graph");
 	protected double epsilon ;
+	private boolean runSymplify ;
 	
 	public enum simplifyType { deleteNode , test } ;
 	protected static simplifyType simplifyType ;
@@ -19,7 +20,8 @@ public class dynamicSymplify {
 	 dynamicSymplify_inter dsInter;
 	
 	// constructor
-	public dynamicSymplify( Graph graph , double epsilon , simplifyType simplifyType  ) {
+	public dynamicSymplify( boolean runSymplify ,  Graph graph , double epsilon , simplifyType simplifyType  ) {
+		this.runSymplify = runSymplify ;
 		this.graph = graph ;
 		this.epsilon = epsilon ;
 		this.simplifyType = simplifyType ;
@@ -32,13 +34,14 @@ public class dynamicSymplify {
 		}
 	}
 	
-	public void computeTest( ) {
+	public void computeTest(  ) {
 		dsInter.test();
 	}
 	
 	
 	public void compute (  int step ) {				//	System.out.println(graph.getNodeCount() + " "  + graph.getNodeSet());
-		
+		if ( runSymplify == false )
+			return ;
 		dsInter.updateFatherAttribute( step , mapFather );
 		dsInter.handleGraphGenerator( step );
 	

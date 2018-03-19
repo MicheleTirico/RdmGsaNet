@@ -17,7 +17,6 @@ import RdmGsaNet_mainSim.main;
 
 public class generateNetEdge extends main {
 	
-
 	//  pivot parameters
 	private static boolean createPivot ;
 	private static double maxDistPivot ;
@@ -31,16 +30,15 @@ public class generateNetEdge extends main {
 	
 	public void generateEdge ( double step ) {
 		type.generateEdgeRule ( step ) ;
-		
+		type.setPivot(createPivot, maxDistPivot);		
 	}
 	
 	public void setParameters_Pivot ( boolean createPivot , double maxDistPivot ) {
+	
 		this.createPivot = createPivot ;
 		this.maxDistPivot = maxDistPivot ;
 	}
-	
-	
-	
+
 //--------------------------------------------------------------------------------------------------------------------
 	// private methods
 
@@ -63,8 +61,14 @@ public class generateNetEdge extends main {
 					
 					// try create an edge. It return exception whether nodes are yet connected -> continue
 					try 														{ graph.addEdge(  idN1 + "-" + idN2 ,  n1 , n2 );/* System.out.println(graph.getEdge(idN1 + "-" + idN2)) */ ;	}
-					catch ( org.graphstream.graph.EdgeRejectedException e  ) 	{ e.getMessage(); continue ; }
-					catch ( org.graphstream.graph.IdAlreadyInUseException e)	{ e.getMessage(); continue ; }
+					catch ( org.graphstream.graph.EdgeRejectedException e  ) 	{ 
+						e.getMessage(); 
+						continue ; 
+					}
+					catch ( org.graphstream.graph.IdAlreadyInUseException e)	{
+						e.getMessage(); 
+						continue ; 
+					}
 				}	  	
 			}
 			
@@ -88,7 +92,6 @@ public class generateNetEdge extends main {
 					if ( n2.getId() != n1Str ) 	
 						mapDist.put(n2Str, gsAlgoToolkit.getDistGeom(n1, n2)) ; 
 					}
-				
 				return mapDist ;
 				}
 			

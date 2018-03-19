@@ -22,11 +22,7 @@ import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 
 	private Graph 	graph = new SingleGraph("graph") ;
-	
 	private static Map< String , String > mapIdForGenerateEdge = new HashMap<String , String> () ; 
-	
-
-	
 	private double 	epsilon ;
 	
 	// constructor 
@@ -38,7 +34,6 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 	@Override
 	public void test() {
 		System.out.println(super.toString());
-		
 	}
 
 	
@@ -64,9 +59,9 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 				
 		for ( Node node : graph.getEachNode() ) {																//	System.out.println(n.getId() + n.getAttributeKeySet());
 			
-			String id = node.getId();
+			String 	id = node.getId()	,	
+					idFather = node.getAttribute("father");
 			
-			String idFather = node.getAttribute("father");
 			Node nFat = graph.getNode(idFather) ;
 			
 			if ( idFather == null )

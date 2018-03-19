@@ -111,7 +111,8 @@ public class simulation extends main {
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }
 			
-	//		for ( Node n : netGraph.getEachNode())		System.out.println(n.getAttributeKeySet() ) ; 
+	
+			//		for ( Node n : netGraph.getEachNode())		System.out.println(n.getAttributeKeySet() ) ; 
 
 			dynamicSymplify.compute( step );					// dynamicSymplify.computeTest();
 			

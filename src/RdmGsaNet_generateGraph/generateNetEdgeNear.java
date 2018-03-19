@@ -88,6 +88,13 @@ public class generateNetEdgeNear implements generateNetEdge_Inter {
 	
 	// remove edge
 	public void removeEdgeRule( double step) {	
+	
+	}
+
+	@Override
+	public void setPivot(boolean createPivot, double maxDistPivot) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 //  PRIVATE METHODS --------------------------------------------------------------------------------------------------------

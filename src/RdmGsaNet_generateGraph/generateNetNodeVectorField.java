@@ -1,13 +1,18 @@
 package RdmGsaNet_generateGraph;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.stream.file.FileSinkDGS;
 
 import RdmGsaNetAlgo.graphToolkit;
+import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
+import RdmGsaNetExport.handleNameFile;
 import RdmGsaNet_generateGraph.generateNetNode.interpolation;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNode.rule;
@@ -17,6 +22,8 @@ import RdmGsaNet_mainSim.main;
 
 public class generateNetNodeVectorField extends main  {
 	
+	protected  static FileSinkDGS fsd = new FileSinkDGS();
+	protected static handleNameFile handle = main.getHandle();
 	
 	// COSTANTS	
 	protected int numberMaxSeed  ;
@@ -69,5 +76,26 @@ public class generateNetNodeVectorField extends main  {
 		
 		return vector ;
 	}
+	
+	protected static void handleCreateSeedGraph (boolean createSeedGraph , int step) throws IOException {
+		
+		if ( createSeedGraph ) {
+			if ( step == 1)	{				//		System.out.println("createSeedGraph step1" );
+				ArrayList<String> list = new ArrayList<String> ( graphToolkit.getListElementAttribute( netGraph, element.node, elementTypeToReturn.string, "seedGrad", 1 ) ) ;
+				for ( String id : list ) {
+					
+					Node n = netGraph.getNode(id) ;
+					seedGraph.addNode( id );
+					Node nodeSeed = seedGraph.getNode(id) ;
+					gsAlgoToolkit.setNodeCoordinateFromNode(netGraph, seedGraph, n, nodeSeed);
+					
+					String pathStart = handle.getPathStartSeed();
+					seedGraph.write(fsd, pathStart);			
+				}
+			}			
+		}
+	}
+	
+	
 
 }

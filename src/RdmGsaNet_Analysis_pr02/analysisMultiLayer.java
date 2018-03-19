@@ -36,11 +36,11 @@ public class analysisMultiLayer extends analysisMain  {
 		
 		combinedAnalysis.setParamVizNet(
 				/* setScale					*/ 50 ,
-				/* sizeNode, 				*/ 5.0 ,
-				/* sizeEdge, 				*/ 0.4 ,
+				/* sizeNode, 				*/ 0.0 ,
+				/* sizeEdge, 				*/ .5 ,
 				/* colorStaticNode, 		*/ "black" ,
 				/* colorStaticEdge, 		*/ "black" ,
-				/* colorBooleanNodeTrue, 	*/ "red" ,
+				/* colorBooleanNodeTrue, 	*/ "black" ,
 				/* colorBooleanNodeFalse	*/ "black"
 				);
 		

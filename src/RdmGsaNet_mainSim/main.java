@@ -25,6 +25,7 @@ import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_generateGraph.generateNetNode.interpolation;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
+import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather.genEdgeType;
 
 import RdmGsaNet_gsAlgo.gsAlgo;
@@ -50,7 +51,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 5;
+	private static int stopSim = 100 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -79,7 +80,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\09\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\02\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -93,7 +94,7 @@ public class main {
 	
 	// create reaction diffusion layer ( gs = Gray Scott )
 	static layerGs gsLayer = new layerGs(
-		/* size grid , type grid 				*/	new setupGsGrid( 10 , gsGridType.grid8 ) ) ;
+		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
@@ -119,8 +120,9 @@ public class main {
 //					new generateNetNodeGradientProbDeltaControlSeed ( 8 , layoutSeed.allNode, rule.random, "gsInh", 1, true , true ) 	
 //					new generateNetNodeBreakGridThrowSeed			( 8 , interpolation.averageEdge )	
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
-					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
-	) ;
+//					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
+					new generateNetNodeVectorFieldSplitSeedProb		( 10 , layoutSeed.allNode, interpolation.sumVectors , true , true, 0.2, 60 , true ) 
+			) ;
 	
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
@@ -130,12 +132,11 @@ public class main {
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
-	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( netGraph , 0.5 , simplifyType.deleteNode) ; 
+	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( false , netGraph , 0.1 , simplifyType.deleteNode) ; 
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
-		
-		
+			
 		// setup handle name file 
 		handle = new handleNameFile( 
 			/* handle file 					*/ true , 
@@ -145,7 +146,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes );			
+		setRdType ( RdmType.solitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -165,7 +166,6 @@ public class main {
 		String pathStartGs  = handle.getPathFile(typeFile.startGs, true , getFolder())	;				//	System.out.println("pathStartGs " + pathStartGs);
 		String pathStartVec = handle.getPathFile(typeFile.startVec, true , getFolder()) ;				//	System.out.println("pathStartVec " + pathStartGs);
 		String pathStepVec 	= handle.getPathFile(typeFile.stepVec, true , getFolder()) ;
-		
 		
 // GENERATE LAYER GS --------------------------------------------------------------------------------------------------------------------------------		
 		// create new layer gs
@@ -211,8 +211,7 @@ public class main {
 		// create layer od vector Field
 		vectorField.createLayer(gsGraph, vecGraph, doStoreStartVec);					//	System.out.println(vecGraph.getNodeCount());
 
-		generateNetEdge.setParameters_Pivot (true , 1.0);
-		
+		generateNetEdge.setParameters_Pivot (true , 0.1);		
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
@@ -249,14 +248,14 @@ public class main {
 		
 		// setup viz netGraph
 		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
-		netViz.setupIdViz(true, netGraph, 1 , "black");
-		netViz.setupDefaultParam (netGraph, "black", "black", 10 , .01);
+		netViz.setupIdViz(false , netGraph, 1 , "black");
+		netViz.setupDefaultParam (netGraph, "black", "black", 5 , .1);
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;
-		netViz.setupFixScaleManual(false , netGraph, sizeGridEdge , 0);
+		netViz.setupFixScaleManual(true , netGraph, sizeGridEdge , 0);
 		
 		//  setup viz gsGraph
 		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz10Color , "gsInh", 1) ;	
-		gsViz.setupDefaultParam (gsGraph, "red", "white", 6 , 0.01 );
+		gsViz.setupDefaultParam (gsGraph, "red", "white", 5 , 0.01 );
 		gsViz.setupIdViz(false, gsGraph, 10 , "black");
 		gsViz.setupViz(true, true, palette.red);
 		
@@ -274,10 +273,10 @@ public class main {
 		seedViz.setupVizBooleanAtr(false , seedGraph, "black", "red" , false , false ) ;
 		seedViz.setupFixScaleManual( true , seedGraph, sizeGridEdge , 0);
 		
-//		gsGraph.display(false);
+		gsGraph.display(false);
 		netGraph.display(false);
-//		vecGraph.display(false);
-//		seedGraph.display(false);
+		vecGraph.display(false);
+		seedGraph.display(false);
 		
 
 	}

@@ -243,7 +243,7 @@ public class handleVizStype {
 	
 	protected String vizNodeId ( double sizeTestId , String colorId  ) {
 		return  "node { "
-				+ "size:  1px;"
+				+ "size-mode:  10px;"
 				+ "fill-color: " + colorId + ";"
 				+ "text-size:" +sizeTestId +"px;"
 				+ "text-alignment: at-right; "

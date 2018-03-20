@@ -41,11 +41,6 @@ public class generateNetEdge extends main {
 
 //--------------------------------------------------------------------------------------------------------------------
 	// private methods
-
-	private static void setPivot ( boolean createPivot , double maxDistPivot  ) {
-		
-		
-	}
 	
 	// method to create one edge for each nodes in set and the new node
 			// set id edge like idNode1 - idNode2 ( doesn't work )

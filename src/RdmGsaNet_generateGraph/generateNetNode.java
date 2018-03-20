@@ -120,8 +120,7 @@ public class generateNetNode extends main  {
 			
 		Node nodeCouldAdded = null ;
 		// there isn't node
-		try {
-		//	System.out.println(idCouldAdded);
+		try {															//	System.out.println(idCouldAdded);
 			netGraph.addNode(idCouldAdded) ;
 			seedGraph.addNode(idCouldAdded) ;
 			Node nNet = netGraph.getNode(idCouldAdded);

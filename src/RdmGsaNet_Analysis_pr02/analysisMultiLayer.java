@@ -24,9 +24,9 @@ public class analysisMultiLayer extends analysisMain  {
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
 			/* run								*/	true ,
 			/* gsViz							*/ 	true ,
-			/* netViz							*/	true ,	
-			/* vecViz							*/	true ,		
-			/* SeedViz							*/	true ,	
+			/* netViz							*/	false,	
+			/* vecViz							*/	false ,		
+			/* SeedViz							*/	false ,	
 			/* compute Global correlation 		*/	false
 			);
 		
@@ -36,7 +36,7 @@ public class analysisMultiLayer extends analysisMain  {
 		
 		combinedAnalysis.setParamVizNet(
 				/* setScale					*/ 50 ,
-				/* sizeNode, 				*/ 0.0 ,
+				/* sizeNode, 				*/ 1.0 ,
 				/* sizeEdge, 				*/ .5 ,
 				/* colorStaticNode, 		*/ "black" ,
 				/* colorStaticEdge, 		*/ "black" ,

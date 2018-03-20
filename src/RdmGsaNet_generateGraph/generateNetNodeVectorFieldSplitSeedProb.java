@@ -3,10 +3,15 @@ package RdmGsaNet_generateGraph;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import RdmGsaNetAlgo.graphToolkit;
 import RdmGsaNetAlgo.gsAlgoToolkit;
@@ -39,7 +44,11 @@ public class generateNetNodeVectorFieldSplitSeedProb extends generateNetNodeVect
 	@Override
 	public void generateNodeRule(int step) throws IOException {//		System.out.println(super.getClass().getSimpleName());
 
-	//	System.out.println(seedGraph.getNodeCount() + " " + seedGraph.getNodeSet());
+		System.out.println(seedGraph +" " + seedGraph.getNodeCount() + " " + seedGraph.getNodeSet());
+	//	System.out.println(netGraph  +" " + netGraph.getNodeCount() + " " + netGraph.getNodeSet());
+		
+	//	System.out.println(seedGraph +" " + seedGraph.getNodeCount() );
+	//	System.out.println(netGraph  +" " + netGraph.getNodeCount() );
 		generateNetNode.setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 		
 		generateNetNodeVectorField.handleCreateSeedGraph(createSeedGraph, step); 
@@ -56,6 +65,9 @@ public class generateNetNodeVectorFieldSplitSeedProb extends generateNetNodeVect
 				graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string ) ) ;
 
 	//	System.out.println(listNodeSeedGrad);
+	
+		ArrayList<Node> listNodeToUpdate = new ArrayList<Node>();
+		ArrayList<String> listNodeToRemove = new ArrayList<String>();
 		
 		ArrayList<Integer> listCast = new ArrayList<Integer>() ;					
 		listNodeNet.stream().forEach( s -> listCast.add(Integer.parseInt(s)));
@@ -97,20 +109,16 @@ public class generateNetNodeVectorFieldSplitSeedProb extends generateNetNodeVect
 			}
 			
 			else if ( numberNewSeed > 1) {
-//				System.out.println(seedGraph.getNodeCount() + " " + seedGraph.getNodeSet());
 				
-		//		System.out.println(vector[0] + " " + vector[1]);
-				double intVect = Math.pow(Math.pow(vector[0]  , 2 ) + Math.pow(vector[1]  , 2 ) , 0.5 ) ; 
+				double[] newNodesCoord = getCoordAngleVector(1, radians, vector, nodeCoord);
+	
+				double 	x1 = newNodesCoord[0] ,
+						y1 = newNodesCoord[1];
 				
-			//	System.out.println(intVect);
+				double 	x2 = newNodesCoord[2],
+						y2 = newNodesCoord[3];
 				
-				double 	xc = nodeCoord[0] , yc = nodeCoord[1] , 
-						x1 = xc + intVect * Math.cos(radians) ,
-						y1 = yc + intVect * Math.sin(radians) , 
-				
-						x2 = x1 ,
-						y2  = yc - intVect * Math.sin(radians) ;
-		
+					
 				double [] 	xNewSeedCoord = new double[numberMaxNewSeed] ,
 							yNewSeedCoord = new double[numberMaxNewSeed] ;
 				
@@ -122,45 +130,107 @@ public class generateNetNodeVectorFieldSplitSeedProb extends generateNetNodeVect
 				
 				for ( int i = 0 ; i < numberNewSeed ; i++ ) {
 					idCouldAdded = Integer.toString( idNum ); 
+				//	System.out.println(nodeSeed ) ;
 				//	System.out.println(idCouldAdded + " " + xNewSeedCoord[i] + " " + yNewSeedCoord[i] );
 					
-					if ( updateNetGraph ) 
-						generateNetNode.handleNewNodeCreation( netGraph, idCouldAdded, nodeSeed, xNewSeedCoord[i], yNewSeedCoord[i] , true  )	;
-					
-					if ( createSeedGraph ) {
-						nodeSeed.setAttribute( "xyz", xNewSeedCoord[i], yNewSeedCoord[i] , 0 );
+					if ( updateNetGraph ) {
+						try {															//	System.out.println(idCouldAdded);
+							netGraph.addNode(idCouldAdded) ;
+							seedGraph.addNode(idCouldAdded) ;
+							
+							Node nNet = netGraph.getNode(idCouldAdded);
+							Node nSeed = seedGraph.getNode(idCouldAdded);				//	System.out.println(nodeSeed.getId());
+							
+							nSeed.addAttribute("father", nodeSeed.getId());	
+							nNet.addAttribute("father", nodeSeed.getId());				//	System.out.println(n.getAttributeKeySet());
+							
+							nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
+							nodeCouldAdded.addAttribute("seedGrad", 1);
+							
+							nodeSeed.setAttribute("seedGrad", 0 );
+						//	System.out.println(nodeSeed.getId());
+							nodeCouldAdded.addAttribute("father", nodeSeed.getId() );
+							
+							// set coordinate
+							nNet.setAttribute( "xyz", xNewSeedCoord[i]  , yNewSeedCoord[i], 0 );	
+							nSeed.setAttribute( "xyz", xNewSeedCoord[i]  , yNewSeedCoord[i], 0 );	
+								
+							listNodeToUpdate.add(nodeCouldAdded);
+								
+							seedGraph.removeNode(nodeSeed);
+							}
+							
+						// if node already exist 
+						catch (org.graphstream.graph.IdAlreadyInUseException e) { 		//
+							System.out.println(e.getMessage());
+							nodeCouldAdded = netGraph.getNode(idCouldAdded); 			//	System.out.println(idCouldAdded);
+							nodeCouldAdded.addAttribute("seedGrad", 0 );
+							nodeSeed.setAttribute("seedGrad", 1);
+						}
+						
+							
 					}
-				
-				//	String idNewSeed = Integer.toString(idNum) ;
-				//	seedGraph.addNode(idCouldAdded);
-				//	Node newSeed = seedGraph.getNode(idNewSeed) ;
+	
 					
-					idNum ++ ;	
-					
+					if ( createSeedGraph ) 
+						nodeSeed.setAttribute( "xyz", xNewSeedCoord[i], yNewSeedCoord[i] , 0 );
+								
+				//	listNodeToRemove.add(idSeed);	
+					idNum ++ ;
 				}
 				
-			//	System.out.println(seedGraph.getNodeSet());
-				
 			}
+
+		}	//		System.out.println(idNum);	
+//		System.out.println(seedGraph.getNodeSet());
+		
+		
+	//	System.out.println(listNodeToRemove);
+		
+		ArrayList<String> list = graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string) ;
+	//	System.out.println("listNodeToUpdate " + listNodeToUpdate);	
+		
+		list.stream().forEach( s -> listCast.add(Integer.parseInt(s)));
+		
+		int idToUpdate = Collections.max(listCast)  + 1  ;	//		
+	//	System.out.println(list);
+	//	System.out.println(Collections.max(listCast) ) ;
+	//	System.out.println(idToUpdate);
+		
+		
+		for ( Node n : listNodeToUpdate ) {		//	System.out.println(seedGraph.getNodeCount() +" " + seedGraph.getNodeSet());	System.out.println(idToUpdate);
+			String id = Integer.toString(idToUpdate);		//	System.out.println("oldId " + n + " newId "+  idToUpdate ) ;
 			
+			seedGraph.addNode(id);
+			Node nodeToUp = seedGraph.getNode(id);
 			
+			double[] coord = GraphPosLengthUtils.nodePosition(n);
+			nodeToUp.setAttribute( "xyz", coord[0], coord[0] , 0 );
 			
+			String father = n.getAttribute("father") ; // 		
 			
-			
-			
-			
-			
-			
-			
-			
+			nodeToUp.setAttribute("father", father);
+	
+		//
+		//	System.out.println(father);
 			
 		
-			
-			
-			
+		
+				idToUpdate++;
 		}
 		
+	//	System.out.println(seedGraph.getNodeCount() + " " + seedGraph.getNodeSet());
+		list = graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string) ;	//	System.out.println(list);
 		
+		 for  ( Node n : listNodeToUpdate ) {
+			 String id = n.getId();
+			 if ( list.contains(id) ) {
+				 seedGraph.removeNode(id);
+			 }
+		 }
+			System.out.println(seedGraph.getNodeCount() + " " + seedGraph.getNodeSet());
+			System.out.println(netGraph.getNodeCount() + " " + netGraph.getNodeSet());
+
 	}
 
 	@Override

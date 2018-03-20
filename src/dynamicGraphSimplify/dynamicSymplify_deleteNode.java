@@ -66,11 +66,13 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 			
 			if ( idFather == null )
 				continue ; 
-		
+			try {
+			
 			while ( !listNodeNet.contains(idFather)) 	
 				idFather = nFat.getAttribute("father");
 			
-			String idGranFat = nFat.getAttribute("father");
+			
+				String idGranFat = nFat.getAttribute("father");
 			Node nGranFat = graph.getNode(idGranFat);
 			
 			if ( idGranFat == null )	
@@ -93,6 +95,10 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 		
 			//	generateNetEdgeInRadiusFather.createEdgeOnlyFather(graph, n.getId(), idFather);	
 			getMapIdForGenerateEdge().put(id, idFather);	
+		}
+		 catch (java.lang.NullPointerException e) {
+			// TODO: handle exception
+		}
 		}
 	}	
 	

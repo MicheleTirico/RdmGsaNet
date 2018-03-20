@@ -88,6 +88,9 @@ public class generateNetEdgeInRadiusFather  implements generateNetEdge_Inter  {
 	@Override
 	public void setPivot(boolean createPivot, double maxDistPivot) {		// 	System.out.println(createPivot + " " + maxDistPivot);
 		
+		if ( createPivot == false)
+			return ; 
+		
 		ArrayList<String> listNodeNet = new ArrayList<String> (  
 				graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string ) ) ;
 	

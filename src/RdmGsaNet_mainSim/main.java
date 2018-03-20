@@ -26,6 +26,7 @@ import RdmGsaNet_generateGraph.generateNetNode.interpolation;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb;
+import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb_02;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather.genEdgeType;
 
 import RdmGsaNet_gsAlgo.gsAlgo;
@@ -51,7 +52,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 100 ;
+	private static int stopSim = 20 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -80,7 +81,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\02\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\06\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -100,7 +101,7 @@ public class main {
 //		/* create only one node					*/ new setupNetSeed()	
 		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-//		/* create a fistful of node 			*/ new setupNetFistfulNodes( 5 , typeRadius.square , 2 )
+//		/* create a fistful of node 			*/ new setupNetFistfulNodes( 4 , typeRadius.square , 2 )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -121,13 +122,15 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 8 , interpolation.averageEdge )	
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
-					new generateNetNodeVectorFieldSplitSeedProb		( 10 , layoutSeed.allNode, interpolation.sumVectors , true , true, 0.2, 60 , true ) 
+//					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
+
 			) ;
 	
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
-//			/* radius , which node to connect		*/	new generateNetEdgeNear( 2 , whichNode.all )
-					new generateNetEdgeInRadiusFather ( genEdgeType.onlyFather )
+			/* radius , which node to connect		*/	new generateNetEdgeNear( 2 , whichNode.all )
+//					new generateNetEdgeInRadiusFather ( genEdgeType.onlyFather )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
@@ -146,7 +149,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.solitions );			
+		setRdType ( RdmType.chaos );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -211,7 +214,7 @@ public class main {
 		// create layer od vector Field
 		vectorField.createLayer(gsGraph, vecGraph, doStoreStartVec);					//	System.out.println(vecGraph.getNodeCount());
 
-		generateNetEdge.setParameters_Pivot (true , 0.1);		
+		generateNetEdge.setParameters_Pivot (false , 0.1);		
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
@@ -248,10 +251,10 @@ public class main {
 		
 		// setup viz netGraph
 		handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
-		netViz.setupIdViz(false , netGraph, 1 , "black");
-		netViz.setupDefaultParam (netGraph, "black", "black", 5 , .1);
+		netViz.setupIdViz(false , netGraph, 10 , "black");
+		netViz.setupDefaultParam (netGraph, "black", "black", 3 , 0.5 );
 		netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;
-		netViz.setupFixScaleManual(true , netGraph, sizeGridEdge , 0);
+		netViz.setupFixScaleManual(false  , netGraph, sizeGridEdge , 0);
 		
 		//  setup viz gsGraph
 		handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz10Color , "gsInh", 1) ;	
@@ -262,8 +265,8 @@ public class main {
 		//  setup viz vecGraph
 		handleVizStype vecViz = new handleVizStype( vecGraph ,stylesheet.manual , "seedGrad", 1) ;
 		vecViz.setupIdViz(false, vecGraph, 4 , "black");
-		vecViz.setupDefaultParam (vecGraph, "black", "black", 1 , 0.5 );
-		vecViz.setupVizBooleanAtr(true, vecGraph, "black", "red" , true , false ) ;
+		vecViz.setupDefaultParam (vecGraph, "black", "black", 3 , 1 );
+		vecViz.setupVizBooleanAtr(true, vecGraph, "black", "black" , true , false ) ;
 		vecViz.setupFixScaleManual(true , vecGraph, sizeGridEdge , 0);
 		
 		// setup viz seed graph 

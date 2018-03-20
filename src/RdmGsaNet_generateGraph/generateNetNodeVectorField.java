@@ -96,6 +96,45 @@ public class generateNetNodeVectorField extends main  {
 		}
 	}
 	
+	protected static double [] getCoordAngleVector ( double coefImplemVect , double angleRad , double[] vector , double[] coordSeed ) {
+		
+		double[]coordNodes = new double[4];
+			
+		double 	intVect =  Math.pow(Math.pow(vector[0]  , 2 ) + Math.pow(vector[1]  , 2 ) , 0.5 ) ,
+				tan =  vector[1] / vector[0] ,
+				angleVector = 0.0 ;
+		
+		if 		( vector[0] > 0 && vector[1] > 0) 
+			angleVector = Math.atan(tan)  ;
+		
+		else if	 ( vector[0] < 0 && vector[1] < 0) 
+			angleVector = Math.atan(tan) + Math.PI  ;
+		
+		else if	 ( vector[0] > 0 && vector[1] < 0) 
+			angleVector =   Math.atan(tan) +  Math.PI  ;
+		
+		else if	 ( vector[0] < 0 && vector[1] > 0) 
+			angleVector =  Math.atan(tan) + 0.5 * Math.PI  ;
+			
+			
+		double 	angle1 = angleVector + angleRad ,
+				angle2 = angleVector - angleRad ,
+				
+				x1 = coordSeed[0] + intVect * Math.cos(angle1) ,
+				y1 = coordSeed[1] + intVect * Math.sin(angle1) ,
+				
+				x2 = coordSeed[0] + intVect * Math.cos(angle2) ,
+				y2 = coordSeed[1] + intVect * Math.sin(angle2) ;
+		
+		coordNodes[0] = x1 ;
+		coordNodes[1] = y1 ;
+		coordNodes[2] = x2 ;
+		coordNodes[3] = y2 ;
+		
+//		System.out.println(x1 + " "  + y1 );	System.out.println(x2 + " "  + y2 );
+		return coordNodes;
+	}
+	
 	
 
 }

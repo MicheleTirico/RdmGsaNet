@@ -12,7 +12,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 public class graphToolkit {
 	
-	public enum elementTypeToReturn { element , string }
+	public enum elementTypeToReturn { element , string , integer }
 	public elementTypeToReturn elementType ;
 	
 	public enum element { node , edge }
@@ -21,6 +21,8 @@ public class graphToolkit {
 	// get list of nodes 
 	public static ArrayList getListElement ( Graph graph , element element , elementTypeToReturn elementTypeToReturn  ) {
 		ArrayList list = new ArrayList () ;
+		ArrayList<String> listStr = new ArrayList<String> () ;
+
 		
 		switch (element) {
 			case edge: {
@@ -31,6 +33,11 @@ public class graphToolkit {
 				else if ( elementTypeToReturn.equals(elementTypeToReturn.string) )
 					for ( Edge e : graph.getEachEdge() )
 						list.add(e.getId());
+				
+				else if ( elementTypeToReturn.equals(elementTypeToReturn.integer ) )
+					for ( Edge e : graph.getEachEdge() ) 
+						listStr.add(e.getId());	
+					listStr.stream().forEach( s -> list.add(Integer.parseInt(s)));
 			}	break;
 			
 			case node : {
@@ -41,6 +48,11 @@ public class graphToolkit {
 				else if ( elementTypeToReturn.equals(elementTypeToReturn.string) )
 					for ( Node n : graph.getEachNode() )
 						list.add(n.getId());
+				
+				else if ( elementTypeToReturn.equals(elementTypeToReturn.integer ) )
+					for( Node n : graph.getEachNode() )
+						listStr.add(n.getId());
+					listStr.stream().forEach( s -> list.add(Integer.parseInt(s)));
 			}	break;
 		}
 		return list ;
@@ -219,13 +231,21 @@ public class graphToolkit {
 		
 	}
 	
-	
-	 
-	  public double pointToLineDistance(Point A, Point B, Point P) {
-		    double normalLength = Math.sqrt((B.x-A.x)*(B.x-A.x)+(B.y-A.y)*(B.y-A.y));
-		    return Math.abs((P.x-A.x)*(B.y-A.y)-(P.y-A.y)*(B.x-A.x))/normalLength;
-		  }
+	// get coordinate of node between
+	public static double[] getCoordNodeMean ( Node n1 , Node n2) {
 		
+		double[] 	coord = new double [2],
+					n1Coord = GraphPosLengthUtils.nodePosition(n1) ,
+					n2Coord = GraphPosLengthUtils.nodePosition(n2) ;
+		
+		double 	x = Math.min(n1Coord[0] , n2Coord[0]) + (n1Coord[0] - n2Coord[0]) * 0.5 ,
+				y = Math.min(n1Coord[1] , n2Coord[1]) + (n1Coord[1] - n2Coord[1]) * 0.5 ;
+		
+		coord[0] = x ;
+		coord[1] = y ;
+ 		
+		return coord ;
+	}
 	// get list of neighbor String
 	public static ArrayList getListNeighbor ( Graph graph , String idNode , elementTypeToReturn elementTypeToReturn ) {
 			

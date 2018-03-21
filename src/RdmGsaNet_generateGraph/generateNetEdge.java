@@ -24,7 +24,10 @@ public class generateNetEdge extends main {
 	private static generateNetEdge_Inter type ;
 	private static generateNetEdge growth ;
 	
-	public generateNetEdge ( generateNetEdge_Inter type) {
+	public  enum genEdgeType { onlyFather , fatherAndNodeInRadius , fatherAndSeed }
+	public genEdgeType genEdgeType ;
+	
+	public generateNetEdge ( generateNetEdge_Inter type ) {
 		this.type = type ;
 	}
 	

@@ -71,7 +71,7 @@ public class simulation extends main {
 		
 		if ( runSim == false ) 
 			return ;
-		
+			
 		generateNetEdge genNetEd = generateNetEdge ;
 		generateNetNode genNetNo = generateNetNode ;
 		vectorField vf = vectorField ;
@@ -91,6 +91,8 @@ public class simulation extends main {
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
+			
+			
 			if ( doStoreStepGs  == true )  	gsGraph.stepBegins(step);   			
 			if ( doStoreStepNet  == true)  	netGraph.stepBegins(step);  	
 			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
@@ -101,6 +103,9 @@ public class simulation extends main {
 
 			// method to handle first step
 			firstStep (step );	// System.out.println(mapMorp0);
+			
+			
+		
 			
 			/* run gs algo to all nodes
 				boolean print : if true, print mapMorp */
@@ -130,6 +135,10 @@ public class simulation extends main {
 			
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	
+	
+			if ( seedGraph.getNodeCount() <= 0 && step > 1 )
+				break ;
+			
 		}
 		
 		
@@ -140,6 +149,7 @@ public class simulation extends main {
 		if ( doStoreStepSeed == true)  	fsdSeed.end();	
 		
 		finalStep = step - 1 ;	
+		
 	}
 		
 // PRIVATE METHODS --------------------------------------------------------------------------------------------------------------

@@ -96,6 +96,8 @@ public class generateNetNodeVectorField extends main  {
 		}
 	}
 	
+	
+	// doesn't works
 	protected static double [] getCoordAngleVector ( double coefImplemVect , double angleRad , double[] vector , double[] coordSeed ) {
 		
 		double[]coordNodes = new double[4];
@@ -135,6 +137,30 @@ public class generateNetNodeVectorField extends main  {
 		return coordNodes;
 	}
 	
+	protected static double [] getNewCordAngle ( double coefInten , double [ ] nodeCoord ,  double [ ] vector , double radians ) {
+		
+		double [] newNodeCoord = new double [2] ;												//	System.out.println( Math.atan(vector[1] / vector[0] ) );
+		double 	alfa = 0.0 ;
+		
+		if 		( vector[0] > 0 && vector[1] > 0) 
+			alfa = Math.atan(vector[1] / vector[0] )  ;
+		
+		else if	 ( vector[0] < 0 && vector[1] < 0) 
+			alfa = Math.atan(vector[1] / vector[0] ) + Math.PI  ;
+		
+		else if	 ( vector[0] > 0 && vector[1] < 0) 
+			alfa =  Math.atan(vector[1] / vector[0] ) ;
+		
+		else if	 ( vector[0] < 0 && vector[1] > 0) 
+			alfa = - Math.atan(vector[1] / vector[0] ) + Math.PI  ;
+		
+		double	r =  Math.pow(Math.pow(vector[0]  , 2 ) + Math.pow(vector[1]  , 2 ) , 0.5 ) ;	//	System.out.println(alfa);
+		
+		newNodeCoord[0] = nodeCoord[0] + coefInten * r * Math.cos(alfa + radians) ;
+		newNodeCoord[1] = nodeCoord[1] + coefInten * r * Math.sin(alfa + radians) ;
+		
+		return newNodeCoord ;
+	}
 	
 
 }

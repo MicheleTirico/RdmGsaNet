@@ -50,4 +50,6 @@ public class graphGenerator {
 		graph.addEdge(idEdge, n0, n1 );
 		  	
 	}
+
+	
 }

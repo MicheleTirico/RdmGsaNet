@@ -58,6 +58,7 @@ public class generateNetNode extends main  {
 
 	public void generateNode ( int step ) throws IOException  {
 		type.generateNodeRule ( step ) ;
+		type.mergeNodeToEdgeRule ( step ) ;
 	} 
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------

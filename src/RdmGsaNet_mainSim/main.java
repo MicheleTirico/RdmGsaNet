@@ -56,7 +56,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 100 ;
+	private static int stopSim = 20 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -103,7 +103,7 @@ public class main {
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node					*/ new setupNetSeed()	
-		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4)
+		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 			*/ new setupNetFistfulNodes( 4 , typeRadius.square , 2 )
 		);
@@ -127,20 +127,19 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 5 , layoutSeed.allNode, interpolation.sumVectors , true , true, .5 , 45 , true ) 
-
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 5 , layoutSeed.allNode, interpolation.sumVectors , true , true , 0.4 , 30 , true ) 
 			) ;
 	
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
 //					new generateNetEdgeNear( 2 , whichNode.all )
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
-					new generateNetEdgeInRadiusFather_02 ( genEdgeType.onlyFather, 0.05 )
+					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .3 )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
-	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( false , netGraph , 0.1 , simplifyType.deleteNode) ; 
+	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , 0.5 , simplifyType.deleteNode ) ; 
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -256,7 +255,7 @@ public class main {
 			System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 			
 			// setup viz netGraph
-			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
+			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGraph", 1) ;
 			netViz.setupIdViz(false , netGraph, 10 , "black");
 			netViz.setupDefaultParam (netGraph, "black", "black", 6 , 0.5 );
 			netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;

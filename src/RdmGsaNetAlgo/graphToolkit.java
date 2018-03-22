@@ -238,8 +238,11 @@ public class graphToolkit {
 					n1Coord = GraphPosLengthUtils.nodePosition(n1) ,
 					n2Coord = GraphPosLengthUtils.nodePosition(n2) ;
 		
-		double 	x = Math.min(n1Coord[0] , n2Coord[0]) + (n1Coord[0] - n2Coord[0]) * 0.5 ,
-				y = Math.min(n1Coord[1] , n2Coord[1]) + (n1Coord[1] - n2Coord[1]) * 0.5 ;
+	//	System.out.println(n1 + " " + n1Coord[0] + " " + n1Coord[1]);
+	//	System.out.println(n2 + " " + n2Coord[0] + " " + n2Coord[1]);
+		
+		double 	x = Math.min(n1Coord[0] , n2Coord[0]) + Math.abs( (n1Coord[0] - n2Coord[0]) ) * 0.5 ,
+				y = Math.min(n1Coord[1] , n2Coord[1]) + Math.abs( (n1Coord[1] - n2Coord[1]) ) * 0.5 ;
 		
 		coord[0] = x ;
 		coord[1] = y ;

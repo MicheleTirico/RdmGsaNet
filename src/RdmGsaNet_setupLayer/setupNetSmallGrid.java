@@ -17,14 +17,18 @@ public class setupNetSmallGrid implements setupNet_Inter {
 	// get graphs
 	private static Graph gsGraph = layerGs.getGraph() ,
 							netGraph = layerNet.getGraph() ;
-		
+	
+	int idEdgeInt = 0 ;
+	int idNodeInt = 0 ;
 	// type grid
 	public enum typeGrid { grid4 , grid8 }
 	private static typeGrid type;
 	
+	private boolean setIdEdgeInt ;
 	// COSTRUCTOR
-	public setupNetSmallGrid( typeGrid type) {
+	public setupNetSmallGrid( typeGrid type , boolean setIdEdgeInt ) {
 		this.type = type ;
+		this.setIdEdgeInt = setIdEdgeInt  ;
 	}
 	
 	public void createLayerNet() {												//	System.out.println("create small grid");
@@ -39,7 +43,7 @@ public class setupNetSmallGrid implements setupNet_Inter {
 					listIdGsCon.add(nGs.getId());	}	
 		}		//	System.out.println(listIdGsCon);
 		
-		int idNet = 0 ;
+		
 		// create seed node in netGraph and set coordinate
 		for ( String id : listIdGsCon ) {
 					
@@ -50,11 +54,11 @@ public class setupNetSmallGrid implements setupNet_Inter {
 			double [] nGsCoordinate = GraphPosLengthUtils.nodePosition(nGs) ;						//	System.out.println(nGsCoordinate[0]);
 					
 			// create node in netGraph
-			netGraph.addNode(Integer.toString(idNet));
+			netGraph.addNode(Integer.toString(idNodeInt));
 			
 					
 			// set coordinate of node in netGraph
-			Node nNet = netGraph.getNode(Integer.toString(idNet)); 														//	System.out.println(nNet.getId());
+			Node nNet = netGraph.getNode(Integer.toString(idNodeInt)); 														//	System.out.println(nNet.getId());
 			nNet.setAttribute( "xyz", nGsCoordinate[0] , nGsCoordinate[1] , nGsCoordinate[2] );		//	double [] nNetCoordinate = GraphPosLengthUtils.nodePosition(nNet) ;			System.out.println(nNetCoordinate[0]);
 		
 			ArrayList<String> neigList = new ArrayList<String>();
@@ -64,13 +68,21 @@ public class setupNetSmallGrid implements setupNet_Inter {
 			case grid8: {	neigList = getListInRadiusGeom(netGraph, nNet, 1.5);	}	break;
 			}
 			
+			
 		for ( String idNeig : neigList ) {	
-			try 													{ 	
-				if ( nNet != netGraph.getNode(idNeig)  )
-					netGraph.addEdge(  nNet.getId() + "-" + idNeig ,  nNet , netGraph.getNode(idNeig) );	}
+			try { 	
+				if ( nNet != netGraph.getNode(idNeig)  ) { 	//	System.out.println(idEdgeInt);
+					if ( setIdEdgeInt ) {
+						netGraph.addEdge(Integer.toString(idEdgeInt), nNet, netGraph.getNode(idNeig)) ;
+						idEdgeInt++ ;
+					}
+					else if ( !setIdEdgeInt )
+						netGraph.addEdge(  nNet.getId() + "-" + idNeig ,  nNet , netGraph.getNode(idNeig) );	
+				}
+			}
 			catch (org.graphstream.graph.EdgeRejectedException e) 	{	continue;	}
 			}	
-		idNet++;
+		idNodeInt++;
 		}
 		
 	}

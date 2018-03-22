@@ -121,13 +121,17 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 					
 		}																			//	for ( int i : mapIdNewSeedCoord.keySet()) {		System.out.println(i + " " + mapIdNewSeedCoord.get(i)[0] + " " + mapIdNewSeedCoord.get(i)[1]);		}
 	
+	for ( Node n : netGraph.getEachNode() )
+		n.setAttribute("seedGrad", 0 );
+	
 	// update father and coord to seedGraph and netGraph
 	for ( int i: mapIdNewSeedCoord.keySet() ) {
 		
 		ArrayList<Integer> listIdNetIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;		//	System.out.println(listIdNetIntLocal);
+		ArrayList<Integer> listIdSeedIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;		//	System.out.println(listIdNetIntLocal);
 		
-		int idInt = 0 ;
-		while ( listIdNetIntLocal.contains(idInt)) 
+		int idInt =  Collections.max(listIdNetIntLocal) ; //Math.max(listIdNetIntLocal, b) ;
+		while ( listIdNetIntLocal.contains(idInt) && listIdSeedIntLocal.contains(idInt) ) 
 			idInt ++ ;
 		
 		String id = Integer.toString(idInt) ;			//	System.out.println(idInt);
@@ -147,6 +151,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		nodeNet.addAttribute("xyz", coord[0] , coord[1] , 0 );
 		nodeNet.addAttribute("father", father );	
 		
+		nodeNet.setAttribute("seedGrad", 1);
 	}
 	
 	

@@ -31,6 +31,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
+import RdmGsaNet_generateGraph.generateNetEdge;
 import RdmGsaNet_pr08.gsAlgo.reactionType;
 
 import java.util.Comparator;
@@ -1006,6 +1007,18 @@ public class gsAlgoToolkit {
 			      .map(Map.Entry::getKey)
 			      .collect(Collectors.toSet());	
 		}
+	
+	// method to return sorted map ( min -> max ) by values 
+	
+	public static Map getMapTopValues ( Map <String , Double> map , int limit ) {
+				
+		return  map.entrySet().stream()
+			       .sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
+			       .limit(limit)
+			       .collect(Collectors.toMap(
+			       Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+	}
 
 	// method to sorted map by values 
 	private static Map<Node, Double> getMapSortedByValue(Map unsortMap) {

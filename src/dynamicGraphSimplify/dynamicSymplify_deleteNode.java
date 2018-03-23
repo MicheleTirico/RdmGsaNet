@@ -21,13 +21,13 @@ import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 
-	private Graph 	graph = new SingleGraph("graph") ;
+	private Graph netGraph  = new SingleGraph("netGraph ") ;
 	private static Map< String , String > mapIdForGenerateEdge = new HashMap<String , String> () ; 
 	private double 	epsilon ;
 	
 	// constructor 
-	public dynamicSymplify_deleteNode( Graph graph , double epsilon ) {
-		this.graph = graph ;
+	public dynamicSymplify_deleteNode( Graph netGraph , double epsilon ) {
+		this.netGraph  = netGraph  ;
 		this.epsilon = epsilon; 
 	}
 
@@ -40,7 +40,7 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 	@Override
 	public void updateFatherAttribute(int step , Map<String, String> mapFather ) {	// System.out.println("nodeCount " +graph.getNodeCount());		System.out.println("epsilon " + epsilon);
 			
-		for ( Node n : graph.getEachNode() ) {
+		for ( Node n : netGraph .getEachNode() ) {
 			
 			String father = n.getAttribute("father") ;
 			mapFather.put(n.getId(), father) ;
@@ -53,52 +53,49 @@ public class dynamicSymplify_deleteNode  implements dynamicSymplify_inter {
 	@Override
 	public void handleGraphGenerator (int step ) {
 		ArrayList<String> listNodeNet = new ArrayList<String> (  
-				graphToolkit.getListElement(graph, element.node, elementTypeToReturn.string ) )  ;			// System.out.println("listNodeSeedGrad " + listNodeNet);
+				graphToolkit.getListElement(netGraph , element.node, elementTypeToReturn.string ) )  ;			// System.out.println("listNodeSeedGrad " + listNodeNet);
 	
 		mapIdForGenerateEdge.clear();
 				
-		for ( Node node : graph.getEachNode() ) {																//	System.out.println(n.getId() + n.getAttributeKeySet());
+		for ( Node node : netGraph.getEachNode() ) {																//	System.out.println(n.getId() + n.getAttributeKeySet());
 			
 			String 	id = node.getId()	,	
 					idFather = node.getAttribute("father");
 			
-			Node nFat = graph.getNode(idFather) ;
+			Node nFat = netGraph.getNode(idFather) ;
 			
 			if ( idFather == null )
 				continue ; 
 			try {
 			
-			while ( !listNodeNet.contains(idFather)) 	
-				idFather = nFat.getAttribute("father");
-			
-			
+				while ( !listNodeNet.contains(idFather)) 	
+					idFather = nFat.getAttribute("father");
+				
 				String idGranFat = nFat.getAttribute("father");
-			Node nGranFat = graph.getNode(idGranFat);
-			
-			if ( idGranFat == null )	
-				continue ;
-			
-			while ( !listNodeNet.contains(idGranFat)) 
-				idGranFat= nGranFat.getAttribute("father");													//	System.out.println( "idNodeSeed " + n.getId() + " idFather " + idFather + " granFat " + idGranFat  ) ;
-
-			double dist = graphToolkit.getDistNodeEdge(nGranFat, nFat, node, true);							//	System.out.println("dist " + dist);		System.out.println("epsilon " + epsilon );
-			
-			if ( dist > epsilon )
-				continue;
-			
-			else if ( dist < epsilon  ) {																	//	System.out.println("dist " + dist);	
-				graph.removeNode(nFat);
-				node.setAttribute("father", idGranFat);
-				idFather = idGranFat ;																		//	System.out.println( "idNodeSeed " + n.getId() + " idFather " + idFather + " granFat " + idGranFat  ) ;				
-			}																								//	System.out.println(n.getId() + " " + idFather );
+				Node nGranFat = netGraph.getNode(idGranFat);
+				
+				if ( idGranFat == null )	
+					continue ;
+				
+				while ( !listNodeNet.contains(idGranFat)) 
+					idGranFat= nGranFat.getAttribute("father");													//	System.out.println( "idNodeSeed " + n.getId() + " idFather " + idFather + " granFat " + idGranFat  ) ;
+	
+				double dist = graphToolkit.getDistNodeEdge(nGranFat, nFat, node, true);							//	System.out.println("dist " + dist);		System.out.println("epsilon " + epsilon );
+				
+				if ( dist > epsilon )
+					continue;
+				
+				else if ( dist < epsilon  ) {																	//	System.out.println("dist " + dist);	
+					netGraph.removeNode(nFat);
+					node.setAttribute("father", idGranFat);
+					idFather = idGranFat ;																		//	System.out.println( "idNodeSeed " + n.getId() + " idFather " + idFather + " granFat " + idGranFat  ) ;				
+				}																								//	System.out.println(n.getId() + " " + idFather );
 		
 		
-			//	generateNetEdgeInRadiusFather.createEdgeOnlyFather(graph, n.getId(), idFather);	
-			getMapIdForGenerateEdge().put(id, idFather);	
-		}
-		 catch (java.lang.NullPointerException e) {
-			// TODO: handle exception
-		}
+				//	generateNetEdgeInRadiusFather.createEdgeOnlyFather(graph, n.getId(), idFather);	
+				getMapIdForGenerateEdge().put(id, idFather);	
+			}
+			catch (java.lang.NullPointerException e) {		}
 		}
 	}	
 	

@@ -66,6 +66,7 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 			break ;
 			}
 			
+			int idEdgeInt = 0 ;
 			for ( Node nNet : netGraph.getEachNode() ) {
 				Map<String , Double > mapDist = gsAlgoToolkit.getMapIdDist(netGraph, nNet) ;		//	System.out.println(mapDist);
 				ArrayList<Double> listDist = new ArrayList<Double>(mapDist.values());
@@ -77,8 +78,13 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 					Set<String> setIdNear =  gsAlgoToolkit.getKeysByValue(mapDist, distMin) ;
 					String idNear = setIdNear.stream().findFirst().get() ;
 					Node nodeNear = netGraph.getNode(idNear) ;
+	
+					String idEdge = Integer.toBinaryString(idEdgeInt) ;
 					try {
-						createEdge(netGraph, nNet, nodeNear);
+						netGraph.addEdge(idEdge, nNet, nodeNear) ;
+						idEdgeInt++ ;
+//						createEdge(netGraph, nNet, nodeNear);
+						
 						break ; 
 					} catch ( org.graphstream.graph.EdgeRejectedException e) {
 						// TODO: handle exception

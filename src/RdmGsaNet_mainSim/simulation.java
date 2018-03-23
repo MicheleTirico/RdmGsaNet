@@ -91,8 +91,6 @@ public class simulation extends main {
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
 			
-			
-			
 			if ( doStoreStepGs  == true )  	gsGraph.stepBegins(step);   			
 			if ( doStoreStepNet  == true)  	netGraph.stepBegins(step);  	
 			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
@@ -105,8 +103,6 @@ public class simulation extends main {
 			firstStep (step );	// System.out.println(mapMorp0);
 			
 			
-		
-			
 			/* run gs algo to all nodes
 				boolean print : if true, print mapMorp */
 			gsAlgo.gsAlgoMain( false );
@@ -118,15 +114,15 @@ public class simulation extends main {
 			
 	
 			//		for ( Node n : netGraph.getEachNode())		System.out.println(n.getAttributeKeySet() ) ; 
-
-			dynamicSymplify.compute( step );					// dynamicSymplify.computeTest();
-			
+	
 			// update net 
 			updateMapStepId ( step , netGraph , mapStepIdNet );
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );
 			
-			if ( genEdge == true) {genNetEd.generateEdge( step ); }
+			if ( genEdge == true) genNetEd.generateEdge( step ); 
 
+			dynamicSymplify.compute( step );					// dynamicSymplify.computeTest();
+			
 			// create list and map
 			listIdNet = createListId ( netGraph );	
 			

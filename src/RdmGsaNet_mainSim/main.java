@@ -56,7 +56,8 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 20 ;
+	private static int stopSim = 100
+			;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -85,7 +86,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\01\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedProb\\test\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -105,7 +106,7 @@ public class main {
 //		/* create only one node					*/ new setupNetSeed()	
 		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
 //		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-//		/* create a fistful of node 			*/ new setupNetFistfulNodes( 4 , typeRadius.square , 2 )
+//		/* create a fistful of node 			*/ new setupNetFistfulNodes( 50 , typeRadius.square , 2 )
 		);
 	
 	// get  Graphs ( only to test results ) 
@@ -127,19 +128,19 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 5 , layoutSeed.allNode, interpolation.sumVectors , true , true , 0.4 , 30 , true ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.4 , 45 , true , 2 ) 
 			) ;
 	
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
 //					new generateNetEdgeNear( 2 , whichNode.all )
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
-					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .3 )
+					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , 1 )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
-	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , 0.5 , simplifyType.deleteNode ) ; 
+	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( false , netGraph , seedGraph , .1 , simplifyType.kNearestNeighbors ) ; 
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -153,7 +154,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.chaos );			
+		setRdType ( RdmType.mazes );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -218,7 +219,7 @@ public class main {
 		// create layer od vector Field
 		vectorField.createLayer(gsGraph, vecGraph, doStoreStartVec);					//	System.out.println(vecGraph.getNodeCount());
 
-		generateNetEdge.setParameters_Pivot (false , 0.1);		
+		generateNetEdge.setParameters_Pivot (false , 0.5);		
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 
@@ -243,6 +244,10 @@ public class main {
 		//get seedAlive
 	//	int seedAlive = getSeedAlive(false);
 		
+		for ( Node n : netGraph.getEachNode() )
+			if ( n.getDegree() < 1 )
+				System.out.println(n);
+		
 	//	ArrayList listIdNetSeedGrad = getListIdWithAttribute( false , netGraph, "seedGrad");
 		printNodeSetAttribute(false , gsGraph) ;
 		printEdgeSetAttribute(false , netGraph) ;
@@ -255,7 +260,7 @@ public class main {
 			System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 			
 			// setup viz netGraph
-			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGraph", 1) ;
+			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
 			netViz.setupIdViz(false , netGraph, 10 , "black");
 			netViz.setupDefaultParam (netGraph, "black", "black", 6 , 0.5 );
 			netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;

@@ -24,9 +24,9 @@ public class analysisMultiLayer extends analysisMain  {
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
 			/* run								*/	true ,
 			/* gsViz							*/ 	true ,
-			/* netViz							*/	false,	
-			/* vecViz							*/	false ,		
-			/* SeedViz							*/	false ,	
+			/* netViz							*/	true,	
+			/* vecViz							*/	true ,		
+			/* SeedViz							*/	true ,	
 			/* compute Global correlation 		*/	false
 			);
 		

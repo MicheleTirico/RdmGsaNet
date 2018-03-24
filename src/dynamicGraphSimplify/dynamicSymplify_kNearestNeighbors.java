@@ -19,7 +19,6 @@ public class dynamicSymplify_kNearestNeighbors implements dynamicSymplify_inter 
 	private Graph 	netGraph = new SingleGraph("netGraph") ,
 					seedGraph = new SingleGraph("seedGraph") ;
 	
-	private static Map< String , String > mapIdForGenerateEdge = new HashMap<String , String> () ; 
 	private double 	epsilon ;
 	
 	// constructor 
@@ -68,14 +67,10 @@ public class dynamicSymplify_kNearestNeighbors implements dynamicSymplify_inter 
 		//	System.out.println(idSeed);
 			
 			Node nodeSeed = seedGraph.getNode(idSeed) ;
-			Node nodeNetSeed = netGraph.getNode(idSeed) ;
-			
-			// System.out.println(netGraph.getNodeSet());
+			Node nodeNetSeed = netGraph.getNode(idSeed) ;			// System.out.println(netGraph.getNodeSet());			
 			
 			ArrayList<String> listIdNeig = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idSeed, elementTypeToReturn.string)) ;
-		//	if ( !listIdNeig.isEmpty())			System.out.println(listIdNeig);
-			
-			
+	
 			for ( String idNeig : listIdNeig ) {
 			
 				ArrayList<String> listIdNeig2 = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idNeig , elementTypeToReturn.string)) ;
@@ -96,33 +91,20 @@ public class dynamicSymplify_kNearestNeighbors implements dynamicSymplify_inter 
 					if ( dist > epsilon )
 						continue;
 					
-					else if ( dist < epsilon  ) {	//	
-				//		System.out.println("nodeNetSeed " + nodeNetSeed ) ;
-				//		System.out.println("nodeFat " + nodeFat ) ;
-				//		System.out.println("nodeGranFat " + nodeGranFat ) ;
-				//		System.out.println("dist " + dist);	
+					else if ( dist < epsilon  ) {	//			//		System.out.println("nodeNetSeed " + nodeNetSeed ) ;		//		System.out.println("nodeFat " + nodeFat ) ;			//		System.out.println("nodeGranFat " + nodeGranFat ) ;		//		System.out.println("dist " + dist);	
 						
 						listIdEdgeInt = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.integer)) ;			
 						int idEdgeInt = Collections.max(listIdEdgeInt) ;		
-					
 						while ( listIdEdgeInt.contains(idEdgeInt))
 							idEdgeInt++ ;
 
 						String idEdge = Integer.toString(idEdgeInt) ;
 						netGraph.addEdge(idEdge, nodeNetSeed, nodeGranFat) ;
 						
-						netGraph.removeNode(nodeFat);
-						
-						
+						netGraph.removeNode(nodeFat);	
 					}																						
-				}
-				
-				
+				}	
 			}
 		}
-			
-
-	
-	}
-		
+	}		
 }

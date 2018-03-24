@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
@@ -80,92 +81,6 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 	@Override
 	public void removeEdgeRule(double step) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPivot(boolean createPivot, double maxDistPivot) {
-	
-		if ( createPivot == false)
-			return ; 
-		
-		ArrayList<String> listIdSeed = new ArrayList<String>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
-		
-		ArrayList<Integer> listIdEdgeInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.integer)) ;		
-		ArrayList<Integer> listIdSeedInt = new ArrayList<Integer>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;
-		ArrayList<Integer> listIdNetInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;
-		
-		for ( String idSeed : listIdSeed ) {
-			
-			Node nodeSeedNet = netGraph.getNode(idSeed) ;
-			ArrayList<String> listIdNeig = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idSeed, elementTypeToReturn.string)) ;
-			
-			if (listIdNeig.isEmpty())
-				continue ;
-			
-			for ( String idNeig : listIdNeig ) {
-				
-				Node nodeNeig = netGraph.getNode(idNeig);
-			
-				double distNeig = gsAlgoToolkit.getDistGeom(nodeSeedNet, nodeNeig ) ;
-				
-				int numPivot = (int) (distNeig / maxDistPivot ) ;
-			
-				if ( distNeig < maxDistPivot )
-					continue ;
-				
-				
-				
-				else if ( distNeig >= maxDistPivot ) {
-					
-					double[] seedCoord = GraphPosLengthUtils.nodePosition(nodeSeedNet);
-					double[] neigCoord = GraphPosLengthUtils.nodePosition(nodeNeig);
-					
-					double[] distNeigAx = new double[2] ;
-					
-					distNeigAx[0] = Math.abs(seedCoord[0] - neigCoord[0] );
-					distNeigAx[1] = Math.abs(seedCoord[1] - neigCoord[1] );
-					
-					for ( int i = 1 ; i <= numPivot ; i++ ) {
-						
-						double[] pivotCoord = new double [2] ;
-						
-						pivotCoord [0] = seedCoord[0] + i / distNeigAx[0];
-						pivotCoord [1] = seedCoord[1] + i / distNeigAx[1];
-					
-						int idPivotInt = Collections.max(listIdNetInt) + 1 ;
-					
-						while ( listIdNetInt.contains(idPivotInt))
-							idPivotInt++;
-						
-						String idPivot = Integer.toString(idPivotInt);
-						
-						netGraph.addNode(idPivot);
-						Node nodePivot = netGraph.getNode(idPivot) ;
-						
-						nodePivot.setAttribute ( "xyz", pivotCoord [0] , pivotCoord [1] , 0 ) ;
-					
-						int idEdgeInt = Collections.max(listIdEdgeInt) ;
-						
-						while ( listIdEdgeInt.contains(idEdgeInt))
-							idEdgeInt++;
-						
-						String idEdge = Integer.toString(idEdgeInt);
-						
-						netGraph.addEdge(idEdge, nodePivot, nodeSeedNet);
-						idEdgeInt++;
-						
-						idEdge = Integer.toString(idEdgeInt);
-						netGraph.addEdge(idEdge, nodePivot, nodeNeig);
-						
-					//	netGraph.getEdge(nodePivot , nodeNeig) ;
-					}
-					
-				}
-			
-			}
-			
-		}
 		
 	}
 
@@ -467,6 +382,8 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 			}
 		}
 	}
+
+
 	
 	
 	

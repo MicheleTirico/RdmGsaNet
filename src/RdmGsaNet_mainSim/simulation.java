@@ -112,9 +112,6 @@ public class simulation extends main {
 			// define rules to growth network
 			if ( genNode == true) { genNetNo.generateNode( step ); }
 			
-	
-			//		for ( Node n : netGraph.getEachNode())		System.out.println(n.getAttributeKeySet() ) ; 
-	
 			// update net 
 			updateMapStepId ( step , netGraph , mapStepIdNet );
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );
@@ -133,8 +130,7 @@ public class simulation extends main {
 			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	
 	
 			if ( seedGraph.getNodeCount() <= 0 && step > 1 )
-				break ;
-			
+				break ;			
 		}
 		
 		

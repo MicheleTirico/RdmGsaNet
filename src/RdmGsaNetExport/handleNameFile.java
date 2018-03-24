@@ -125,7 +125,8 @@ public class handleNameFile {
 		return	"maxStep_" + maxStep +
 				 "_" + genNode +
 				 "_" + genEdge +
-				 "_prob_" + generateNetNodeGradient.getProb();
+				 "_prob_" + generateNetNode.getProb();
+	//	System.out.println(generateNetNode.getProb());
 		}
 	
 	public static  String getPathFile ( typeFile typeFile , boolean setManualPath , String manualPath ) {

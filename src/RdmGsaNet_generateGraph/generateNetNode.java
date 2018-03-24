@@ -36,7 +36,7 @@ public class generateNetNode extends main  {
 	protected String morp;
 	
 	// probability costants 
-	static double  prob = 0 ;
+	public static  double  prob = 0 ;
 	
 	// VARIABLES 
 	// map
@@ -53,6 +53,8 @@ public class generateNetNode extends main  {
 
 	// constructor
 	public generateNetNode (generateNetNode_Inter type ) {
+		prob = generateNetNodeVectorFieldSplitSeedProb_02.getProb();
+		
 		this.type = type ;
 	}
 
@@ -171,8 +173,12 @@ public class generateNetNode extends main  {
 		
 	
 // GET METHODS --------------------------------------------------------------------------------------------------------
-	public static generateNetNode 	getGenerateNode () { return growth ; }
-	public static String 			getGenerateType () { return type.getClass().getSimpleName(); }
+	public static generateNetNode 	getGenerateNode () 	{ return growth ; }
+	public static String 			getGenerateType () 	{ return type.getClass().getSimpleName(); }
+	public static double 			getProb() 			{ return prob; }
+
+
+
 }
 	
 	

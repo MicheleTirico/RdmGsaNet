@@ -128,7 +128,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.4 , 45 , true , 2 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.4 , 90 , true , 10 ) 
 			) ;
 	
 
@@ -144,7 +144,10 @@ public class main {
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
-			
+	
+		
+		dynamicSymplify.setParameters_Pivot( true , 0.5 );
+		
 		// setup handle name file 
 		handle = new handleNameFile( 
 			/* handle file 					*/ true , 
@@ -219,7 +222,7 @@ public class main {
 		// create layer od vector Field
 		vectorField.createLayer(gsGraph, vecGraph, doStoreStartVec);					//	System.out.println(vecGraph.getNodeCount());
 
-		generateNetEdge.setParameters_Pivot (false , 0.5);		
+//		generateNetEdge.setParameters_Pivot ( true , 0.2 );		
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------			
 		simulation.runSim( 

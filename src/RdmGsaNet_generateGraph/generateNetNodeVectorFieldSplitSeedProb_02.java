@@ -20,7 +20,7 @@ import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 
 public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeVectorField implements generateNetNode_Inter {
 	// parameters only this class
-	private double prob ;
+	private static double prob ;
 	private double angleVectorNewSeed ;
 	private boolean stillAlive ;
 	private double radians ;
@@ -39,6 +39,8 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		this.coefInten = coefInten ;
 		
 		radians = Math.toRadians(angleVectorNewSeed) ; 
+		
+		
 	}
 
 	@Override
@@ -107,7 +109,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 				idLocal++ ;				
 			}
 			
-			else if ( numberNewSeed > 1) {		//	System.out.println();	//	System.out.println("node " + nodeCoord[0] + " " + nodeCoord[1] );	//	System.out.println("vector " + vector[0] + " " + vector[1] );
+			else if ( numberNewSeed > 1 ) {		//	System.out.println();	//	System.out.println("node " + nodeCoord[0] + " " + nodeCoord[1] );	//	System.out.println("vector " + vector[0] + " " + vector[1] );
 				
 				double[] newNodesCoord = new double [2] ;
 				
@@ -191,7 +193,6 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		// TODO Auto-generated method stub
 		
 	}
-
 	
 	@Override
 	public void mergeNodeToEdgeRule(int step) {				// System.out.println(super.getClass().getSimpleName());
@@ -205,5 +206,6 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		
 	}
 	
+	public static double 			getProb() 			{ return prob; }
 	
 }

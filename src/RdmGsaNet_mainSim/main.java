@@ -56,8 +56,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 100
-			;
+	private static int stopSim = 500	;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -86,7 +85,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedProb\\test\\" ;
+	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\01\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -128,7 +127,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.4 , 90 , true , 10 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.15 , 90 , true , 3 ) 
 			) ;
 	
 
@@ -140,7 +139,7 @@ public class main {
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
-	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( false , netGraph , seedGraph , .1 , simplifyType.kNearestNeighbors ) ; 
+	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , seedGraph , .1 , simplifyType.kNearestNeighbors ) ; 
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -263,7 +262,7 @@ public class main {
 			System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 			
 			// setup viz netGraph
-			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
+			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "merge", 1) ;
 			netViz.setupIdViz(false , netGraph, 10 , "black");
 			netViz.setupDefaultParam (netGraph, "black", "black", 6 , 0.5 );
 			netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;

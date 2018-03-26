@@ -12,8 +12,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 
-import RdmGsaNet_pr08.*;
-
 public class graphAnalysis {
 	
 	private static Graph gsGraph = layerGs.getGraph();

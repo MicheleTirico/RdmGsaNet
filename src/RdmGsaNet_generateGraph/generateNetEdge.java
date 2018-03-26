@@ -33,7 +33,7 @@ public class generateNetEdge extends main {
 	
 	public void generateEdge ( double step ) {
 		type.generateEdgeRule ( step ) ;
-		type.setPivot(createPivot, maxDistPivot);		
+
 	}
 	
 	public void setParameters_Pivot ( boolean createPivot , double maxDistPivot ) {

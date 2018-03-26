@@ -44,19 +44,19 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 	public void generateEdgeRule ( double step ) {
 		
 		// list node element
-		ArrayList <Node> listNodeSeed = new ArrayList<Node> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element));	// System.out.println(listNodeSeed);	
-		ArrayList <Node> listNodeNet = new ArrayList<Node>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.element));		//	System.out.println(listNodeNet);
-				
+//		ArrayList <Node> listNodeSeed = new ArrayList<Node> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element));	// System.out.println(listNodeSeed);	
+//		ArrayList <Node> listNodeNet = new ArrayList<Node>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.element));		//	System.out.println(listNodeNet);
+//				
 		// list id string
-		ArrayList <String> listIdNet = new ArrayList<String>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listNodeNet);
-		ArrayList <String> listIdSeed = new ArrayList<String> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listNodeNet);
+//		ArrayList <String> listIdNet = new ArrayList<String>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listNodeNet);
+//		ArrayList <String> listIdSeed = new ArrayList<String> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listNodeNet);
 			 
 		// list id int
-		ArrayList<Integer> listIdNetInt = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;			
-		ArrayList<Integer> listIdSeedInt = new ArrayList<Integer>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;			
+//		ArrayList<Integer> listIdNetInt = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;			
+//		ArrayList<Integer> listIdSeedInt = new ArrayList<Integer>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;			
 
 		// list id edge int
-		ArrayList<Integer> listIdEdgeNet = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.string)) ;			
+//		ArrayList<Integer> listIdEdgeNet = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.string)) ;			
 				
 		// print
 //		System.out.println(seedGraph + " " + listIdSeedInt.size() + " " + listIdSeedInt );
@@ -100,7 +100,6 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 			
 //		Map< Integer , String[] > mapNewNodeFathers = new HashMap< Integer , String[] > ();
 		
-		
 		for ( String idSeed : listIdSeed ) {	//	System.out.println(nSeed);
 			
 			listIdSeed = new ArrayList<String>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
@@ -110,9 +109,8 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 					seedGraph.removeNode(idSeed);
 				}
 				catch (org.graphstream.graph.ElementNotFoundException e) {		}
-					
-				continue ;
 			}
+			
 			Node nodeSeed , nodeNet ;
 			try {
 				nodeSeed = seedGraph.getNode(idSeed) ;						// 	System.out.println(nodeSeed);
@@ -123,9 +121,9 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 				continue ;
 			}
 			
-			for ( Node n : netGraph.getEachNode()) {
-				String fat = n.getAttribute("father");						//	System.out.println(n+ " fat " + fat);
-			}
+	//		for ( Node n : netGraph.getEachNode()) {
+		//		String fat = nodeNet.getAttribute("father");						//	System.out.println(n+ " fat " + fat);
+	//		}
 			
 			String idFather = nodeNet.getAttribute("father");			
 			
@@ -144,8 +142,8 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 			try {
 				netGraph.addEdge(idEdge, idSeed, idFather );
 			}
-			catch ( org.graphstream.graph.IdAlreadyInUseException e ) {		}
-			catch ( org.graphstream.graph.ElementNotFoundException e) {		}
+			catch ( org.graphstream.graph.IdAlreadyInUseException e ) { e.printStackTrace();	}
+			catch ( org.graphstream.graph.ElementNotFoundException e) {	e.printStackTrace();	}
 			
 			Map <String , Double> mapDistNet = generateNetEdge.getMapIdDist( netGraph , nodeNet ) ;	//	double minDist = mapDistNet.values().stream().mapToDouble(valstat -> valstat).min().getAsDouble();			
 			Map < String , Double > mapTopDist = gsAlgoToolkit.getMapTopValues(mapDistNet, 10) ;	//		Set<String> setIdNear = gsAlgoToolkit.getKeysByValue(mapDistNet, minDist ); 
@@ -223,12 +221,15 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 					
 						for ( String s : listIdNodeToAddEdge ) {
 							try {
+								
+								idEdgeInt ++ ;
+								idEdge = Integer.toString(idEdgeInt) ; 
 								netGraph.addEdge(idEdge, idNode , s );
 								idEdgeInt ++ ;
 							}
-							catch (org.graphstream.graph.IdAlreadyInUseException e) 	{	}
-							catch (org.graphstream.graph.EdgeRejectedException e ) 		{	}
-							catch ( org.graphstream.graph.ElementNotFoundException e)	{	}
+				//			catch (org.graphstream.graph.IdAlreadyInUseException e) 	{  continue;	}
+							catch (org.graphstream.graph.EdgeRejectedException e ) 		{  continue;	}
+							catch ( org.graphstream.graph.ElementNotFoundException e)	{  continue;	}
 						}
 					
 						idNetInt ++ ;

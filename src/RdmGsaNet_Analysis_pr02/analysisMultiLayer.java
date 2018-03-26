@@ -12,7 +12,6 @@ import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
-import RdmGsaNet_Analysis.analysisDGSCombinedLayer;
 import RdmGsaNet_Analysis_pr02.analysisDGSmultiLayer.correlationValGs;
 import RdmGsaNet_Analysis_pr02.analysisDGSmultiLayer.correlationValNet;
 

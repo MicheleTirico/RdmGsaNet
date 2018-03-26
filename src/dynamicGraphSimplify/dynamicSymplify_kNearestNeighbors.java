@@ -62,11 +62,9 @@ public class dynamicSymplify_kNearestNeighbors implements dynamicSymplify_inter 
 		// list id edge int
 		ArrayList<Integer> listIdEdgeInt = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.integer)) ;			
 
-		for ( String idSeed :  listIdSeed ) {
-			
-		//	System.out.println(idSeed);
-			
-			Node nodeSeed = seedGraph.getNode(idSeed) ;
+		for ( String idSeed :  listIdSeed ) {						//	System.out.println(idSeed);	
+		
+			//	Node nodeSeed = seedGraph.getNode(idSeed) ;
 			Node nodeNetSeed = netGraph.getNode(idSeed) ;			// System.out.println(netGraph.getNodeSet());			
 			
 			ArrayList<String> listIdNeig = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idSeed, elementTypeToReturn.string)) ;
@@ -99,9 +97,16 @@ public class dynamicSymplify_kNearestNeighbors implements dynamicSymplify_inter 
 							idEdgeInt++ ;
 
 						String idEdge = Integer.toString(idEdgeInt) ;
-						netGraph.addEdge(idEdge, nodeNetSeed, nodeGranFat) ;
-						
-						netGraph.removeNode(nodeFat);	
+						try {
+
+							netGraph.addEdge(idEdge, nodeNetSeed, nodeGranFat) ;
+							netGraph.removeNode(nodeFat);	
+							
+						}
+						catch (org.graphstream.graph.EdgeRejectedException e) {
+							continue;
+						}
+					
 					}																						
 				}	
 			}

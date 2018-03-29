@@ -11,6 +11,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import RdmGsaNetAlgo.graphToolkit.element;
+import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
 public class graphGenerator {
 	
@@ -54,7 +55,7 @@ public class graphGenerator {
 		  	
 	}
 	
-public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNodes , double[] meanPointCoord , double radius ) {
+	public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNodes , double[] meanPointCoord , double radius , int randomSeed ) {
 		
 		ArrayList<Node> listNodes = new ArrayList<Node> () ;
 		
@@ -65,7 +66,7 @@ public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNod
 		
 		double sizeSquare = maxX - minX ;
 		
-		Random rnd = new Random();
+		Random rnd = new Random(randomSeed);
 	
 		int idMaxInt = graphToolkit.getMaxIdIntElement(graph, element.node)  ;	//	System.out.println(idMaxInt);
 		
@@ -82,11 +83,34 @@ public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNod
 			
 			listNodes.add(newNode); 
 		}
-		
-		
 		return listNodes;
 	}
-	
 
-	
+
+	// create  complete graph
+	public static void createCompleteGraph ( Graph graph , int numberOfNode , double[] meanPointCoord , double radius , int randomSeed ) {
+		
+		ArrayList<Node> listNode = new ArrayList<Node> ( graphGenerator.createListNodeInSquare(graph, numberOfNode, meanPointCoord, radius, randomSeed) ) ;
+		ArrayList<Integer> listEdgeInt = graphToolkit.getListElement(graph, element.edge, elementTypeToReturn.integer) ;
+		
+		int idEdegeInt = 0 ;
+		for ( Node n : graph.getEachNode()) {
+			
+			for ( Node n2 :listNode ) {
+				if ( n2 == n ) 
+					continue ;
+				listEdgeInt = graphToolkit.getListElement(graph, element.edge, elementTypeToReturn.integer) ;
+				while ( listEdgeInt.contains(idEdegeInt))
+					idEdegeInt++ ;
+				
+				String idEdge = Integer.toString(idEdegeInt) ;
+				try {
+					graph.addEdge(idEdge, n, n2);
+				}
+				catch (org.graphstream.graph.EdgeRejectedException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+	}
 }

@@ -125,8 +125,7 @@ public class handleNameFile {
 		return	"maxStep_" + maxStep +
 				 "_" + genNode +
 				 "_" + genEdge +
-				 "_prob_" + generateNetNode.getProb();
-	//	System.out.println(generateNetNode.getProb());
+				 "_prob_" + generateNetNode.getProb(); 	//	System.out.println(generateNetNode.getProb());
 		}
 	
 	public static  String getPathFile ( typeFile typeFile , boolean setManualPath , String manualPath ) {
@@ -259,8 +258,15 @@ public class handleNameFile {
 		 return nameFileComplete;		
 	}
 	
-	// private met
-		public static String getFirstletterString ( String string , int startCharPos ,int finalCharPos ) {
-			return string.substring(startCharPos, finalCharPos); 		
-		}
+	public static String getFirstletterString ( String string , int startCharPos ,int finalCharPos ) {
+		return string.substring(startCharPos, finalCharPos); 		
+	}
+	
+	public static String getParent ( String folder ) {
+		File file = new File (folder) ;
+		
+		return file.getParent()  + "\\";
+	}
+		
+	
 }

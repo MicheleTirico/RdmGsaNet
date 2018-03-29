@@ -137,7 +137,7 @@ public class generateNetNodeVectorField extends main  {
 		return coordNodes;
 	}
 	
-	protected static double [] getNewCordAngle ( double coefInten , double [ ] nodeCoord ,  double [ ] vector , double radians ) {
+	protected static double [] getNewCordAngle ( double coefInten , double [ ] nodeCoord ,  double [ ] vector , double radians , double maxDistImplem ) {
 		
 		double [] newNodeCoord = new double [2] ;												//	System.out.println( Math.atan(vector[1] / vector[0] ) );
 		double 	alfa = 0.0 ;
@@ -157,7 +157,13 @@ public class generateNetNodeVectorField extends main  {
 		double	r =  Math.pow(Math.pow(vector[0]  , 2 ) + Math.pow(vector[1]  , 2 ) , 0.5 ) ;	//	System.out.println(alfa);
 		
 		newNodeCoord[0] = nodeCoord[0] + coefInten * r * Math.cos(alfa + radians) ;
+	
+		if (Math.abs(newNodeCoord[0] - nodeCoord[0] ) > maxDistImplem )
+			newNodeCoord[0] = nodeCoord[0] + maxDistImplem ;
+		
 		newNodeCoord[1] = nodeCoord[1] + coefInten * r * Math.sin(alfa + radians) ;
+		if (Math.abs(newNodeCoord[1] - nodeCoord[1] ) > maxDistImplem )
+			newNodeCoord[1] = nodeCoord[1] + maxDistImplem ;
 		
 		return newNodeCoord ;
 	}

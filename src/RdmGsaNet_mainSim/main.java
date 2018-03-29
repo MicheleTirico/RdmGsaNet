@@ -57,7 +57,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 2000 ;
+	private static int stopSim = 1500 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -107,7 +107,7 @@ public class main {
 //		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 10 , typeRadius.square , 20 , false )
-		/* create multi graph 			*/ new setupNetMultiGraph(5, 20.0, 30 , 0.5 , false)
+		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 30 , 1 , false, 122  )
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -129,14 +129,14 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.07, 90 , true , 10 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.08 , 90 , true , 10 ) 
 			) ;
 	
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
 //					new generateNetEdgeNear( 2 , whichNode.all )
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
-					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , 1 )
+					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , 0.7 )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
@@ -154,7 +154,7 @@ public class main {
 			/* handle file 					*/ true , 
 			getFolder() ,
 			/* create new folder ? 			*/ true ,
-			/* manual name file (no in main */ " "
+			/* manual name file-no in main 	*/ " "
 			);		
 
 		// setup type RD

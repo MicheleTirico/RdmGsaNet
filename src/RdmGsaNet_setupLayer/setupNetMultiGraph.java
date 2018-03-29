@@ -19,24 +19,21 @@ public class setupNetMultiGraph implements setupNet_Inter {
 		private static Graph 	gsGraph = layerGs.getGraph() ,
 								netGraph = layerNet.getGraph() ;
 		
-		int idEdgeInt = 0 ;
-		int idNodeInt = 0 ;
 		double radiusStartPoint , raidiusSmallGraph  ;
-		
+		int randomSeed ;
 		
 		private int numberStartPoint ;
 		private int sizeGraph ;
 		private boolean createEdge ;		
 		
-		public setupNetMultiGraph(int numberStartPoint , double radiusStartPoint , int sizeGraph , double raidiusSmallGraph , boolean createEdge ) {
+		public setupNetMultiGraph(int numberStartPoint , double radiusStartPoint , int sizeGraph , double raidiusSmallGraph , boolean createEdge , int randomSeed ) {
 			this.numberStartPoint = numberStartPoint ;
 			this.sizeGraph = sizeGraph ;
 			this.radiusStartPoint = radiusStartPoint ;
 			this.createEdge  = createEdge  ;
 			this.raidiusSmallGraph = raidiusSmallGraph ;
+			this.randomSeed = randomSeed ;
 		}
-		
-
 	
 	
 	@Override
@@ -56,12 +53,12 @@ public class setupNetMultiGraph implements setupNet_Inter {
 		
 		netGraph.removeNode(nodeCenter ) ;
 		
-		ArrayList<Node> listNodes = graphGenerator.createListNodeInSquare(netGraph, numberStartPoint, meanPointCoord, radiusStartPoint ) ;	//	
+		ArrayList<Node> listNodes = graphGenerator.createListNodeInSquare(netGraph, numberStartPoint, meanPointCoord, radiusStartPoint , randomSeed ) ;	//	
 		System.out.println(listNodes);		System.out.println(netGraph.getNodeCount() );
 		
 		for ( Node nodeCenterSmallGraph : listNodes) {
 			double[] nCoord  = GraphPosLengthUtils.nodePosition(nodeCenterSmallGraph) ;		
-			ArrayList<Node> listNodeMultiGraph = graphGenerator.createListNodeInSquare(netGraph, sizeGraph, nCoord, raidiusSmallGraph );
+			ArrayList<Node> listNodeMultiGraph = graphGenerator.createListNodeInSquare(netGraph, sizeGraph, nCoord, raidiusSmallGraph , randomSeed );
 	//		System.out.println(listNodeMultiGraph);
 		}
 //		System.out.println(listNodes);		System.out.println(netGraph.getNodeCount() );

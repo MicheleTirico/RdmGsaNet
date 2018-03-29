@@ -22,7 +22,6 @@ public class analysisMultiLayer extends analysisMain  {
 	
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
 			/* run								*/	true ,
-			
 			/* gsViz							*/ 	true ,
 			/* netViz							*/	true,	
 			/* vecViz							*/	true ,		
@@ -30,7 +29,7 @@ public class analysisMultiLayer extends analysisMain  {
 			/* compute Global correlation 		*/	false
 			);
 		
-	public static void main ( String[ ] args ) throws IOException, InterruptedException {
+	public static void main ( String[ ] args ) throws IOException, InterruptedException { 
 	
 		combinedAnalysis.setParametersCorrelation(correlationValGs.gsInh, correlationValNet.degree, 1 );
 		

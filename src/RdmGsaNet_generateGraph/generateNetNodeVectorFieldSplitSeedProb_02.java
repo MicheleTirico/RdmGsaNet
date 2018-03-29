@@ -38,9 +38,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		this.stillAlive = stillAlive ;
 		this.coefInten = coefInten ;
 		
-		radians = Math.toRadians(angleVectorNewSeed) ; 
-		
-		
+		radians = Math.toRadians(angleVectorNewSeed) ; 	
 	}
 
 	@Override
@@ -113,14 +111,14 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 				
 				double[] newNodesCoord = new double [2] ;
 				
-				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten , nodeCoord , vector , radians );
+				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten , nodeCoord , vector , radians , 1.0 );
 				
 				mapIdNewSeedCoord.put(idLocal, newNodesCoord) ;
 				mapIdNewSeedFather.put(idLocal, idSeed) ;							//		System.out.println("node 1 " + newNodesCoord[0] + " " + newNodesCoord[1] );
 				
 				idLocal++ ;
 				
-				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten ,  nodeCoord , vector , - radians );
+				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten ,  nodeCoord , vector , - radians , 1.0 );
 				
 				mapIdNewSeedCoord.put(idLocal, newNodesCoord) ;
 				mapIdNewSeedFather.put(idLocal, idSeed) ;							//		System.out.println("node 1 " + newNodesCoord[0] + " " + newNodesCoord[1] );

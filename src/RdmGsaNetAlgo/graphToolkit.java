@@ -1,6 +1,5 @@
 package RdmGsaNetAlgo;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,7 +7,6 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
-
 
 public class graphToolkit {
 	
@@ -20,9 +18,9 @@ public class graphToolkit {
 	
 	// get list of nodes 
 	public static ArrayList getListElement ( Graph graph , element element , elementTypeToReturn elementTypeToReturn  ) {
+	
 		ArrayList list = new ArrayList () ;
 		ArrayList<String> listStr = new ArrayList<String> () ;
-
 		
 		switch (element) {
 			case edge: {
@@ -263,9 +261,17 @@ public class graphToolkit {
 					listNeig.add(neig.getId());
 				else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) 
 					listNeig.add(neig);
-			
 		}
 		return listNeig ;
 	}
-	
+
+	public static int getMaxIdIntElement ( Graph graph , element element ) {
+		
+		int idInt = 0  ;
+		ArrayList <Integer> listElementInt = getListElement(graph, element, elementTypeToReturn.integer) ;
+		while ( listElementInt.contains(idInt))
+			idInt++ ;
+		
+		return idInt ;
+	}
 }

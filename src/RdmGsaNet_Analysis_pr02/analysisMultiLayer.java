@@ -22,6 +22,7 @@ public class analysisMultiLayer extends analysisMain  {
 	
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
 			/* run								*/	true ,
+			
 			/* gsViz							*/ 	true ,
 			/* netViz							*/	true,	
 			/* vecViz							*/	true ,		

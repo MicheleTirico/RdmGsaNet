@@ -27,15 +27,18 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 		private static double 	minX , minY , maxX , maxY , 
 								radius ;
 		
+		private static boolean createEdge ;
+		
 		// get graphs
 		private static Graph 	gsGraph = layerGs.getGraph() ,
 								netGraph = layerNet.getGraph() ;
 			
 		// COSTRUCTOR
-		public setupNetFistfulNodes  ( int fistfulOfNodes , typeRadius typeRadius ,  double radius ) {
+		public setupNetFistfulNodes  ( int fistfulOfNodes , typeRadius typeRadius ,  double radius , boolean createEdge) {
 			this.fistfulOfNodes = fistfulOfNodes ;
 			this.typeRadius = typeRadius  ;
 			this.radius = radius ;
+			this.createEdge = createEdge ;
 		}
 		
 		public void createLayerNet() {
@@ -50,14 +53,12 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 			gsAlgoToolkit.setNodeCoordinateFromNode(gsGraph, netGraph, nFrom, netMeanPoint);		
 		
 			// get coordinate
-			double[] meanPointCoord = GraphPosLengthUtils.nodePosition(netMeanPoint) ;
-		//	System.out.println(idMeanPoint);
-			
+			double[] meanPointCoord = GraphPosLengthUtils.nodePosition(netMeanPoint) ;		//	System.out.println(idMeanPoint);
 			
 			switch (typeRadius ) {
 			case square :
 				for ( int x = 1 ; x < fistfulOfNodes ; x++ )
-					createNodesInSquare( x, netGraph , meanPointCoord );
+					layerNet.createNodesInSquare( x , netGraph , meanPointCoord , radius );
 				break;
 
 			case circle : {
@@ -79,20 +80,20 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 					String idNear = setIdNear.stream().findFirst().get() ;
 					Node nodeNear = netGraph.getNode(idNear) ;
 	
-					String idEdge = Integer.toBinaryString(idEdgeInt) ;
-					try {
-						netGraph.addEdge(idEdge, nNet, nodeNear) ;
-						idEdgeInt++ ;
-//						createEdge(netGraph, nNet, nodeNear);
-						
-						break ; 
-					} catch ( org.graphstream.graph.EdgeRejectedException e) {
-						// TODO: handle exception
-					}	
+					if ( createEdge ) {
+						String idEdge = Integer.toBinaryString(idEdgeInt) ;
+						try {
+							netGraph.addEdge(idEdge, nNet, nodeNear) ;
+							idEdgeInt++ ;
+							
+							break ; 
+						} catch ( org.graphstream.graph.EdgeRejectedException e) {
+							// TODO: handle exception
+						}	
+					}
+					break ;
 				}
 			}
-			
-//			System.out.println(netGraph.getNodeSet());		
 		}
 
 		@Override
@@ -126,25 +127,5 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 			
 			return newNode ;
 			
-			
-			
-			
-			
-			
-			
-			
-			
 		}
-		
-		// method to create edge
-		private static void createEdge ( Graph graph,  Node n1 , Node n2 ) {
-		
-			String idEdge = n1.getId() + "-" + n2.getId() ;
-			if ( n1.getId() != n2.getId() )
-				graph.addEdge(idEdge, n1, n2 );
-		}
-
-		
-		
-
 }

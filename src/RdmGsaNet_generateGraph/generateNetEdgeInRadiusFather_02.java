@@ -30,7 +30,7 @@ import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
 public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter {
 
 	private genEdgeType genEdgeType;
-
+	private int idEdgeInt = 0 ;
 	// parameters
 	private double distCeckSeed ;
 			
@@ -97,9 +97,7 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 		ArrayList<Integer> listIdEdgeInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.integer)) ;		
 //		ArrayList<Integer> listIdSeedInt = new ArrayList<Integer>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;
 		ArrayList<Integer> listIdNetInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;
-			
-//		Map< Integer , String[] > mapNewNodeFathers = new HashMap< Integer , String[] > ();
-		
+					
 		for ( String idSeed : listIdSeed ) {	//	System.out.println(nSeed);
 			
 			listIdSeed = new ArrayList<String>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
@@ -120,18 +118,16 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 			}catch (java.lang.NullPointerException e) {
 				continue ;
 			}
-			
-	//		for ( Node n : netGraph.getEachNode()) {
-		//		String fat = nodeNet.getAttribute("father");						//	System.out.println(n+ " fat " + fat);
-	//		}
-			
+	
 			String idFather = nodeNet.getAttribute("father");			
-			
-			// listIdTNodeToConnect.add(idFather) ;
 			
 			listIdEdgeInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.integer)) ;
 			
-			int idEdgeInt = Collections.max(listIdEdgeInt);
+			if ( listIdEdgeInt.isEmpty())
+				idEdgeInt = 0 ;
+			else
+				idEdgeInt = Collections.max(listIdEdgeInt);
+			
 			int idNetInt = 0 ;
 			String idEdge ;
 			

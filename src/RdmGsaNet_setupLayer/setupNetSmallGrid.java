@@ -20,6 +20,7 @@ public class setupNetSmallGrid implements setupNet_Inter {
 	
 	int idEdgeInt = 0 ;
 	int idNodeInt = 0 ;
+
 	// type grid
 	public enum typeGrid { grid4 , grid8 }
 	private static typeGrid type;

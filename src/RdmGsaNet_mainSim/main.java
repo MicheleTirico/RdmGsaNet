@@ -44,6 +44,7 @@ import RdmGsaNet_setupLayer.setupGs_Inter.disMorpType ;
 import RdmGsaNet_setupLayer.setupGs_Inter.gsGridType;
 import RdmGsaNet_setupLayer.setupNetFistfulNodes;
 import RdmGsaNet_setupLayer.setupNetFistfulNodes.typeRadius;
+import RdmGsaNet_setupLayer.setupNetMultiGraph;
 import RdmGsaNet_setupLayer.setupNetSeed;
 import RdmGsaNet_setupLayer.setupNetSmallGrid;
 
@@ -56,7 +57,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 500	;
+	private static int stopSim = 2000 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
@@ -85,7 +86,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\test\\01\\" ;
+	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\vf_seedProb_multiRDmPoint_01\\solitions\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -102,11 +103,12 @@ public class main {
 		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
 
 	static layerNet netLayer = new layerNet (
-//		/* create only one node					*/ new setupNetSeed()	
-		/* small grid of 9 nodes 				*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
-//		/* layout small graph 					*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-//		/* create a fistful of node 			*/ new setupNetFistfulNodes( 50 , typeRadius.square , 2 )
-		);
+//		/* create only one node			*/ new setupNetSeed()	
+//		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
+//		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
+//		/* create a fistful of node 	*/ new setupNetFistfulNodes( 10 , typeRadius.square , 20 , false )
+		/* create multi graph 			*/ new setupNetMultiGraph(5, 20.0, 30 , 0.5 , false)
+			);
 	
 	// get  Graphs ( only to test results ) 
 	protected static Graph 	gsGraph   = layerGs.getGraph() ,
@@ -127,7 +129,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.15 , 90 , true , 3 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.07, 90 , true , 10 ) 
 			) ;
 	
 
@@ -156,7 +158,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes );			
+		setRdType ( RdmType.solitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

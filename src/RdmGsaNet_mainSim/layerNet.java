@@ -1,6 +1,8 @@
 package RdmGsaNet_mainSim;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -113,6 +115,64 @@ public class layerNet {
 		}
 	}
 	
+// common methods -----------------------------------------------------------------------------------------------------------------------------------
+	
+	private static void createNodeInCircle () {			}
+	
+	public static Node createNodesInSquare ( int nextId , Graph graph , double[] meanPointCoord , double radius ) {
+		
+		double minX = meanPointCoord[0] - radius;
+		double maxX = meanPointCoord[0] + radius;
+		double minY = meanPointCoord[1] - radius;
+		double maxY = meanPointCoord[1] + radius;
+		
+		double sizeSquare = maxX - minX ;
+		
+		Random rnd = new Random();
+		
+		double rndX =  minX + rnd.nextDouble() * sizeSquare ;
+		double rndY =  minY + rnd.nextDouble() * sizeSquare ;
+		
+		String idNewNode = Integer.toString( nextId ) ;  
+		graph.addNode( idNewNode ) ;
+		
+		Node newNode = graph.getNode(idNewNode);
+		newNode.setAttribute("xyz", rndX , rndY , 0 );
+		
+		return newNode ;
+		
+	}
+	
+	public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNodes , double[] meanPointCoord , double radius ) {
+		
+		ArrayList<Node> listNodes = new ArrayList<Node> () ;
+		
+		double minX = meanPointCoord[0] - radius;
+		double maxX = meanPointCoord[0] + radius;
+		double minY = meanPointCoord[1] - radius;
+		double maxY = meanPointCoord[1] + radius;
+		
+		double sizeSquare = maxX - minX ;
+		
+		Random rnd = new Random();
+	
+		for ( int idInt = 0 ; idInt < numNodes ; idInt++ ) {
+			
+			double rndX =  minX + rnd.nextDouble() * sizeSquare ;
+			double rndY =  minY + rnd.nextDouble() * sizeSquare ;
+			
+			String id = Integer.toString(idInt) ;
+			graph.addNode(id);
+			
+			Node newNode = graph.getNode(id);
+			newNode.setAttribute("xyz", rndX , rndY , 0 );
+			
+			listNodes.add(newNode); 
+		}
+		
+		
+		return listNodes;
+	}
 	
 // Get Methods -----------------------------------------------------------------------------------------------------	
 	// get graph

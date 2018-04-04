@@ -60,7 +60,7 @@ public class main {
 	private static int stopSim = 1500 ;
 	private static double sizeGridEdge ;
 	
-	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops }
+	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
 	private static RdmType type ;
 	
 	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
@@ -86,7 +86,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\vf_seedProb_multiRDmPoint_01\\solitions\\" ;
+	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\vf_seedProb_multiRDmPoint_01\\worms\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -107,7 +107,7 @@ public class main {
 //		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 10 , typeRadius.square , 20 , false )
-		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 30 , 1 , false, 122  )
+		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 7 , 1.5 , true , 10  )
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -129,7 +129,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.08 , 90 , true , 10 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.12 , 45 , true , 10 ) 
 			) ;
 	
 
@@ -158,7 +158,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.solitions );			
+		setRdType ( RdmType.worms );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -366,6 +366,10 @@ public class main {
 										break ;
 			case spotsAndLoops :		{ feed = 0.018 ; kill = 0.051 ; } 
 										break ;
+			case worms :				{ feed = 0.078 ; kill = 0.061 ; } 
+										break ;
+	
+				
 		}
 		
 	}

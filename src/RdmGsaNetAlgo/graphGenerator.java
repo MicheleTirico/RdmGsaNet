@@ -113,4 +113,32 @@ public class graphGenerator {
 			}
 		}
 	}
+	
+	// create  complete graph from list of nodes
+	public static void createCompleteGraphFromListNode ( Graph graph , ArrayList<Node> listNode ) {
+		
+		ArrayList<Integer> listEdgeInt = graphToolkit.getListElement(graph, element.edge, elementTypeToReturn.integer) ;
+		
+		int idEdegeInt = 0 ;
+		
+		for ( Node n : listNode ) {
+			
+			for ( Node n2 :listNode ) {
+				if ( n2 == n ) 
+					continue ;
+				listEdgeInt = graphToolkit.getListElement(graph, element.edge, elementTypeToReturn.integer) ;
+				while ( listEdgeInt.contains(idEdegeInt))
+					idEdegeInt++ ;
+				
+				String idEdge = Integer.toString(idEdegeInt) ;
+				try {
+					graph.addEdge(idEdge, n, n2);
+				}
+				catch (org.graphstream.graph.EdgeRejectedException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+	}
+	
 }

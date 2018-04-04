@@ -96,7 +96,6 @@ public class generateNetNodeVectorField extends main  {
 		}
 	}
 	
-	
 	// doesn't works
 	protected static double [] getCoordAngleVector ( double coefImplemVect , double angleRad , double[] vector , double[] coordSeed ) {
 		

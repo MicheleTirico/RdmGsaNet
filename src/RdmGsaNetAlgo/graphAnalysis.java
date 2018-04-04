@@ -11,6 +11,11 @@ import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import RdmGsaNet_mainSim.layerGs;
+import RdmGsaNet_mainSim.layerNet;
+import RdmGsaNet_mainSim.simulation;
+
+
 
 public class graphAnalysis {
 	

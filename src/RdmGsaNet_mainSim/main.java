@@ -57,7 +57,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 1500 ;
+	private static int stopSim = 300 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -86,7 +86,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\vf_seedProb_multiRDmPoint_01\\worms\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\05\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -129,14 +129,14 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.12 , 45 , true , 10 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.3 , 45 , true , 5 ) 
 			) ;
 	
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
 //					new generateNetEdgeNear( 2 , whichNode.all )
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
-					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , 0.7 )
+					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .5 )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
@@ -158,7 +158,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.worms );			
+		setRdType ( RdmType.holes );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -205,7 +205,7 @@ public class main {
 				/* enum		meanPointPlace	=	define were are the mean point of started net graph ( center , border , random )	*/ meanPointPlace.center ,
 				/* bol		setSeedMorp		= 	if true, add a fixed value for act and inh only in node in netGraph 				*/ true ,
 				/* double	seedAct			=	act value for seed node																*/ 1 , 	// 0.5
-				/* double	seedInh			=	inh value for seed node	 															*/ 1 , 	//0.25 
+				/* double	seedInh			=	inh value for seed node	 															*/ 1 , 	// 0.25 
 				/* bol		setSeedMorpInGs	=	set act and inh of netGraph in gsGraph												*/ true ,
 				/* bol		storedDGS		= 	if true , create a dgs file of started graph										*/ doStoreStartNet
 				);

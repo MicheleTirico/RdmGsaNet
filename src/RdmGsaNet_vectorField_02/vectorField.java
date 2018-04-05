@@ -10,7 +10,6 @@ import RdmGsaNetExport.handleNameFile;
 import RdmGsaNet_mainSim.main;
 import RdmGsaNet_vectorField_02.vectorField.vfNeig;
 import RdmGsaNet_vectorField_02.vectorField.weigthDist;
-import testVectorField.vf;
 
 public class vectorField {
 	

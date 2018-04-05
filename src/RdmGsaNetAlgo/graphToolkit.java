@@ -1,7 +1,9 @@
 package RdmGsaNetAlgo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -227,6 +229,24 @@ public class graphToolkit {
 
 		return dist;
 		
+	}
+	
+	// get map id node coord 
+	public static Map getMapCoord ( Graph graph , elementTypeToReturn elementTypeToReturn ) {
+		
+		Map map =  new HashMap () ;
+		
+		for ( Node n : graph.getEachNode() )  {
+			
+			double[] coord = GraphPosLengthUtils.nodePosition(n);
+			
+			if ( elementTypeToReturn. equals(elementTypeToReturn.string)) 
+				map.put(n.getId(), coord) ;
+				
+			else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) 
+				map.put(n, coord) ;			
+		}
+		return map ;
 	}
 	
 	// get coordinate of node between

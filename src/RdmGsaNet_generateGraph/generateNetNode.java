@@ -60,7 +60,6 @@ public class generateNetNode extends main  {
 
 	public void generateNode ( int step ) throws IOException  {
 		type.generateNodeRule ( step ) ;
-		type.mergeNodeToEdgeRule ( step ) ;
 	} 
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
@@ -156,7 +155,7 @@ public class generateNetNode extends main  {
 
 	
 	
-	// cech coordinate in grid
+	// Check coordinate in grid
 	protected double ceckCoordInGrid ( Graph graphGrid , double newNodeCoord  ) {
 		
 		double sizeGridEdge = Math.pow( graphGrid.getNodeCount() , 0.5 ) - 1 ;

@@ -61,7 +61,7 @@ public class TESTvectorField {
 		handleVizStype vecViz = new handleVizStype( vecGraph ,stylesheet.manual , "seedGrad", 1) ;
 		vecViz.setupIdViz(false, vecGraph, 4 , "black");
 		vecViz.setupDefaultParam (vecGraph, "black", "black", 0 , 0.5 );
-		vecViz.setupVizBooleanAtr(true, vecGraph, "black", "red" ) ;
+		vecViz.setupVizBooleanAtr(true, vecGraph, "black", "red", false, false ) ;
 		vecViz.setupFixScaleManual(true , vecGraph, sizeGridEdge , 0);
 		
 		// viz display

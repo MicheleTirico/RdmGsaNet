@@ -13,11 +13,6 @@ public interface generateNetNode_Inter {
 	public void generateNodeRule ( int step ) throws IOException ;
 	
 	public void removeNodeRule (int step ) ;
-	
-	public void mergeNodeToEdgeRule ( int step) ;
-
-	
-
 
 
 }

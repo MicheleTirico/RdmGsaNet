@@ -80,7 +80,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 			double 	xTopVector = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[0] + vector[0] ) ,
 					yTopVector = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[1] + vector[1] ) ;						// 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);				
 
-			/*if ( vector[0] <= 0.01 && vector[1] <= 0.01 ) { 		System.out.println("peppe");
+			/*if ( vector[0] <= 0.01 && vector[1] <= 0.01 ) { 		
 				mapIdNewSeedCoord.put(idLocal, nodeCoord ) ;
 				String idFather = nodeSeed.getAttribute("father"); 
 				mapIdNewSeedFather.put(idLocal, idFather) ;
@@ -182,28 +182,24 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 	for ( int i : listIdSeedInt) //	System.out.println(i);
 		seedGraph.removeNode(Integer.toString(i));	
 	
- 
-		
 	}
 
+	
+	
+	
+	
 	@Override
 	public void removeNodeRule(int step) {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
-	@Override
-	public void mergeNodeToEdgeRule(int step) {				// System.out.println(super.getClass().getSimpleName());
-		
-		// get node in radius
-		
-		// if dist < distMax -> add edge
-		
-		
-		
-		
+	
+// GET METHODS --------------------------------------------------------------------------------------------------------------------------------------
+	
+	public static double getProb() 	{ 
+		return prob; 	
 	}
-	
-	public static double 			getProb() 			{ return prob; }
 	
 }

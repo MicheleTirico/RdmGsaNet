@@ -2,7 +2,6 @@ package RdmGsaNetAlgo;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Set;
 
 import org.graphstream.algorithm.generator.BarabasiAlbertGenerator;
 import org.graphstream.algorithm.generator.Generator;
@@ -48,13 +47,22 @@ public class graphGenerator {
 			n.addAttribute(attribute, rnd.nextDouble());		
 	}
 
+	// create edge with merge of node id
 	public static void createEdge ( Graph graph  , Node n0 , Node n1 ) {
 		
 		String idEdge = n0.getId() + "-" + n1.getId() ;
 		graph.addEdge(idEdge, n0, n1 );
-		  	
 	}
 	
+	// add node and set Coordinates
+	public static void addNodeWithCoord ( Graph graph, String id , double x , double y , double z ) {
+		
+		graph.addNode(id);	
+		Node n = graph.getNode(id) ;		
+		n.setAttribute("xyz", x , y , z );
+	}
+
+	// create list of nodes in square
 	public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNodes , double[] meanPointCoord , double radius , int randomSeed ) {
 		
 		ArrayList<Node> listNodes = new ArrayList<Node> () ;
@@ -85,7 +93,6 @@ public class graphGenerator {
 		}
 		return listNodes;
 	}
-
 
 	// create  complete graph
 	public static void createCompleteGraph ( Graph graph , int numberOfNode , double[] meanPointCoord , double radius , int randomSeed ) {

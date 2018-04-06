@@ -1,6 +1,8 @@
 package RdmGsaNetAlgo;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -9,6 +11,9 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
+
+import RdmGsaNetAlgo.graphToolkit.element;
+import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
 public class graphToolkit {
 	
@@ -285,10 +290,10 @@ public class graphToolkit {
 		return listNeig ;
 	}
 
-	public static int getMaxIdIntElement ( Graph graph , element element ) {
+	public static int getMaxIdIntElement ( Graph graph , element element ) {		
 		
-		int idInt = 0  ;
 		ArrayList <Integer> listElementInt = getListElement(graph, element, elementTypeToReturn.integer) ;
+		int idInt =  Collections.min(listElementInt)  ;
 		while ( listElementInt.contains(idInt))
 			idInt++ ;
 		

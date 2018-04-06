@@ -14,6 +14,7 @@ import RdmGsaNetExport.handleNameFile.typeFile;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNet_generateGraph.generateNetEdge;
 import RdmGsaNet_generateGraph.generateNetNode;
+import RdmGsaNet_graphTopology.topologyGraph;
 import RdmGsaNet_gsAlgo.gsAlgo;
 import RdmGsaNet_vectorField_02.vectorField;
 
@@ -29,10 +30,11 @@ public class simulation extends main {
 	private static handleNameFile handle = main.getHandle();
 	
 // STORING GRAPH EVENTS
-	 private static FileSinkDGS fsdGs 	= new FileSinkDGS()  ,
+	 private static FileSinkDGS fsdGs 	= new FileSinkDGS() ,
 			 					fsdNet 	= new FileSinkDGS() ,
 			 					fsdVec 	= new FileSinkDGS() ,
-			 					fsdSeed = new FileSinkDGS() ;
+			 					fsdSeed = new FileSinkDGS() , 
+			 					fsdDel	= new FileSinkDGS() ;
 
 // MAP OF GRAPH
 	private static Map<Double , Graph > mapStepNetGraph = new HashMap<Double, Graph> ();
@@ -60,7 +62,7 @@ public class simulation extends main {
 		
 	public static void  runSim ( boolean runSim ,
 								 int stopSim, boolean printMorp , 
-								 boolean genNode, boolean genEdge , boolean vecRun ,
+								 boolean genNode, boolean genEdge , boolean vecRun , boolean delRun ,
 								 boolean doStoreStepGs ,  String pathStepGs ,
 								 boolean doStoreStepNet , String pathStepNet ,
 								 boolean doStoreStepVec , String pathStepVec ,
@@ -74,8 +76,7 @@ public class simulation extends main {
 			
 		generateNetEdge genNetEd = generateNetEdge ;
 		generateNetNode genNetNo = generateNetNode ;
-		vectorField vf = vectorField ;
-		
+	
 		pathStepGs  = handle.getPathStepGs();		//		System.out.println(pathStepGs);
 		pathStepVec = handle.getPathStepVec() ; 	//		System.out.println(pathStepVec);
 	//	pathStepSeed =  handle.getPathStepSeed () ; ; 	System.out.println(pathStepNet);
@@ -96,22 +97,28 @@ public class simulation extends main {
 			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
 			if ( doStoreStepSeed == true)  	seedGraph.stepBegins(step); 
 			
+			delaunayGraph.createLayer(step);
+			
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
 
 			// method to handle first step
 			firstStep (step );	// System.out.println(mapMorp0);
 			
-			
 			/* run gs algo to all nodes
 				boolean print : if true, print mapMorp */
 			gsAlgo.gsAlgoMain( false );
 
-			if  ( vecRun == true) { vectorField.computeVf() ; }
+			if ( vecRun ) vectorField.computeVf() ; 
 			
+			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );			//	System.out.println(mapStepNewNodeId) ;
+				
 			// define rules to growth network
-			if ( genNode == true) { genNetNo.generateNode( step ); }
+			if ( genNode )  genNetNo.generateNode( step ); 
 			
+		//	
+			if ( delRun ) delaunayGraph.updateLayer( step,   mapStepNewNodeId  ) ;	//	delaunayGraph.computeTest();
+		
 			// update net 
 			updateMapStepId ( step , netGraph , mapStepIdNet );
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );
@@ -124,8 +131,7 @@ public class simulation extends main {
 			listIdNet = createListId ( netGraph );	
 			
 			// update map graph
-			updateMapGraph( mapStepNetGraph , step, netGraph );
-			
+			updateMapGraph( mapStepNetGraph , step, netGraph );					//	System.out.println(mapStepNewNodeId) ;
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	
 	
@@ -177,6 +183,8 @@ public class simulation extends main {
 	// update new nodes map
 	private static void updateMapStepNewNodes ( int step , Graph graph , Map mapNewNodes ) {
 
+	//	if (mapNewNodes.keySet().contains(step) )	return ;
+		
 		ArrayList<String> nodeStep    	= mapStepIdNet.get( (double) step );
 		ArrayList<String> nodeOldStep 	= mapStepIdNet.get( (double) step - 1.0 );
 		

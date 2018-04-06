@@ -23,6 +23,7 @@ import RdmGsaNet_generateGraph.generateNetEdgeNear;
 import RdmGsaNet_generateGraph.generateNetEdgeNear.whichNode;
 
 import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
+import RdmGsaNet_generateGraph.generateNetEdgeDelaunay;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_02;
 import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_generateGraph.generateNetNode.interpolation;
@@ -30,9 +31,8 @@ import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb_02;
-
-
-
+import RdmGsaNet_graphTopology.topologyGraph;
+import RdmGsaNet_graphTopology.topologyGraph.topologygraphType;
 import RdmGsaNet_gsAlgo.gsAlgo;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion.weightType;
@@ -57,7 +57,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 300 ;
+	private static int stopSim = 1 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -104,17 +104,19 @@ public class main {
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node			*/ new setupNetSeed()	
-//		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
+		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 10 , typeRadius.square , 20 , false )
-		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 7 , 1.5 , true , 10  )
+//		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 7 , 1.5 , true , 10  )
 			);
 	
 	// get  Graphs ( only to test results ) 
 	protected static Graph 	gsGraph   = layerGs.getGraph() ,
 							netGraph  = layerNet.getGraph() ,
-							vecGraph  = new SingleGraph( "vecGraph" ) ,
-							seedGraph = new SingleGraph( "seedGraph" );
+							vecGraph  = new SingleGraph ( "vecGraph" ) ,
+							seedGraph = new SingleGraph ( "seedGraph" ) ,
+							delGraph  = new SingleGraph ( "delGraph" ) ;
+							
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	protected static simulation run = new simulation() ;	
@@ -129,7 +131,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.3 , 45 , true , 5 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , .2 , 45 , true , 5 ) 
 			) ;
 	
 
@@ -137,15 +139,19 @@ public class main {
 //					new generateNetEdgeNear( 2 , whichNode.all )
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
 					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .5 )
+//					new generateNetEdgeDelaunay(0.5) 
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
 	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , seedGraph , .1 , simplifyType.kNearestNeighbors ) ; 
 	
+	protected static topologyGraph delaunayGraph = new topologyGraph(netGraph, topologygraphType.delaunay) ;
+	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 	
+		delaunayGraph.setParameters();
 		
 		dynamicSymplify.setParameters_Pivot( true , 0.5 );
 		
@@ -233,6 +239,7 @@ public class main {
 			/* bol		genNode			= generate nodes in layer net											*/ true ,
 			/* bol		genEdge			= generate edges in layer net											*/ true ,
 			/* bol 		run vec																					*/ true ,
+			/* bol 		run delaunay 																			*/ true ,
 			/* bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 				*/ doStoreStepGs ,
 			/* string 	path to store step gs file 																*/ pathStepGs ,
 		 	/* bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 				*/ doStoreStepNet ,
@@ -290,10 +297,18 @@ public class main {
 			seedViz.setupVizBooleanAtr(false , seedGraph, "black", "red" , false , false ) ;
 			seedViz.setupFixScaleManual( true , seedGraph, sizeGridEdge , 0);
 			
+			// setup viz delaunay graph 
+			handleVizStype delViz = new handleVizStype( delGraph ,stylesheet.manual , "seedGrad", 1)  ; 
+			delViz.setupIdViz(false, delGraph , 10 , "black");
+			delViz.setupDefaultParam (delGraph , "black", "black", 4 , .01);
+			delViz.setupVizBooleanAtr(false , delGraph , "black", "red" , false , false ) ;
+			delViz.setupFixScaleManual( true , delGraph , sizeGridEdge , 0);
+			
 			gsGraph.display(false);
 			netGraph.display(false);
 			vecGraph.display(false);
 			seedGraph.display(false);
+			delGraph.display(false) ;
 		}
 		catch (java.lang.ArrayIndexOutOfBoundsException e) {
 			System.out.println(e.getMessage() ) ;
@@ -395,11 +410,21 @@ public class main {
 		main.folder = folder;
 	}
 
+	public static Graph getDelaunayGraph () {
+		return delGraph;
+	}
+	
 	public static Graph getSeedGraph() {
 		return seedGraph;
+	}
+	
+	public static Graph getVecGraph (){
+		return vecGraph;
 	}
 
 	public static void setSeedGraph(Graph seedGraph) {
 		main.seedGraph = seedGraph;
 	}
 }
+
+

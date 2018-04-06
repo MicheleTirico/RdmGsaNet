@@ -35,7 +35,7 @@ public class generateNetNodeVectorField extends main  {
 	// graphs
 	protected static Graph	netGraph = layerNet.getGraph() ,
 							gsGraph  = layerGs.getGraph() , 
-							vecGraph = main.vecGraph , 
+							vecGraph = main.getVecGraph () , 
 							seedGraph = main.getSeedGraph() ;	
 							
 	// constructor
@@ -59,8 +59,7 @@ public class generateNetNodeVectorField extends main  {
 		switch (typeInterpolation) {
 		
 			case sumVectors: {
-				for ( String nVertex : listVertex ) {
-		//			System.out.println(nVertex);
+				for ( String nVertex : listVertex ) {	//			System.out.println(nVertex);
 					Node nVec = vecGraph.getNode(nVertex); 
 					
 					double 	intenX = nVec.getAttribute("intenX") ,

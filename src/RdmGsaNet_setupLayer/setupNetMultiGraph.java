@@ -10,6 +10,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.graphGenerator;
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNetAlgo.graphGenerator.spanningTreeAlgo;
 import RdmGsaNet_mainSim.layerGs;
 import RdmGsaNet_mainSim.layerNet;
 import RdmGsaNet_mainSim.layerNet.meanPointPlace;
@@ -68,6 +69,10 @@ public class setupNetMultiGraph implements setupNet_Inter {
 				// create CompleteGraph
 				graphGenerator.createCompleteGraphFromListNode(netGraph, listNodeMultiGraph );
 				
+				// create spanning tree
+				graphGenerator.createSpaningTree(netGraph, spanningTreeAlgo.krustal);
+				
+				/*
 				// add attribute dist of Edge
 				for ( Edge e : netGraph.getEachEdge() ) {
 			
@@ -95,7 +100,7 @@ public class setupNetMultiGraph implements setupNet_Inter {
 				// remove edge
 				for ( Edge e : listEdgeToRemove) 
 					netGraph.removeEdge(e) ;
-				
+				*/
 //				netGraph.removeNode(nodeCenterSmallGraph);
 			}
 		}

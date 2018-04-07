@@ -116,11 +116,10 @@ public class delaunayGraph implements topologyGraph_inter {
 			Point start = line.getStartPoint() ;
 			Point end = line.getEndPoint();									//	System.out.println(line.getEndPoint());
 			
-			
-			
 			if ( listPoint.contains(start)) {
 				System.out.println(start);
 			}
+			
 			listPoint.add(start);
 			listPoint.add(end);
 			

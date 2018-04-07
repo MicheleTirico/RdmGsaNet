@@ -3,9 +3,11 @@ package RdmGsaNetAlgo;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.graphstream.algorithm.Kruskal;
 import org.graphstream.algorithm.generator.BarabasiAlbertGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.GridGenerator;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
@@ -76,7 +78,14 @@ public class graphGenerator {
 		
 		Random rnd = new Random(randomSeed);
 	
-		int idMaxInt = graphToolkit.getMaxIdIntElement(graph, element.node)  ;	//	System.out.println(idMaxInt);
+		
+		int idMaxInt ;
+		
+		try {
+			idMaxInt = graphToolkit.getMaxIdIntElement(graph, element.node)  ;	//	System.out.println(idMaxInt);
+		} catch (java.util.NoSuchElementException e) {
+			idMaxInt = 0 ; 
+		}
 		
 		for ( int idInt = idMaxInt  ; idInt <= numNodes + idMaxInt ; idInt++ ) {
 			
@@ -146,6 +155,47 @@ public class graphGenerator {
 				}
 			}
 		}
+	}
+	public enum spanningTreeAlgo { krustal , test }
+	
+	public static void createSpaningTree ( Graph graph , spanningTreeAlgo spanningTreeAlgo  ) {
+		
+		for ( Edge e : graph.getEachEdge() ) {
+			
+			Node 	n0 = e.getNode0() ,
+					n1 = e.getNode1() ;
+			
+			double dist = gsAlgoToolkit.getDistGeom(n0, n1);
+			e.addAttribute("weight", dist );
+		}
+		
+		switch (spanningTreeAlgo) {
+			case krustal: {
+				
+				// compute Krustal algoritm
+				Kruskal kruskal = new Kruskal( "tree" , true , false ) ;
+				kruskal.init(graph) ;
+				kruskal.compute();
+				
+				// create list of edge to remove
+				ArrayList<Edge> listEdgeToRemove = new ArrayList<Edge> () ;
+				for ( Edge e : graph.getEachEdge()) {
+				
+					boolean tree = e.getAttribute("tree");	
+					if ( tree == false )
+						listEdgeToRemove.add(e);	
+				}
+			
+				// remove edge
+				for ( Edge e : listEdgeToRemove) 
+					graph.removeEdge(e) ;
+				
+			} break;
+			
+			case test :
+				break ;
+		}
+		
 	}
 	
 }

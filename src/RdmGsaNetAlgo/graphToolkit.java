@@ -291,12 +291,16 @@ public class graphToolkit {
 	}
 
 	public static int getMaxIdIntElement ( Graph graph , element element ) {		
+		int idInt   = 0 ;
 		
-		ArrayList <Integer> listElementInt = getListElement(graph, element, elementTypeToReturn.integer) ;
-		int idInt =  Collections.min(listElementInt)  ;
-		while ( listElementInt.contains(idInt))
-			idInt++ ;
-		
+		try {
+			ArrayList <Integer> listElementInt = getListElement(graph, element, elementTypeToReturn.integer) ;
+			idInt =  Collections.min(listElementInt)  ;
+			while ( listElementInt.contains(idInt))
+				idInt++ ;
+		}catch (java.util.NoSuchElementException e) {
+			idInt   = 0 ;
+		}
 		return idInt ;
 	}
 }

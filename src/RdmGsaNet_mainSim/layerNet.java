@@ -10,6 +10,10 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNet_setupLayer.setupNet_Inter;
@@ -80,6 +84,14 @@ public class layerNet {
 			n.addAttribute( "seedAct" , 0 );
 			n.addAttribute( "seedInh" , 0 );			
 			n.addAttribute( "seedGrad" , 0 );
+			
+			GeometryFactory geometryFactory = new GeometryFactory();		
+			double[] coord = GraphPosLengthUtils.nodePosition( n ) ;
+			Coordinate coords =  new Coordinate(coord[0], coord[1]) ;
+			Point p = geometryFactory.createPoint(coords) ;
+			simulation.mapNodeNetPoint.put( p , n ) ;
+			
+			n.addAttribute( "point" , p );
 		}
 	}
 	

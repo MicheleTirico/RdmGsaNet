@@ -15,8 +15,9 @@ import org.graphstream.graph.implementations.SingleGraph;
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphAnalysis.analysisType;
 import RdmGsaNetAlgo.gsAlgoToolkit;
-import RdmGsaNet_pr09.layerGs;
-import RdmGsaNet_pr09.layerNet;
+import RdmGsaNet_mainSim.layerGs;
+import RdmGsaNet_mainSim.layerNet;
+
 
 public interface analysisDGS  {
 

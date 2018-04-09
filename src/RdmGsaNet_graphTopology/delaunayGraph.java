@@ -94,8 +94,6 @@ public class delaunayGraph implements topologyGraph_inter {
 	    multiPointOriGraph = geometryFactory.createMultiPoint(coordsNodesOriGraph) ; 			//	System.out.println(multiPointOriGraph) ;
 	}
 
-	
-
 	@Override
 	public void createGraph() {			//	System.out.println(super.getClass().getSimpleName());
 		
@@ -146,6 +144,33 @@ public class delaunayGraph implements topologyGraph_inter {
 	}
 	
 // update methods -----------------------------------------------------------------------------------------------------------------------------------
+	@Override
+	public void updateGeometryOriGraph( int step , Map < Double , ArrayList<String> > mapStepNewNodeId  ) {	//	System.out.println(mapStepNewNodeId);
+
+		multiPointNewNode = null ;
+		ArrayList<String> listNetNode = new ArrayList<String>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listSeed );
+
+		Collection<Vertex> colVertex ;
+		Coordinate[] coordsNewNodes = new Coordinate[listNetNode.size()] ;
+		
+		
+		int i = 0 ;
+		for ( String idSeed : listNetNode ) {	
+			
+			Node nodeNet = netGraph.getNode(idSeed);
+			double[ ] coordNode = GraphPosLengthUtils.nodePosition(nodeNet) ;
+		   	coordsNewNodes[i] = new Coordinate( coordNode[0] ,coordNode[1] )  ;	   	
+		   	i++ ;
+		}
+		
+		multiPointNewNode = geometryFactory.createMultiPoint(coordsNewNodes) ; 
+
+	//	System.out.println(netGraph.getNodeCount() ) ;
+	//	System.out.println(coordsNodesOriGraph.length);
+	//	System.out.println(coordsNewNodes.length);
+		
+	// System.out.println(peppe.length);
+	}
 	
 	@Override
 	public void updateGraph() {
@@ -190,37 +215,6 @@ public class delaunayGraph implements topologyGraph_inter {
 		
 		
 
-	}
-
-	@Override
-	public void updateGeometryOriGraph( int step , Map < Double , ArrayList<String> > mapStepNewNodeId  ) {	//	System.out.println(mapStepNewNodeId);
-
-		multiPointNewNode = null ;
-		ArrayList<String> listNetNode = new ArrayList<String>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listSeed );
-
-		Collection<Vertex> colVertex ;
-		Coordinate[] coordsNewNodes = new Coordinate[listNetNode.size()] ;
-		
-		
-		int i = 0 ;
-		for ( String idSeed : listNetNode ) {	
-			
-			Node nodeNet = netGraph.getNode(idSeed);
-			double[ ] coordNode = GraphPosLengthUtils.nodePosition(nodeNet) ;
-		   	coordsNewNodes[i] = new Coordinate( coordNode[0] ,coordNode[1] )  ;	  		   	
-		
-		   	
-		   	i++ ;
-		}
-		
-		multiPointNewNode = geometryFactory.createMultiPoint(coordsNewNodes) ; 
-
-		Coordinate[] peppe = (Coordinate[]) ArrayUtils.addAll(coordsNodesOriGraph, coordsNewNodes);
-	//	System.out.println(netGraph.getNodeCount() ) ;
-	//	System.out.println(coordsNodesOriGraph.length);
-	//	System.out.println(coordsNewNodes.length);
-		
-	// System.out.println(peppe.length);
 	}
 
 	

@@ -9,6 +9,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
+import com.vividsolutions.jts.geom.Point;
+
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.handleNameFile.typeFile;
 
@@ -24,6 +26,7 @@ import RdmGsaNet_generateGraph.generateNetEdgeNear.whichNode;
 
 import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay;
+import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_02;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_02;
 import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_generateGraph.generateNetNode.interpolation;
@@ -32,7 +35,7 @@ import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb_02;
 import RdmGsaNet_graphTopology.topologyGraph;
-import RdmGsaNet_graphTopology.topologyGraph.topologygraphType;
+import RdmGsaNet_graphTopology.topologyGraph.topologyGraphType;
 import RdmGsaNet_gsAlgo.gsAlgo;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion.weightType;
@@ -57,15 +60,15 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 3 ;
+	private static int stopSim = 30 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
 	private static RdmType type ;
 	
-	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
-	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
-	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
+//	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
+//	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
+//	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
 	// STORE DGS PARAMETERS
 	private static boolean 	doStoreStartGs 		= true , 
@@ -106,7 +109,7 @@ public class main {
 //		/* create only one node			*/ new setupNetSeed()	
 		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
-//		/* create a fistful of node 	*/ new setupNetFistfulNodes( 10 , typeRadius.square , 20 , false )
+//		/* create a fistful of node 	*/ new setupNetFistfulNodes( 10 , typeRadius.square , 2 , false )
 //		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 7 , 1.5 , true , 10  )
 			);
 	
@@ -138,15 +141,15 @@ public class main {
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
 //					new generateNetEdgeNear( 2 , whichNode.all )
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
-					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .5 )
-//					new generateNetEdgeDelaunay(0.5) 
+//					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .5 )
+					new generateNetEdgeDelaunay_02 ( netGraph , delGraph , false , 0.5 )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
 	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , seedGraph , .1 , simplifyType.kNearestNeighbors ) ; 
 	
-	protected static topologyGraph delaunayGraph = new topologyGraph(netGraph, topologygraphType.delaunay) ;
+	protected static topologyGraph delaunayGraph = new topologyGraph(netGraph, topologyGraphType .delaunay , false ) ;
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -254,10 +257,7 @@ public class main {
 		
 		//get seedAlive
 	//	int seedAlive = getSeedAlive(false);
-		
-		for ( Node n : netGraph.getEachNode() )
-			if ( n.getDegree() < 1 )
-				System.out.println(n);
+//		for ( Node n : netGraph.getEachNode()) {			Point p = n.getAttribute("point") ;		System.out.println(p);	}
 		
 	//	ArrayList listIdNetSeedGrad = getListIdWithAttribute( false , netGraph, "seedGrad");
 		printNodeSetAttribute(false , gsGraph) ;
@@ -272,7 +272,7 @@ public class main {
 			
 			// setup viz netGraph
 			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "merge", 1) ;
-			netViz.setupIdViz(false , netGraph, 10 , "black");
+			netViz.setupIdViz(true , netGraph, 10 , "black");
 			netViz.setupDefaultParam (netGraph, "black", "black", 6 , 0.5 );
 			netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;
 			netViz.setupFixScaleManual(true  , netGraph, sizeGridEdge , 0);
@@ -304,11 +304,11 @@ public class main {
 			delViz.setupVizBooleanAtr(false , delGraph , "black", "red" , false , false ) ;
 			delViz.setupFixScaleManual( true , delGraph , sizeGridEdge , 0);
 			
-			gsGraph.display(false);
+//			gsGraph.display(false);
 			netGraph.display(false);
 			vecGraph.display(false);
-			seedGraph.display(false);
-			delGraph.display(false) ;
+//			seedGraph.display(false);
+		//	delGraph.display(false) ;
 		}
 		catch (java.lang.ArrayIndexOutOfBoundsException e) {
 			System.out.println(e.getMessage() ) ;

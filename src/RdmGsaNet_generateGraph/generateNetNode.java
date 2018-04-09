@@ -7,6 +7,11 @@ import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
@@ -60,6 +65,16 @@ public class generateNetNode extends main  {
 
 	public void generateNode ( int step ) throws IOException  {
 		type.generateNodeRule ( step ) ;
+		
+		for ( Node n : netGraph.getEachNode() ) {
+			GeometryFactory geometryFactory = new GeometryFactory();		
+			double[] coord = GraphPosLengthUtils.nodePosition( n ) ;
+			Coordinate coords =  new Coordinate(coord[0], coord[1]) ;
+			Point p = geometryFactory.createPoint(coords) ;
+			
+			simulation.mapNodeNetPoint.put( p , n ) ;
+			n.addAttribute( "point" , p );
+		}
 	} 
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------

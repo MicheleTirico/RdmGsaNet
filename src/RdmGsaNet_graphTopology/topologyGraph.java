@@ -1,7 +1,9 @@
 package RdmGsaNet_graphTopology;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.graphstream.graph.Graph;
@@ -9,6 +11,11 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
 
+import com.vividsolutions.jts.geom.Point;
+
+import RdmGsaNetAlgo.graphToolkit;
+import RdmGsaNetAlgo.graphToolkit.element;
+import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNetExport.handleNameFile;
 
 import RdmGsaNet_mainSim.main;
@@ -18,24 +25,28 @@ public class topologyGraph  {
 	// graphs
 	private static Graph	oriGraph = new SingleGraph("origraph"),
 							topGraph = main.getDelaunayGraph();	
+	
+	private boolean createGraph  ;
 			
 	private topologyGraph_inter tgInt ; 
 				
-	public enum topologygraphType { voronoi , delaunay }
-	protected static topologygraphType  tgType ; 
+	public enum topologyGraphType { voronoi , delaunay }
+	protected static topologyGraphType   tgType ; 
 		
 	// STORING GRAPH EVENTS
 	static FileSinkDGS fsd = new FileSinkDGS();
 	handleNameFile handle = main.getHandle(); 
 	private boolean doStoreTopologyGraph ;
 	
+	protected static Map < Node , Point > mapOriNodePoint = new HashMap<>(); 
 	
-	public topologyGraph( Graph oriGraph , topologygraphType tgType ) {
+	public topologyGraph( Graph oriGraph , topologyGraphType tgType , boolean createGraph  ) {
 		this.oriGraph = oriGraph ;
 		this.tgType = tgType ;
+		this.createGraph  = createGraph ;
 		
 		switch (tgType) {
-		case delaunay: 	tgInt = new delaunayGraph ( oriGraph , topGraph )  ;	
+		case delaunay: 	tgInt = new delaunayGraph_02 ( oriGraph , topGraph , createGraph )  ;	
 			break;
 		
 		case voronoi : 				
@@ -57,7 +68,8 @@ public class topologyGraph  {
 			tgInt.createGeometryOriGraph();
 			tgInt.createGraph();
 		}
-	
+		
+		
 	}
 	
 	

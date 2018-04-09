@@ -9,6 +9,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 
+import com.vividsolutions.jts.geom.Point;
+
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.handleNameFile.typeFile;
 import RdmGsaNetViz.setupViz;
@@ -59,8 +61,10 @@ public class simulation extends main {
 	
 	// map / key = (double) step , values = (list of string ) id of new nodes in net
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
-		
-	public static void  runSim ( boolean runSim ,
+	
+	public static Map < Point , Node > mapNodeNetPoint = new HashMap < Point , Node >();
+	
+ 	public static void  runSim ( boolean runSim ,
 								 int stopSim, boolean printMorp , 
 								 boolean genNode, boolean genEdge , boolean vecRun , boolean delRun ,
 								 boolean doStoreStepGs ,  String pathStepGs ,
@@ -91,6 +95,7 @@ public class simulation extends main {
 	
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	
+		//	System.out.println(mapNodeNetPoint);
 			
 			if ( doStoreStepGs  == true )  	gsGraph.stepBegins(step);   			
 			if ( doStoreStepNet  == true)  	netGraph.stepBegins(step);  	
@@ -115,8 +120,7 @@ public class simulation extends main {
 				
 			// define rules to growth network
 			if ( genNode )  genNetNo.generateNode( step ); 
-			
-		//	
+	
 			if ( delRun ) delaunayGraph.updateLayer( step,   mapStepNewNodeId  ) ;	//	delaunayGraph.computeTest();
 		
 			// update net 
@@ -136,7 +140,9 @@ public class simulation extends main {
 			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	
 	
 			if ( seedGraph.getNodeCount() <= 0 && step > 1 )
-				break ;			
+				break ;	
+			
+			
 		}
 		
 		

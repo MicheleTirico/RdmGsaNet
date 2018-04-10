@@ -232,27 +232,7 @@ public class generateNetEdgeInRadiusFather_02  implements generateNetEdge_Inter 
 					
 					
 						// if node is not connected
-						if ( newNodeNet.getDegree() < 1 ) {				//	System.out.println(newNodeNet.getDegree());
-				
-							Map <String , Double> mapDistNetDegreee0 = generateNetEdge.getMapIdDist( netGraph , newNodeNet ) ;								
-							double minDistDegreee0 = mapDistNetDegreee0 .values().stream().mapToDouble(valstat -> valstat).min().getAsDouble();			
-							Set<String> setIdNear = gsAlgoToolkit.getKeysByValue(mapDistNetDegreee0, minDistDegreee0 ); 		//	System.out.println(minDistDegreee0);	System.out.println(setIdNear);
-							
-							for ( String s : setIdNear ) {
-								
-								try {
-									netGraph.addEdge(idEdge, idNode, s);
-								} 
-								catch (org.graphstream.graph.IdAlreadyInUseException e) {
-									while ( listIdEdgeInt.contains(idEdgeInt) ) {	
-										netGraph.addEdge(idEdge, idNode, s);
-										idNetInt ++ ;
-									}
-								}
-								idEdgeInt ++ ;
-							}
-						
-						}
+					
 						
 					}
 					

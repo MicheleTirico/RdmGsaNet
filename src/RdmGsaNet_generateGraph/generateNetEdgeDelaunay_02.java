@@ -144,11 +144,12 @@ public class generateNetEdgeDelaunay_02  extends delaunayGraph_02 implements gen
 							
 					//System.out.println(vertex + " " + node);
 					}			
-					continue ;
+					
+				continue ;
 		
 				
 			}
-				System.out.println(vertex + " " + listIdTNodeToConnect);
+			//	System.out.println(vertex + " " + listIdTNodeToConnect);
 		//	mapSeedVertex.clear();
 			
 			if ( listIdTNodeToConnect.isEmpty() )

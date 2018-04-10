@@ -50,14 +50,6 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 	
 		// list node element
 		ArrayList <Node> listNodeSeed = new ArrayList<Node> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element));	//	System.out.println(listNodeSeed);	
-//		ArrayList <Node> listNodeNet = new ArrayList<Node>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.element));		//	System.out.println(listNodeNet);
-		
-		// list id string
-//		ArrayList <String> listIdNet = new ArrayList<String>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listNodeNet);
-//		ArrayList <String> listIdSeed = new ArrayList<String> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string));	//	System.out.println(listNodeNet);
-		
-		// list id int
-//		ArrayList<Integer> listIdNetInt = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;			
 		ArrayList<Integer> listIdSeedInt = new ArrayList<Integer>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;			
 		
 		// map to update
@@ -65,8 +57,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		Map< Integer , String > mapIdNewSeedFather = new HashMap< Integer , String > ();
 		
 		// print
-		System.out.println(seedGraph + " " + listIdSeedInt.size()  /* + " " + listIdSeedInt */ );
-//		System.out.println(netGraph + " " + listIdNetInt.size() + " " + listIdNetInt );
+		System.out.println(seedGraph + " " + listIdSeedInt.size()  /* + " " + listIdSeedInt */ );//		System.out.println(netGraph + " " + listIdNetInt.size() + " " + listIdNetInt );
 	
 		int idLocal = 0 ;
 
@@ -80,13 +71,6 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 			double 	xTopVector = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[0] + vector[0] ) ,
 					yTopVector = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[1] + vector[1] ) ;						// 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);				
 
-			/*if ( vector[0] <= 0.01 && vector[1] <= 0.01 ) { 		
-				mapIdNewSeedCoord.put(idLocal, nodeCoord ) ;
-				String idFather = nodeSeed.getAttribute("father"); 
-				mapIdNewSeedFather.put(idLocal, idFather) ;
-				idLocal++ ;
-				continue ;
-			}		*/
 			
 			double [] newNodeSeedCoord = new double[2] ;
 			

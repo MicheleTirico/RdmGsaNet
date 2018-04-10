@@ -17,6 +17,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.triangulate.DelaunayTriangulationBuilder;
 import com.vividsolutions.jts.triangulate.IncrementalDelaunayTriangulator;
+import com.vividsolutions.jts.triangulate.quadedge.QuadEdge;
 import com.vividsolutions.jts.triangulate.quadedge.QuadEdgeSubdivision;
 import com.vividsolutions.jts.triangulate.quadedge.Vertex;
 
@@ -26,6 +27,7 @@ import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNet_mainSim.layerNet;
 import RdmGsaNet_mainSim.main;
+import RdmGsaNet_mainSim.simulation;
 
 
 public class delaunayGraph_02 implements topologyGraph_inter {
@@ -38,7 +40,7 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 					seedGraph = main.getSeedGraph () ; 
 		
 	// geotools initiate
-	protected  GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+	public static  GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 	MultiPoint multiPointOriGraph ;
 	Coordinate[] coordsNodesOriGraph ;
 		
@@ -47,11 +49,12 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 	
 	protected static IncrementalDelaunayTriangulator incDel ;
 	
-	protected static Geometry edges ;
+	public static Geometry edges ;
 	Map < String , double[]> mapIdCoordOrigGraph =  new HashMap< String , double[]>  () ;
 	protected static Map < Node , Vertex > mapSeedVertex = new HashMap<>(); 
 	protected static Map < Node , Point > mapNetPoint = new HashMap<>(); 
-	
+	protected static Map < Node , QuadEdge > mapNodeNetQuadEdge = new HashMap<>(); 
+	protected static Map < Node , QuadEdge > mapNodeSeedQuadEdge = new HashMap<>(); 
 	// constructor
 	public delaunayGraph_02 (Graph oriGraph , Graph topGraph , boolean createGraph  ) {
 	
@@ -83,6 +86,7 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 	    	mapNetPoint.put(oriGraph.getNode(id), p) ;
 	    	i++ ;
 	    }
+	
 	    
 	    // create geometry
 	    multiPointOriGraph = geometryFactory.createMultiPoint(coordsNodesOriGraph) ; 			//	System.out.println(multiPointOriGraph) ;
@@ -91,17 +95,23 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 	    delaunayBuilder = new DelaunayTriangulationBuilder() ;
 		delaunayBuilder.setSites(multiPointOriGraph);
 		delSub = delaunayBuilder.getSubdivision();		
+		   
+		// create edges
+		edges = delaunayBuilder.getEdges(new GeometryFactory());
+		
+
+		
 	}
 
 	@Override
 	public void updateGeometryOriGraph(int step, Map<Double, ArrayList<String>> mapStepNewNodeId) {
-			
+		
 		ArrayList<Node> listSeedNode = new ArrayList<Node>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element));	//		//	System.out.println(listSeedNode);	
 		incDel = new IncrementalDelaunayTriangulator(delSub);					//	System.out.println(listSeedNode);	//	System.out.println(mapStepNewNodeId) ;
 		
 		for ( Node nodeSeed : listSeedNode ) {
 			
-			double[] coord = GraphPosLengthUtils.nodePosition(nodeSeed);		//	System.out.println(coord[0] + " " + coord[1]);	
+			double[] coord = GraphPosLengthUtils.nodePosition(nodeSeed);		//		System.out.println(coord[0] + " " + coord[1]);	
 			Vertex ver = new Vertex( coord[0] , coord[1]);
 			try {
 				incDel.insertSite(ver) ;		
@@ -110,8 +120,15 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 			catch (com.vividsolutions.jts.triangulate.quadedge.LocateFailureException e) {
 				// TODO: handle exception
 			}
+			Coordinate coords = new Coordinate(coord[0] , coord[1]) ;
+	    	
+	    	Point p = geometryFactory.createPoint( coords ) ;
+	    	nodeSeed.addAttribute("point", p);
+	
 		}	
+		
 		edges = delaunayBuilder.getEdges(new GeometryFactory());				//	System.out.println(edges);		
+		
 	}
 
 // create and update delGraph -----------------------------------------------------------------------------------------------------------------------
@@ -125,10 +142,11 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 		
 		ArrayList<Point> listPoint = new ArrayList<Point>();
 		Map < Point, ArrayList<Point> > mapPointCon = new HashMap< Point, ArrayList<Point> >();
-			
-	    int idNodeInt = graphToolkit.getMaxIdIntElement(delGraph, element.node) , 
-	    	idEdgeInt = graphToolkit.getMaxIdIntElement(delGraph, element.edge) ;
-	 		
+
+	    	
+	    int idNodeInt = 0 , 
+	    	idEdgeInt = 0 ;
+	 	
 		for ( int n = 0 ; n < edges.getNumGeometries() ; n++) {
 				
 			LineString line = (LineString) edges.getGeometryN(n);	//	System.out.println(line);
@@ -201,6 +219,7 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 				idEdgeInt++  ;			    	
 			}    		    
 		}   
+	
 	}
 	
 	@Override
@@ -209,13 +228,11 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 		if ( createGraph = false )
 			return ;
 		
-		
-		
-		/*
+		delGraph.clear();
 		Geometry edges = delaunayBuilder.getEdges(new GeometryFactory());//	  System.out.println(edges.getLength());
 	
-	  	int maxIdNode = graphToolkit.getMaxIdIntElement(delGraph, element.node) ;
-	  	int maxIdEdge = graphToolkit.getMaxIdIntElement(delGraph, element.edge) ;
+	  	int maxIdNode = 0 ;
+	  	int maxIdEdge = 0 ;
 	  	
 	    int idNodeInt = maxIdNode , idEdgeInt = maxIdEdge  ;
 	    
@@ -245,6 +262,6 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 		}
 	    
 		
-	*/
+	
 	}
 }

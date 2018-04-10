@@ -4,9 +4,15 @@ package RdmGsaNet_generateGraph;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
+import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 import RdmGsaNetAlgo.graphToolkit;
 import RdmGsaNetAlgo.gsAlgoToolkit;
@@ -77,6 +83,8 @@ public class generateNetNodeVectorField extends main  {
 	}
 	
 	protected static void handleCreateSeedGraph (boolean createSeedGraph , int step) throws IOException {
+		  
+		GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 		
 		if ( createSeedGraph ) {
 			if ( step == 1)	{				//		System.out.println("createSeedGraph step1" );
@@ -89,7 +97,14 @@ public class generateNetNodeVectorField extends main  {
 					gsAlgoToolkit.setNodeCoordinateFromNode(netGraph, seedGraph, n, nodeSeed);
 					
 					String pathStart = handle.getPathStartSeed();
-					seedGraph.write(fsd, pathStart);			
+					seedGraph.write(fsd, pathStart);		
+					
+					double[] coord = GraphPosLengthUtils.nodePosition(nodeSeed);	
+					Coordinate coords = new Coordinate(coord[0] , coord[1]) ;
+			    	Point p = geometryFactory.createPoint( coords ) ;
+			    	
+			    	nodeSeed.setAttribute("point", p );
+			    	
 				}
 			}			
 		}

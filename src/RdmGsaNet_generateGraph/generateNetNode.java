@@ -13,6 +13,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
+import RdmGsaNetAlgo.geographyToolkit;
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNodeBreakGrid.interpolation;
@@ -22,9 +23,6 @@ import RdmGsaNet_mainSim.main;
 import RdmGsaNet_mainSim.simulation;
 
 public class generateNetNode extends main  {
-	
-//	protected  enum splitSeed { onlyOneRandom , splitMax , splitMaxThreshold , splitProbability }
-//	protected splitSeed splitSeedtype ;
 	
 	protected boolean stillAlive;
 	
@@ -40,7 +38,7 @@ public class generateNetNode extends main  {
 	protected int numberMaxSeed ; 
 	protected String morp;
 	
-	// probability costants 
+	// probability constant 
 	public static  double  prob = 0 ;
 	
 	// VARIABLES 
@@ -49,8 +47,8 @@ public class generateNetNode extends main  {
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = simulation.getMapStepNewNodeId() ;
 	
 	// graph
-	private static Graph gsGraph = layerGs.getGraph();
-	private static Graph netGraph = layerNet.getGraph();
+	private static 	Graph gsGraph = layerGs.getGraph() ,
+					netGraph = layerNet.getGraph();
 
 	// variables for constructor
 	private static generateNetNode_Inter type ;
@@ -58,26 +56,23 @@ public class generateNetNode extends main  {
 
 	// constructor
 	public generateNetNode (generateNetNode_Inter type ) {
-		prob = generateNetNodeVectorFieldSplitSeedProb_02.getProb();
 		
+		prob = generateNetNodeVectorFieldSplitSeedProb_02.getProb();
 		this.type = type ;
 	}
 
 	public void generateNode ( int step ) throws IOException  {
+		
 		type.generateNodeRule ( step ) ;
 		
-		for ( Node n : netGraph.getEachNode() ) {
-			GeometryFactory geometryFactory = new GeometryFactory();		
-			double[] coord = GraphPosLengthUtils.nodePosition( n ) ;
-			Coordinate coords =  new Coordinate(coord[0], coord[1]) ;
-			Point p = geometryFactory.createPoint(coords) ;
-			
-			simulation.mapNodeNetPoint.put( p , n ) ;
-			n.addAttribute( "point" , p );
-		}
+		geographyToolkit.setPointAttributeToNode(netGraph, simulation.mapNodeNetPoint);
+		
+		
 	} 
 
 // PRIVATE METHODS ----------------------------------------------------------------------------------------------------------------------------------
+	
+	
 	
 // SET LAYOUT SEED NODES ----------------------------------------------------------------------------------------------------------------------------	
 	protected void setSeedNodes ( int step , int numberMaxSeed , layoutSeed setLayoutSeed ) {

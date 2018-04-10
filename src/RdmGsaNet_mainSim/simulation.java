@@ -9,6 +9,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
 
+import com.mongodb.client.model.geojson.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
 
 import RdmGsaNetExport.handleNameFile;
@@ -63,7 +64,9 @@ public class simulation extends main {
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
 	
 	public static Map < Point , Node > mapNodeNetPoint = new HashMap < Point , Node >();
+	public static Map < Node , MultiLineString > mapNodeSeedEdge  = new HashMap< Node , MultiLineString > () ;
 	
+	public static int maxStep ;
  	public static void  runSim ( boolean runSim ,
 								 int stopSim, boolean printMorp , 
 								 boolean genNode, boolean genEdge , boolean vecRun , boolean delRun ,
@@ -77,7 +80,8 @@ public class simulation extends main {
 		
 		if ( runSim == false ) 
 			return ;
-			
+		
+		maxStep = stopSim ;
 		generateNetEdge genNetEd = generateNetEdge ;
 		generateNetNode genNetNo = generateNetNode ;
 	

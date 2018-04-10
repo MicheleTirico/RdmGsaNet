@@ -19,6 +19,7 @@ import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNetExport.handleNameFile;
 
 import RdmGsaNet_mainSim.main;
+import RdmGsaNet_mainSim.simulation;
 
 public class topologyGraph  {
 	
@@ -77,7 +78,9 @@ public class topologyGraph  {
 
 		if ( step !=1 ) {
 			tgInt.updateGeometryOriGraph( step , mapStepNewNodeId  ) ;
-			tgInt.updateGraph();
+			
+			if ( step == simulation.maxStep) 
+				tgInt.updateGraph();
 		}
 	}
 	

@@ -22,14 +22,17 @@ public interface topologyGraph_inter {
 	// test
 	public void test ( ) ; 
 	
-	
 	public void createGeometryOriGraph () ;
 	
 	public void createGraph () ;
 			
-	public void updateGeometryOriGraph(  int step , Map < Double , ArrayList<String> > mapStepNewNodeId  ) ;
+	public void updateGeometryOriGraph(  ) ;
 
 	public void updateGraph () ;
+	
+	public void createSeedTriangleGraph () ;
+	
+	public void updateSeedTriangleGraph () ;
 	
 
 	

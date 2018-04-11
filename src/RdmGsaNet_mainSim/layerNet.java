@@ -87,7 +87,7 @@ public class layerNet {
 			n.addAttribute( "seedGrad" , 0 );
 		}
 		
-		geographyToolkit.setPointAttributeToNode(netGraph, simulation.mapNodeNetPoint);
+		geographyToolkit.setPointAttributeToNode(netGraph, simulation.mapPointNodeNet);
 	
 	}
 	

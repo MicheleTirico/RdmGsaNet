@@ -96,6 +96,8 @@ public class generateNetNodeVectorField extends main  {
 					Node nodeSeed = seedGraph.getNode(id) ;
 					gsAlgoToolkit.setNodeCoordinateFromNode(netGraph, seedGraph, n, nodeSeed);
 					
+					nodeSeed.setAttribute("idNodeNet", id);
+					
 					String pathStart = handle.getPathStartSeed();
 					seedGraph.write(fsd, pathStart);		
 					
@@ -103,7 +105,7 @@ public class generateNetNodeVectorField extends main  {
 					Coordinate coords = new Coordinate(coord[0] , coord[1]) ;
 			    	Point p = geometryFactory.createPoint( coords ) ;
 			    	
-			    	nodeSeed.setAttribute("point", p );
+			   // 	nodeSeed.setAttribute("point", p );
 			    	
 				}
 			}			

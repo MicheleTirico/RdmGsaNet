@@ -47,8 +47,8 @@ public class generateNetNode extends main  {
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = simulation.getMapStepNewNodeId() ;
 	
 	// graph
-	private static 	Graph gsGraph = layerGs.getGraph() ,
-					netGraph = layerNet.getGraph();
+	private static 	Graph 	gsGraph = layerGs.getGraph() ,
+							netGraph = layerNet.getGraph();
 
 	// variables for constructor
 	private static generateNetNode_Inter type ;
@@ -65,7 +65,7 @@ public class generateNetNode extends main  {
 		
 		type.generateNodeRule ( step ) ;
 		
-		geographyToolkit.setPointAttributeToNode(netGraph, simulation.mapNodeNetPoint);
+		geographyToolkit.setPointAttributeToNode(netGraph, simulation.mapPointNodeNet);
 		
 		
 	} 

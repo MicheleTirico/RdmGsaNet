@@ -24,10 +24,12 @@ import RdmGsaNet_mainSim.simulation;
 public class topologyGraph  {
 	
 	// graphs
-	private static Graph	oriGraph = new SingleGraph("origraph"),
-							topGraph = main.getDelaunayGraph();	
+	private static Graph	oriGraph = new SingleGraph("oriGraph"),
+							topGraph = main.getDelaunayGraph() , 
+							seedTriGraph = new SingleGraph("seedTriGraph");	
 	
-	private boolean createGraph  ;
+	private boolean createTopGraph ,  
+					createSeedTriangleGraph  ;
 			
 	private topologyGraph_inter tgInt ; 
 				
@@ -35,56 +37,57 @@ public class topologyGraph  {
 	protected static topologyGraphType   tgType ; 
 		
 	// STORING GRAPH EVENTS
-	static FileSinkDGS fsd = new FileSinkDGS();
-	handleNameFile handle = main.getHandle(); 
+	private static FileSinkDGS fsd = new FileSinkDGS();
+	private handleNameFile handle = main.getHandle(); 
 	private boolean doStoreTopologyGraph ;
 	
-	protected static Map < Node , Point > mapOriNodePoint = new HashMap<>(); 
-	
-	public topologyGraph( Graph oriGraph , topologyGraphType tgType , boolean createGraph  ) {
+	public topologyGraph( Graph oriGraph , topologyGraphType tgType , boolean createTopGraph , boolean createSeedTriangleGraph ) {
+		
 		this.oriGraph = oriGraph ;
 		this.tgType = tgType ;
-		this.createGraph  = createGraph ;
+		this.createTopGraph  = createTopGraph ;
+		this.createSeedTriangleGraph = createSeedTriangleGraph ;
 		
 		switch (tgType) {
-		case delaunay: 	tgInt = new delaunayGraph_02 ( oriGraph , topGraph , createGraph )  ;	
-			break;
-		
-		case voronoi : 				
-			break;
-		}
+			case delaunay: 	tgInt = new delaunayGraph_03 ( oriGraph , topGraph , seedTriGraph   )  ;	
+				break;
+			
+			case voronoi : 				
+				break;	
+		}	
 	}
 
-	public void setParameters (  ) {
+	public void setParameters (  ) {	}
 
-	}
 
-	
-	
-	
-	
 	public void createLayer ( int step )  throws IOException {
 		
 		if ( step == 1 ) {
 			tgInt.createGeometryOriGraph();
-			tgInt.createGraph();
-		}
 		
-		
+			if ( createTopGraph )	
+				tgInt.createGraph();
+			if ( createSeedTriangleGraph )
+				tgInt.createSeedTriangleGraph();
+		}			
 	}
+		
+	public void updateLayer ( int step ) {
 	
+		if ( step > 1 ) {
+			tgInt.updateGeometryOriGraph( ) ;
 	
-	public void updateLayer(  int step , Map < Double , ArrayList<String> > mapStepNewNodeId  ) {
-
-		if ( step !=1 ) {
-			tgInt.updateGeometryOriGraph( step , mapStepNewNodeId  ) ;
-			
-			if ( step == simulation.maxStep) 
+		if ( createTopGraph )	 
+			if ( step == simulation.maxStep )	//	System.out.println(simulation.maxStep);
 				tgInt.updateGraph();
-		}
+	
+		if ( createSeedTriangleGraph )
+			tgInt.updateSeedTriangleGraph();
+		
+		}	
 	}
 	
-	
+
 	
 	public void computeTest ( ) {
 		tgInt.test();
@@ -101,6 +104,10 @@ public class topologyGraph  {
 
 	public static Graph getTopGraph () {
 		return topGraph ;
+	}
+
+	public static Graph getSeedTriGraph() {
+		return seedTriGraph ;
 	}
 
 }

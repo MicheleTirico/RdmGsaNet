@@ -39,10 +39,10 @@ public class setupNetSeed implements setupNet_Inter {
 			double [] nGsCoordinate = GraphPosLengthUtils.nodePosition(nGs) ;						//	System.out.println(nGsCoordinate[0]);
 			
 			// create node in netGraph
-			netGraph.addNode(id);
+			netGraph.addNode("0");
 			
 			// set coordinate of node in netGraph
-			Node nNet = netGraph.getNode(id); 														//	System.out.println(nNet.getId());
+			Node nNet = netGraph.getNode("0"); 														//	System.out.println(nNet.getId());
 			nNet.setAttribute( "xyz", nGsCoordinate[0] , nGsCoordinate[1] , nGsCoordinate[2] );		//	double [] nNetCoordinate = GraphPosLengthUtils.nodePosition(nNet) ;			System.out.println(nNetCoordinate[0]);
 		}
 	}

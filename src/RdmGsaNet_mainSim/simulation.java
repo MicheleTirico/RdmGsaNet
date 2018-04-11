@@ -63,8 +63,9 @@ public class simulation extends main {
 	// map / key = (double) step , values = (list of string ) id of new nodes in net
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
 	
-	public static Map < Point , Node > mapNodeNetPoint = new HashMap < Point , Node >();
-	public static Map < Node , MultiLineString > mapNodeSeedEdge  = new HashMap< Node , MultiLineString > () ;
+	public static Map < Point , Node > mapPointNodeNet = new HashMap < Point , Node >();
+
+//	public static Map < Node , MultiLineString > mapNodeSeedEdge  = new HashMap< Node , MultiLineString > () ;
 	
 	public static int maxStep ;
  	public static void  runSim ( boolean runSim ,
@@ -106,7 +107,7 @@ public class simulation extends main {
 			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
 			if ( doStoreStepSeed == true)  	seedGraph.stepBegins(step); 
 			
-			delaunayGraph.createLayer(step);
+			
 			
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
@@ -125,7 +126,10 @@ public class simulation extends main {
 			// define rules to growth network
 			if ( genNode )  genNetNo.generateNode( step ); 
 	
-			if ( delRun ) delaunayGraph.updateLayer( step,   mapStepNewNodeId  ) ;	//	delaunayGraph.computeTest();
+			if ( delRun )  {
+				delaunayGraph.createLayer( step );
+				delaunayGraph.updateLayer( step ) ;	//	delaunayGraph.computeTest();
+			}
 		
 			// update net 
 			updateMapStepId ( step , netGraph , mapStepIdNet );

@@ -31,9 +31,9 @@ import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
 
 public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter {
 
+	// parameters
 	private genEdgeType genEdgeType;
 	private int idEdgeInt = 0 , idNetInt = 0 ;
-	// parameters
 	private double distCeckSeed ;
 			
 	//constructor
@@ -106,7 +106,7 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 			catch 	( org.graphstream.graph.IdAlreadyInUseException e ) { e.printStackTrace();	}
 			catch	( org.graphstream.graph.ElementNotFoundException e) {	e.printStackTrace();	}
 			
-			// compute listNode to connect ----------------------------------------------------------------------------------------------------------------------			
+// compute list of nodes --------------------------------------------------------------------------------------------------------------------------			
 			listIdTNodeToConnect = getlistIdTNodeToConnect(listIdTNodeToConnect, nodeNet, idFather);
 		
 			// get id edge

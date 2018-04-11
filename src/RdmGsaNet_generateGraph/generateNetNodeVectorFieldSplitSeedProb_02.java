@@ -161,7 +161,6 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		nodeNet.setAttribute("seedGrad", 1);
 	}
 	
-	
 	// remove old seed
 	for ( int i : listIdSeedInt) //	System.out.println(i);
 		seedGraph.removeNode(Integer.toString(i));	
@@ -169,13 +168,9 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 	}
 
 	
-	
-	
-	
 	@Override
 	public void removeNodeRule(int step) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	

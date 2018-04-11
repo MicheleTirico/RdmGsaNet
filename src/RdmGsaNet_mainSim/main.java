@@ -28,9 +28,9 @@ import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_02;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_03;
+import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_04;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_02;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_03;
-import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_04;
 import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_generateGraph.generateNetNode.interpolation;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
@@ -113,7 +113,7 @@ public class main {
 		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 10 , typeRadius.square , 2 , false )
-//		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 7 , 1.5 , true , 10  )
+//		/* create multi graph 			*/ new setupNetMultiGraph ( 10 , 20.0 , 10 , 1.5 , true , 10  )
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -137,30 +137,29 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , .5 , 45 , true , 5 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , .2 , 45 , true , 1 ) 
 			) ;
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (			
 //					new generateNetEdgeNear( 2 , whichNode.all )
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
 //					new generateNetEdgeInRadiusFather_03 ( genEdgeType.fatherAndNodeInRadius , .5 )
-//					new generateNetEdgeDelaunay_03 ( netGraph , delGraph , false , 0.5 )
-					new generateNetEdgeInRadiusFather_04 ( genEdgeType.fatherAndNodeInRadius , .5 )
-					
+					new generateNetEdgeDelaunay_04 ( netGraph , delGraph , true , 0.1 )
+//					new generateNetEdgeInRadiusFather_03 ( genEdgeType.fatherAndNodeInRadius , .1 )
 			) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
 	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , seedGraph , .1 , simplifyType.kNearestNeighbors ) ; 
 	
-	protected static topologyGraph delaunayGraph = new topologyGraph(netGraph, topologyGraphType .delaunay , true ) ;
+	protected static topologyGraph delaunayGraph = new topologyGraph(netGraph, topologyGraphType .delaunay , true , true ) ;
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 	
 		delaunayGraph.setParameters();
 		
-		dynamicSymplify.setParameters_Pivot( true , 0.5 );
+		dynamicSymplify.setParameters_Pivot( true , 0.1 );
 		
 		// setup handle name file 
 		handle = new handleNameFile( 
@@ -261,7 +260,10 @@ public class main {
 		
 		//get seedAlive
 	//	int seedAlive = getSeedAlive(false);
-	//	for ( Node n : netGraph.getEachNode()) {			Point p = n.getAttribute("point") ;		System.out.println(p);	}
+		for ( Node n : netGraph.getEachNode()) {			
+			Point p = n.getAttribute("point") ;		
+			if ( p == null)
+				System.out.println(n + " " + p);	}
 		
 	//	ArrayList listIdNetSeedGrad = getListIdWithAttribute( false , netGraph, "seedGrad");
 		printNodeSetAttribute(false , gsGraph) ;
@@ -304,15 +306,18 @@ public class main {
 			// setup viz delaunay graph 
 			handleVizStype delViz = new handleVizStype( delGraph ,stylesheet.manual , "seedGrad", 1)  ; 
 			delViz.setupIdViz(false, delGraph , 10 , "black");
-			delViz.setupDefaultParam (delGraph , "black", "black", 4 , .01);
+			delViz.setupDefaultParam (delGraph , "black", "black", 8 , .01);
 			delViz.setupVizBooleanAtr(false , delGraph , "black", "red" , false , false ) ;
 			delViz.setupFixScaleManual( true , delGraph , sizeGridEdge , 0);
 			
-			gsGraph.display(false);
+	//		gsGraph.display(false);
 			netGraph.display(false);
-			vecGraph.display(false);
+	//		vecGraph.display(false);
 			seedGraph.display(false);
 			delGraph.display(false) ;
+			
+		//	generateNetEdgeDelaunay_04.testGraph.display(false) ;
+			
 		}
 		catch (java.lang.ArrayIndexOutOfBoundsException e) {
 			System.out.println(e.getMessage() ) ;

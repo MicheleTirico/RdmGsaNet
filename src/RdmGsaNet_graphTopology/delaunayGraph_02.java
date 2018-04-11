@@ -50,11 +50,14 @@ public class delaunayGraph_02 implements topologyGraph_inter {
 	protected static IncrementalDelaunayTriangulator incDel ;
 	
 	public static Geometry edges ;
+	
 	Map < String , double[]> mapIdCoordOrigGraph =  new HashMap< String , double[]>  () ;
+	
 	protected static Map < Node , Vertex > mapSeedVertex = new HashMap<>(); 
 	protected static Map < Node , Point > mapNetPoint = new HashMap<>(); 
 	protected static Map < Node , QuadEdge > mapNodeNetQuadEdge = new HashMap<>(); 
 	protected static Map < Node , QuadEdge > mapNodeSeedQuadEdge = new HashMap<>(); 
+	
 	// constructor
 	public delaunayGraph_02 (Graph oriGraph , Graph topGraph , boolean createGraph  ) {
 	

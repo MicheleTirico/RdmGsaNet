@@ -294,7 +294,12 @@ public class graphToolkit {
 		
 		
 		ArrayList <Integer> listElementInt = getListElement(graph, element, elementTypeToReturn.integer) ;
-		int idInt   = Collections.min(listElementInt) ;
+		int idInt = 0 ; 
+		try {
+			idInt   = Collections.min(listElementInt) ;
+		} catch (java.util.NoSuchElementException e) {
+			idInt = 0 ; 
+		}
 		try {
 		//	ArrayList <Integer> listElementInt = getListElement(graph, element, elementTypeToReturn.integer) ;
 		

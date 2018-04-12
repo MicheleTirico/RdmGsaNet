@@ -107,7 +107,7 @@ public class simulation extends main {
 			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
 			if ( doStoreStepSeed == true)  	seedGraph.stepBegins(step); 
 			
-			
+			//	System.out.println(netGraph.getNodeCount());
 			
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");

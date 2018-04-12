@@ -150,7 +150,7 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			//	seedGraph.read(pathStartSeed);
 			} 
 			
-			catch (	ElementNotFoundException | GraphParseException |org.graphstream.graph.IdAlreadyInUseException e) 	{	e.printStackTrace();	}
+			catch (	ElementNotFoundException | GraphParseException |org.graphstream.graph.IdAlreadyInUseException | java.io.IOException e) 	{ /*	e.printStackTrace();	*/ }
 							
 			// set file Source for file step
 			gsFs = FileSourceFactory.sourceFor(pathStepGs);
@@ -159,20 +159,30 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			netFs = FileSourceFactory.sourceFor(pathStepNet);
 			netFs.addSink(netGraph);
 			
-			vecFs = FileSourceFactory.sourceFor(pathStepVec);
-			vecFs.addSink(vecGraph);
+			try {
+				vecFs = FileSourceFactory.sourceFor(pathStepVec);
+				vecFs.addSink(vecGraph);
+			} catch (java.io.IOException e) { 			}
 			
-			seedFs = FileSourceFactory.sourceFor(pathStepSeed);
-			seedFs.addSink(seedGraph);
+			try {
+				seedFs = FileSourceFactory.sourceFor(pathStepSeed);
+				seedFs.addSink(seedGraph);
+			} catch (java.io.IOException e) { 			}
+			
 
 			// import file step
 			try {
 				gsFs.begin(pathStepGs);
 				netFs.begin(pathStepNet);
-				vecFs.begin(pathStepVec);
-				seedFs.begin(pathStepSeed);
+				try {
+					vecFs.begin(pathStepVec);
+				} catch (java.lang.NullPointerException e) {				}
 				
-				while ( gsFs.nextStep() && netFs.nextStep()  &&  vecFs.nextStep() &&  seedFs.nextStep() ) {
+				try {
+					seedFs.begin(pathStepSeed);
+				} catch (java.lang.NullPointerException e) {				}
+				
+				while (  gsFs.nextStep() && netFs.nextStep()  &&  vecFs.nextStep() && seedFs.nextStep() ) {
 							
 					double step = gsGraph.getStep();							//	System.out.println(step);
 							

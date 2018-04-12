@@ -127,7 +127,7 @@ public class layerNet {
 	
 	private static void createNodeInCircle () {			}
 	
-	public static Node createNodesInSquare ( int nextId , Graph graph , double[] meanPointCoord , double radius ) {
+	public static Node createNodesInSquare ( int nextId , Graph graph , double[] meanPointCoord , double radius , int randomSeed ) {
 		
 		double minX = meanPointCoord[0] - radius;
 		double maxX = meanPointCoord[0] + radius;
@@ -151,7 +151,7 @@ public class layerNet {
 		
 	}
 	
-	public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNodes , double[] meanPointCoord , double radius ) {
+	public static ArrayList<Node> createListNodeInSquare ( Graph  graph , int numNodes , double[] meanPointCoord , double radius , int randomSeed) {
 		
 		ArrayList<Node> listNodes = new ArrayList<Node> () ;
 		
@@ -162,7 +162,7 @@ public class layerNet {
 		
 		double sizeSquare = maxX - minX ;
 		
-		Random rnd = new Random();
+		Random rnd = new Random(randomSeed);
 	
 		for ( int idInt = 0 ; idInt < numNodes ; idInt++ ) {
 			

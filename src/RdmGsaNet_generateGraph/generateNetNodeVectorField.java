@@ -67,10 +67,16 @@ public class generateNetNodeVectorField extends main  {
 			case sumVectors: {
 				for ( String nVertex : listVertex ) {	//			System.out.println(nVertex);
 					Node nVec = vecGraph.getNode(nVertex); 
-					
-					double 	intenX = nVec.getAttribute("intenX") ,
-							intenY = nVec.getAttribute("intenY") ; 
-											
+					double 	intenX , intenY ;
+					try {
+						 	intenX = nVec.getAttribute("intenX") ;
+						 	intenY = nVec.getAttribute("intenY") ;
+					}
+					catch (Exception e) {
+						intenX = 0 ; 
+						intenY = 0 ; 
+					}
+						
 					vectorX = vectorX + intenX ;
 					vectorY = vectorY + intenY ;		
 				}

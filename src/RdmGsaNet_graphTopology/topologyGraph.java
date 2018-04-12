@@ -28,7 +28,8 @@ public class topologyGraph  {
 							topGraph = main.getDelaunayGraph() , 
 							seedTriGraph = new SingleGraph("seedTriGraph");	
 	
-	private boolean createTopGraph ,  
+	private boolean runTopology ,
+					createTopGraph ,  
 					createSeedTriangleGraph  ;
 			
 	private topologyGraph_inter tgInt ; 
@@ -41,8 +42,8 @@ public class topologyGraph  {
 	private handleNameFile handle = main.getHandle(); 
 	private boolean doStoreTopologyGraph ;
 	
-	public topologyGraph( Graph oriGraph , topologyGraphType tgType , boolean createTopGraph , boolean createSeedTriangleGraph ) {
-		
+	public topologyGraph( boolean runTopology , Graph oriGraph , topologyGraphType tgType , boolean createTopGraph , boolean createSeedTriangleGraph ) {
+		this.runTopology = runTopology ;
 		this.oriGraph = oriGraph ;
 		this.tgType = tgType ;
 		this.createTopGraph  = createTopGraph ;
@@ -62,6 +63,9 @@ public class topologyGraph  {
 
 	public void createLayer ( int step )  throws IOException {
 		
+		if ( runTopology == false )
+			return ;
+		
 		if ( step == 1 ) {
 			tgInt.createGeometryOriGraph();
 		
@@ -74,6 +78,10 @@ public class topologyGraph  {
 		
 	public void updateLayer ( int step ) {
 	
+
+		if ( runTopology == false )
+			return ;
+		
 		if ( step > 1 ) {
 			tgInt.updateGeometryOriGraph( ) ;
 	

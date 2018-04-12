@@ -19,7 +19,8 @@ import RdmGsaNet_mainSim.main;
 public class setupNetFistfulNodes extends main implements setupNet_Inter {
 
 	// COSTANTS
-		private int fistfulOfNodes ;
+		private int fistfulOfNodes , 
+					randomSeed ;
 		
 		public enum typeRadius { circle , square }
 		private typeRadius typeRadius ;
@@ -34,11 +35,12 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 								netGraph = layerNet.getGraph() ;
 			
 		// COSTRUCTOR
-		public setupNetFistfulNodes  ( int fistfulOfNodes , typeRadius typeRadius ,  double radius , boolean createEdge) {
+		public setupNetFistfulNodes  ( int fistfulOfNodes , typeRadius typeRadius ,  double radius , boolean createEdge , int randomSeed ) {
 			this.fistfulOfNodes = fistfulOfNodes ;
 			this.typeRadius = typeRadius  ;
 			this.radius = radius ;
 			this.createEdge = createEdge ;
+			this.randomSeed = randomSeed ;
 		}
 		
 		public void createLayerNet() {
@@ -58,7 +60,7 @@ public class setupNetFistfulNodes extends main implements setupNet_Inter {
 			switch (typeRadius ) {
 			case square :
 				for ( int x = 1 ; x < fistfulOfNodes ; x++ )
-					layerNet.createNodesInSquare( x , netGraph , meanPointCoord , radius );
+					layerNet.createNodesInSquare( x , netGraph , meanPointCoord , radius , randomSeed  );
 				break;
 
 			case circle : {

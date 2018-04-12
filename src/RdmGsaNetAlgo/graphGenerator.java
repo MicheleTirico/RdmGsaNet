@@ -77,7 +77,6 @@ public class graphGenerator {
 		double sizeSquare = maxX - minX ;
 		
 		Random rnd = new Random(randomSeed);
-	
 		
 		int idMaxInt ;
 		
@@ -87,7 +86,7 @@ public class graphGenerator {
 			idMaxInt = 0 ; 
 		}
 		
-		for ( int idInt = idMaxInt  ; idInt <= numNodes + idMaxInt ; idInt++ ) {
+		for ( int idInt = idMaxInt  ; idInt < numNodes + idMaxInt ; idInt++ ) {
 			
 			double rndX =  minX + rnd.nextDouble() * sizeSquare ;
 			double rndY =  minY + rnd.nextDouble() * sizeSquare ;

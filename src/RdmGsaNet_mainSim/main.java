@@ -59,11 +59,13 @@ import RdmGsaNet_vectorField_02.vectorField.vectorFieldType;
 import RdmGsaNet_vectorField_02.vectorField.vfNeig;
 import RdmGsaNet_vectorField_02.vectorField.weigthDist;
 
+import RdmGsaNet_seedBirth.seedBirth;
+import RdmGsaNet_seedBirth.seedBirth.seedSplitType;
 import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 1000 ;
+	private static int stopSim = 500 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -92,7 +94,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_SeedProb_03\\movingSpots\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBird\\chaos\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -110,10 +112,10 @@ public class main {
 
 	static layerNet netLayer = new layerNet (
 //		/* create only one node			*/ new setupNetSeed()	
-		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )		
+//		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )		
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
-//		/* create multi graph 			*/ new setupNetMultiGraph ( 100 , 24.0 , 0 , 1 , true  , 10  )
+		/* create multi graph 			*/ new setupNetMultiGraph ( 20 , 24.0 , 5 , .1 , true  , 10  )
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -137,7 +139,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0.14 , 45 , true , 1 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0 , 45 , true , 1 ) 
 			) ;
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (	
@@ -145,21 +147,31 @@ public class main {
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
 //					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .1 )
 //					new generateNetEdgeDelaunay_04 ( netGraph , delGraph , true , 0.1 )
-					new generateNetEdgeInRadiusFather_03 ( genEdgeType.fatherAndNodeInRadius , .1 )
+					new generateNetEdgeInRadiusFather_03 ( genEdgeType.fatherAndNodeInRadius , .2 )
 					) ;
 	
 	protected static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
-	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , seedGraph , .5 , simplifyType.kNearestNeighbors ) ; 
+	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , seedGraph , 0.1 , simplifyType.kNearestNeighbors ) ; 
 	
 	protected static topologyGraph delaunayGraph = new topologyGraph( false , netGraph, topologyGraphType .delaunay , true , true ) ;
+	
+	protected static RdmGsaNet_seedBirth.seedBirth seedBirth = new seedBirth( true , seedSplitType.onlySetSeed );
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 	
+		
+		
 		delaunayGraph.setParameters();
 		
-		dynamicSymplify.setParameters_Pivot( true , 0.5 );
+		dynamicSymplify.setParameters_Pivot( true , .1 );
+		
+		seedBirth.setParameters( 
+				/* not used prob		*/	0.1 , 
+				/* % split 				*/	0.0001 , 
+				/* dist					*/	0.05 
+				);		//	seedBirth.computeTest();
 		
 		// setup handle name file 
 		handle = new handleNameFile( 
@@ -170,7 +182,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.movingSpots );			
+		setRdType ( RdmType.chaos );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -274,7 +286,7 @@ public class main {
 			System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 			
 			// setup viz netGraph
-			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "merge", 1) ;
+			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
 			netViz.setupIdViz(false , netGraph, 10 , "black");
 			netViz.setupDefaultParam (netGraph, "black", "black", 6 , 0.5 );
 			netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;

@@ -64,8 +64,6 @@ public class simulation extends main {
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
 	
 	public static Map < Point , Node > mapPointNodeNet = new HashMap < Point , Node >();
-
-//	public static Map < Node , MultiLineString > mapNodeSeedEdge  = new HashMap< Node , MultiLineString > () ;
 	
 	public static int maxStep ;
  	public static void  runSim ( boolean runSim ,
@@ -99,30 +97,28 @@ public class simulation extends main {
 		addStep0( netGraph , mapStepIdNet );
 	
 		// start simulation, we define the last step in class run
-		for ( step = 1 ; step <= stopSim ; step++ ) {	
-		//	System.out.println(mapNodeNetPoint);
+		for ( step = 1 ; step <= stopSim ; step++ ) {	//	System.out.println(mapNodeNetPoint); 	System.out.println(netGraph.getNodeCount());
 			
 			if ( doStoreStepGs  == true )  	gsGraph.stepBegins(step);   			
 			if ( doStoreStepNet  == true)  	netGraph.stepBegins(step);  	
 			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
 			if ( doStoreStepSeed == true)  	seedGraph.stepBegins(step); 
-			
-			//	System.out.println(netGraph.getNodeCount());
-			
+
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
 
 			// method to handle first step
 			firstStep (step );	// System.out.println(mapMorp0);
 			
-			/* run gs algo to all nodes
-				boolean print : if true, print mapMorp */
+			// run gs algo to all nodes ( if true, print mapMorp )
 			gsAlgo.gsAlgoMain( false );
 
 			if ( vecRun ) vectorField.computeVf() ; 
 			
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );			//	System.out.println(mapStepNewNodeId) ;
-				
+			
+			seedBirth.compute();				//	seedBirth.computeTest();		
+			
 			// define rules to growth network
 			if ( genNode )  genNetNo.generateNode( step ); 
 	
@@ -131,13 +127,18 @@ public class simulation extends main {
 				delaunayGraph.updateLayer( step ) ;	//	delaunayGraph.computeTest();
 			}
 		
-			// update net 
-			updateMapStepId ( step , netGraph , mapStepIdNet );
-			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );
+			
+	//		dynamicSymplify.compute( step );	//	dynamicSymplify.computeTest();
 			
 			if ( genEdge == true) genNetEd.generateEdge( step ); 
 
-			dynamicSymplify.compute( step );					// dynamicSymplify.computeTest();
+			
+			dynamicSymplify.compute( step );	//	dynamicSymplify.computeTest();
+			
+			
+			// update net 
+			updateMapStepId ( step , netGraph , mapStepIdNet );
+			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );
 			
 			// create list and map
 			listIdNet = createListId ( netGraph );	

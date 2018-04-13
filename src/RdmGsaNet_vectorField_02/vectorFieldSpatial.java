@@ -118,6 +118,7 @@ public class vectorFieldSpatial implements vectorField_inter {
 				mapIdInten.put( idnNeig, inten );
 			}
 			
+			
 			n1stVec.addAttribute("inten", deltaInten);
 			n1stVec.addAttribute("intenX", deltaIntenX);
 			n1stVec.addAttribute("intenY", deltaIntenY);
@@ -134,6 +135,7 @@ public class vectorFieldSpatial implements vectorField_inter {
 	public void createVector( Graph vecGraph ) {
 		
 		int idEdge = 0 ; 
+		
 		// add new node
 		for ( Node n0 : vecGraph.getEachNode() ) {
 			
@@ -169,7 +171,7 @@ public class vectorFieldSpatial implements vectorField_inter {
 	}
 
 	@Override
-	public void updateVector(Graph graph , Graph vecGraph ) {
+	public void updateVector(Graph graph , Graph vecGraph , double maxIntenVector ) {
 
 		for ( Node nGs : graph.getEachNode() ) {
 			

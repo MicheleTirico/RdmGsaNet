@@ -26,7 +26,7 @@ public interface vectorField_inter {
 	
 	public void computeVf ( vfNeig vfN , weigthDist wdType , Graph vecGraph , boolean doStoreStepVec ) throws IOException ;
 
-	public void updateVector (  Graph graph , Graph vecGraph ) ;
+	public void updateVector (  Graph graph , Graph vecGraph , double maxIntenVector ) ;
 	
 	public void createVector ( Graph vecGraph ) ;
 	

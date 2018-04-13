@@ -38,11 +38,12 @@ public class dynamicSymplify {
 	
 	// constructor
 	public dynamicSymplify( boolean runSymplify ,  Graph netGraph  , Graph seedGraph ,double epsilon , simplifyType simplifyType  ) {
+		
 		this.runSymplify = runSymplify ;
 		this.netGraph  = netGraph  ;
 		this.seedGraph = seedGraph ;
 		this.epsilon = epsilon ;
-		this.simplifyType = simplifyType ;
+	//	this.simplifyType = simplifyType ;
 		
 		switch (simplifyType ) {
 		
@@ -69,23 +70,24 @@ public class dynamicSymplify {
 	
 	
 	public void compute (  int step ) {				//	System.out.println(graph.getNodeCount() + " "  + graph.getNodeSet());
+		
 		if ( runSymplify == false )
 			return ;
+	
 		dsInter.updateFatherAttribute( step , mapFather );
 		dsInter.handleGraphGenerator( step );
+		
 		if ( createPivot ) 
 			setPivot ( createPivot , maxDistPivot ) ;
 	}
 	
 	public void setPivot(boolean createPivot, double maxDistPivot) {
 		
-		if ( createPivot == false)
+		if ( ! createPivot )
 			return ; 
 		
-		ArrayList<String> listIdSeed = new ArrayList<String>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
-		
+		ArrayList<String> listIdSeed = new ArrayList<String>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;	
 		ArrayList<Integer> listIdEdgeInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.integer)) ;		
-	//	ArrayList<Integer> listIdSeedInt = new ArrayList<Integer>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;
 		ArrayList<Integer> listIdNetInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;
 		
 		for ( String idSeed : listIdSeed ) {
@@ -123,6 +125,7 @@ public class dynamicSymplify {
 					// get last id node
 					listIdNetInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;
 					int idPivotInt = Collections.max(listIdNetInt) + 1 ;
+					
 					while ( listIdNetInt.contains(idPivotInt))
 						idPivotInt++;
 					
@@ -152,94 +155,8 @@ public class dynamicSymplify {
 					// remove edge
 					Edge edge = nodeSeedNet.getEdgeBetween(idNeig);
 					netGraph.removeEdge(edge);
-				
-					/*
-					double[] distNeigAx = new double[2] ;
-					
-					distNeigAx[0] = Math.abs(seedCoord[0] - neigCoord[0] );
-					distNeigAx[1] = Math.abs(seedCoord[1] - neigCoord[1] );
-					
-					String oldPivot = null ;
-					
-					for ( int i = 1 ; i <= numPivot ; i++ ) {
-						System.out.println("i " + i );
-						
-						listIdNetInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;
-						listIdEdgeInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.edge, elementTypeToReturn.integer)) ;	
-						
-						double[] pivotCoord = new double [2] ;
-						
-						pivotCoord [0] = seedCoord[0] + i * distNeigAx[0] / ( numPivot + 1 ) ;
-						pivotCoord [1] = seedCoord[1] + i * distNeigAx[1] / ( numPivot + 1 ) ;
-					
-						System.out.println("seed " + seedCoord[0] + " " + seedCoord[1] );
-						System.out.println("neig " + neigCoord[0] + " " + neigCoord[1] );
-						System.out.println("pivot " + pivotCoord[0] + " " + pivotCoord[1] );
-						
-						int idPivotInt = Collections.max(listIdNetInt) + 1 ;
-					
-						while ( listIdNetInt.contains(idPivotInt))
-							idPivotInt++;
-						
-						String idPivot = Integer.toString(idPivotInt);
-							
-						netGraph.addNode(idPivot);
-						
-						Node nodePivot = netGraph.getNode(idPivot) ;
-						
-						nodePivot.setAttribute ( "xyz", pivotCoord [0] , pivotCoord [1] , 0 ) ;
-					
-						int idEdgeInt = Collections.max(listIdEdgeInt) ;
-						
-						while ( listIdEdgeInt.contains(idEdgeInt))
-							idEdgeInt++;
-						
-						String idEdge = Integer.toString(idEdgeInt);
-						
-						idEdge = Integer.toString(idEdgeInt);
-					
-						
-						if ( i == 1 && numPivot == 1 ) {
-							netGraph.addEdge(idEdge, nodePivot, nodeSeedNet);
-							idEdgeInt++;
-							idEdge = Integer.toString(idEdgeInt);
-							netGraph.addEdge(idEdge, nodePivot, nodeNeig);
-						}
-						else if ( i == 1 && numPivot != 1) {
-							netGraph.addEdge(idEdge, nodePivot, nodeSeedNet);
-							oldPivot = nodePivot.getId() ;
-						}
-						else if ( i == numPivot && numPivot !=1 ) {
-							netGraph.addEdge(idEdge, nodePivot, netGraph.getNode(oldPivot));
-							idEdgeInt++;
-							idEdge = Integer.toString(idEdgeInt);
-							netGraph.addEdge(idEdge, nodePivot, nodeSeedNet);
-							
-						}
-							
-					
-						
-						
-						
-			
-						
-						Edge edge = nodeNeig.getEdgeBetween(idNeig);
-						netGraph.removeEdge(edge);
-						idPivotInt++;
-				
-						idEdgeInt++;
-					}
-					*/
-				
-				}
-			
-			}
-			
-		}
-		
+				}			
+			}			
+		}		
 	}
-
-
-
-
 }

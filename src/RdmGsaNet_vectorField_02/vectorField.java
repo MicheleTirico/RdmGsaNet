@@ -19,7 +19,6 @@ public class vectorField {
 		
 	protected String attribute  ;
 	private vectorField_inter vfInt ; 
-	private double radius ;
 		
 	public enum vfNeig { inRadius , onlyNeig }
 	protected vfNeig vfN ;
@@ -30,6 +29,7 @@ public class vectorField {
 	public enum vectorFieldType { spatial , temporal }
 	protected static vectorFieldType  vfType ; 
 		
+	private double maxIntenVector ; 
 	// STORING GRAPH EVENTS
 	static FileSinkDGS fsd = new FileSinkDGS();
 	handleNameFile handle = main.getHandle(); 
@@ -42,17 +42,17 @@ public class vectorField {
 		this.vfType = vfType ;
 					
 		switch (vfType) {
-				case spatial: 	vfInt = new vectorFieldSpatial( graph , attribute )  ;	
-					break;
+			case spatial: 	vfInt = new vectorFieldSpatial( graph , attribute )  ;	
+				break;
 				
-				case temporal : 				
-					break;
+			case temporal : 				
+				break;
 		}
 	}
 		
-	public void setParameters ( Graph vecGraph ,double radius , vfNeig vfN , weigthDist wdType  ) {
+	public void setParameters ( Graph vecGraph , double maxIntenVector , vfNeig vfN , weigthDist wdType  ) {
 			this.setVecGraph(vecGraph) ;
-			this.radius = radius ;
+			this.maxIntenVector = maxIntenVector ;
 			this.vfN = vfN ; 
 			this.wdType = wdType ;	
 		}
@@ -61,15 +61,14 @@ public class vectorField {
 			vectorField_inter.createGraph(graph, vecGraph, doStoreStartVec );
 		}
 		
-		
-		
+			
 	public void computeTest ( ) {
 			vfInt.test( ) ;
 	}
 		
 	public void computeVf ( ) throws IOException {						//	System.out.println(super.toString());
 			vfInt.computeVf ( vfN , wdType , vecGraph , doStoreStartVec );
-			vfInt.updateVector(graph, vecGraph);
+			vfInt.updateVector(graph, vecGraph , maxIntenVector);
 	}	
 
 	protected static double getCoefWeig ( weigthDist wdType , double dist ) {

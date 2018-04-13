@@ -60,7 +60,6 @@ public class topologyGraph  {
 
 	public void setParameters (  ) {	}
 
-
 	public void createLayer ( int step )  throws IOException {
 		
 		if ( runTopology == false )

@@ -95,14 +95,14 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 				
 				double[] newNodesCoord = new double [2] ;
 				
-				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten , nodeCoord , vector , radians , 1.0 );
+				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten , nodeCoord , vector , radians , 0.1 );
 				
 				mapIdNewSeedCoord.put(idLocal, newNodesCoord) ;
 				mapIdNewSeedFather.put(idLocal, idSeed) ;							//		System.out.println("node 1 " + newNodesCoord[0] + " " + newNodesCoord[1] );
 				
 				idLocal++ ;
 				
-				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten ,  nodeCoord , vector , - radians , 1.0 );
+				newNodesCoord = generateNetNodeVectorField.getNewCordAngle( coefInten ,  nodeCoord , vector , - radians , 0.1 );
 				
 				mapIdNewSeedCoord.put(idLocal, newNodesCoord) ;
 				mapIdNewSeedFather.put(idLocal, idSeed) ;							//		System.out.println("node 1 " + newNodesCoord[0] + " " + newNodesCoord[1] );

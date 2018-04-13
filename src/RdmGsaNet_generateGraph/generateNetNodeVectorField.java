@@ -183,6 +183,7 @@ public class generateNetNodeVectorField extends main  {
 			newNodeCoord[0] = nodeCoord[0] + maxDistImplem ;
 		
 		newNodeCoord[1] = nodeCoord[1] + coefInten * r * Math.sin(alfa + radians) ;
+		
 		if (Math.abs(newNodeCoord[1] - nodeCoord[1] ) > maxDistImplem )
 			newNodeCoord[1] = nodeCoord[1] + maxDistImplem ;
 		

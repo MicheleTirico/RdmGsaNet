@@ -22,13 +22,14 @@ public class analysisMultiLayer extends analysisMain  {
 	
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
 			/* run								*/	true ,
-			/* gsViz							*/ 	true ,
+			/* gsViz							*/ 	false ,
 			/* netViz							*/	true,	
-			/* vecViz							*/	true ,		
-			/* SeedViz							*/	true ,	
+			/* vecViz							*/	false,		
+			/* SeedViz							*/	false ,	
 			/* compute Global correlation 		*/	false
 			);
 		
+	
 	public static void main ( String[ ] args ) throws IOException, InterruptedException { 
 	
 		combinedAnalysis.setParametersCorrelation(correlationValGs.gsInh, correlationValNet.degree, 1 );
@@ -42,6 +43,7 @@ public class analysisMultiLayer extends analysisMain  {
 				/* colorBooleanNodeTrue, 	*/ "red" ,
 				/* colorBooleanNodeFalse	*/ "black"
 				);
+		
 		
 		combinedAnalysis.setParamVizGs(
 				/* sizeNode, 				*/ 6.0 ,

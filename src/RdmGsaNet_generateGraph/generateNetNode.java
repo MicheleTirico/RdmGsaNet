@@ -166,7 +166,7 @@ public class generateNetNode extends main  {
 	
 	
 	// Check coordinate in grid
-	protected double ceckCoordInGrid ( Graph graphGrid , double newNodeCoord  ) {
+	protected double checkCoordInGrid ( Graph graphGrid , double newNodeCoord  ) {
 		
 		double sizeGridEdge = Math.pow( graphGrid.getNodeCount() , 0.5 ) - 1 ;
 		

@@ -116,9 +116,7 @@ public class simulation extends main {
 			if ( vecRun ) vectorField.computeVf() ; 
 			
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );			//	System.out.println(mapStepNewNodeId) ;
-			
-			seedBirth.compute();				//	seedBirth.computeTest();		
-			
+						
 			// define rules to growth network
 			if ( genNode )  genNetNo.generateNode( step ); 
 	
@@ -132,10 +130,10 @@ public class simulation extends main {
 			
 			if ( genEdge == true) genNetEd.generateEdge( step ); 
 
-			
 			dynamicSymplify.compute( step );	//	dynamicSymplify.computeTest();
 			
-			
+			seedBirth.compute();				//	seedBirth.computeTest();		
+	
 			// update net 
 			updateMapStepId ( step , netGraph , mapStepIdNet );
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );

@@ -24,12 +24,12 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 	private double angleVectorNewSeed ;
 	private boolean stillAlive ;
 	private double radians ;
-	private double coefInten ;
+	private double coefInten , maxInten ;
 	
 	// constructor
 	public generateNetNodeVectorFieldSplitSeedProb_02 (int numberMaxSeed, layoutSeed setLayoutSeed,
 			interpolation typeInterpolation, boolean createSeedGraph, boolean updateNetGraph ,
-			double prob , double angleVectorNewSeed  , boolean stillAlive , double coefInten ) {
+			double prob , double angleVectorNewSeed  , boolean stillAlive , double coefInten , double maxInten) {
 		
 		super(numberMaxSeed, setLayoutSeed, typeInterpolation, createSeedGraph, updateNetGraph);
 		
@@ -37,6 +37,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		this.angleVectorNewSeed  = angleVectorNewSeed  ;
 		this.stillAlive = stillAlive ;
 		this.coefInten = coefInten ;
+		this.maxInten = maxInten ;
 		
 		radians = Math.toRadians(angleVectorNewSeed) ; 	
 	}
@@ -68,9 +69,21 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 			double[] 	nodeCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ,
 						vector = getVector(vecGraph, nodeCoord, typeInterpolation ) ;		
 			
-			double 	xTopVector = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[0] + vector[0] ) ,
-					yTopVector = generateNetNode.ceckCoordInGrid ( gsGraph , nodeCoord[1] + vector[1] ) ;						// 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);				
+			// check vector
+			double vectorInten = Math.pow( Math.pow(vector[0], 2) + Math.pow(vector[1], 2) , 0.5 ) ;
+			
+			if ( vectorInten > maxInten) {
+				vector[0]  = vector[0] / vectorInten * maxInten ; 
+				vector[1]  = vector[1] / vectorInten * maxInten ;		
+			}
+			
+			// check vector in grid
+			double 	xTopVector = generateNetNode.checkCoordInGrid ( gsGraph , nodeCoord[0] + vector[0] ) ,
+					yTopVector = generateNetNode.checkCoordInGrid ( gsGraph , nodeCoord[1] + vector[1] ) ;						// 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);				
 
+			 
+		
+			
 			
 			double [] newNodeSeedCoord = new double[2] ;
 			

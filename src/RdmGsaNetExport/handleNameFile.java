@@ -3,6 +3,7 @@ package RdmGsaNetExport;
 import java.io.File;
 
 import RdmGsaNet_mainSim.*;
+import RdmGsaNet_seedBirth.seedBirth;
 import RdmGsaNet_generateGraph.*;
 import RdmGsaNet_gsAlgo.*;
 import RdmGsaNet_setupLayer.*;
@@ -122,10 +123,20 @@ public class handleNameFile {
 	}
 	
 	private  String getNameNewFolder ( int maxStep , String genNode , String genEdge ) {
+
+		double prob ;
+		
+		if (seedBirth.getRunSeedBirth () ) 
+			prob = seedBirth.getPercBirth()  ;
+		
+		else 
+			prob = generateNetNode.getProb() ;
+		
+		
 		return	"maxStep_" + maxStep +
 				 "_" + genNode +
 				 "_" + genEdge +
-				 "_prob_" + generateNetNode.getProb(); 	//	System.out.println(generateNetNode.getProb());
+				 "_prob_" + prob ; 	//	System.out.println(generateNetNode.getProb());
 		}
 	
 	public static  String getPathFile ( typeFile typeFile , boolean setManualPath , String manualPath ) {

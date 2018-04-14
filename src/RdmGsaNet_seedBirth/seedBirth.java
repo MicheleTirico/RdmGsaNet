@@ -15,29 +15,37 @@ public class seedBirth {
 	protected static Graph 	netGraph = layerNet.getGraph() ,
 							seedGraph = main.getSeedGraph();
 	
-	private boolean runSeedBirth ;
+	private static boolean runSeedBirth ;
 	
 	protected static double probSplit ; 
-	protected double percBirth , dist ; 
+	protected static double percBirth ;
+
+	protected double dist; 
 	
 	
-	// type split
-	public enum seedSplitType { splitProb, onlySetSeed }
-	protected seedSplitType seedSplitType ; 
+	// type set Seed
+	public enum setSeedType { throwSeed, onlySetSeed }
+	protected setSeedType setSeedType ; 
+	
+	// type set seed
+	public enum generateSeedType { probability , percentGraph }
+	protected generateSeedType generateSeedType ;
+	
 	
 	
 	// interface object
 	private seedBirt_inter sb_inter ; 
 	
 	// constructor
-	public seedBirth( boolean runSeedBirth , seedSplitType seedSplitType ) {
+	public seedBirth( boolean runSeedBirth , setSeedType setSeedType , generateSeedType generateSeedType ) {
 		
 		this.runSeedBirth = runSeedBirth ; 
-		this.seedSplitType = seedSplitType ;
+		this.setSeedType = setSeedType ;
+		this.generateSeedType =  generateSeedType ;
 
-		switch (seedSplitType) {
-			case splitProb:
-				sb_inter = new seedBirth_splitProb(  ) ;
+		switch (setSeedType) {
+			case throwSeed:
+				sb_inter = new seedBirth_throwSeed(  ) ;
 	 			break;
 	 		
 			case onlySetSeed :
@@ -47,12 +55,15 @@ public class seedBirth {
 	}
 	
 	// set parameters 
-	public void setParameters ( double probSplit , double percBirth , double dist  ) {
+	public void setParameters_throwSeed ( double probSplit , double dist  ) {
 		this.probSplit = probSplit ;
-		this.percBirth = percBirth ;
 		this.dist = dist ; 
-		
 	}
+	
+	public void setParameters_onlySetSeed( double percBirth ) {
+		this.percBirth = percBirth ;
+	}
+	
 	
 
 
@@ -62,11 +73,10 @@ public class seedBirth {
 			return ;
 		
 		ArrayList<String> listIdToSplit = sb_inter.getListIdToSplit (  probSplit  , percBirth  ) ;
-		// System.out.println(listIdToSplit);
 
 		Map<Node, Node> mapNewSeed = sb_inter.createNewSeed(listIdToSplit, dist );
 	
-		sb_inter.connectNewSeed(mapNewSeed );
+		sb_inter.connectNewSeed( mapNewSeed );
 		
 	
 		
@@ -90,5 +100,12 @@ public class seedBirth {
 	
 // get and set methods ------------------------------------------------------------------------------------------------------------------------------
 
-
+	
+	public static double getPercBirth ( ) {
+		return percBirth ;
+	}
+	
+	public static boolean  getRunSeedBirth ( ) {
+		return runSeedBirth ;
+	}
 }

@@ -13,7 +13,7 @@ import RdmGsaNetAlgo.graphToolkit;
 import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
-public class seedBirth_splitProb implements seedBirt_inter {
+public class seedBirth_throwSeed implements seedBirt_inter {
 	
 
 	// parameters 

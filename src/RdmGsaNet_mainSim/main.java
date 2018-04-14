@@ -48,6 +48,7 @@ import RdmGsaNet_mainSim.layerNet.meanPointPlace;
 import RdmGsaNet_setupLayer.setupGsGrid;
 import RdmGsaNet_setupLayer.setupGs_Inter.disMorpType ;
 import RdmGsaNet_setupLayer.setupGs_Inter.gsGridType;
+import RdmGsaNet_setupLayer.setupNetCircle;
 import RdmGsaNet_setupLayer.setupNetFistfulNodes;
 import RdmGsaNet_setupLayer.setupNetFistfulNodes.typeRadius;
 import RdmGsaNet_setupLayer.setupNetMultiGraph;
@@ -60,12 +61,14 @@ import RdmGsaNet_vectorField_02.vectorField.vfNeig;
 import RdmGsaNet_vectorField_02.vectorField.weigthDist;
 
 import RdmGsaNet_seedBirth.seedBirth;
-import RdmGsaNet_seedBirth.seedBirth.seedSplitType;
+import RdmGsaNet_seedBirth.seedBirth.generateSeedType;
+import RdmGsaNet_seedBirth.seedBirth.setSeedType;
+
 import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 500 ;
+	private static int stopSim = 1000;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -94,7 +97,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBird\\chaos\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBird\\pulsatingSolitions\\circle_20\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -115,7 +118,8 @@ public class main {
 //		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )		
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
-		/* create multi graph 			*/ new setupNetMultiGraph ( 20 , 24.0 , 5 , .1 , true  , 10  )
+//		/* create multi graph 			*/ new setupNetMultiGraph ( 5 , 24.0 , 20 , .1 , true  , 10  )
+		/* set circle 					*/ new setupNetCircle ( 20 , 1  )	
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -139,7 +143,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0 , 45 , true , 1 ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0 , 45 , true , 1 , .2  ) 
 			) ;
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (	
@@ -156,22 +160,17 @@ public class main {
 	
 	protected static topologyGraph delaunayGraph = new topologyGraph( false , netGraph, topologyGraphType .delaunay , true , true ) ;
 	
-	protected static RdmGsaNet_seedBirth.seedBirth seedBirth = new seedBirth( true , seedSplitType.onlySetSeed );
+	public static seedBirth seedBirth = new seedBirth( true , setSeedType.onlySetSeed, generateSeedType.percentGraph );
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 	
-		
-		
 		delaunayGraph.setParameters();
 		
-		dynamicSymplify.setParameters_Pivot( true , .1 );
+		dynamicSymplify.setParameters_Pivot( true , .3 );
 		
-		seedBirth.setParameters( 
-				/* not used prob		*/	0.1 , 
-				/* % split 				*/	0.0001 , 
-				/* dist					*/	0.05 
-				);		//	seedBirth.computeTest();
+		seedBirth.setParameters_onlySetSeed ( 
+				/*				*/ 	0.002 );		
 		
 		// setup handle name file 
 		handle = new handleNameFile( 
@@ -182,7 +181,7 @@ public class main {
 			);		
 
 		// setup type RD
-		setRdType ( RdmType.chaos );			
+		setRdType ( RdmType.pulsatingSolitions );			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

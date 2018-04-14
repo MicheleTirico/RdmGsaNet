@@ -54,7 +54,7 @@ public class setupNetMultiGraph implements setupNet_Inter {
 		// get coordinate
 		double[] meanPointCoord = GraphPosLengthUtils.nodePosition(nodeCenter) ;		//	System.out.println(idMeanPoint);
 		
-		netGraph.removeNode(nodeCenter ) ;
+		netGraph.removeNode( nodeCenter ) ;
 		
 		ArrayList<Node> listNodes = graphGenerator.createListNodeInSquare(netGraph, numberStartPoint, meanPointCoord, radiusStartPoint , randomSeed ) ;	//		System.out.println(listNodes);		System.out.println(netGraph.getNodeCount() );
 		
@@ -66,6 +66,7 @@ public class setupNetMultiGraph implements setupNet_Inter {
 			if ( isSpanningTree ) {
 				
 				listNodeMultiGraph.add(nodeCenterSmallGraph) ;
+				
 				// create CompleteGraph
 				graphGenerator.createCompleteGraphFromListNode(netGraph, listNodeMultiGraph );
 				

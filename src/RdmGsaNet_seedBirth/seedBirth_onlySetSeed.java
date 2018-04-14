@@ -22,10 +22,8 @@ public class seedBirth_onlySetSeed  implements seedBirt_inter {
 					seedGraph = seedBirth.seedGraph ;
 
 	@Override
-	public void test() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void test() {	
+}
 
 	@Override
 	public ArrayList<String> getListIdToSplit(double probSplit, double percBirth) {

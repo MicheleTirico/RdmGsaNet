@@ -15,10 +15,11 @@ public class seedBirth {
 	protected static Graph 	netGraph = layerNet.getGraph() ,
 							seedGraph = main.getSeedGraph();
 	
-	private static boolean runSeedBirth ;
+	private static boolean runSeedBirth  ;
 	
 	protected static double probSplit ; 
-	protected static double percBirth ;
+	protected static double percBirth , 
+							angleTest ;
 
 	protected double dist; 
 	
@@ -28,29 +29,38 @@ public class seedBirth {
 	protected setSeedType setSeedType ; 
 	
 	// type set seed
-	public enum generateSeedType { probability , percentGraph }
+	public enum generateSeedType { probability , percentGraph , percentGradient }
 	protected generateSeedType generateSeedType ;
 	
-	
+	public enum choiceNodeType { maxInten , ortoAngleVector  }
+	protected static choiceNodeType choiceNodeType ;
 	
 	// interface object
 	private seedBirt_inter sb_inter ; 
 	
 	// constructor
-	public seedBirth( boolean runSeedBirth , setSeedType setSeedType , generateSeedType generateSeedType ) {
+	public seedBirth ( boolean runSeedBirth , setSeedType setSeedType , generateSeedType generateSeedType  ) {
 		
 		this.runSeedBirth = runSeedBirth ; 
 		this.setSeedType = setSeedType ;
 		this.generateSeedType =  generateSeedType ;
+		
 
 		switch (setSeedType) {
-			case throwSeed:
+			case throwSeed: 				
 				sb_inter = new seedBirth_throwSeed(  ) ;
-	 			break;
-	 		
-			case onlySetSeed :
-				sb_inter = new seedBirth_onlySetSeed(  ) ;
 				break;
+	 		
+			case onlySetSeed : {
+				if ( generateSeedType.equals(generateSeedType.percentGraph) ) 
+					sb_inter = new seedBirth_onlySetSeed( ) ;
+					
+				else if ( generateSeedType.equals(generateSeedType.percentGradient) )
+					sb_inter = new seedBirth_percentGradient( ) ;
+				
+				break;
+		
+			}
 		}
 	}
 	
@@ -60,11 +70,11 @@ public class seedBirth {
 		this.dist = dist ; 
 	}
 	
-	public void setParameters_onlySetSeed( double percBirth ) {
+	public void setParameters_onlySetSeed ( double percBirth  , choiceNodeType choiceNodeType , double angleTest ) {
 		this.percBirth = percBirth ;
+		this.choiceNodeType = choiceNodeType ;
+		this.angleTest = angleTest ;
 	}
-	
-	
 
 
 	public void compute ( ) {
@@ -78,14 +88,7 @@ public class seedBirth {
 	
 		sb_inter.connectNewSeed( mapNewSeed );
 		
-	
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
 	// test
@@ -100,6 +103,9 @@ public class seedBirth {
 	
 // get and set methods ------------------------------------------------------------------------------------------------------------------------------
 
+	public static choiceNodeType getChoiceNodeType ( ) {
+		return choiceNodeType ;
+	}
 	
 	public static double getPercBirth ( ) {
 		return percBirth ;

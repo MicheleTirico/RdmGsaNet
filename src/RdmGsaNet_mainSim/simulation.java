@@ -113,7 +113,7 @@ public class simulation extends main {
 			// run gs algo to all nodes ( if true, print mapMorp )
 			gsAlgo.gsAlgoMain( false );
 
-			if ( vecRun ) vectorField.computeVf() ; 
+			if ( vecRun ) getVectorField().computeVf() ; 
 			
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );			//	System.out.println(mapStepNewNodeId) ;
 						

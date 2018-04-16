@@ -16,7 +16,6 @@ import RdmGsaNet_gsAlgo.gsAlgo.reactionType;
 
 public class seedBirth_onlySetSeed  implements seedBirt_inter {
 	
-
 	// parameters 
 	private Graph 	netGraph = seedBirth.netGraph ,
 					seedGraph = seedBirth.seedGraph ;
@@ -26,7 +25,7 @@ public class seedBirth_onlySetSeed  implements seedBirt_inter {
 }
 
 	@Override
-	public ArrayList<String> getListIdToSplit(double probSplit, double percBirth) {
+	public ArrayList<String> getListIdToSplit(double probSplit, double percBirth ) {
 
 		ArrayList < String > listIdNet = new ArrayList<String>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string)) ;
 		ArrayList < String > listIdSeed = new ArrayList<String> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
@@ -53,15 +52,15 @@ public class seedBirth_onlySetSeed  implements seedBirt_inter {
 
 	@Override
 	public Map<Node, Node> createNewSeed(ArrayList<String> listIdToSplit, double dist) {
-		Map <Node , Node > mapNewSeedFather = new HashMap<Node, Node> ( ) ;
 		
+		Map <Node , Node > mapNewSeedFather = new HashMap<Node, Node> ( ) ;
 		String idNewSeed ; 
+		
 		for ( String id : listIdToSplit ) {
 			
 			int idNewSeedInt = graphToolkit.getMaxIdIntElement(seedGraph, element.node) ;
 			
-			Node nodeNet = netGraph.getNode(id)  ;
-		//	System.out.println(nodeNet.getAttributeKeySet());
+			Node nodeNet = netGraph.getNode(id)  ;		//	System.out.println(nodeNet.getAttributeKeySet());
 		
 			double [] coord =  GraphPosLengthUtils.nodePosition(nodeNet) ;
 			
@@ -71,17 +70,16 @@ public class seedBirth_onlySetSeed  implements seedBirt_inter {
  			Node newSeed = seedGraph.getNode(id) ;
  			newSeed.setAttribute("xyz", coord[0] , coord[1] , 0 );
  			
- 			idNewSeedInt++ ;
-		//	Node nodeSeed = seedGraph.getNode(id) ;
-		//	System.out.println(nodeSeed.getAttributeKeySet());
-		
+ 			idNewSeedInt++ ;		
 		}
 		
 		return mapNewSeedFather ;
 	}
 
+	
+
 	@Override
-	public void connectNewSeed(Map<Node, Node> mapNewNodeFather) {
+	public void connectNewSeed(Map<Node, Node> mapNewNodeFather ) {
 		// TODO Auto-generated method stub
 		
 	}

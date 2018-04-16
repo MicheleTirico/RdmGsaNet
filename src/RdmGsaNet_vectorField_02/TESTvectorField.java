@@ -40,23 +40,7 @@ public class TESTvectorField {
 		vf.computeVf();
 		
 		
-		
-		/*
-		for ( Node nVec : vecGraph. getEachNode()) {
-		
-			
-			//System.out.println(nVec.getAttributeKeySet());
-			double[] coord = GraphPosLengthUtils.nodePosition( nVec ); 		
-			
-			System.out.println(nVec.getId() + " " + coord[0] + " " + coord[1]);
-			double inten = nVec.getAttribute("inten") ; 
-			System.out.println("inten " + inten);
-			double intenX = nVec.getAttribute("intenX") ; 
-			System.out.println("intenX " + intenX);
-			double intenY = nVec.getAttribute("intenY") ; 
-			System.out.println("intenY " + intenY);
-		}
-		*/
+	
 		
 		handleVizStype vecViz = new handleVizStype( vecGraph ,stylesheet.manual , "seedGrad", 1) ;
 		vecViz.setupIdViz(false, vecGraph, 4 , "black");

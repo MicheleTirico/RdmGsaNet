@@ -35,11 +35,13 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 	private genEdgeType genEdgeType;
 	private int idEdgeInt = 0 , idNetInt = 0 ;
 	private double distCeckSeed ;
+	private boolean killByGrampa ;
 			
 	//constructor
-	public generateNetEdgeInRadiusFather_03 (  genEdgeType genEdgeType , double distCeckSeed  ) {
+	public generateNetEdgeInRadiusFather_03 (  genEdgeType genEdgeType , double distCeckSeed , boolean killByGrampa  ) {
 		this.genEdgeType =  genEdgeType ;
 		this.distCeckSeed = distCeckSeed ;
+		this.killByGrampa = killByGrampa ;
 	}
 		
 	@Override
@@ -103,7 +105,7 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 			// add edge soon - father
 			try		{ netGraph.addEdge(idEdge, idSeed, idFather );	
 			}
-			catch 	( org.graphstream.graph.IdAlreadyInUseException e ) { e.printStackTrace();	}
+			catch 	( org.graphstream.graph.IdAlreadyInUseException e ) { e.printStackTrace();		}
 			catch	( org.graphstream.graph.ElementNotFoundException e) {	e.printStackTrace();	}
 			
 // compute list of nodes --------------------------------------------------------------------------------------------------------------------------			
@@ -117,16 +119,19 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 			listIdNetInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;
 			idNetInt = Collections.max(listIdNetInt);
 				
-				
 			for ( String idNear : listIdTNodeToConnect ) {
-					
+				
+				// if grampa -> continue
+				ArrayList<String> listGranpa = new ArrayList<String >( graphToolkit.getListNeighbor(netGraph, idFather , elementTypeToReturn.string));	
+				
+				
 				// if near is a seed---------------------------------------------------------------------------------------------------------------------------------
 				if ( listIdSeed.contains(idNear) ) 		//	System.out.println( " id near is a seed") ;
-					handleNearIsSeed(listIdEdgeInt, listIdNetInt, listIdToDeleteSeed, listIdToDeleteNet, idNode, idFather, idNear, idSeed, idEdge);
+					handleNearIsSeed(listIdEdgeInt, listIdNetInt, listIdToDeleteSeed, listIdToDeleteNet, idNode, idFather, idNear, idSeed, idEdge  , listGranpa );
 		
 				// if near is not a seed-----------------------------------------------------------------------------------------------------------------------------
 				else if ( !listIdSeed.contains(idNear) ) 	//	System.out.println( " id near is not a seed" ) ;	
-					handleNearIsNotSeed(listIdEdgeInt, listIdToDeleteSeed, idEdge, idSeed, idNear);					
+					handleNearIsNotSeed(listIdEdgeInt, listIdToDeleteSeed, idEdge, idSeed, idNear , listGranpa );					
 			}		
 			
 			// delete Nodes
@@ -144,25 +149,26 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 	private void handleAddEdgeFather ( 
 			Node nodeSeed , Node nodeNet , 
 			String idEdge, String idSeed, String idFather , String fatSeed ) {
+		
 		// get father id
-					try {
-						nodeSeed = seedGraph.getNode(idSeed) ;						// 	System.out.println(nodeSeed);
-						nodeNet = netGraph.getNode(idSeed) ;						//	System.out.println(nodeNet);
-						fatSeed = nodeSeed.getAttribute("father");
-						idFather = nodeNet.getAttribute("father");	 					
-					} 
-					catch (java.lang.NullPointerException e) {		return ;		}
-			
-							
-					// get id edge
-					idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge);
-					idEdge = Integer.toString(idEdgeInt);
+		try {
+			nodeSeed = seedGraph.getNode(idSeed) ;						// 	System.out.println(nodeSeed);
+			nodeNet = netGraph.getNode(idSeed) ;						//	System.out.println(nodeNet);
+			fatSeed = nodeSeed.getAttribute("father");
+			idFather = nodeNet.getAttribute("father");	 					
+		} 
+		catch (java.lang.NullPointerException e) {		return ;		}
+
 				
-					// add edge soon - father
-					try		{ netGraph.addEdge(idEdge, idSeed, idFather );	
-					}
-					catch 	( org.graphstream.graph.IdAlreadyInUseException e ) { e.printStackTrace();	}
-					catch	( org.graphstream.graph.ElementNotFoundException e) {	e.printStackTrace();	}
+		// get id edge
+		idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge);
+		idEdge = Integer.toString(idEdgeInt);
+	
+		// add edge soon - father
+		try		{ netGraph.addEdge(idEdge, idSeed, idFather );	
+		}
+		catch 	( org.graphstream.graph.IdAlreadyInUseException e ) { e.printStackTrace();		}
+		catch	( org.graphstream.graph.ElementNotFoundException e) {	e.printStackTrace();	}
 	}
 	
 	// handle delete nodes 
@@ -182,9 +188,17 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 	}
 	
 	// handle if Near Is a seed 
-	private void handleNearIsNotSeed (ArrayList listIdEdgeInt , ArrayList listIdToDeleteSeed , String idEdge, String idSeed, String idNear) {
+	private void handleNearIsNotSeed (ArrayList listIdEdgeInt , ArrayList listIdToDeleteSeed , String idEdge, String idSeed, String idNear , ArrayList<String> listGranpa ) {
+		
 		while ( listIdEdgeInt.contains(idEdgeInt)) 
 			idEdgeInt ++ ;
+		
+		if ( killByGrampa )
+			if ( listGranpa.contains(idNear) ) {
+				listIdToDeleteSeed.add(idSeed) ;
+				return ;
+	
+			}
 		
 		idEdge = Integer.toString(idEdgeInt);
 		try { netGraph.addEdge(idEdge, idSeed, idNear); 
@@ -198,7 +212,12 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 	// handle if Near Is a seed 
 	private void handleNearIsSeed (
 			ArrayList listIdEdgeInt , ArrayList listIdNetInt, ArrayList	listIdToDeleteSeed ,ArrayList	listIdToDeleteNet ,
-			String idNode , String idFather ,	String idNear , String idSeed , String idEdge ) {
+			String idNode , String idFather ,	String idNear , String idSeed , String idEdge , ArrayList<String> listGranpa ) {
+		if ( killByGrampa )
+			if ( listGranpa.contains(idNear) ) {
+				listIdToDeleteSeed.add(idSeed) ;
+				return ;
+		}
 		
 		Node nNear , nSeed ,newNodeSeed	, newNodeNet ;
 		
@@ -258,8 +277,6 @@ public class generateNetEdgeInRadiusFather_03  implements generateNetEdge_Inter 
 		// if node is not connected
 		if ( newNodeNet.getDegree() < 1 ) 				//	System.out.println(newNodeNet.getDegree());		
 			handleNodeNotConnect(newNodeNet, idEdge, idNode, listIdEdgeInt);
-	
-		
 	}
 		
 	// handle if node is not connect

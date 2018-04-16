@@ -42,7 +42,7 @@ public class analysisMultiSim extends analysisMain {
 				
 		// SET WHICH LOCAL ANALYSIS TO COMPUTE ----------------------------------------------------------------------------------------------------------	
 				multiSim.setWhichGlobalAnalysis(
-						/* layerToAnalyze				*/ layerToAnalyze.net,		 
+						/* layerToAnalyze				*/ layerToAnalyze.multiLayer,		 
 						/* typeMultiSim 				*/ typeMultiSim.probability
 						);
 				
@@ -63,8 +63,7 @@ public class analysisMultiSim extends analysisMain {
 			 	
 		// RUN LOCAL ANALYSIS ---------------------------------------------------------------------------------------------------------------------------
 
-				multiSim.computeGlobalMultiSim(5000, 5
-						, folderMultiSim );
+				multiSim.computeGlobalMultiSim(5000, 5 , folderMultiSim );
 				
 			}
 

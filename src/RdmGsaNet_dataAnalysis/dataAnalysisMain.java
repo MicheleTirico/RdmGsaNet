@@ -48,7 +48,7 @@ public class dataAnalysisMain {
 	// COSTANTS 
 	
 	// folder
-	protected static String pathMain = "C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\vf_seedProb_multiRDmPoint_01\\holes\\multiSimAnalysis\\" ,
+	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBird\\chaos\\circle_12\\multiSimAnalysis\\" ,
 							folderMapToAnayze = "mapToAnalyze\\" ,
 							pathMapToAnalyze = pathMain + folderMapToAnayze ,
 							
@@ -102,8 +102,8 @@ public class dataAnalysisMain {
 				/* create chart New Node Rel							*/ true ,
 				/* create chart Seed Count Rel							*/ true ,
 				/* create chart DensityRegularGraph						*/ true ,
-				/* create chart multiLayerGlobalCorrelation degree inh	*/ true ,
-				/* create chart multiLayerGlobalCorrelation seed inh	*/ true
+				/* create chart multiLayerGlobalCorrelation degree inh	*/ false ,
+				/* create chart multiLayerGlobalCorrelation seed inh	*/ false
 				);
 		
 	}

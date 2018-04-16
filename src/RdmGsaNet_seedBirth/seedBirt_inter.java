@@ -17,6 +17,6 @@ public interface seedBirt_inter {
 	
 	public Map <Node , Node > createNewSeed ( ArrayList<String> listIdToSplit , double dist ) ;
 	
-	public void connectNewSeed ( Map <Node , Node > mapNewNodeFather) ;
+	public void connectNewSeed ( Map <Node , Node > mapNewNodeFather ) ;
 
 }

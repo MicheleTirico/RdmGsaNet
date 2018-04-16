@@ -21,6 +21,7 @@ public class vectorFieldSpatial implements vectorField_inter {
 
 	private Graph graph ;
 	private String attribute ;
+
 	
 	public vectorFieldSpatial ( Graph graph , String attribute ) {
 		this.graph = graph ;
@@ -132,7 +133,7 @@ public class vectorFieldSpatial implements vectorField_inter {
 	}
 	
 	@Override
-	public void createVector( Graph vecGraph ) {
+	public void createVector ( Graph vecGraph ) {
 		
 		int idEdge = 0 ; 
 		

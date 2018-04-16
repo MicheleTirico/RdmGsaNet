@@ -32,7 +32,8 @@ public class setupNetCircle implements setupNet_Inter {
 	
 		double[] meanPointCoord = GraphPosLengthUtils.nodePosition(gsGraph.getNode(idNodeCenter ) ) ;
 		
-		double centreX = meanPointCoord[0] , centreY = meanPointCoord[1];
+		double 	centreX = meanPointCoord[0] , 
+				centreY = meanPointCoord[1];
 		
 		// netGraph.addNode("0");
 		 

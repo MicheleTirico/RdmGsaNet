@@ -4,6 +4,7 @@ import java.io.File;
 
 import RdmGsaNet_mainSim.*;
 import RdmGsaNet_seedBirth.seedBirth;
+import RdmGsaNet_seedBirth.seedBirth.generateSeedType;
 import RdmGsaNet_generateGraph.*;
 import RdmGsaNet_gsAlgo.*;
 import RdmGsaNet_setupLayer.*;
@@ -124,19 +125,23 @@ public class handleNameFile {
 	
 	private  String getNameNewFolder ( int maxStep , String genNode , String genEdge ) {
 
-		double prob ;
+		double val = 0.0 ;
+		String  valStr = "" ;
 		
-		if (seedBirth.getRunSeedBirth () ) 
-			prob = seedBirth.getPercBirth()  ;
-		
+		if (seedBirth.getRunSeedBirth () ) {
+			if ( seedBirth.getGenerateSeedType().equals(generateSeedType.percentGraph) )
+				valStr = Double.toString(seedBirth.getPercBirth() ) ;
+			else if ( seedBirth.getGenerateSeedType().equals(generateSeedType.percentGradient))
+				valStr = Double.toString(Math.round(( seedBirth.getAngleTest() *180 / Math.PI ) )) ;// String.format ("%.3f", seedBirth.getAngleTest() ); 
+		}
 		else 
-			prob = generateNetNode.getProb() ;
+			valStr = Double.toString(generateNetNode.getProb()) ;
 		
 		
 		return	"maxStep_" + maxStep +
 				 "_" + genNode +
 				 "_" + genEdge +
-				 "_prob_" + prob ; 	//	System.out.println(generateNetNode.getProb());
+				 "_val_" + valStr ; 	//	System.out.println(generateNetNode.getProb());
 		}
 	
 	public static  String getPathFile ( typeFile typeFile , boolean setManualPath , String manualPath ) {
@@ -223,7 +228,6 @@ public class handleNameFile {
 		String pathStepSeed =  path + "\\" + nameStepSeed + fileType;
 		return pathStepSeed;
 	} 
-	
 	
 	public static String getCompletePathInFolder ( String folder , String testName ) {
 		

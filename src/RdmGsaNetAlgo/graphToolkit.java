@@ -157,6 +157,63 @@ public class graphToolkit {
 		return listVertex ;
 	}
 	
+	public static Map<double[] ,Node > getMapCoordVertexRpoundPoint (  elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord  ) {
+		
+		Map<double[] , Node > map = new HashMap<double[] , Node > ( ) ;
+		ArrayList<Node> listVertex =  getListVertexRoundPoint(elementTypeToReturn.element, graphVertex, nodeCoord ) ;
+		
+		for ( Node n : listVertex ) {
+			
+			double[] coord = GraphPosLengthUtils.nodePosition(n) ;
+			
+			map.put(coord, n);
+		}
+				
+		return map ;
+	}
+	
+	
+	
+	public static Map<String  ,Node > getMapIdVertexRpoundPoint (  elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord  ) {
+		
+		Map< String , Node > map = new HashMap< String , Node > ( ) ;
+		ArrayList<Node> listVertex = new ArrayList<Node>( getListVertexRoundPoint(elementTypeToReturn.element, graphVertex, nodeCoord ) ) ;
+			
+		double minX = 1000000000 , minY = 1000000000 , maxX = -1  , maxY = -1  ; 
+		
+		for ( Node n : listVertex ) {
+			
+			double[] coord = GraphPosLengthUtils.nodePosition(n) ;
+		
+			if ( coord[0] <= minX && coord[1] <= minY  ) {
+				map.put("00", n);
+				minX = coord[0] ;
+				minY = coord[1] ;
+			}
+			
+			else if ( coord[0] >= maxX && coord[1] >= maxY ) {	
+				map.put("11", n);
+				maxX = coord[0] ;
+				maxY = coord[1] ;
+			}
+		}
+		
+		ArrayList<Node> listNodeExtr = new ArrayList<Node> (map.values() ) ; 
+		
+		for ( Node n : listVertex ) {
+			double[] coord = GraphPosLengthUtils.nodePosition(n) ;
+			if ( ! listNodeExtr.contains(n)) {
+
+				if ( coord[0] == minX )
+					map.put("01", n);
+				else
+					map.put("10", n);
+			}		
+		}				
+		return map ;
+	}
+	
+	
 	public static ArrayList getListVertexRoundPoint ( elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord ) {
 
 		ArrayList listVertex = new ArrayList();
@@ -166,7 +223,6 @@ public class graphToolkit {
 		
 		else if  ( elementTypeToReturn. equals(elementTypeToReturn.element)) 
 			listVertex = new ArrayList<Node>(4);
-		
 		
 		double 	sizeGrid = Math.pow(graphVertex.getNodeCount(), 0.5 ) - 1 ,
 				xSeed = nodeCoord[0], 

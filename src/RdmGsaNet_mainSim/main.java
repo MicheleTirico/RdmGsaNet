@@ -31,14 +31,17 @@ import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_03;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_04;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_02;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_03;
+import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_04;
 import RdmGsaNet_generateGraph.generateNetNode;
-import RdmGsaNet_generateGraph.generateNetNode.interpolation;
+
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
+import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedGradient;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb_02;
 import RdmGsaNet_graphTopology.topologyGraph;
 import RdmGsaNet_graphTopology.topologyGraph.topologyGraphType;
+
 import RdmGsaNet_gsAlgo.gsAlgo;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion.weightType;
@@ -56,6 +59,7 @@ import RdmGsaNet_setupLayer.setupNetSeed;
 import RdmGsaNet_setupLayer.setupNetSmallGrid;
 
 import RdmGsaNet_vectorField_02.vectorField;
+import RdmGsaNet_vectorField_02.vectorField.typeInterpolation;
 import RdmGsaNet_vectorField_02.vectorField.vectorFieldType;
 import RdmGsaNet_vectorField_02.vectorField.vfNeig;
 import RdmGsaNet_vectorField_02.vectorField.weigthDist;
@@ -69,7 +73,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 1500 ;
+	private static int stopSim = 5 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -98,7 +102,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBird_ortoAngleVector\\test\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\splitSeedGradient\\test\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -120,8 +124,8 @@ public class main {
 //		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )		
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
-//		/* create multi graph 			*/ new setupNetMultiGraph ( 5 , 24.0 , 20 , .1 , true  , 10  )
-		/* set circle 					*/ new setupNetCircle ( 20 , 1  )	
+//		/* create multi graph 			*/ new setupNetMultiGraph ( 100 , 24.0 , 0 , .1 , true  , 10  )
+		/* set circle 					*/ new setupNetCircle ( 1 , 1  )	
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -136,7 +140,7 @@ public class main {
 	protected static simulation run = new simulation() ;	
 	
 	protected static generateNetNode generateNetNode = new generateNetNode (
-//		 		*/	new generateNetNodeThreshold        			( 12, 11 )  
+//		 			new generateNetNodeThreshold        			( 12, 11 )  
 //					new generateNetNodeGradientOnlyOne 				( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
 //					new generateNetNodeGradientProb	    			( 8 , layoutSeed.allNode , rule.random , "gsInh", 1 , true )
 //					new generateNetNodeGradientProbDelta 			( 8 , layoutSeed.allNode, rule.random, "gsAct", .8, false )
@@ -145,7 +149,9 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , interpolation.sumVectors , true , true , 0 , 45 , true , 1 , .2  ) 
+//					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , typeInterpolation.sumVectors , true , true , 0 , 45 , true , 1 , .2  ) 
+					new generateNetNodeVectorFieldSplitSeedGradient( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.2 )
+			
 			) ;
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (	
@@ -153,7 +159,7 @@ public class main {
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
 //					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .1 )
 //					new generateNetEdgeDelaunay_04 ( netGraph , delGraph , true , 0.1 )
-					new generateNetEdgeInRadiusFather_03 ( genEdgeType.fatherAndNodeInRadius , .2 , false )
+					new generateNetEdgeInRadiusFather_04 ( genEdgeType.onlyFather , .1 , false )
 					) ;
 	
 	private static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
@@ -174,7 +180,7 @@ public class main {
 		seedBirth.setParameters_onlySetSeed ( 
 				/* percent of graph					*/ 	1 , 
 				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , 
-				/* angle							*/	Math.PI / 6 
+				/* angle							*/	5
 				);		
 		
 		// setup handle name file 
@@ -186,7 +192,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.movingSpots );			
+		setRdType ( RdmType.holes ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

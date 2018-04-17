@@ -2,11 +2,14 @@ package RdmGsaNet_vectorField_02;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
+import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.graphToolkit;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
@@ -139,19 +142,26 @@ public class vectorField {
 
 	public static double getAngleVectorInterpolate  (Graph vecGraph , double[] nodeCoord ,  typeInterpolation typeInterpolation  ) {
 		
-		double[] vectorInterpolate = getVectorInterpolate(vecGraph, nodeCoord, typeInterpolation);
-		
-	//	double coefAng = vectorInterpolate[1] / vectorInterpolate[0] ;
-		
-	//	double angle = Math.atan(coefAng) ; 
-		double dist = Math.pow(  Math.pow(vectorInterpolate[0], 2) + Math.pow(vectorInterpolate[1], 2 ) , 0.5 ) ;
-		
+		double[] vectorInterpolate = getVectorInterpolate(vecGraph, nodeCoord, typeInterpolation);		
+		double dist = Math.pow(  Math.pow(vectorInterpolate[0], 2) + Math.pow(vectorInterpolate[1], 2 ) , 0.5 ) ;		
 		double sinAngle =  vectorInterpolate[1] / dist ;
 		double angle = Math.asin(sinAngle) ; 
 		
 		return angle;
 	}
 
+	public static Map getMapIdVecCoordVecCoin ( Graph vecGraph , double[] nodeCoord  ) {
+		
+		Map <Node , double [] > map = new HashMap < Node , double [] > ( );
+		ArrayList <Node> listVertex = new ArrayList<Node> (graphToolkit.getListVertexRoundPoint(elementTypeToReturn.element, vecGraph, nodeCoord));
+		
+		for ( Node nodeVertex : listVertex ) {
+		double [ ] coordVertex = GraphPosLengthUtils.nodePosition(nodeVertex) ;
+			map.put(nodeVertex , coordVertex) ;
+		}
+		
+		return map ;
+	}
 	
 	public static double getAngleVector ( ) {
 		

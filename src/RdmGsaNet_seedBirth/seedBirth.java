@@ -19,10 +19,9 @@ public class seedBirth {
 	
 	protected static double probSplit ; 
 	protected static double percBirth , 
-							angleTest ;
+							angleTest  , angleTestDecimal ;
 
 	protected double dist; 
-	
 	
 	// type set Seed
 	public enum setSeedType { throwSeed, onlySetSeed }
@@ -30,7 +29,7 @@ public class seedBirth {
 	
 	// type set seed
 	public enum generateSeedType { probability , percentGraph , percentGradient }
-	protected generateSeedType generateSeedType ;
+	protected static generateSeedType generateSeedType ;
 	
 	public enum choiceNodeType { maxInten , ortoAngleVector  }
 	protected static choiceNodeType choiceNodeType ;
@@ -70,10 +69,12 @@ public class seedBirth {
 		this.dist = dist ; 
 	}
 	
-	public void setParameters_onlySetSeed ( double percBirth  , choiceNodeType choiceNodeType , double angleTest ) {
+	public void setParameters_onlySetSeed ( double percBirth  , choiceNodeType choiceNodeType , double angleTestDecimal ) {
 		this.percBirth = percBirth ;
 		this.choiceNodeType = choiceNodeType ;
-		this.angleTest = angleTest ;
+		this.angleTestDecimal = angleTestDecimal ;
+		
+		angleTest = angleTestDecimal * Math.PI / 180 ;
 	}
 
 
@@ -114,4 +115,13 @@ public class seedBirth {
 	public static boolean  getRunSeedBirth ( ) {
 		return runSeedBirth ;
 	}
+	
+	public static generateSeedType getGenerateSeedType ( ) {
+		return generateSeedType ;
+	}
+	
+	public static double getAngleTest() {
+		return angleTest ;
+	}
+
 }

@@ -19,9 +19,9 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNetExport.handleNameFile;
-import RdmGsaNet_generateGraph.generateNetNode.interpolation;
+import RdmGsaNet_vectorField_02.vectorField.typeInterpolation;
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
-import RdmGsaNet_generateGraph.generateNetNode.rule;
+
 import RdmGsaNet_mainSim.layerGs;
 import RdmGsaNet_mainSim.layerNet;
 import RdmGsaNet_mainSim.main;
@@ -34,7 +34,7 @@ public class generateNetNodeVectorField extends main  {
 	// COSTANTS	
 	protected int numberMaxSeed  ;
 	protected layoutSeed setLayoutSeed ;
-	protected interpolation typeInterpolation ; 
+	protected typeInterpolation typeInterpolation ; 
 	protected boolean 	createSeedGraph ,
 						updateNetGraph;
 	
@@ -45,7 +45,7 @@ public class generateNetNodeVectorField extends main  {
 							seedGraph = main.getSeedGraph() ;	
 							
 	// constructor
-	public generateNetNodeVectorField( int numberMaxSeed, layoutSeed setLayoutSeed , interpolation typeInterpolation , boolean createSeedGraph , boolean updateNetGraph) {
+	public generateNetNodeVectorField( int numberMaxSeed, layoutSeed setLayoutSeed , typeInterpolation typeInterpolation , boolean createSeedGraph , boolean updateNetGraph) {
 		this.numberMaxSeed = numberMaxSeed ;
 		this.setLayoutSeed = setLayoutSeed ;
 		this.typeInterpolation = typeInterpolation ;
@@ -55,7 +55,7 @@ public class generateNetNodeVectorField extends main  {
 	
 // COMMON METHODS FOR ALL CLASS WITH GRADIENT APPROACH ----------------------------------------------------------------------------------------------
 	
-	protected static double[] getVector ( Graph vecGraph , double[] nodeCoord , interpolation typeInterpolation ) {
+	protected static double[] getVector ( Graph vecGraph , double[] nodeCoord , typeInterpolation typeInterpolation ) {
 		
 		double[]vector = new double[2] ;
 		double vectorX = 0.0 , vectorY = 0.0 ;
@@ -69,8 +69,8 @@ public class generateNetNodeVectorField extends main  {
 					Node nVec = vecGraph.getNode(nVertex); 
 					double 	intenX , intenY ;
 					try {
-						 	intenX = nVec.getAttribute("intenX") ;
-						 	intenY = nVec.getAttribute("intenY") ;
+						intenX = nVec.getAttribute("intenX") ;
+					 	intenY = nVec.getAttribute("intenY") ;
 					}
 					catch (Exception e) {
 						intenX = 0 ; 
@@ -189,6 +189,7 @@ public class generateNetNodeVectorField extends main  {
 		
 		return newNodeCoord ;
 	}
+	
 	
 
 }

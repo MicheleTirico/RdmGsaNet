@@ -11,14 +11,16 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import RdmGsaNet_vectorField_02.vectorField.typeInterpolation ;
 import RdmGsaNetAlgo.graphToolkit;
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
-import RdmGsaNet_generateGraph.generateNetNode.interpolation;
+
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 
 public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeVectorField implements generateNetNode_Inter {
+	
 	// parameters only this class
 	private static double prob ;
 	private double angleVectorNewSeed ;
@@ -28,11 +30,12 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 	
 	// constructor
 	public generateNetNodeVectorFieldSplitSeedProb_02 (int numberMaxSeed, layoutSeed setLayoutSeed,
-			interpolation typeInterpolation, boolean createSeedGraph, boolean updateNetGraph ,
+			typeInterpolation typeInterpolation, boolean createSeedGraph, boolean updateNetGraph ,
 			double prob , double angleVectorNewSeed  , boolean stillAlive , double coefInten , double maxInten) {
 		
 		super(numberMaxSeed, setLayoutSeed, typeInterpolation, createSeedGraph, updateNetGraph);
 		
+		// parameters only this class
 		this.prob = prob ;
 		this.angleVectorNewSeed  = angleVectorNewSeed  ;
 		this.stillAlive = stillAlive ;
@@ -79,11 +82,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 			
 			// check vector in grid
 			double 	xTopVector = generateNetNode.checkCoordInGrid ( gsGraph , nodeCoord[0] + vector[0] ) ,
-					yTopVector = generateNetNode.checkCoordInGrid ( gsGraph , nodeCoord[1] + vector[1] ) ;						// 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);				
-
-			 
-		
-			
+					yTopVector = generateNetNode.checkCoordInGrid ( gsGraph , nodeCoord[1] + vector[1] ) ;						// 	System.out.println(idSeed  + " "  + vector[0] + " " + vector[1]);						
 			
 			double [] newNodeSeedCoord = new double[2] ;
 			
@@ -156,9 +155,8 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 			
 			netGraph.addNode(id);
 			seedGraph.addNode(id);
-	
-			
 		}
+		
 		Node nodeNet = netGraph.getNode(id);
 		Node nodeSeed = seedGraph.getNode(id);
 		

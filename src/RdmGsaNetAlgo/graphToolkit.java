@@ -157,24 +157,180 @@ public class graphToolkit {
 		return listVertex ;
 	}
 	
-	public static Map<double[] ,Node > getMapCoordVertexRpoundPoint (  elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord  ) {
+	public static Map<double[] ,Node > getMapCoordVertexRoundPoint (  elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord  ) {
 		
 		Map<double[] , Node > map = new HashMap<double[] , Node > ( ) ;
 		ArrayList<Node> listVertex =  getListVertexRoundPoint(elementTypeToReturn.element, graphVertex, nodeCoord ) ;
 		
 		for ( Node n : listVertex ) {
 			
-			double[] coord = GraphPosLengthUtils.nodePosition(n) ;
-			
+			double[] coord = GraphPosLengthUtils.nodePosition(n) ;		
 			map.put(coord, n);
-		}
-				
+		}				
 		return map ;
 	}
 	
 	
+	// list of edges near in radius 
+	public static ArrayList getListEdgeInRadius ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine) {
 	
-	public static Map<String  ,Node > getMapIdVertexRpoundPoint (  elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord  ) {
+		ArrayList listEdges =new ArrayList ( );
+		Node nPoint = graph.getNode(idNode) ;
+		double[] nPointCoord = GraphPosLengthUtils.nodePosition(nPoint);
+				
+		for ( Edge e : graph.getEachEdge() ) {
+			
+			Node nStart = e.getNode0();
+			double[] nStartCoord = GraphPosLengthUtils.nodePosition(nStart);
+			
+			Node nEnd = e.getNode1();
+			double[] nEndCoord = GraphPosLengthUtils.nodePosition(nEnd);
+			
+			
+			double distNodeEdge = getDistNodeEdge(nStart, nEnd, nPoint, false ) ;
+			
+			if ( distNodeEdge == 0 ) {
+				listEdges.add(e);
+				continue; 
+			}
+			
+			double [] coordInter = getCoordIntesectionLinesOrto(nStartCoord[0],  nEndCoord[0], nStartCoord[1],  nEndCoord[1], nPointCoord[0], nPointCoord[1] ) ;
+				
+			if ( doCeckIntersectionInLine ) {
+				
+				double 	minXEdge = Math.min(nStartCoord[0], nEndCoord[0] ) , 
+						maxXEdge = Math.max(nStartCoord[0], nEndCoord[0] ) ;
+				
+				if ( distNodeEdge < radius && coordInter[0] <= maxXEdge && coordInter[0] >= minXEdge  )
+					listEdges.add(e);
+			} else {
+			
+				if ( distNodeEdge <= radius )
+					listEdges.add(e);
+			}			
+		}		
+		return listEdges ;
+	}
+	
+	public static Edge getEdgeXInList ( Edge edge , ArrayList<Edge> listEdgeInRadius ) {
+		
+		boolean isEdge = false ;
+		Edge edgeToReturn ;
+		Node n0ceck = edge.getNode0();
+		Node n1ceck = edge.getNode1();
+		
+		double [] 	n0ceckCoord = GraphPosLengthUtils.nodePosition(n0ceck) , 
+					n1ceckCoord = GraphPosLengthUtils.nodePosition(n1ceck) ;  
+		
+		for ( Edge e : listEdgeInRadius ) {
+			
+			Node n0 = e.getNode0();
+			Node n1 = e.getNode1();
+			
+			double [] 	n0Coord = GraphPosLengthUtils.nodePosition(n0) , 
+						n1Coord = GraphPosLengthUtils.nodePosition(n1) ,
+						
+						intersectionCoord = getCoordIntersectionLine(n0ceckCoord[0], n0ceckCoord[1], n1ceckCoord [0], n1ceckCoord [1], n0Coord[0], n0Coord[1], n1Coord[0], n1Coord[1]) ;
+						
+			 double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
+					maxX = Math.max(n0Coord[0], n1Coord[0] ) ; 
+			
+			if ( intersectionCoord[0] >= minX && intersectionCoord[0] <= maxX ) {
+				return e ; 
+			}			
+		}
+		return null ;
+	}
+	
+	public static ArrayList<Edge> getListEdgeXInList ( Edge edge , ArrayList<Edge> listEdgeInRadius ) {
+		
+		ArrayList<Edge> list = new ArrayList<Edge> () ;
+		
+		boolean isEdge = false ;
+		Edge edgeToReturn ;
+		Node n0ceck = edge.getNode0();
+		Node n1ceck = edge.getNode1();
+		
+		double [] 	n0ceckCoord = GraphPosLengthUtils.nodePosition(n0ceck) , 
+					n1ceckCoord = GraphPosLengthUtils.nodePosition(n1ceck) ;  
+		
+		for ( Edge e : listEdgeInRadius ) {
+			
+			Node n0 = e.getNode0();
+			Node n1 = e.getNode1();
+			
+			double [] 	n0Coord = GraphPosLengthUtils.nodePosition(n0) , 
+						n1Coord = GraphPosLengthUtils.nodePosition(n1) ,
+						
+						intersectionCoord = getCoordIntersectionLine(n0ceckCoord[0], n0ceckCoord[1], n1ceckCoord [0], n1ceckCoord [1], n0Coord[0], n0Coord[1], n1Coord[0], n1Coord[1]) ;
+						
+			 double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
+					maxX = Math.max(n0Coord[0], n1Coord[0] ) ; 
+			
+			if ( intersectionCoord[0] >= minX && intersectionCoord[0] <= maxX ) {
+				list.add(e) ; 
+			}			
+		}
+		return list ;
+	}
+	
+	// return true if edge is in list 
+	public static boolean ceckEdgeInList ( Edge edge , ArrayList<Edge> listEdgeInRadius ) {
+		
+		boolean isEdge = false ;
+		
+		Node n0ceck = edge.getNode0();
+		Node n1ceck = edge.getNode1();
+		
+		double [] 	n0ceckCoord = GraphPosLengthUtils.nodePosition(n0ceck) , 
+					n1ceckCoord = GraphPosLengthUtils.nodePosition(n1ceck) ;  
+		
+		for ( Edge e : listEdgeInRadius ) {
+			
+			Node n0 = e.getNode0();
+			Node n1 = e.getNode1();
+			
+			double [] 	n0Coord = GraphPosLengthUtils.nodePosition(n0) , 
+						n1Coord = GraphPosLengthUtils.nodePosition(n1) ,
+						
+						intersectionCoord = getCoordIntersectionLine(n0ceckCoord[0], n0ceckCoord[1], n1ceckCoord [0], n1ceckCoord [1], n0Coord[0], n0Coord[1], n1Coord[0], n1Coord[1]) ;
+						
+			 double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
+					maxX = Math.max(n0Coord[0], n1Coord[0] ) ; 
+			
+			if ( intersectionCoord[0] >= minX && intersectionCoord[0] <= maxX ) {
+				isEdge = true ;
+				return isEdge ; 
+			}			
+		}
+		return isEdge ;
+	}
+	
+	public static double[] getCoordIntersectionLine ( double x1 , double y1 , double x2 , double y2 , double x3 , double y3 , double x4 , double y4  ) {
+		double 	xi = 0 , yi =  0 ,
+				m1 , m2 , q1 , q2 ;
+		double[] coordInter = new double[2] ;
+		
+		m1 = ( y1 - y2 ) / ( x1 - x2 ) ;
+		m2 = ( y3 - y4 ) / ( x3 - x4 ) ;
+		
+		q1 = ( x2 * y1 - x1 * y2 ) / ( x2 - x1 ) ;
+		q2 = ( x4 * y3 - x3 * y4 ) / ( x4 - x3 ) ;
+		
+		xi = ( q2 - q1 ) / ( m1 - m2 ) ;
+		yi = m1 * xi  + q1 ;
+			
+		coordInter[0] = xi ; coordInter [1] = yi ;
+		return coordInter ;
+	}
+	
+	public static boolean ceckLineIntesected ( double x1 , double y1 , double x2 , double y2 ) {
+		
+		
+		return true ;
+	}
+	
+	public static Map<String , Node > getMapIdVertexRpoundPoint (  elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord  ) {
 		
 		Map< String , Node > map = new HashMap< String , Node > ( ) ;
 		ArrayList<Node> listVertex = new ArrayList<Node>( getListVertexRoundPoint(elementTypeToReturn.element, graphVertex, nodeCoord ) ) ;
@@ -285,11 +441,28 @@ public class graphToolkit {
 		dist = num / distNode ; 
 				
 		if ( isRel ) 
-	
 			dist = dist / distNode ;
 
-		return dist;
+		return dist;		
+	}
+	
+	private static double[] getCoordIntesectionLinesOrto ( double x1 , double x2 , double y1 , double y2 ,double  xp ,double yp ) {
 		
+		double 	m1 , m2 , 
+				q , 
+				xi = 0  , yi = 0  ; 
+		
+		double[] coordInter = new double [2] ;		//		System.out.println(x1 + " " + y1 ) ; 	System.out.println(x2 + " " + y2 ) ; 
+		
+		m1 = ( y1 - y2 ) / ( x1 - x2 ) ;			//		System.out.println("m1 " + m1);
+		q = yp + xp / m1 ;							//		System.out.println("q " + q);
+		xi = ( ( yp + xp / m1 - y1 ) / m1 + x1 ) * Math.pow( m1 , 2 ) / ( 1 + Math.pow(m1, 2 ) ) ;
+		
+		yi = - xi / m1 + q ;  
+		
+		coordInter[0] = xi ; coordInter[1] = yi ;
+		
+		return coordInter ;
 	}
 	
 	// get map id node coord 

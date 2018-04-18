@@ -113,7 +113,9 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 			// get angle 
 			double[] nodeCoord = GraphPosLengthUtils.nodePosition( netGraph.getNode(randomId) ) ;
 			double angleNode = vectorField.getAngleVectorInterpolate(vecGraph, nodeCoord, typeInterpolation.sumVectors) ;	//		System.out.println(angleNode) ;
-			if ( angleNode < 0 )			angleNode = Math.PI  - Math.abs( angleNode ) ;			
+			
+			if ( angleNode < 0 )			
+				angleNode = Math.PI  - Math.abs( angleNode ) ;			
 			
 			ArrayList<String> listNeig = new ArrayList<String> ( graphToolkit.getListNeighbor(netGraph, randomId, elementTypeToReturn.string) ) ;
 			
@@ -129,7 +131,8 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 			
 			double angleNeig =  Math.asin(sinAngle)  ; 
 			
-			if ( angleNeig < 0 )		angleNeig = Math.PI  - Math.abs(angleNeig) ;
+			if ( angleNeig < 0 )		
+				angleNeig = Math.PI  - Math.abs(angleNeig) ;
 			
 			double angleTest = seedBirth.angleTest ;	//	System.out.println(angleTest) ; 
 		

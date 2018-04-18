@@ -32,6 +32,7 @@ import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_04;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_02;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_03;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_04;
+import RdmGsaNet_generateGraph.generateNetEdgeInRadiusXedges;
 import RdmGsaNet_generateGraph.generateNetNode;
 
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
@@ -73,7 +74,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 5 ;
+	private static int stopSim = 1000 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -102,7 +103,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\splitSeedGradient\\test\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\xEdges\\mazes\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -119,13 +120,13 @@ public class main {
 		/* size grid , type grid 				*/	new setupGsGrid( 50 , gsGridType.grid8 ) ) ;
 
 	
-	static layerNet netLayer = new layerNet (
+	static layerNet netLayer = new layerNet ( 
 //		/* create only one node			*/ new setupNetSeed()	
 //		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )		
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
 //		/* create multi graph 			*/ new setupNetMultiGraph ( 100 , 24.0 , 0 , .1 , true  , 10  )
-		/* set circle 					*/ new setupNetCircle ( 1 , 1  )	
+		/* set circle 					*/ new setupNetCircle ( 50  , 1  )	
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -149,8 +150,8 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-//					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , typeInterpolation.sumVectors , true , true , 0 , 45 , true , 1 , .2  ) 
-					new generateNetNodeVectorFieldSplitSeedGradient( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.2 )
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , typeInterpolation.sumVectors , true , true , 0 , 15 , true , .5 , .1  ) 
+//					new generateNetNodeVectorFieldSplitSeedGradient ( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.1 )
 			
 			) ;
 
@@ -159,7 +160,8 @@ public class main {
 //					new generateNetEdgeInRadiusFather 	( genEdgeType.onlyFather )
 //					new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .1 )
 //					new generateNetEdgeDelaunay_04 ( netGraph , delGraph , true , 0.1 )
-					new generateNetEdgeInRadiusFather_04 ( genEdgeType.onlyFather , .1 , false )
+//					new generateNetEdgeInRadiusFather_04 ( genEdgeType.fatherAndNodeInRadius , .1 , false )
+					new generateNetEdgeInRadiusXedges (genEdgeType.fatherAndNodeInRadius, 0.1 , true )
 					) ;
 	
 	private static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
@@ -180,7 +182,7 @@ public class main {
 		seedBirth.setParameters_onlySetSeed ( 
 				/* percent of graph					*/ 	1 , 
 				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , 
-				/* angle							*/	5
+				/* angle							*/	10
 				);		
 		
 		// setup handle name file 
@@ -192,7 +194,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.holes ) ;			
+		setRdType ( RdmType.pulsatingSolitions ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -297,10 +299,10 @@ public class main {
 			
 			// setup viz netGraph
 			handleVizStype netViz = new handleVizStype( netGraph ,stylesheet.manual , "seedGrad", 1) ;
-			netViz.setupIdViz(false , netGraph, 10 , "black");
+			netViz.setupIdViz(false , netGraph, 100 , "black");
 			netViz.setupDefaultParam (netGraph, "black", "black", 6 , 0.5 );
 			netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;
-			netViz.setupFixScaleManual(true  , netGraph, sizeGridEdge , 0);
+			netViz.setupFixScaleManual(false  , netGraph, sizeGridEdge , 0);
 			
 			//  setup viz gsGraph
 			handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz10Color , "gsInh", 1) ;	
@@ -329,9 +331,9 @@ public class main {
 			delViz.setupVizBooleanAtr(false , delGraph , "black", "red" , false , false ) ;
 			delViz.setupFixScaleManual( true , delGraph , sizeGridEdge , 0);
 			
-			gsGraph.display(false);
+		//	gsGraph.display(false);
 			netGraph.display(false);
-			vecGraph.display(false);
+		//	vecGraph.display(false);
 			seedGraph.display(false);
 		//	delGraph.display(false) ;
 			

@@ -172,9 +172,9 @@ public class graphToolkit {
 	
 	
 	// list of edges near in radius 
-	public static ArrayList getListEdgeInRadius ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine) {
+	public static ArrayList<Edge> getListEdgeInRadius ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine) {
 	
-		ArrayList listEdges =new ArrayList ( );
+		ArrayList<Edge> listEdges =new ArrayList<Edge> ( );
 		Node nPoint = graph.getNode(idNode) ;
 		double[] nPointCoord = GraphPosLengthUtils.nodePosition(nPoint);
 				
@@ -186,8 +186,10 @@ public class graphToolkit {
 			Node nEnd = e.getNode1();
 			double[] nEndCoord = GraphPosLengthUtils.nodePosition(nEnd);
 			
-			
 			double distNodeEdge = getDistNodeEdge(nStart, nEnd, nPoint, false ) ;
+			
+			if ( Double.isNaN(distNodeEdge))
+				System.out.println(distNodeEdge);
 			
 			if ( distNodeEdge == 0 ) {
 				listEdges.add(e);
@@ -242,12 +244,51 @@ public class graphToolkit {
 		return null ;
 	}
 	
+	public static Edge getNearEdgeXInList ( Edge edge , ArrayList<Edge> listEdgeInRadius ) {
+		
+		ArrayList<Edge> list = new ArrayList<Edge> () ;
+		
+		Edge edgeToReturn = null ;
+		Node n0ceck = edge.getNode0();
+		Node n1ceck = edge.getNode1();
+		
+		double [] 	n0ceckCoord = GraphPosLengthUtils.nodePosition(n0ceck) , 
+					n1ceckCoord = GraphPosLengthUtils.nodePosition(n1ceck) ;  
+		
+		for ( Edge e : listEdgeInRadius ) {
+			
+		
+			
+			Node n0 = e.getNode0();
+			Node n1 = e.getNode1();
+		
+			
+			
+			double [] 	n0Coord = GraphPosLengthUtils.nodePosition(n0) , 
+						n1Coord = GraphPosLengthUtils.nodePosition(n1) ;
+					
+			
+			double [] intersectionCoord = getCoordIntersectionLine(n0ceckCoord[0], n0ceckCoord[1], n1ceckCoord [0], n1ceckCoord [1], n0Coord[0], n0Coord[1], n1Coord[0], n1Coord[1]) ;
+						
+			
+			 double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
+					maxX = Math.max(n0Coord[0], n1Coord[0] ) ; 
+			 
+			 double minY = Math.min(n0Coord[1], n1Coord[1] ) ,
+					maxY = Math.max(n0Coord[1], n1Coord[1] ) ; 
+			
+			if ( intersectionCoord[0] >= minX && intersectionCoord[0] <= maxX && intersectionCoord[1] >= minY && intersectionCoord[1] <= maxY ) {
+				list.add(e) ; 
+				
+			}			
+		}
+		return edgeToReturn ;
+	}
+	
 	public static ArrayList<Edge> getListEdgeXInList ( Edge edge , ArrayList<Edge> listEdgeInRadius ) {
 		
 		ArrayList<Edge> list = new ArrayList<Edge> () ;
 		
-		boolean isEdge = false ;
-		Edge edgeToReturn ;
 		Node n0ceck = edge.getNode0();
 		Node n1ceck = edge.getNode1();
 		
@@ -264,10 +305,14 @@ public class graphToolkit {
 						
 						intersectionCoord = getCoordIntersectionLine(n0ceckCoord[0], n0ceckCoord[1], n1ceckCoord [0], n1ceckCoord [1], n0Coord[0], n0Coord[1], n1Coord[0], n1Coord[1]) ;
 						
+			
 			 double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
 					maxX = Math.max(n0Coord[0], n1Coord[0] ) ; 
 			
-			if ( intersectionCoord[0] >= minX && intersectionCoord[0] <= maxX ) {
+			 double minY = Math.min(n0Coord[1], n1Coord[1] ) ,
+						maxY = Math.max(n0Coord[1], n1Coord[1] ) ; 
+				
+			if ( intersectionCoord[0] >= minX && intersectionCoord[0] <= maxX && intersectionCoord[1] >= minY && intersectionCoord[1] <= maxY ) {
 				list.add(e) ; 
 			}			
 		}

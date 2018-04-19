@@ -136,7 +136,7 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 			
 			double angleTest = seedBirth.angleTest ;	//	System.out.println(angleTest) ; 
 		
-			if (  angleNeig - angleNode > Math.PI - angleTest ) {
+			if (  angleNeig - angleNode > Math.PI  - angleTest ) {
 				if ( ! listIdToSplit.contains(randomId) && degree == 2 && ! listIdSeed.contains(randomId) )
 					listIdToSplit.add(randomId);			//	System.out.println(angleTest) ; 			//	System.out.println( Math.PI) ;			//	System.out.println(randomId + " " + angleNode + " " + angleNeig );
 			}
@@ -146,8 +146,6 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 		}
 	}
 	
-	
-
 	private void ortoAngleVectorComputeIterAll  ( ArrayList <String> listIdToSplit , ArrayList<String> listIdNet , ArrayList < String > listIdSeed , int numMaxBirth , choiceNodeType choiceNodeType ) {//	System.out.println(numMaxBirth);
 	
 		for ( String id : listIdNet ) {

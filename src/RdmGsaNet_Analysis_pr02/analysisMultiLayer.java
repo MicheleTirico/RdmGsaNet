@@ -19,7 +19,6 @@ public class analysisMultiLayer extends analysisMain  {
 	
 	protected static Map	mapGlobalCorrelation = new HashMap () ; 
 		
-	
 	private static analysisDGSmultiLayer combinedAnalysis = new analysisDGSmultiLayer ( 
 			/* run								*/	true ,
 			/* gsViz							*/ 	true ,

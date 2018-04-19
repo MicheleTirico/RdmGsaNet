@@ -93,7 +93,13 @@ public class dynamicSymplify {
 		for ( String idSeed : listIdSeed ) {
 			
 			Node nodeSeedNet = netGraph.getNode(idSeed) ;
-			ArrayList<String> listIdNeig = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idSeed, elementTypeToReturn.string)) ;
+			ArrayList<String> listIdNeig = new ArrayList<String> () ;
+			
+			try {
+				listIdNeig = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idSeed, elementTypeToReturn.string)) ;
+			} catch (NullPointerException e) {
+				continue ;
+			}
 			
 			if (listIdNeig.isEmpty())
 				continue ;

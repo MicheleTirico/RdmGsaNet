@@ -51,9 +51,13 @@ public class dynamicSymplify_kNearestNeighbors implements dynamicSymplify_inter 
 		for ( String idSeed :  listIdSeed ) {						//	System.out.println(idSeed);	
 		
 			Node nodeNetSeed = netGraph.getNode(idSeed) ;			// System.out.println(netGraph.getNodeSet());			
-			
-			ArrayList<String> listIdNeig = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idSeed, elementTypeToReturn.string)) ;
-	
+			ArrayList<String> listIdNeig = new ArrayList<String> () ;
+			try {
+				listIdNeig = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idSeed, elementTypeToReturn.string)) ;
+			} catch (NullPointerException e) {
+				continue ;
+			}
+				
 			for ( String idNeig : listIdNeig ) {
 			
 				ArrayList<String> listIdNeig2 = new ArrayList<String> (graphToolkit.getListNeighbor( netGraph, idNeig , elementTypeToReturn.string)) ;

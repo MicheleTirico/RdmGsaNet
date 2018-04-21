@@ -76,7 +76,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 1000 ;
+	private static int stopSim = 2000 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -105,7 +105,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\xEdges\\mazes\\multiSmallGraph\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirth_02\\percentGraph+xEdges\\circle_20\\movingSpots\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -127,12 +127,13 @@ public class main {
 //		/* small grid of 9 nodes 		*/ new setupNetSmallGrid(setupNetSmallGrid.typeGrid.grid4 , true )		
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
-		/* create multi graph 			*/ new setupNetMultiGraph ( 15 , 15.0 , 10, .5 , true  , 10  )
-//		/* set circle 					*/ new setupNetCircle ( 50  , 1  )	
+//		/* create multi graph 			*/ new setupNetMultiGraph ( 15 , 15.0 , 10, .5 , true  , 10  )
+		/* set circle 					*/ new setupNetCircle ( 20  , 1  )	
 			);
 	
 	// get  Graphs ( only to test results ) 
-	protected static Graph 	gsGraph   = layerGs.getGraph() ,							netGraph  = layerNet.getGraph() ,
+	protected static Graph 	gsGraph   = layerGs.getGraph() ,							
+							netGraph  = layerNet.getGraph() ,
 							vecGraph  = new SingleGraph ( "vecGraph" ) ,
 							seedGraph = new SingleGraph ( "seedGraph" ) ,
 							delGraph  = new SingleGraph ( "delGraph" ) ;
@@ -151,7 +152,7 @@ public class main {
 //					new generateNetNodeBreakGridThrowSeed			( 10 , "gsAct" , .1 , interpolation.averageEdge , true , true ) 
 //					new generateNetNodeVectorFieldSeedCost			( 10 , layoutSeed.allNode, interpolation.sumVectors , -1 , true , true )
 //					new generateNetNodeVectorFieldSplitSeedProb		( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
-					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , typeInterpolation.sumVectors , true , true , 0 , 15 , true , 1 , .2  ) 
+					new generateNetNodeVectorFieldSplitSeedProb_02	( 4 , layoutSeed.allNode , typeInterpolation.sumVectors , true , true , 0 , 45 , true , 5 , .2  ) 
 //					new generateNetNodeVectorFieldSplitSeedGradient ( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.1 )
 			
 			) ;
@@ -171,7 +172,7 @@ public class main {
 	
 	protected static topologyGraph delaunayGraph = new topologyGraph( false , netGraph, topologyGraphType .delaunay , true , true ) ;
 	
-	public static seedBirth seedBirth = new seedBirth ( true , setSeedType.onlySetSeed, generateSeedType.percentGradient );
+	public static seedBirth seedBirth = new seedBirth ( true , setSeedType.onlySetSeed, generateSeedType.percentGraph );
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
@@ -181,9 +182,9 @@ public class main {
 		dynamicSymplify.setParameters_Pivot( true , .2 );
 		
 		seedBirth.setParameters_onlySetSeed ( 
-				/* percent of graph					*/ 	1 , 
-				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , 
-				/* angle							*/	30
+				/* percent of graph					*/ 	0.001 , 
+				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , // only percentGradient
+				/* angle							*/	5		
 				);		
 		
 		// setup handle name file 
@@ -195,7 +196,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes ) ;			
+		setRdType ( RdmType.movingSpots ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

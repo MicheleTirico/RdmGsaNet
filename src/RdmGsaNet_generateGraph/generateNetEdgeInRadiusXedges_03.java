@@ -56,10 +56,8 @@ public class generateNetEdgeInRadiusXedges_03 implements generateNetEdge_Inter {
 	for ( String idSeed : listIdSeed ) {
 	
 			
-		// declare variables 
-			
-		Node nodeSeed , nodeNet ;
-			
+		// declare variables 			
+		Node nodeSeed , nodeNet ;			
 		String fatSeed , fat , idFather , idEdge , idNode = null , idEdgeX ;	
 			
 			
@@ -68,8 +66,7 @@ public class generateNetEdgeInRadiusXedges_03 implements generateNetEdge_Inter {
 			try	{ 
 				seedGraph.removeNode(idSeed);						
 			}	
-			catch 	( org.graphstream.graph.ElementNotFoundException e) {		}
-			
+			catch 	( org.graphstream.graph.ElementNotFoundException e) {		}		
 		}
 			
 			

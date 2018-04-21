@@ -34,9 +34,11 @@ public class layerNet {
 	
 	private static setupNet_Inter layout;
 	
+	
 	// COSTRUCTOR
 	public layerNet (setupNet_Inter layout ) {
 		this.layout = layout ;
+		
 	}
 	
 	// method to change layer setup
@@ -51,6 +53,7 @@ public class layerNet {
 								boolean setSeedMorpInGs ,
 								boolean storedDGS ) throws IOException {
 		
+	
 		// setup parameter of first point in netGraph 
 		if ( createMeanPoint ) 
 			layout.setMeanPoint ( point ) ; 
@@ -65,8 +68,17 @@ public class layerNet {
 		if (setSeedMorp ) 
 			setSeedMorp (  seedAct ,  seedInh ); 
 	
-		if ( setSeedMorpInGs )  
-			setSeedMorpInGs ( ) ; 
+		if ( setSeedMorpInGs )  {
+			if ( layout.getSetMorpOnlyCenter() == false ) 
+				setSeedMorpInGs ( ) ;
+			else if ( layout.getSetMorpOnlyCenter()) {
+				String idNodeCenter = setupNet_Inter.getMeanPointStr( gsGraph ) ;
+				Node nGs = gsGraph.getNode(idNodeCenter);
+				nGs.setAttribute("gsAct", seedAct );
+				nGs.setAttribute("gsInh", seedInh );
+		//		double[] meanPointCoord = GraphPosLengthUtils.nodePosition(gsGraph.getNode(idNodeCenter ) ) ;
+			}			
+		}
 		
 		// set length
 		gsAlgoToolkit.setWeigth(netGraph);

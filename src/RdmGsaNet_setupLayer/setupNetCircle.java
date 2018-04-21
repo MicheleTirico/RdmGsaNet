@@ -17,29 +17,23 @@ public class setupNetCircle implements setupNet_Inter {
 				
 	private int numNodes ;
 	private double centreX , centreY , radius ;
+	public boolean setMorpOnlyCenter ;
 	
-	
-	public setupNetCircle (int numNodes  ,double  radius  ) {
+	public setupNetCircle (int numNodes  ,double  radius , boolean setMorpOnlyCenter  ) {
 		this.numNodes = numNodes ;
-		
 		this.radius  = radius ;
+		this.setMorpOnlyCenter = setMorpOnlyCenter ;
 	}
-		
-			
+				
 	@Override
-	public void createLayerNet() {
+	public void createLayerNet(  ) {
 		String idNodeCenter = setupNet_Inter.getMeanPointStr( gsGraph ) ;		//	System.out.println(idMeanPoint);
 	
 		double[] meanPointCoord = GraphPosLengthUtils.nodePosition(gsGraph.getNode(idNodeCenter ) ) ;
 		
 		double 	centreX = meanPointCoord[0] ,	//  + 24.5 ;  //
 				centreY = meanPointCoord[1] ;	//  24.5 ; //
-		
-		// netGraph.addNode("0");
-		 
-		// Node nodeCenter = netGraph.getNode("0") ;
-		// nodeCenter.setAttribute("xyz", centreX , centreY , 0 );
-		
+			
 		double angle = 2 * Math.PI / numNodes ;
 		
 		for ( int n = 0 ; n < numNodes ; n++ ) {
@@ -57,10 +51,8 @@ public class setupNetCircle implements setupNet_Inter {
 		
 		for ( int n = 0 ; n < numNodes ; n++ ) {
 			String idEdge = Integer.toString(n);
-			try {
-				
-				netGraph.addEdge(idEdge,Integer.toString(n) , Integer.toString(n+1) ) ;
-		
+			try {		
+				netGraph.addEdge(idEdge,Integer.toString(n) , Integer.toString(n+1) ) ;		
 			}
 			catch (org.graphstream.graph.ElementNotFoundException e) {
 				netGraph.addEdge(idEdge,Integer.toString(n) , Integer.toString(0) ) ;
@@ -71,9 +63,16 @@ public class setupNetCircle implements setupNet_Inter {
 
 	@Override
 	public void setMeanPoint(meanPointPlace point) {
-		setupNet_Inter.setMeanPointInter(gsGraph, point);	
-		
+		setupNet_Inter.setMeanPointInter(gsGraph, point );		
 		
 	}
+
+	@Override
+	public boolean getSetMorpOnlyCenter() {
+		return setMorpOnlyCenter ;
+		
+	}
+	
+
 
 }

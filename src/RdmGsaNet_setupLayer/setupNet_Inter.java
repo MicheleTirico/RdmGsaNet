@@ -9,12 +9,15 @@ public interface setupNet_Inter {
 	
 	// COSTANTS
 	 meanPointPlace point = null ;
+	
 
 	// method for createLayer
-	void createLayerNet ();
+	void createLayerNet (  );
 
 	void setMeanPoint(meanPointPlace point) ;
 
+	boolean getSetMorpOnlyCenter ( ) ;
+	
 //-----------------------------------------------------------------------------------------------------	
 	static void setMeanPointInter(Graph gsGraph , meanPointPlace point ) {
 
@@ -86,5 +89,6 @@ public interface setupNet_Inter {
 		return idMeanPoint ;
 	}
 
+	
 }
 

@@ -25,12 +25,16 @@ public class seedBirth_onlySetSeed  implements seedBirt_inter {
 }
 
 	@Override
-	public ArrayList<String> getListIdToSplit(double probSplit, double percBirth ) {
+	public ArrayList<String> getListIdToSplit(double probSplit, double percBirth , int numMaxNewSeed ) {
 
 		ArrayList < String > listIdNet = new ArrayList<String>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string)) ;
 		ArrayList < String > listIdSeed = new ArrayList<String> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
 		
-		int numMaxBirth = (int) (listIdNet.size() * percBirth) ;		//	System.out.println(numMaxBirth);
+		int numMaxBirth = 0 ;
+		if ( numMaxNewSeed != 0 )
+			numMaxBirth = numMaxNewSeed ; 
+		else if ( percBirth != 0 )
+			numMaxBirth = (int) (listIdNet.size() * percBirth) ;		//	System.out.println(numMaxBirth);
 	
 		ArrayList <String> listIdToSplit = new ArrayList<String> () ;
 		
@@ -43,6 +47,8 @@ public class seedBirth_onlySetSeed  implements seedBirt_inter {
 			
 			if ( ! listIdToSplit.contains(randomId) && degree == 2 && ! listIdSeed.contains(randomId) )
 				listIdToSplit.add(randomId);
+		
+				
 			
 			if ( listIdToSplit.size() >= numMaxBirth )
 				break ; 			

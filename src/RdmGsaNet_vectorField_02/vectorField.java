@@ -144,8 +144,21 @@ public class vectorField {
 		
 		double[] vectorInterpolate = getVectorInterpolate(vecGraph, nodeCoord, typeInterpolation);		
 		double dist = Math.pow(  Math.pow(vectorInterpolate[0], 2) + Math.pow(vectorInterpolate[1], 2 ) , 0.5 ) ;		
+		double angle  = 0.0 ;
 		double sinAngle =  vectorInterpolate[1] / dist ;
-		double angle = Math.asin(sinAngle) ; 
+		double cosAngle =  vectorInterpolate[0] / dist ;
+		
+		if ( sinAngle >= 0 && cosAngle >= 0 ) 
+			angle = Math.asin( Math.abs(sinAngle) ) ; 
+		
+		else if ( sinAngle >= 0 && cosAngle <= 0 ) 
+			angle =  Math.PI  - Math.asin( Math.abs(sinAngle) ) ; 
+		
+		else if ( sinAngle <= 0 && cosAngle <= 0 ) 
+			angle = Math.PI  + Math.asin( Math.abs(sinAngle) ) ; 
+		
+		else if ( sinAngle <= 0 && cosAngle >= 0 ) 
+			angle = Math.PI * 2 - Math.asin( Math.abs(sinAngle) ) ; 
 		
 		return angle;
 	}

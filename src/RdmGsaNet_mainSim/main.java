@@ -30,6 +30,9 @@ import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_02;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_03;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_04;
 import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadius_01;
+import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadius_02;
+import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadius_03;
+import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadius_04;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_02;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_03;
 import RdmGsaNet_generateGraph.generateNetEdgeInRadiusFather_04;
@@ -78,7 +81,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 1500 ;
+	private static int stopSim = 1000 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -104,10 +107,11 @@ public class main {
 	private static String 	fileType   = ".dgs" ,
 							fileTypeIm = "png" ;
 	
+	
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirth_02\\sumVectors\\DynamicRadius\\circle_10\\solitions\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirth_02\\sumVectors\\DynamicRadius\\circle_04\\mazes\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -130,7 +134,7 @@ public class main {
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
 //		/* create multi graph 			*/ new setupNetMultiGraph ( 15 , 15.0 , 10, .5 , true  , 10  )
-		/* set circle 					*/ new setupNetCircle ( 10  , .5 , true )	
+		/* set circle 					*/ new setupNetCircle ( 4  , .5 , true )	
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -165,7 +169,7 @@ public class main {
 //			new generateNetEdgeInRadiusFather_02 ( genEdgeType.fatherAndNodeInRadius , .1 )
 //			new generateNetEdgeDelaunay_04 ( netGraph , delGraph , true , 0.1 )
 //			new generateNetEdgeInRadiusFather_04 ( genEdgeType.fatherAndNodeInRadius , 0.05 , false )
-			new generateNetEdgeInDynamicRadius_01 (genEdgeType.fatherAndNodeInRadius)  
+			new generateNetEdgeInDynamicRadius_04 (genEdgeType.fatherAndNodeInRadius )  
 			
 			) ;
 	
@@ -186,8 +190,9 @@ public class main {
 		
 		seedBirth.setParameters_onlySetSeed ( 
 				/* percent of graph					*/ 	1 , 
+				/* num max new seed 				*/	0 , 
 				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , // only percentGradient
-				/* angle							*/	10
+				/* angle							*/	0.5
 				);		
 		
 		// setup handle name file 
@@ -199,7 +204,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.solitions ) ;			
+		setRdType ( RdmType.mazes ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

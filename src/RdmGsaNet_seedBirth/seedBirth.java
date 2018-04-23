@@ -21,6 +21,7 @@ public class seedBirth {
 	protected static double percBirth , 
 							angleTest  , angleTestDecimal ;
 
+	protected static int numMaxNewSeed ;
 	protected double dist; 
 	
 	// type set Seed
@@ -69,8 +70,9 @@ public class seedBirth {
 		this.dist = dist ; 
 	}
 	
-	public void setParameters_onlySetSeed ( double percBirth  , choiceNodeType choiceNodeType , double angleTestDecimal ) {
+	public void setParameters_onlySetSeed ( double percBirth  , int numMaxNewSeed , choiceNodeType choiceNodeType , double angleTestDecimal ) {
 		this.percBirth = percBirth ;
+		this.numMaxNewSeed = numMaxNewSeed ;
 		this.choiceNodeType = choiceNodeType ;
 		this.angleTestDecimal = angleTestDecimal ;
 		
@@ -83,7 +85,7 @@ public class seedBirth {
 		if ( ! runSeedBirth )
 			return ;
 		
-		ArrayList<String> listIdToSplit = sb_inter.getListIdToSplit (  probSplit  , percBirth  ) ;
+		ArrayList<String> listIdToSplit = sb_inter.getListIdToSplit (  probSplit  , percBirth, numMaxNewSeed  ) ;
 
 		Map<Node, Node> mapNewSeed = sb_inter.createNewSeed(listIdToSplit, dist );
 	

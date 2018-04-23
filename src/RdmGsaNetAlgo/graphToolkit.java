@@ -172,7 +172,7 @@ public class graphToolkit {
 	
 	
 	// list of edges near in radius 
-	public static ArrayList<Edge> getListEdgeInRadius ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine) {
+	public static ArrayList<Edge> getListEdgeInRadius ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine ) {
 	
 		ArrayList<Edge> listEdges =new ArrayList<Edge> ( );
 		Node nPoint = graph.getNode(idNode) ;

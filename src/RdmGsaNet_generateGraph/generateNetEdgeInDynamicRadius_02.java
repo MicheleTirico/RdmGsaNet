@@ -18,14 +18,14 @@ import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
 
-public class generateNetEdgeInDynamicRadius_01 implements generateNetEdge_Inter {
+public class generateNetEdgeInDynamicRadius_02 implements generateNetEdge_Inter {
 
 	// parameters
 	private genEdgeType genEdgeType;
 	private int idEdgeInt = 0 , idNetInt = 0 ;
 	private double distCeckSeed ;
 
-	public generateNetEdgeInDynamicRadius_01 ( genEdgeType genEdgeType  ) {
+	public generateNetEdgeInDynamicRadius_02 ( genEdgeType genEdgeType  ) {
 		this.genEdgeType =  genEdgeType ;	
 	}
 	
@@ -53,19 +53,15 @@ public class generateNetEdgeInDynamicRadius_01 implements generateNetEdge_Inter 
 	
 		for ( String idSeed : listIdSeed ) {
 				
+			listIdSeed = new ArrayList<String>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
+			
+			if ( ! listIdSeed.contains(idSeed) ) 
+				continue ;
+			
 			// declare variables 			
 			Node nodeSeed , nodeNet ;			
 			String fatSeed , fat , idFather , idEdge , idNode = null , idEdgeX ;	
-					
-			// update list id seed		
-			if ( !listIdSeed.contains(idSeed) ) {		
-				try	{ 
-					seedGraph.removeNode(idSeed);						
-				}	
-				catch 	( org.graphstream.graph.ElementNotFoundException e) {		}		
-			}
-			
-			
+						
 // handle ad father edges ---------------------------------------------------------------------------------------------------------------------------					
 			// get father id		
 			nodeSeed = seedGraph.getNode(idSeed) ;						// 	System.out.println(nodeSeed);
@@ -73,10 +69,9 @@ public class generateNetEdgeInDynamicRadius_01 implements generateNetEdge_Inter 
 			fatSeed = nodeSeed.getAttribute("father");
 			idFather = nodeNet.getAttribute("father");	 					
 				
-			distCeckSeed = gsAlgoToolkit.getDistGeom(nodeSeed, netGraph.getNode(idFather )) ;
+			distCeckSeed = gsAlgoToolkit.getDistGeom(nodeSeed, netGraph.getNode( idFather )) ;
 		
-			if ( distCeckSeed >= 0.1 ) 		//				System.out.println(distCeckSeed);
-				distCeckSeed = 0.1 ;
+			if ( distCeckSeed < 0.1 ) 			distCeckSeed = 0.1 ;
 			
 			// get id edge
 			idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge);
@@ -85,10 +80,15 @@ public class generateNetEdgeInDynamicRadius_01 implements generateNetEdge_Inter 
 			// add edge soon - father	
 			Edge edge = null ; 
 		
-			netGraph.addEdge(idEdge, idSeed, idFather) ; 					
+			try {
+				netGraph.addEdge(idEdge, idSeed, idFather) ; 					
+			} 
+			catch (Exception e) {
+				continue ; 
+			}
 			edge = netGraph.getEdge(idEdge) ;	
 			
-			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadius(netGraph, idSeed, distCeckSeed , true )) ;		
+			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadius(netGraph, idSeed, 1 , true )) ;		
 			ArrayList<Edge> listXEdges = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius));	
 			
 			if ( ! listXEdges.isEmpty() ) { //				System.out.println(listXEdges);
@@ -113,107 +113,110 @@ public class generateNetEdgeInDynamicRadius_01 implements generateNetEdge_Inter 
 					if ( idFather == idWin )			
 						continue ;
 					
-					near = netGraph.getNode(idWin) ;
-								
+					near = netGraph.getNode(idWin) ;					
 				}	
 				
 				try {
 					idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
 					idEdge = Integer.toString(idEdgeInt) ;
 					netGraph.addEdge(idEdge, near.getId(), idFather) ;	
+					near.addAttribute("father", idFather);
 					
-					if ( ! listIdToDeleteSeed.contains(idSeed))
-						listIdToDeleteSeed.add(idSeed) 	;	//		double dist = gsAlgoToolkit.getDistGeom(near, netGraph.getNode(idFather));
-					
+					seedGraph.removeNode(idSeed) ;
+					netGraph.removeNode(idSeed) ;
+						
 					idEdgeInt++ ;
 				}
-				catch (NullPointerException e) {	//	continue ;
+				catch (NullPointerException e) 		{	//	continue ;
 				}
-				catch (EdgeRejectedException e) {	//	e.printStackTrace();	//			continue ;			
+				catch (EdgeRejectedException e) 	{	//	e.printStackTrace();	//			continue ;			
+				}
+				catch (ElementNotFoundException e) 	{ 	// TODO: handle exception
 				}
 				continue ; 
 			}	
 			
 					
 // compute list of nodes --------------------------------------------------------------------------------------------------------------------------			
-			listIdTNodeToConnect = getlistIdTNodeToConnect( distCeckSeed , nodeNet, idFather);
-				
-			if ( ! listIdTNodeToConnect.isEmpty() ) {
-				
+			listIdTNodeToConnect = getlistIdTNodeToConnect ( distCeckSeed , nodeNet , idFather );	//			System.out.println(listIdTNodeToConnect);	
+			
+			if ( listIdTNodeToConnect.isEmpty() ) 
+				continue ; 
+			
 				for ( String idNear : listIdTNodeToConnect ) {				
 					try {
-						DepthFirstIterator it = new DepthFirstIterator(nodeNet);
+						idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
+						idEdge = Integer.toString(idEdgeInt)  ;
 						
-						while(it.hasNext() ){
-				            Node nIter = it.next();
-			
-				            int depthMin = 2 ,
-				            	depthMax = 5 ;
-				            
-				            if ( it.getDepthOf(nodeNet) >= depthMin && it.getDepthOf(nodeNet) <= depthMax  ) {
-	
-				            	System.out.println( it.getDepthOf(nodeNet));
-					            double dist = gsAlgoToolkit.getDistGeom(nIter , nodeNet);
-					            
-					            if ( dist < distCeckSeed ) {
-					            	idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
-									idEdge = Integer.toString(idEdgeInt)  ;				
-									netGraph.addEdge(idEdge , idNear , idSeed ) ;
-	
-									edge = netGraph.getEdge(idEdge) ;	
-									
-									ArrayList<Edge> listEdgeInRadius2 = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadius(netGraph, idSeed, dist , true )) ;		
-									ArrayList<Edge> listXEdges2 = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius2));	
-									
-									if ( ! listXEdges2.isEmpty() ) { //				System.out.println(listXEdges);
-										
-										Node nodeWin = null ;
-										
-										for ( Edge e : listXEdges2 ) {
-											
-											Node n0 = e.getNode0() ;
-											Node n1 = e.getNode1() ;
-											
-											double dist0 = gsAlgoToolkit.getDistGeom( e.getNode0(), nIter );					
-											double dist1 = gsAlgoToolkit.getDistGeom( e.getNode1(), nIter );
-											
-											String idWin = null ; 
-									
-											if ( dist0 <= dist1  && Math.min(dist0, dist1) <= distCeckSeed   ) 
-												idWin = n0.getId() ;
-											else if  ( dist0 > dist1  && Math.min(dist0, dist1) <= distCeckSeed   ) 
-												idWin = n1.getId() ;
-																
-											if ( nIter.getId() == idWin )			
-												continue ;
-											
-											nodeWin = netGraph.getNode(idWin) ;
-														
-										}
-										try {
-											idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
-											idEdge = Integer.toString(idEdgeInt) ;
-											netGraph.addEdge(idEdge, nodeWin.getId(), nIter.getId() ) ;	
-											
-											if ( ! listIdToDeleteSeed.contains(idSeed))
-												listIdToDeleteSeed.add(idSeed) 	;	//		double dist = gsAlgoToolkit.getDistGeom(near, netGraph.getNode(idFather));
-
-											idEdgeInt++ ;							
-										}
-										catch (NullPointerException e) { 	//	e.printStackTrace();		
-										}
-										catch (EdgeRejectedException e) {	//	e.printStackTrace();		
-										}				
-									}									
-					            }				            	
-				            }		
+						netGraph.addEdge(idEdge, idSeed , idNear) ;
+						
+						if ( listIdSeed.contains( idNear )) {
+							seedGraph.removeNode(idNear);	
+							seedGraph.removeNode(idSeed);	
+							netGraph.removeNode(idNear) ;
+							continue ; 
 						}
+					
+						edge = netGraph.getEdge(idEdge) ;	
+						
+						ArrayList<Edge> listEdgeInRadius2 = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadius(netGraph, idSeed, 1 , true )) ;		
+						ArrayList<Edge> listXEdges2 = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius2));	
+						
+						if ( ! listXEdges2.isEmpty() ) { //				System.out.println(listXEdges);
+					
+							Node nearEdgeX = null ;
+							
+							for ( Edge e : listXEdges2 ) {
+								
+								Node n0 = e.getNode0() ;
+								Node n1 = e.getNode1() ;
+								
+								double dist0 = gsAlgoToolkit.getDistGeom( e.getNode0(), netGraph.getNode( idSeed ) );					
+								double dist1 = gsAlgoToolkit.getDistGeom( e.getNode1(), netGraph.getNode( idSeed ) );
+								
+								String idWin = null ; 
+						
+								if ( dist0 <= dist1  && Math.min(dist0, dist1) <= distCeckSeed   ) 
+									idWin = n0.getId() ;
+								else if  ( dist0 > dist1  && Math.min(dist0, dist1) <= distCeckSeed   ) 
+									idWin = n1.getId() ;
+													
+								if ( idNear == idWin || idSeed == idWin  )			
+									continue ;
+								
+								nearEdgeX = netGraph.getNode(idWin) ;					
+							}	
+							
+							try {
+								idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
+								idEdge = Integer.toString(idEdgeInt) ;
+								netGraph.addEdge(idEdge, nearEdgeX.getId(), idSeed ) ;	
+							//	nearEdgeX.addAttribute("father", idSeed);
+								
+								seedGraph.removeNode(idSeed) ;
+								
+							
+								break ; 
+							
+							}
+							catch (NullPointerException e) 		{	//	continue ;
+							}
+							catch (EdgeRejectedException e) 	{	//	e.printStackTrace();	//			continue ;			
+							}
+							catch (ElementNotFoundException e) 	{ 	// TODO: handle exception
+							}
+						
+						
+					}
+						
+					}
+					 catch (ElementNotFoundException e) {
+						// TODO: handle exception 
 					}
 					catch (EdgeRejectedException e) {
 						// TODO: handle exception
-					}	
+					}
 				}
-			}
 					
 			if ( ! listIdToDeleteSeed.isEmpty())		
 				handleDeleteNodes (listIdToDeleteSeed) ;		
@@ -239,27 +242,24 @@ public class generateNetEdgeInDynamicRadius_01 implements generateNetEdge_Inter 
 	
 		}			
 	}
-	// get map list node to connect
-			private ArrayList<String> getlistIdTNodeToConnect ( double distCeckSeed , Node nodeNet , String idFather) {
+	
+	// get map list node to connect		
+	private ArrayList<String> getlistIdTNodeToConnect ( double distCeckSeed , Node nodeNet , String idFather ) {
 				
-			ArrayList<String> listIdTNodeToConnect  = new ArrayList<String> ( );				
-			Map <String , Double> mapDistNet = generateNetEdge.getMapIdDist( netGraph , nodeNet ) ;	//	double minDist = mapDistNet.values().stream().mapToDouble(valstat -> valstat).min().getAsDouble();			
-			Map < String , Double > mapTopDist = gsAlgoToolkit.getMapTopValues(mapDistNet, 10 ) ;	//		Set<String> setIdNear = gsAlgoToolkit.getKeysByValue(mapDistNet, minDist ); 
+		ArrayList<String> listIdTNodeToConnect  = new ArrayList<String> ( );				
+		Map <String , Double> mapDistNet = generateNetEdge.getMapIdDist( netGraph , nodeNet ) ;	//	double minDist = mapDistNet.values().stream().mapToDouble(valstat -> valstat).min().getAsDouble();			
+		Map < String , Double > mapTopDist = gsAlgoToolkit.getMapTopValues(mapDistNet, 10 ) ;	//		Set<String> setIdNear = gsAlgoToolkit.getKeysByValue(mapDistNet, minDist ); 
+		
+		for ( String idNear : mapTopDist.keySet()) {
+			double dist =  mapTopDist.get(idNear);
+			if ( dist <= distCeckSeed && !idNear.equals(idFather) ) 
+				listIdTNodeToConnect.add(idNear) ;
+			else 
+				break ;
+		}
 			
-			for ( String idNear : mapTopDist.keySet()) {
-				double dist =  mapTopDist.get(idNear);
-				if ( dist < distCeckSeed && !idNear.equals(idFather) ) 
-					listIdTNodeToConnect.add(idNear) ;
-				else 
-					break ;
-			}
-			
-			if ( listIdTNodeToConnect.isEmpty() )
-				return listIdTNodeToConnect ;
-			
-			return listIdTNodeToConnect ;
-			
-			}
+		return listIdTNodeToConnect ;
+	}
 		
 
 	public void onlyFather ( boolean isIdEdgeInt ) {

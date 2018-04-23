@@ -61,7 +61,7 @@ public class analysisMultiLayer extends analysisMain  {
 				);
 
 		
-		combinedAnalysis.computeGlobalStat (2000 , 5 , pathStart , pathStep , 1 );
+		combinedAnalysis.computeGlobalStat (500 , 5 , pathStart , pathStep , 1 );
 				
 	}
 	

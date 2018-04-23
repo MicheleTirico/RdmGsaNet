@@ -33,7 +33,7 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 	}
 
 	@Override
-	public ArrayList<String> getListIdToSplit ( double probSplit , double percBirth ) {
+	public ArrayList<String> getListIdToSplit ( double probSplit , double percBirth , int numMaxNewSeed ) {
 		
 		ArrayList < String > listIdNet = new ArrayList<String>  ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.string)) ;
 		ArrayList < String > listIdSeed = new ArrayList<String> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
@@ -88,10 +88,8 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 			break;
 		
 		case ortoAngleVector : 
-			if ( numMaxBirth == 1 )
-				ortoAngleVectorComputeIterAll(listIdToSplit, listIdNet, listIdSeed, numMaxBirth, choiceNodeType);
-			else 
-				ortoAngleVectorComputeIterRandom (listIdToSplit, listIdNet, listIdSeed, numMaxBirth, choiceNodeType);
+		
+			ortoAngleVectorComputeIterRandom (listIdToSplit, listIdNet, listIdSeed, numMaxBirth, choiceNodeType);
 			break ;
 		}
 		
@@ -112,10 +110,9 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 		
 			// get angle 
 			double[] nodeCoord = GraphPosLengthUtils.nodePosition( netGraph.getNode(randomId) ) ;
-			double angleNode = vectorField.getAngleVectorInterpolate(vecGraph, nodeCoord, typeInterpolation.sumVectors) ;	//		System.out.println(angleNode) ;
+			double angleVector = vectorField.getAngleVectorInterpolate(vecGraph, nodeCoord, typeInterpolation.sumVectors) ;	//		System.out.println(angleNode) ;
 			
-			if ( angleNode < 0 )			
-				angleNode = Math.PI  - Math.abs( angleNode ) ;			
+		//	if ( angleNode < 0 )			angleNode = Math.PI  - Math.abs( angleNode ) ;			
 			
 			ArrayList<String> listNeig = new ArrayList<String> ( graphToolkit.getListNeighbor(netGraph, randomId, elementTypeToReturn.string) ) ;
 			
@@ -127,68 +124,40 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 					
 			double dist = Math.pow(  Math.pow(nodeCoordNeig1[0] - nodeCoordNeig0[0] , 2) + Math.pow(nodeCoordNeig1[1] - nodeCoordNeig0[1], 2 ) , 0.5 ) ;	//		System.out.println();	//		System.out.println(dist);//		System.out.println(nodeCoordNeig1[0] - nodeCoordNeig0[0]) ; 
 		
-			double sinAngle =  ( nodeCoordNeig1[0] - nodeCoordNeig0[0] ) / dist ;	//		System.out.println(sinAngle) ;
+			double sinAngle =  ( nodeCoordNeig1[1] - nodeCoordNeig0[1] ) / dist ;	
+			double cosAngle =  ( nodeCoordNeig1[0] - nodeCoordNeig0[0] ) / dist ;	
+
+			double angleNeig =  0.0 ; 
 			
-			double angleNeig =  Math.asin(sinAngle)  ; 
+			if ( sinAngle >= 0 && cosAngle >= 0 ) 
+				angleNeig = Math.asin( Math.abs(sinAngle) ) ; 
 			
-			if ( angleNeig < 0 )		
-				angleNeig = Math.PI  - Math.abs(angleNeig) ;
+			else if ( sinAngle >= 0 && cosAngle <= 0 ) 
+				angleNeig =  Math.PI - Math.asin( Math.abs(sinAngle) ) ; 
+			
+			else if ( sinAngle <= 0 && cosAngle <= 0 ) 
+				angleNeig = Math.PI + Math.asin( Math.abs(sinAngle) ) ; 
+			
+			else if ( sinAngle <= 0 && cosAngle >= 0 ) 
+				angleNeig = Math.PI * 2 - Math.asin( Math.abs(sinAngle) ) ; 
 			
 			double angleTest = seedBirth.angleTest ;	//	System.out.println(angleTest) ; 
 		
-			if (  angleNeig - angleNode > Math.PI  - angleTest ) {
-				if ( ! listIdToSplit.contains(randomId) && degree == 2 && ! listIdSeed.contains(randomId) )
-					listIdToSplit.add(randomId);			//	System.out.println(angleTest) ; 			//	System.out.println( Math.PI) ;			//	System.out.println(randomId + " " + angleNode + " " + angleNeig );
+			if (  Math.max ( angleNeig , angleVector ) - Math.min ( angleNeig , angleVector ) >= Math.PI / 2 - angleTest &&
+					Math.max ( angleNeig , angleVector ) - Math.min ( angleNeig , angleVector ) <= Math.PI / 2 + angleTest )  {
+				if ( ! listIdToSplit.contains(randomId) && degree == 2 && ! listIdSeed.contains(randomId) ) {
+					listIdToSplit.add(randomId);
+			//		System.out.println( angleTest ) ; 
+			//		System.out.println(randomId + " " +  angleVector  + " " +  angleNeig );
+				}
 			}
+		
 		
 			if ( listIdToSplit.size() >= numMaxBirth )		
 				break ; 					
 		}
 	}
 	
-	private void ortoAngleVectorComputeIterAll  ( ArrayList <String> listIdToSplit , ArrayList<String> listIdNet , ArrayList < String > listIdSeed , int numMaxBirth , choiceNodeType choiceNodeType ) {//	System.out.println(numMaxBirth);
-	
-		for ( String id : listIdNet ) {
-			
-			String randomId = id ;		
-			int degree = netGraph.getNode(randomId).getDegree();	
-			
-			if ( degree != 2 )
-				continue ;
-		
-			// get angle 
-			double[] nodeCoord = GraphPosLengthUtils.nodePosition( netGraph.getNode(randomId) ) ;
-			double angleNode = vectorField.getAngleVectorInterpolate(vecGraph, nodeCoord, typeInterpolation.sumVectors) ;	//		System.out.println(angleNode) ;
-			
-			if ( angleNode < 0 )			
-				angleNode = Math.PI  - Math.abs( angleNode ) ;
-				
-			ArrayList<String> listNeig = new ArrayList<String> ( graphToolkit.getListNeighbor(netGraph, randomId, elementTypeToReturn.string) ) ;
-			
-			String 	idNeig0 = listNeig.get(0) ,
-					idNeig1 = listNeig.get(1);
-			
-			double[] nodeCoordNeig0 = GraphPosLengthUtils.nodePosition( netGraph.getNode(idNeig0) ) ,	
-					 nodeCoordNeig1 = GraphPosLengthUtils.nodePosition( netGraph.getNode(idNeig1) ) ;
-					
-			double dist = Math.pow(  Math.pow(nodeCoordNeig1[0] - nodeCoordNeig0[0] , 2) + Math.pow(nodeCoordNeig1[1] - nodeCoordNeig0[1], 2 ) , 0.5 ) ;	//		System.out.println();	//		System.out.println(dist);//		System.out.println(nodeCoordNeig1[0] - nodeCoordNeig0[0]) ; 
-		
-			double sinAngle =  ( nodeCoordNeig1[0] - nodeCoordNeig0[0] ) / dist ;	//		System.out.println(sinAngle) ;
-			
-			double angleNeig =  Math.asin(sinAngle)  ; 
-			
-			if ( angleNeig < 0 )		
-				angleNeig = Math.PI  - Math.abs(angleNeig) ;
-			
-			double angleTest = seedBirth.angleTest ;	//	System.out.println(angleTest) ; 
-			if (  angleNeig - angleNode > Math.PI - angleTest ) {
-				if ( ! listIdToSplit.contains(randomId) && degree == 2 && ! listIdSeed.contains(randomId) )
-					listIdToSplit.add(randomId);		//	System.out.println(angleTest) ; 		//	System.out.println( Math.PI) 			//	System.out.println(randomId + " " + angleNode + " " + angleNeig );
-			}
-		if ( listIdToSplit.size() >= numMaxBirth )		
-			break ; 				
-		}
-	}	
 	
 	private void maxIntenCompute (ArrayList <String> listIdToSplit , ArrayList<String> listIdNet , ArrayList < String > listIdSeed , int numMaxBirth , choiceNodeType choiceNodeType ) {
 		

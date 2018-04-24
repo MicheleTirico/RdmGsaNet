@@ -81,7 +81,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 1000 ;
+	private static int stopSim = 3000 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms }
@@ -111,7 +111,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirth_02\\sumVectors\\DynamicRadius\\circle_04\\mazes\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius\\circle_8\\pulsatingSolitions\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -134,7 +134,7 @@ public class main {
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
 //		/* create multi graph 			*/ new setupNetMultiGraph ( 15 , 15.0 , 10, .5 , true  , 10  )
-		/* set circle 					*/ new setupNetCircle ( 4  , .5 , true )	
+		/* set circle 					*/ new setupNetCircle ( 8  , .5 , true )	
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -192,7 +192,7 @@ public class main {
 				/* percent of graph					*/ 	1 , 
 				/* num max new seed 				*/	0 , 
 				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , // only percentGradient
-				/* angle							*/	0.5
+				/* angle							*/	0.05 
 				);		
 		
 		// setup handle name file 
@@ -204,7 +204,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes ) ;			
+		setRdType ( RdmType.pulsatingSolitions ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

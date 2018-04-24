@@ -38,7 +38,7 @@ public class analysisMultiLayer extends analysisMain  {
 				/* sizeNode, 				*/ 3.0 ,
 				/* sizeEdge, 				*/ .5 ,
 				/* colorStaticNode, 		*/ "black" ,
-				/* colorStaticEdge, 		*/ "black" ,
+				/* colorStaticEdge, 		*/ "black" ,				
 				/* colorBooleanNodeTrue, 	*/ "red" ,
 				/* colorBooleanNodeFalse	*/ "black"
 				);
@@ -61,7 +61,7 @@ public class analysisMultiLayer extends analysisMain  {
 				);
 
 		
-		combinedAnalysis.computeGlobalStat (500 , 5 , pathStart , pathStep , 1 );
+		combinedAnalysis.computeGlobalStat (5000 , 10 , pathStart , pathStep , 1 );
 				
 	}
 	

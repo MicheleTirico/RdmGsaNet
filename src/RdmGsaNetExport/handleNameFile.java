@@ -132,7 +132,7 @@ public class handleNameFile {
 			if ( seedBirth.getGenerateSeedType().equals(generateSeedType.percentGraph) )
 				valStr = Double.toString(seedBirth.getPercBirth() ) ;
 			else if ( seedBirth.getGenerateSeedType().equals(generateSeedType.percentGradient))
-				valStr = Double.toString(Math.round(( seedBirth.getAngleTest() *180 / Math.PI ) )) ;// String.format ("%.3f", seedBirth.getAngleTest() ); 
+				valStr = Double.toString( 0.01 * Math.round( ( 100 * seedBirth.getAngleTest() *180 / Math.PI )  )  ) ;// String.format ("%.3f", seedBirth.getAngleTest() ); 
 		}
 		else 
 			valStr = Double.toString(generateNetNode.getProb()) ;

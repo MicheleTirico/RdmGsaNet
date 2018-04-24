@@ -27,8 +27,8 @@ public class dataAnalysisMain {
 										dataAnalysisSeedCountRel		= new dataAnalysisGlobal(true) ,
 										dataAnalysisDensityRegularGraph = new dataAnalysisGlobal(true) ,
 										
-										dataAnalysisMultiLayerGlobalCorrelationDegreeInh = new dataAnalysisGlobal(true) ,
-										dataAnalysisMultiLayerGlobalCorrelationSeedInh = new dataAnalysisGlobal(true)
+										dataAnalysisMultiLayerGlobalCorrelationDegreeInh = new dataAnalysisGlobal(false) ,
+										dataAnalysisMultiLayerGlobalCorrelationSeedInh = new dataAnalysisGlobal(false)
 										; 
 	
 	// Maps to create chart
@@ -48,7 +48,7 @@ public class dataAnalysisMain {
 	// COSTANTS 
 	
 	// folder
-	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBird\\chaos\\circle_12\\multiSimAnalysis\\" ,
+	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius\\circle_4\\solitions\\multiSimAnalysis\\" ,
 							folderMapToAnayze = "mapToAnalyze\\" ,
 							pathMapToAnalyze = pathMain + folderMapToAnayze ,
 							

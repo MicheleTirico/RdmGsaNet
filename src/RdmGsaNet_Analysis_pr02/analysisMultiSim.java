@@ -42,7 +42,7 @@ public class analysisMultiSim extends analysisMain {
 				
 		// SET WHICH LOCAL ANALYSIS TO COMPUTE ----------------------------------------------------------------------------------------------------------	
 				multiSim.setWhichGlobalAnalysis(
-						/* layerToAnalyze				*/ layerToAnalyze.multiLayer,		 
+						/* layerToAnalyze				*/ layerToAnalyze.net,		 
 						/* typeMultiSim 				*/ typeMultiSim.probability
 						);
 				
@@ -56,8 +56,8 @@ public class analysisMultiSim extends analysisMain {
 						);
 				
 				multiSim.setWhichGlobalAnalysisMultiLayer(
-						/* compute GlobalCorrelation Degree-gsInh	*/ true ,
-						/* compute GlobalCorrelation Seed -gsInh	*/ true				
+						/* compute GlobalCorrelation Degree-gsInh	*/ false ,
+						/* compute GlobalCorrelation Seed - gsInh	*/ false 				
 						);
 			
 			 	

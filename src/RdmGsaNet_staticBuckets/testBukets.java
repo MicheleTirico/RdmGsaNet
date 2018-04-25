@@ -9,6 +9,7 @@ public class testBukets {
 	
 	static Graph graph = new SingleGraph ("graph");
 	
+	private bucketSet bucketSet = new bucketSet(true, graph) ;
 	
 	
 	public static void main ( String[ ] args ) {
@@ -20,7 +21,8 @@ public class testBukets {
 		graphGenerator.createCompleteGraph(graph, 10, meanPointCoord, 3, 10);
 		graph.display();
 		
-		abstractBuckets abs ; 
+		
+	
 	}
 
 }

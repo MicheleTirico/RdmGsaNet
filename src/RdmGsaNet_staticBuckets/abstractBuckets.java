@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-public abstract class abstractBuckets {
+abstract class abstractBuckets {
 
-	public Map < bucket , ArrayList<Node> > buckets = new HashMap < bucket , ArrayList<Node> > () ;
+	protected Map < bucket , ArrayList<Node> > buckets = new HashMap < bucket , ArrayList<Node> > () ;
+
+	protected Graph graph ;
+	
+	protected int graphSizeEdge ;
+	
+	protected int numBucketsX , numBucketsY , numTotBuckets ; 
+	
 
 	
 }

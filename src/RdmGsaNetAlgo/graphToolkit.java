@@ -188,8 +188,7 @@ public class graphToolkit {
 			
 			double distNodeEdge = getDistNodeEdge(nStart, nEnd, nPoint, false ) ;
 			
-			if ( Double.isNaN(distNodeEdge))
-				System.out.println(distNodeEdge);
+//			if ( Double.isNaN(distNodeEdge))	System.out.println(distNodeEdge);
 			
 			if ( distNodeEdge == 0 ) {
 				listEdges.add(e);

@@ -207,10 +207,5 @@ public class vectorFieldSpatial implements vectorField_inter {
 		}
 		
 	}
-
-
-	
-	
-	
 	
 }

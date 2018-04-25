@@ -146,13 +146,10 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 			if (  Math.max ( angleNeig , angleVector ) - Math.min ( angleNeig , angleVector ) >= Math.PI / 2 - angleTest &&
 					Math.max ( angleNeig , angleVector ) - Math.min ( angleNeig , angleVector ) <= Math.PI / 2 + angleTest )  {
 				if ( ! listIdToSplit.contains(randomId) && degree == 2 && ! listIdSeed.contains(randomId) ) {
-					listIdToSplit.add(randomId);
-			//		System.out.println( angleTest ) ; 
-			//		System.out.println(randomId + " " +  angleVector  + " " +  angleNeig );
+					listIdToSplit.add(randomId);			//		System.out.println( angleTest ) ; 		//		System.out.println(randomId + " " +  angleVector  + " " +  angleNeig );
 				}
 			}
-		
-		
+			
 			if ( listIdToSplit.size() >= numMaxBirth )		
 				break ; 					
 		}

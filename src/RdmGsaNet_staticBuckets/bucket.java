@@ -1,56 +1,81 @@
 package RdmGsaNet_staticBuckets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNet_gsAlgo.gsAlgo.reactionType;
+import scala.collection.parallel.ParIterableLike.Foreach;
 
- final class bucket extends abstractBuckets  { 	
+class bucket extends abstractBuckets  { 	
 	
-	private double 	sizeBucketX , sizeBucketY ,
-					posX , posY ;
+	int idBucketInt = 0 ; 
+	private double posX, posY;
 	
+	private  bucketSet bucketSet ; 
+
 	private String id ;
 	private ArrayList<Node> listNode = new ArrayList<Node> () ;
+	private bucket bucket ;
 	
-	private bucket ( String id ) {
+	// constructor
+	public bucket ( bucketSet bucketSet ) {		
+		this.bucketSet = bucketSet ; 
+	}
+	
+	
+	
+	public void putNode ( bucket bucket , Node node ) {
 		
-		this.id = id ;
-		sizeBucketX =  graphSizeEdge / numBucketsX ;
-		sizeBucketY = graphSizeEdge / numBucketsY ;		
-	}
-	
-	
-	public bucket getBuket ( Node node ) {
-		return null;
-	}
-	
-	public bucket createBuketFromNode ( Node node ) {	
-		return null;
+		ArrayList < Node> list = getListNode(bucket) ;	
+		list.add(node) ;	
+		buckets.put(bucket, list ) ;
 	}
 	
 
 // get methods --------------------------------------------------------------------------------------------------------------------------------------	
-	
-	
+	// get coordinate of min vertex of bucket from node
+	protected static double [] getCoordBuketFromNode ( Node node ) {
+		
+		double [ ]  coordBucket = new double[2] , 
+					nodeCoord = GraphPosLengthUtils.nodePosition(node) ;		//	System.out.println("nodeCoord " + nodeCoord[0] + " " + nodeCoord[1] ) ;	//	System.out.println(sizeBucketX) ;
+		
+		coordBucket[0] = (int) ( nodeCoord[0] / sizeBucketX );
+		coordBucket[1] = (int) ( nodeCoord[1] / sizeBucketY ) ;	
+		
+		return coordBucket ;
+	}
+
+		
+	// ceck if node has yet a bucket 
+	protected static boolean ceckNodeHasBucket ( Node node ) {
+
+		double [] coordBucket =  getCoordBuketFromNode ( node ) ;
+		
+		for ( double[] x : bucketsCoord.keySet() ) 
+			if ( Arrays.equals(coordBucket, x ) ) 
+				return true;	
+						
+		return false ; 
+	}
+		
+
 	// get bucket of node 
-	public bucket getBucket ( bucketSet bucketSet , Node node ) {
+	public static bucket getBucket ( Node node ) {
 		
-		double [] nodeCoord = GraphPosLengthUtils.nodePosition(node) ;
-		
-		double [] coordBucket ;
-		
-		
-		Map < bucket , ArrayList<Node> > ba = bucketSet.buckets ;
-		
-		
-		
-		return null ;
+		double [] coordBucket =  getCoordBuketFromNode ( node ) ;
+		 
+		for ( double[] x : bucketsCoord.keySet() ) 
+			if ( Arrays.equals(coordBucket , x ) ) 
+				return bucketsCoord.get(x);	
+						
+		return null ; 
 	}
 	
 	// get list of nodes 
@@ -72,23 +97,4 @@ import RdmGsaNet_gsAlgo.gsAlgo.reactionType;
 	public double getPosY ( bucket bucket ) {
 		return bucket.posY ; 
 	}
-	
-	// get coordinate of min vertex of bucket from node
-	public double [] getCoordBuketFromNode ( Node node ) {
-		
-		double [ ]  coordBucket = new double[2] , 
-					nodeCoord = GraphPosLengthUtils.nodePosition(node) ;
-		
-		coordBucket[0] = (int) ( nodeCoord[0] / sizeBucketX );
-		coordBucket[1] = (int) ( nodeCoord[1] / sizeBucketY ) ;	
-		
-		return coordBucket ;
-	}
-	
-	// ceck if node has yet a bucket 
-	public boolean ceckNodeHasbucket ( bucketSet bucketSet) {
-
-		return false ;
-	}
-
 }

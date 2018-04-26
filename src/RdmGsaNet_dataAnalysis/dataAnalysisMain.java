@@ -25,10 +25,10 @@ public class dataAnalysisMain {
 										dataAnalysisAverageDegree 		= new dataAnalysisGlobal(true) ,
 										dataAnalysisNewNodeRel 			= new dataAnalysisGlobal(true) ,
 										dataAnalysisSeedCountRel		= new dataAnalysisGlobal(true) ,
-										dataAnalysisDensityRegularGraph = new dataAnalysisGlobal(true) ,
+										dataAnalysisDensityRegularGraph = new dataAnalysisGlobal(true) 
 										
-										dataAnalysisMultiLayerGlobalCorrelationDegreeInh = new dataAnalysisGlobal(false) ,
-										dataAnalysisMultiLayerGlobalCorrelationSeedInh = new dataAnalysisGlobal(false)
+								//		dataAnalysisMultiLayerGlobalCorrelationDegreeInh = new dataAnalysisGlobal(false) ,
+								//		dataAnalysisMultiLayerGlobalCorrelationSeedInh = new dataAnalysisGlobal(false)
 										; 
 	
 	// Maps to create chart
@@ -48,7 +48,7 @@ public class dataAnalysisMain {
 	// COSTANTS 
 	
 	// folder
-	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius\\circle_4\\solitions\\multiSimAnalysis\\" ,
+	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius\\circle_8\\pulsatingSolitions\\multiSimAnalysis\\" ,
 							folderMapToAnayze = "mapToAnalyze\\" ,
 							pathMapToAnalyze = pathMain + folderMapToAnayze ,
 							
@@ -90,19 +90,19 @@ public class dataAnalysisMain {
 		dataAnalysisSeedCountRel.computeAnalysis(pathSeedCountRel, mapStepProbSeedCountRel);
 		dataAnalysisDensityRegularGraph.computeAnalysis(pathDensityRegularGraph, mapDensityRegularGraph);
 		
-		dataAnalysisMultiLayerGlobalCorrelationDegreeInh.computeAnalysis( pathmultiLayerGlobalCorrelationDegreeInh, mapMultiLayerGlobalCorrelationDegreeInh);
-		dataAnalysisMultiLayerGlobalCorrelationSeedInh.computeAnalysis( pathmultiLayerGlobalCorrelationSeedInh, mapMultiLayerGlobalCorrelationSeedInh);
-		System.out.println(mapMultiLayerGlobalCorrelationDegreeInh);
+	//	dataAnalysisMultiLayerGlobalCorrelationDegreeInh.computeAnalysis( pathmultiLayerGlobalCorrelationDegreeInh, mapMultiLayerGlobalCorrelationDegreeInh);
+	//	dataAnalysisMultiLayerGlobalCorrelationSeedInh.computeAnalysis( pathmultiLayerGlobalCorrelationSeedInh, mapMultiLayerGlobalCorrelationSeedInh);
+		// System.out.println(mapMultiLayerGlobalCorrelationDegreeInh);
 		
 		createCharts(
 				/* store chart ? 										*/ true, 
-				/* create chart clustering								*/ true , 
-				/* create chart density									*/ true, 
-				/* create chart average Degree							*/ true ,
-				/* create chart New Node Rel							*/ true ,
-				/* create chart Seed Count Rel							*/ true ,
-				/* create chart DensityRegularGraph						*/ true ,
-				/* create chart multiLayerGlobalCorrelation degree inh	*/ false ,
+				/* create chart clustering								*/ false , 
+				/* create chart density									*/ false, 
+				/* create chart average Degree							*/ false ,
+				/* create chart New Node Rel							*/ false ,
+				/* create chart Seed Count Rel							*/ false ,
+				/* create chart DensityRegularGraph						*/ false ,
+				/* create chart multiLayerGlobalCorrelation degree inh	*/ true ,
 				/* create chart multiLayerGlobalCorrelation seed inh	*/ false
 				);
 		
@@ -127,7 +127,7 @@ public class dataAnalysisMain {
 				xyChart.setVisible(true);
 				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "ProbDensity" );	
 			}
-			
+			System.out.println("peppe");
 			if ( createChartAverageDegree ) {
 				xyChart = new expChart(typeChart.XYchartSer_xy , "average degree Net", "Step (t)" , " average degree (n)" , 800, 600 ,	mapStepProbAverageDegree );
 				xyChart.setVisible(true);

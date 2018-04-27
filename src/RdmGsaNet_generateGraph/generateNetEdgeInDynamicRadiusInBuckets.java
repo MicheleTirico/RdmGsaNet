@@ -17,16 +17,20 @@ import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
+import RdmGsaNet_mainSim.main;
+import RdmGsaNet_staticBuckets.bucketSet;
 
-public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter {
+public class generateNetEdgeInDynamicRadiusInBuckets implements generateNetEdge_Inter {
 
 	// parameters
-	private genEdgeType genEdgeType;
+	private static genEdgeType genEdgeType;
 	private int idEdgeInt = 0 , idNetInt = 0 ;
 	private double distCeckSeed ;
+	private bucketSet bucketSet ; 
 
-	public generateNetEdgeInDynamicRadius_04 ( genEdgeType genEdgeType  ) {
+	public generateNetEdgeInDynamicRadiusInBuckets ( genEdgeType genEdgeType , bucketSet bucketSet  ) {
 		this.genEdgeType =  genEdgeType ;	
+		this.bucketSet = bucketSet ; 
 	}
 	
 	@Override
@@ -73,9 +77,11 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 			Edge edge = null ; 
 				
 			netGraph.addEdge(idEdge, idSeed, idFather) ; 							
-			edge = netGraph.getEdge(idEdge) ;	
+			edge = netGraph.getEdge(idEdge) ;
+		//	System.out.println(bucketSet);
+			bucketSet.putEdgeInBucketSet(edge);
 			
-			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadius(netGraph, idSeed, 1.0 , true )) ;		
+			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadiusInBucketSet(netGraph, idSeed, 1.0 , true , bucketSet )) ;		
 			ArrayList<Edge> listXEdges = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius));	
 			
 			if ( ! listXEdges.isEmpty() ) { //				System.out.println(listXEdges);
@@ -109,7 +115,9 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 					
 					netGraph.addEdge(idEdge, near.getId(), idFather ) ;	
 					near.addAttribute("father", idFather);
-							
+					
+					bucketSet.putEdgeInBucketSet(netGraph.getEdge( idEdge ) );		
+					
 					seedGraph.removeNode(idSeed) ;
 					netGraph.removeNode(idSeed) ;
 					
@@ -131,7 +139,7 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 			
 					
 // compute list of nodes --------------------------------------------------------------------------------------------------------------------------			
-			listIdTNodeToConnect = getlistIdTNodeToConnect ( distCeckSeed , nodeNet , idFather );	//			System.out.println(listIdTNodeToConnect);	
+			listIdTNodeToConnect = getlistIdTNodeToConnectInBucketSet ( distCeckSeed , nodeNet , idFather );	//			System.out.println(listIdTNodeToConnect);	
 			
 			if ( listIdTNodeToConnect.isEmpty() ) 
 				continue ; 
@@ -142,7 +150,7 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 						idEdge = Integer.toString(idEdgeInt)  ;
 						
 						netGraph.addEdge(idEdge, idSeed , idNear) ;
-						
+						bucketSet.putEdgeInBucketSet(netGraph.getEdge( idEdge ) );	
 						seedGraph.removeNode(idSeed);	
 						
 						listIdSeed = graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string) ;
@@ -154,7 +162,7 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 					
 						edge = netGraph.getEdge(idEdge) ;	
 						
-						ArrayList<Edge> listEdgeInRadius2 = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadius(netGraph, idSeed, 1 , true )) ;		
+						ArrayList<Edge> listEdgeInRadius2 = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadiusInBucketSet(netGraph, idSeed, 1 , true , bucketSet )) ;		
 						ArrayList<Edge> listXEdges2 = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius2));	
 						
 						if ( ! listXEdges2.isEmpty() ) { //				System.out.println(listXEdges);
@@ -186,7 +194,7 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 								idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
 								idEdge = Integer.toString(idEdgeInt) ;
 								netGraph.addEdge(idEdge, nearEdgeX.getId(), idSeed ) ;	
-								
+								bucketSet.putEdgeInBucketSet(netGraph.getEdge( idEdge ) );	
 								seedGraph.removeNode(idSeed) ;
 								seedGraph.removeNode(idNear) ;
 									
@@ -252,6 +260,23 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 			
 		return listIdTNodeToConnect ;
 	}
+	
+	private ArrayList<String> getlistIdTNodeToConnectInBucketSet ( double distCeckSeed , Node nodeNet , String idFather ) {
+		
+		ArrayList<String> listIdTNodeToConnect  = new ArrayList<String> ( );				
+		Map <String , Double> mapDistNet = generateNetEdge.getMapIdDistInBucketSet( nodeNet, bucketSet) ;	//	double minDist = mapDistNet.values().stream().mapToDouble(valstat -> valstat).min().getAsDouble();			
+		Map < String , Double > mapTopDist = gsAlgoToolkit.getMapTopValues(mapDistNet, 10 ) ;	//		Set<String> setIdNear = gsAlgoToolkit.getKeysByValue(mapDistNet, minDist ); 
+		
+		for ( String idNear : mapTopDist.keySet()) {
+			double dist =  mapTopDist.get(idNear);
+			if ( dist <= distCeckSeed && !idNear.equals(idFather) ) 
+				listIdTNodeToConnect.add(idNear) ;
+			else 
+				break ;
+		}
+			
+		return listIdTNodeToConnect ;
+	}
 		
 
 	public void onlyFather ( boolean isIdEdgeInt ) {
@@ -275,7 +300,9 @@ public class generateNetEdgeInDynamicRadius_04 implements generateNetEdge_Inter 
 				
 				idEdge = Integer.toString(idInt);
 			}
-			netGraph.addEdge(idEdge, nNet, nFather) ;	//		System.out.println(seedGraph + " " + nSeed.getId( ) + " " + father);
+			netGraph.addEdge(idEdge, nNet, nFather) ;	
+			bucketSet.putEdgeInBucketSet(netGraph.getEdge( idEdge ) );	
+			//		System.out.println(seedGraph + " " + nSeed.getId( ) + " " + father);
 		}
 	}
 	

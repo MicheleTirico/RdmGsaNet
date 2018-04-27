@@ -7,21 +7,31 @@ import java.util.Map;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import RdmGsaNetAlgo.graphToolkit.element;
+import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
+
 abstract class abstractBuckets {
 
+	protected enum elementTypeToReturn { element , string , integer }
+	protected elementTypeToReturn elementType ;
+	
+	protected enum element { node , edge }
+	protected element element ;
+	
 	protected static Map < bucket , ArrayList<Node> > buckets = new HashMap < bucket , ArrayList<Node> > () ;
+	
 	protected static Map < String , bucket > bucketsId = new HashMap < String , bucket > () ;
+	
 	protected static Map < double[] , bucket > bucketsCoord = new HashMap < double[] , bucket > () ;
 
 
 	protected Graph graph ;
 	
-	protected bucket bucket ; 
-	protected int graphSizeEdge ;
+	protected  bucket bucket ; 
 
-//	public bucket bucket;
+	protected bucketSet bucketSet ; 
 	
-	protected static int numBucketsX , numBucketsY , numTotBuckets ;
+	protected static int numBucketsX , numBucketsY , numTotBuckets , graphSizeEdge;
 	
 	protected static double sizeGridX ;
 

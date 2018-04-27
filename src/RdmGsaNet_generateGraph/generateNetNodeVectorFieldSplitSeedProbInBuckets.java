@@ -19,7 +19,7 @@ import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 
-public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeVectorField implements generateNetNode_Inter {
+public class generateNetNodeVectorFieldSplitSeedProbInBuckets extends generateNetNodeVectorField implements generateNetNode_Inter {
 	
 	// parameters only this class
 	private static double prob ;
@@ -29,7 +29,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 	private double coefInten , maxInten ;
 	
 	// constructor
-	public generateNetNodeVectorFieldSplitSeedProb_02 (int numberMaxSeed, layoutSeed setLayoutSeed,
+	public generateNetNodeVectorFieldSplitSeedProbInBuckets (int numberMaxSeed, layoutSeed setLayoutSeed,
 			typeInterpolation typeInterpolation, boolean createSeedGraph, boolean updateNetGraph ,
 			double prob , double angleVectorNewSeed  , boolean stillAlive , double coefInten , double maxInten) {
 		
@@ -140,6 +140,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 		try {
 			netGraph.addNode(id);
 			seedGraph.addNode(id);
+			bucketSet.putNodeInBucketSet(netGraph.getNode(id) ) ;	
 		}
 		catch (org.graphstream.graph.IdAlreadyInUseException e) {
 			
@@ -155,6 +156,7 @@ public class generateNetNodeVectorFieldSplitSeedProb_02 extends generateNetNodeV
 			
 			netGraph.addNode(id);
 			seedGraph.addNode(id);
+			bucketSet.putNodeInBucketSet(netGraph.getNode(id) ) ;	
 		}
 		
 		Node nodeNet = netGraph.getNode(id);

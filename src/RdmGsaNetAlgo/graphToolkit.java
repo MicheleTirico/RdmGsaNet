@@ -14,6 +14,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
+import RdmGsaNet_staticBuckets.bucketSet;
 
 public class graphToolkit {
 	
@@ -174,10 +175,10 @@ public class graphToolkit {
 	// list of edges near in radius 
 	public static ArrayList<Edge> getListEdgeInRadius ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine ) {
 	
-		ArrayList<Edge> listEdges =new ArrayList<Edge> ( );
+		ArrayList<Edge> listEdges = new ArrayList<Edge> ( );
 		Node nPoint = graph.getNode(idNode) ;
 		double[] nPointCoord = GraphPosLengthUtils.nodePosition(nPoint);
-				
+		
 		for ( Edge e : graph.getEachEdge() ) {
 			
 			Node nStart = e.getNode0();
@@ -212,6 +213,48 @@ public class graphToolkit {
 		}		
 		return listEdges ;
 	}
+	
+	// list of edges near in radius 
+		public static ArrayList<Edge> getListEdgeInRadiusInBucketSet ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine , bucketSet bucketSet ) {
+		
+			ArrayList<Edge> listEdges = new ArrayList<Edge> ( );
+			Node nPoint = graph.getNode(idNode) ;
+			double[] nPointCoord = GraphPosLengthUtils.nodePosition(nPoint);
+			
+			for ( Edge e : bucketSet.getListEdgeInBucket(nPoint) ) {
+				
+				Node nStart = e.getNode0();
+				double[] nStartCoord = GraphPosLengthUtils.nodePosition(nStart);
+				
+				Node nEnd = e.getNode1();
+				double[] nEndCoord = GraphPosLengthUtils.nodePosition(nEnd);
+				
+				double distNodeEdge = getDistNodeEdge(nStart, nEnd, nPoint, false ) ;
+				
+//				if ( Double.isNaN(distNodeEdge))	System.out.println(distNodeEdge);
+				
+				if ( distNodeEdge == 0 ) {
+					listEdges.add(e);
+					continue; 
+				}
+				
+				double [] coordInter = getCoordIntesectionLinesOrto(nStartCoord[0],  nEndCoord[0], nStartCoord[1],  nEndCoord[1], nPointCoord[0], nPointCoord[1] ) ;
+					
+				if ( doCeckIntersectionInLine ) {
+					
+					double 	minXEdge = Math.min(nStartCoord[0], nEndCoord[0] ) , 
+							maxXEdge = Math.max(nStartCoord[0], nEndCoord[0] ) ;
+					
+					if ( distNodeEdge < radius && coordInter[0] <= maxXEdge && coordInter[0] >= minXEdge  )
+						listEdges.add(e);
+				} else {
+				
+					if ( distNodeEdge <= radius )
+						listEdges.add(e);
+				}			
+			}		
+			return listEdges ;
+		}
 	
 	public static Edge getEdgeXInList ( Edge edge , ArrayList<Edge> listEdgeInRadius ) {
 		

@@ -46,7 +46,7 @@ public class generateNetEdgeInDynamicRadiusInBuckets implements generateNetEdge_
 		}		
 	}
 	
-	public void fatherAndNodeInRadius (   ) {
+	public void fatherAndNodeInRadius (   ) {		//	System.out.println(bucketSet.getBucketsCount());
 		
 		// create array list of element
 		ArrayList<String> listIdSeed = new ArrayList<String>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string)) ;
@@ -80,8 +80,12 @@ public class generateNetEdgeInDynamicRadiusInBuckets implements generateNetEdge_
 			edge = netGraph.getEdge(idEdge) ;
 		//	System.out.println(bucketSet);
 			bucketSet.putEdgeInBucketSet(edge);
+	//		System.out.println(edge);
+				
+			System.out.println( ( graphToolkit.getListEdgeInRadius(netGraph, idSeed, 1.0 , true )) )  ;	
+			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadiusInBucketSet(netGraph, idSeed, 1 , true , bucketSet )) ;				
+			System.out.println( listEdgeInRadius )  ;	
 			
-			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadiusInBucketSet(netGraph, idSeed, 1.0 , true , bucketSet )) ;		
 			ArrayList<Edge> listXEdges = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius));	
 			
 			if ( ! listXEdges.isEmpty() ) { //				System.out.println(listXEdges);
@@ -91,6 +95,7 @@ public class generateNetEdgeInDynamicRadiusInBuckets implements generateNetEdge_
 				for ( Edge e : listXEdges ) {
 					
 					Node n0 = e.getNode0() ;
+					
 					Node n1 = e.getNode1() ;
 					
 					double dist0 = gsAlgoToolkit.getDistGeom( n0 , netGraph.getNode(idFather) );					
@@ -163,6 +168,8 @@ public class generateNetEdgeInDynamicRadiusInBuckets implements generateNetEdge_
 						edge = netGraph.getEdge(idEdge) ;	
 						
 						ArrayList<Edge> listEdgeInRadius2 = new ArrayList<Edge> ( graphToolkit.getListEdgeInRadiusInBucketSet(netGraph, idSeed, 1 , true , bucketSet )) ;		
+					
+						
 						ArrayList<Edge> listXEdges2 = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius2));	
 						
 						if ( ! listXEdges2.isEmpty() ) { //				System.out.println(listXEdges);

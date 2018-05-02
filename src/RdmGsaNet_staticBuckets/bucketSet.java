@@ -55,6 +55,7 @@ public class bucketSet extends abstractBuckets  {
 				bucketsCoord.put(coordBucket, bucket) ;		
 			}		
 			bucket.putNode( bucket , node );
+			bucket.getListNode(bucket).add(node) ;
 		}	//	System.out.println(buckets.size() );	
 	}
 	
@@ -69,67 +70,67 @@ public class bucketSet extends abstractBuckets  {
 		if ( bucket == null ) {
 			
 			double [] coordBucket = bucket.getCoordBuketFromNode ( node ) ;	//		System.out.println("coordBucket " + coordBucket[0] + " " + coordBucket[1]);
-			bucket = new bucket(bucketSet ) ;
-			bucketsId.put(Integer.toString(buckets.size() + 1 ) , bucket );
+			bucket = new bucket( bucketSet ) ;
+			bucketsId.put(Integer.toString( bucketSet.getBucketsCount()  ) , bucket );
+	
 			bucketsCoord.put(coordBucket, bucket) ;		
 		}		
 		bucket.putNode( bucket , node );
+		bucket.getListNode(bucket).add(node) ;
 	}
 	
 	public void putEdgeInBucketSet ( Edge edge ) {
 		
 		if ( createBuckets == false )
 			return ; 
-		
 	ArrayList<Node> listStartEndNode = new ArrayList<Node> ( Arrays.asList(edge.getNode0(), edge.getNode1())) ;
 		
 		for ( Node n : listStartEndNode ) {
-			bucket = bucket.getBucket (n ) ;
+			bucket = bucket.getBucket ( n ) ;
 			
 			if ( bucket == null ) {
 				
 				double [] coordBucket = bucket.getCoordBuketFromNode ( n ) ;	//		System.out.println("coordBucket " + coordBucket[0] + " " + coordBucket[1]);
 				bucket = new bucket(bucketSet ) ;
 				bucketsId.put(Integer.toString(buckets.size() + 1 ) , bucket );
+			
 				bucketsCoord.put(coordBucket, bucket) ;		
 			}		
 			bucket.putNode( bucket , n );
-		}
+		}																		//		System.out.println( bucket.getId() + " " + getListEdgeInBucket(bucket) ) ; 
 	}
 
-// get methods --------------------------------------------------------------------------------------------------------------------------------------
-	
+// get methods --------------------------------------------------------------------------------------------------------------------------------------	
 	public ArrayList<Edge> getListEdgeInBucket ( bucket bucket ) {
 		
 		ArrayList<Edge> listEdge = new ArrayList<Edge> ( ); 
-		ArrayList<Node> listNode = new ArrayList<Node> ( bucket.getListNode(bucket, elementTypeToReturn.element) ); 
+		ArrayList<Node> listNode = new ArrayList<Node> ( bucket.getListNode(bucket) ); 
 		
 		for ( Node n : listNode ) {
 			for ( Edge e : n.getEdgeSet( ) ) {
 				if ( ! listEdge.contains(e))
 					listEdge.add(e) ;
 			}
-		}
-		
+		}		
 		return listEdge ;
 	}
 	
 	public ArrayList<Edge> getListEdgeInBucket ( Node node ) {
 		
-		bucket.getBucket(node) ; 
-		ArrayList<Edge> listEdge = new ArrayList<Edge> ( ); 
-		ArrayList<Node> listNode = new ArrayList<Node> ( bucket.getListNode(bucket, elementTypeToReturn.element) ); 
+		bucket = bucket.getBucket(node) ; 
+		return getListEdgeInBucket (  bucket )  ;
 		
-		for ( Node n : listNode ) {
-			for ( Edge e : n.getEdgeSet( ) ) {
-				if ( ! listEdge.contains(e))
-					listEdge.add(e) ;
-			}
-		}
-		
-		return listEdge ;
 	}
 	
+	public ArrayList<Edge> getListEdgeInListBuckets (  Node node ) {
+		
+		ArrayList<Edge> listEdges = new ArrayList<Edge> () ;
+	
+		for (bucket b : listBuckets ) 
+			listEdges.addAll(getListEdgeInBucket (  bucket )) ;	
+		
+		return listEdges ;		
+	}
 	
 	
 	
@@ -152,7 +153,7 @@ public class bucketSet extends abstractBuckets  {
 		return listEdge ;
 	}	
 	
-	// get list of edges in bucketin radius
+	// get list of edges in bucket in radius
 	public ArrayList<Edge> getListEdgesInNeighborQuadrantBuckets ( Edge edge , double radius ) {
 			
 		ArrayList<Edge> listEdge = new ArrayList<Edge> ( ); 
@@ -267,13 +268,13 @@ public class bucketSet extends abstractBuckets  {
 	public ArrayList<Node> getListNodesInBucket ( Node node ) {
 
 		bucket = bucket.getBucket(node) ;	
-		return bucket.getListNode( bucket ,elementTypeToReturn.element );
+		return bucket.getListNode( bucket );
 	}
 
 	// get list of nodes in bucket and in buckets neighbors
 	public ArrayList<Node> getListNodesInNeighborQuadrantBuckets (  Node node , double radius ) {
 		
-		ArrayList<Node> list = new ArrayList<Node> ( bucket.getListNode( bucket ,elementTypeToReturn.element ) ) ;
+		ArrayList<Node> list = new ArrayList<Node> ( bucket.getListNode( bucket ) ) ;
 			
 		double[] coordBucket = bucket.getCoordBuketFromNode ( node ) ,
 				 nodeCoord = GraphPosLengthUtils.nodePosition(node) ,
@@ -363,7 +364,7 @@ public class bucketSet extends abstractBuckets  {
 			
 			bucket = bucket.getBucketFromCoord(bucketNeig) ;	//			System.out.println(i[0] + " " + i[1]);	
 			try {
-				for ( Node n : bucket.getListNode(bucket, elementTypeToReturn.element) ) {  // System.out.println(bucket.getListNode(bucket, elementTypeToReturn.element)) ;
+				for ( Node n : bucket.getListNode( bucket ) ) {  // System.out.println(bucket.getListNode(bucket, elementTypeToReturn.element)) ;
 					if ( ! list.contains(n))
 						list.add(n);
 				}
@@ -374,5 +375,8 @@ public class bucketSet extends abstractBuckets  {
 		return list;		
 	}	
 
+	public static int getBucketsCount ( ) {
+		return buckets.size() ;
+	}
 }
 

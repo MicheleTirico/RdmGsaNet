@@ -5,12 +5,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_gsAlgo.gsAlgo.reactionType;
 import RdmGsaNet_staticBuckets.abstractBuckets.elementTypeToReturn;
 
@@ -18,27 +20,28 @@ class bucket extends abstractBuckets  {
 	
 	private double posX, posY;
 
-	private String id ;
-	private ArrayList<Node> listNodeElement = new ArrayList<Node> () ;
+	private static String id ;
+	
 	
 	// constructor
 	public bucket ( bucketSet bucketSet  ) {		
 		this.bucketSet = bucketSet ; 
-	
-		
-		
-	
-	
 	}
 		
 	public void putNode ( bucket bucket , Node node ) {
 		
-		ArrayList < Node> list = getListNode(bucket, elementTypeToReturn.element ) ;	
+		ArrayList < Node> list = getListNode( bucket ) ;	
 		list.add(node) ;	
-		buckets.put(bucket, list ) ;	
+		buckets.put( bucket, list ) ;	
 		
 		posX = getCoordBuketFromNode ( node ) [0];
 		posY = getCoordBuketFromNode ( node ) [1];
+		
+		ArrayList<String> set = new ArrayList<String> ( gsAlgoToolkit.getKeysByValue(bucketsId, bucket) ); 
+		id = set.get(0) ;
+	
+		bucket.getListNode(bucket).add(node) ;
+
 	}
 	
 // get methods --------------------------------------------------------------------------------------------------------------------------------------	
@@ -89,12 +92,12 @@ class bucket extends abstractBuckets  {
 		return null ; 
 	}
 	
-	// get bucket of node 
+	// get bucket of edge 
 	protected static ArrayList<bucket> getListBuckets ( Edge edge ) {
 		
 		ArrayList<bucket> listBuckets = new ArrayList<bucket> ( );
 		Node node0 = edge.getNode0() , node1 = edge.getNode1() ;
-		double[] coordNode0 = new double [2] , coordNode1 = new double [2] ;		
+	//	double[] coordNode0 = new double [2] , coordNode1 = new double [2] ;		
 		bucket bucket0 = getBucket (node0) ,  bucket1 = getBucket (node1) ,  bucket2 = null ;	
 		double[] coordBucket0 = bucket0.getCoordBucket(bucket0) , coordBucket1 = bucket1.getCoordBucket(bucket1) ;
 		
@@ -126,6 +129,19 @@ class bucket extends abstractBuckets  {
 			if ( ! listBuckets.contains(bucket2)  && bucket2 != null )
 				listBuckets.add(bucket2);		
 		}
+		return listBuckets ;
+	}
+	
+	protected static ArrayList<bucket> getListBuckets ( Node node ) {
+		
+		ArrayList<bucket> listBuckets = new ArrayList<bucket> ( );
+
+	//	double[] coordNode0 = new double [2] , coordNode1 = new double [2] ;		
+		bucket bucket = getBucket (node) ;	
+		double[] coordBucket = bucket.getCoordBucket(bucket) ;
+		
+		listBuckets.add(bucket);
+
 		return listBuckets ;
 	}
 	
@@ -246,7 +262,8 @@ class bucket extends abstractBuckets  {
 	// get list of edges
 	protected ArrayList<Edge> getListEdges ( bucket bucket ) {
 		
-		ArrayList < Node > listNode = new ArrayList < Node > ( bucket.getListNode(bucket, elementTypeToReturn.element));
+		ArrayList < Node > listNode = new ArrayList < Node > ( bucket.getListNode(bucket ));
+		
 		ArrayList < Edge > listEdge = new ArrayList < Edge > ( );
 		
 		for ( Node n : listNode ) 
@@ -258,19 +275,12 @@ class bucket extends abstractBuckets  {
 	}
 	
 	// get list of nodes 
-	protected ArrayList<Node> getListNode ( bucket bucket , elementTypeToReturn elementTypeToReturn ) {
-		
-		if ( elementTypeToReturn.equals(elementTypeToReturn.element) )
-			return bucket.listNodeElement ;		
-		else {
-			System.out.println("notImplem");
-			System.exit(10);
-			return null ;
-		}
+	protected ArrayList<Node> getListNode ( bucket bucket  ) {
+		return bucket.listNode;			
 	}
 	
 	// get id of bucket  
-	protected String getId ( bucket bucket ) {	
+	protected static String getId (  ) {	
 		return bucket.id ;
 	}
 	

@@ -83,7 +83,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 500 ;
+	private static int stopSim = 1 ;
 	private static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms , waves }
@@ -94,14 +94,14 @@ public class main {
 //	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
 	
 	// STORE DGS PARAMETERS
-	private static boolean 	doStoreStartGs 		= false , 
-							doStoreStepGs 		= false,
-							doStoreStartNet 	= false , 
-							doStoreStepNet 		= false ,
-							doStoreStartVec 	= false ,
-							doStoreStepVec 		= false,
-							doStoreStartSeed	= false ,
-							doStoreStepSeed		= false ,
+	private static boolean 	doStoreStartGs 		= true , 
+							doStoreStepGs 		= true,
+							doStoreStartNet 	= true , 
+							doStoreStepNet 		= true ,
+							doStoreStartVec 	= true ,
+							doStoreStepVec 		= true,
+							doStoreStartSeed	= true ,
+							doStoreStepSeed		= true ,
 							doStoreIm			= false ;
 	
 	public static boolean storeGsValues = false ;
@@ -136,7 +136,7 @@ public class main {
 //		/* layout small graph 			*/ new setupNetSmallGraph( smallGraphType.star4Edge )
 //		/* create a fistful of node 	*/ new setupNetFistfulNodes( 100 , typeRadius.square , 20 , false , 10 )
 //		/* create multi graph 			*/ new setupNetMultiGraph ( 15 , 15.0 , 10, .5 , true  , 10  )
-		/* set circle 					*/ new setupNetCircle ( 8  , .5 , true )	
+		/* set circle 					*/ new setupNetCircle ( 20  , .5 , true )	
 			);
 	
 	// get  Graphs ( only to test results ) 
@@ -149,7 +149,9 @@ public class main {
 	
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	protected static simulation run = new simulation() ;	
+
 	public static bucketSet bucketSet = new bucketSet( true , netGraph ) ;
+
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //		 			new generateNetNodeThreshold        			( 12, 11 )  
 //					new generateNetNodeGradientOnlyOne 				( 8 , layoutSeed.allNode , rule.maxValue, "gsInh")
@@ -183,13 +185,10 @@ public class main {
 	
 	public static seedBirth seedBirth = new seedBirth ( true , setSeedType.onlySetSeed, generateSeedType.percentGradient );
 	
-	
-	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
 		
-	
-		bucketSet.createBuketSet( 50, 50 , 25 , 25) ;
+		bucketSet.createBuketSet( 50, 50 , 10 , 10 ) ;	//	
 		
 		delaunayGraph.setParameters();
 		
@@ -199,7 +198,7 @@ public class main {
 				/* percent of graph					*/ 	1 , 
 				/* num max new seed 				*/	0 , 
 				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , // only percentGradient
-				/* angle							*/	0.25
+				/* angle							*/	1
 				);		
 		
 		// setup handle name file 

@@ -20,7 +20,7 @@ import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
 import RdmGsaNet_mainSim.main;
 import RdmGsaNet_staticBuckets.bucketSet;
 
-public class generateNetEdgeInDynamicRadiusInBuckets implements generateNetEdge_Inter {
+public class generateNetEdgeInDynamicRadiusInBuckets_01 implements generateNetEdge_Inter {
 
 	// parameters
 	private static genEdgeType genEdgeType;
@@ -28,7 +28,7 @@ public class generateNetEdgeInDynamicRadiusInBuckets implements generateNetEdge_
 	private double distCeckSeed ;
 	private bucketSet bucketSet ; 
 
-	public generateNetEdgeInDynamicRadiusInBuckets ( genEdgeType genEdgeType , bucketSet bucketSet  ) {
+	public generateNetEdgeInDynamicRadiusInBuckets_01 ( genEdgeType genEdgeType , bucketSet bucketSet  ) {
 		this.genEdgeType =  genEdgeType ;	
 		this.bucketSet = bucketSet ; 
 	}

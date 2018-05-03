@@ -28,12 +28,13 @@ public class testBuckets2 {
 		
 		graphGenerator.createCompleteGraph(graph, 100 , meanPointCoord, 5, 10);
 		graphGenerator.createSpaningTree(graph, spanningTreeAlgo.krustal);
+		
 		graph.display(false);
 		
 		Node n = graph.getNode("50")  ;										// System.out.println(graph.getNodeSet() ) ;
 		
 		bucketSet.createBuketSet( 10, 10 , 10 , 10 ) ;					// 
-		System.out.println(bucketSet.getBucketsCount() ) ;
+//		System.out.println(bucketSet.getBucketsCount() ) ;
 		
 		String idNewNode  = Integer.toString(graph.getNodeCount() + 1 ) ;
 		graph.addNode(idNewNode) ;
@@ -41,11 +42,24 @@ public class testBuckets2 {
 		Node newNode =  graph.getNode(idNewNode ) ;
 		newNode.setAttribute("xyz", 0.2 , 0.2 , 0 );
 		
-		
-		
-		
-
+		bucketSet.putNode(newNode) ;
+//		System.out.println(bucketSet.getBucketsCount() ) ;
 	
+		for ( Node node : graph.getEachNode() ) {
+		//	System.out.println(bucketSet.getListNodeBuffer(node));
+		//	System.out.println(bucketSet.getListNode(node));
+		}
+		Node node = graph.getNode(50) ; 
+	//	System.out.println(bucketSet.getListNodeBuffer(node));
+		
+	//	System.out.println(bucketSet.getListEdge(node, true));
+
+	//	System.out.println(bucketSet.getListEdge(node, false));
+	
+		
+			
+			
+		
 		
 	
 		

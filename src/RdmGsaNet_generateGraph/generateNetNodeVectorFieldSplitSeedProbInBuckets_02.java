@@ -19,7 +19,7 @@ import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
 
-public class generateNetNodeVectorFieldSplitSeedProbInBuckets extends generateNetNodeVectorField implements generateNetNode_Inter {
+public class generateNetNodeVectorFieldSplitSeedProbInBuckets_02 extends generateNetNodeVectorField implements generateNetNode_Inter {
 	
 	// parameters only this class
 	private static double prob ;
@@ -29,9 +29,9 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets extends generateNe
 	private double coefInten , maxInten ;
 	
 	// constructor
-	public generateNetNodeVectorFieldSplitSeedProbInBuckets (int numberMaxSeed, layoutSeed setLayoutSeed,
+	public generateNetNodeVectorFieldSplitSeedProbInBuckets_02 (int numberMaxSeed, layoutSeed setLayoutSeed,
 			typeInterpolation typeInterpolation, boolean createSeedGraph, boolean updateNetGraph ,
-			double prob , double angleVectorNewSeed  , boolean stillAlive , double coefInten , double maxInten) {
+			double prob , double angleVectorNewSeed  , boolean stillAlive , double coefInten , double maxInten ) {
 		
 		super(numberMaxSeed, setLayoutSeed, typeInterpolation, createSeedGraph, updateNetGraph);
 		
@@ -66,8 +66,12 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets extends generateNe
 		int idLocal = 0 ;
 
 		for ( Node nodeSeed :  listNodeSeed ) {
+			
+			
 				
 			String idSeed = nodeSeed.getId() ;
+			
+			bucketSet.putNode(netGraph.getNode(idSeed)) ;
 			
 			double[] 	nodeCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ,
 						vector = getVector(vecGraph, nodeCoord, typeInterpolation ) ;		
@@ -127,7 +131,7 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets extends generateNe
 		n.setAttribute("seedGrad", 0 );
 	
 	// update father and coord to seedGraph and netGraph
-	for ( int i: mapIdNewSeedCoord.keySet() ) {
+	for ( int i : mapIdNewSeedCoord.keySet() ) {
 		
 		ArrayList<Integer> listIdNetIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;		//	System.out.println(listIdNetIntLocal);
 		ArrayList<Integer> listIdSeedIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;		//	System.out.println(listIdNetIntLocal);
@@ -137,10 +141,10 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets extends generateNe
 			idInt ++ ;
 		
 		String id = Integer.toString(idInt) ;			//	System.out.println(idInt);
+		
 		try {
 			netGraph.addNode(id);
 			seedGraph.addNode(id);
-			bucketSet.putNodeInBucketSet(netGraph.getNode(id) ) ;	
 		}
 		catch (org.graphstream.graph.IdAlreadyInUseException e) {
 			
@@ -156,11 +160,11 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets extends generateNe
 			
 			netGraph.addNode(id);
 			seedGraph.addNode(id);
-			bucketSet.putNodeInBucketSet(netGraph.getNode(id) ) ;	
 		}
 		
 		Node nodeNet = netGraph.getNode(id);
 		Node nodeSeed = seedGraph.getNode(id);
+			
 		
 		double[ ] coord = mapIdNewSeedCoord.get(i);
 		String father = mapIdNewSeedFather.get(i);

@@ -10,6 +10,8 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
+import RdmGsaNetAlgo.gsAlgoToolkit;
+
 
 public class bucketSet extends abstractBuckets  { 
 		
@@ -35,59 +37,99 @@ public class bucketSet extends abstractBuckets  {
 		
 		numTotBuckets = numBucketsX * numBucketsY ;	
 		sizeBucketX = sizeGridX / numBucketsX ;
-		sizeBucketY = sizeGridY / numBucketsY ;	
+		sizeBucketY = sizeGridY / numBucketsY ;							//		System.out.println(bucketSet.getBucketsCount() );
 		
-		System.out.println( buckets ) ; 
-		for ( Node node : graph.getEachNode() ) {
-		
-
-			putNode(node) ;
-
+		for ( Node node : graph.getEachNode() ) {						//		System.out.println(node + " " + graph.getNodeSet());
 			
-			
+			double [] coordBucket = bucket.getCoordBuket ( node ) ;		//		System.out.println("coordBucket " + coordBucket[0] + " " + coordBucket[1]);
 		
+			if ( bucket.ceckNodeHasBucket(node) ) {
+				bucket = bucket.getBucket(coordBucket) ;				//		System.out.println(bucket);
+				bucket.putNode(node);									//		System.out.println(bucket + " " + bucket.getListNode() ) ;
+				continue ;
+			}
+			
+			bucket = new bucket( bucketSet , node ) ;					//		System.out.println(bucket);	
+			
+			bucketsCoord.put(coordBucket, bucket) ;						//		System.out.println(bucket+ " " + bucket.getListNode() ) ;
 		}
-		
-
-		System.out.println( buckets ) ; 
+	
 	}
 	
-	public void putNode ( Node node ) {
+	// put node in bucketSet
+	public void putNode(Node node) {
 		
-		double [] coordBucket = bucket.getCoordBuketFromNode ( node ) ;	
-		bucket = new bucket( bucketSet ) ;
-		bucketsId.put(Integer.toString( bucketSet.getBucketsCount() ) , bucket );
-		bucketsCoord.put(coordBucket, bucket) ;		
-		bucket.putNode(node);
-		buckets.put(bucket, null) ;
+		// get bucket
+		if ( bucket.ceckNodeHasBucket(node)) 
+			bucket.getBucket(node).getListNode().add(node) ;		
 		
-			
+		else {
+			double [] coordBucket = bucket.getCoordBuket ( node ) ;	
+			bucket = new bucket( bucketSet , node ) ;							//	System.out.println(bucket);		
+			bucketsCoord.put(coordBucket, bucket) ;		
+		}	
 	}
-	// put all nodes in bucket, create bucket if needed
-	private void putAllNodesInBucketSet ( ) {
+	
+	
+	public void putEdge ( Edge edge ) {
 		
-		for ( Node node : graph.getEachNode() ) {
-
-			bucket = bucket.getBucket ( node ) ;
-			 
-			if ( bucket == null ) {
-				
-				double [] coordBucket = bucket.getCoordBuketFromNode ( node ) ;	//		System.out.println("coordBucket " + coordBucket[0] + " " + coordBucket[1]);
-				bucket = new bucket( bucketSet ) ;
-				bucketsId.put(Integer.toString( bucketSet.getBucketsCount() ) , bucket );
-				bucketsCoord.put(coordBucket, bucket) ;		
-			}		
-			
-			bucket.putNode( node );
+		putNode( edge.getNode0() ) ;
+		putNode( edge.getNode1() ) ;
 		
-		}	//	System.out.println(buckets.size() );	
 	}
 
 // get methods --------------------------------------------------------------------------------------------------------------------------------------	
 	
-
-	public static int getBucketsCount ( ) {
+	public static int getBucketsCount ( ) {	
 		return buckets.size() ;
 	}
+	
+	public ArrayList<Node> getListNode (Node node ) {		
+		return bucket.getBucket(node).getListNode()  ;
+	}
+	
+	public ArrayList<Node> getListNodeBuffer ( Node node ) {	
+	
+		ArrayList<bucket> listBuckets = new ArrayList<bucket> ( bucket.getListBucket(node) ) ;	//	System.out.println(listBuckets);
+		ArrayList<Node> listNodeReturn = new ArrayList<Node> () ;
+		
+		for ( bucket bucket : listBuckets ) {
+			
+			if ( bucket != null ) {	//	System.out.println(bucket + " "  + bucket.getListNode());
+				ArrayList<Node> listNode = new ArrayList<Node> (bucket.getListNode()) ;
+				for ( Node n : listNode ) 
+					if ( ! listNodeReturn.contains(n))
+						listNodeReturn.add(n) ;
+			}
+		}
+		return listNodeReturn ;
+	}
+	
+	public  ArrayList<Edge> getListEdge ( Node node , boolean inBuffer ) {	
+		
+		ArrayList<Edge> listEdge = new ArrayList<Edge> ( );
+		ArrayList<Node> listNode = new ArrayList<Node> ( ) ;
+		
+		if ( inBuffer )
+			listNode = getListNodeBuffer(node) ;
+		else 
+			listNode = getListNode(node) ;
+		
+		for ( Node n : listNode ) {
+			if ( n == null)
+				continue ;
+			
+			ArrayList<Edge> listEdgeIntern = new ArrayList<Edge> ( n.getEdgeSet() );
+			for ( Edge e : listEdgeIntern )
+				if ( ! listEdge.contains(e))
+					listEdge.add(e) ;
+		}
+		
+		return listEdge ; 
+	}
+	
+	
+
+
 }
 

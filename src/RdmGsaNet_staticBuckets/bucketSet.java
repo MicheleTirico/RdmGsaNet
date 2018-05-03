@@ -125,15 +125,13 @@ public class bucketSet extends abstractBuckets  {
 	public ArrayList<Edge> getListEdgeInListBuckets (  Node node ) {
 		
 		ArrayList<Edge> listEdges = new ArrayList<Edge> () ;
-	
+		ArrayList<bucket> listBuckets = bucket.getListBuckets(node) ;
 		for (bucket b : listBuckets ) 
 			listEdges.addAll(getListEdgeInBucket (  bucket )) ;	
 		
 		return listEdges ;		
 	}
-	
-	
-	
+		
 	public Map < bucket , ArrayList<Node> > getBuckets ( ) {
 		return buckets  ;
 	}	

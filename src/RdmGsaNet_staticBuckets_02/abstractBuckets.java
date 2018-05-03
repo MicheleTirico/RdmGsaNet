@@ -12,11 +12,11 @@ import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
 abstract class abstractBuckets {
 	
-	protected static Map < bucket , ArrayList<Node> > buckets = new HashMap < bucket , ArrayList<Node> > () ;
-	
-	protected static Map < String , bucket > bucketsId = new HashMap < String , bucket > () ;
+	protected static Map < bucket , ArrayList<Node> > mapBuckets = new HashMap < bucket , ArrayList<Node> > () ;
 	
 	protected static Map < double[] , bucket > bucketsCoord = new HashMap < double[] , bucket > () ;
+	
+	protected static ArrayList<bucket> buckets = new ArrayList <bucket> ( ); 
 	
 	protected Graph graph ;
 	

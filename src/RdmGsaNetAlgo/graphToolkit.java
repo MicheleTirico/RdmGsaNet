@@ -14,7 +14,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
-import RdmGsaNet_staticBuckets.bucketSet;
+import RdmGsaNet_staticBuckets_02.bucketSet;
 
 public class graphToolkit {
 	
@@ -220,14 +220,9 @@ public class graphToolkit {
 		ArrayList<Edge> listEdges = new ArrayList<Edge> ( );
 		Node nPoint = graph.getNode(idNode) ;
 		double[] nPointCoord = GraphPosLengthUtils.nodePosition(nPoint);
-	
-		System.out.println("list "  + bucketSet.getListEdgeInBucket(nPoint) );
-		System.out.println("nodes "  + bucketSet.getListNodesInBucket(nPoint));
 		
-		for ( Edge e : bucketSet.getListEdgeInListBuckets(nPoint) ) {
-//		for ( Edge e : bucketSet.getListEdgeInBucket(nPoint) ) {
-	
-	//	for ( Edge e : graph.getEachEdge() ) {	
+		for ( Edge e : bucketSet.getListEdge (nPoint, true )) {
+
 			Node nStart = e.getNode0();
 			double[] nStartCoord = GraphPosLengthUtils.nodePosition(nStart);
 			
@@ -304,24 +299,19 @@ public class graphToolkit {
 		
 		for ( Edge e : listEdgeInRadius ) {
 			
-		
-			
 			Node n0 = e.getNode0();
 			Node n1 = e.getNode1();
-		
-			
 			
 			double [] 	n0Coord = GraphPosLengthUtils.nodePosition(n0) , 
-						n1Coord = GraphPosLengthUtils.nodePosition(n1) ;
-					
+						n1Coord = GraphPosLengthUtils.nodePosition(n1) ;					
 			
 			double [] intersectionCoord = getCoordIntersectionLine(n0ceckCoord[0], n0ceckCoord[1], n1ceckCoord [0], n1ceckCoord [1], n0Coord[0], n0Coord[1], n1Coord[0], n1Coord[1]) ;
 						
 			
-			 double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
+			double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
 					maxX = Math.max(n0Coord[0], n1Coord[0] ) ; 
 			 
-			 double minY = Math.min(n0Coord[1], n1Coord[1] ) ,
+			double minY = Math.min(n0Coord[1], n1Coord[1] ) ,
 					maxY = Math.max(n0Coord[1], n1Coord[1] ) ; 
 			
 			if ( intersectionCoord[0] >= minX && intersectionCoord[0] <= maxX && intersectionCoord[1] >= minY && intersectionCoord[1] <= maxY ) {
@@ -351,8 +341,7 @@ public class graphToolkit {
 						n1Coord = GraphPosLengthUtils.nodePosition(n1) ,
 						
 						intersectionCoord = getCoordIntersectionLine(n0ceckCoord[0], n0ceckCoord[1], n1ceckCoord [0], n1ceckCoord [1], n0Coord[0], n0Coord[1], n1Coord[0], n1Coord[1]) ;
-						
-			
+							
 			 double minX = Math.min(n0Coord[0], n1Coord[0] ) ,
 					maxX = Math.max(n0Coord[0], n1Coord[0] ) ; 
 			

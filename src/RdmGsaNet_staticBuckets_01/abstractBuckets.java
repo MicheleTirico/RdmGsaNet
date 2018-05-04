@@ -1,4 +1,4 @@
-package RdmGsaNet_staticBuckets;
+package RdmGsaNet_staticBuckets_01;
 
 import java.util.ArrayList;
 import java.util.HashMap;

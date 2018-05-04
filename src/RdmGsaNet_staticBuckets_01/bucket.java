@@ -1,4 +1,4 @@
-package RdmGsaNet_staticBuckets;
+package RdmGsaNet_staticBuckets_01;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_gsAlgo.gsAlgo.reactionType;
-import RdmGsaNet_staticBuckets.abstractBuckets.elementTypeToReturn;
+import RdmGsaNet_staticBuckets_01.abstractBuckets.elementTypeToReturn;
 
 class bucket extends abstractBuckets  { 	
 	

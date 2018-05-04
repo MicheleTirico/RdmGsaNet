@@ -1,24 +1,23 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
+import com.amazonaws.services.s3.internal.BucketNameUtils;
 
 import RdmGsaNetAlgo.graphGenerator;
 import RdmGsaNetAlgo.graphGenerator.spanningTreeAlgo;
 
-import RdmGsaNet_staticBuckets_02.bucketSet;
+import RdmGsaNet_staticBuckets_03.bucketSet;
+import RdmGsaNet_staticBuckets_03.bucketSet.axis;
+import RdmGsaNet_staticBuckets_03.bucketSet.bucketNeighbor;
 
-public class testBuckets2 {
+public class testBuckets3 {
 	
 	static Graph graph = new SingleGraph ("graph");
 
-	static bucketSet bucketSet = new bucketSet( true , graph ) ;
+	static bucketSet bucketSet = new bucketSet( true , graph , 10, 10 , 20 , 20  ) ;
 
 	public static void main ( String[ ] args ) {
 		
@@ -33,8 +32,8 @@ public class testBuckets2 {
 		
 		Node n = graph.getNode("50")  ;										// System.out.println(graph.getNodeSet() ) ;
 		
-		bucketSet.createBuketSet( 10, 10 , 5 , 5 ) ;					// 
-//		System.out.println(bucketSet.getBucketsCount() ) ;
+		bucketSet.createBuketSet( ) ;	
+		// 
 		
 		String idNewNode  = Integer.toString(graph.getNodeCount() + 1 ) ;
 		graph.addNode(idNewNode) ;
@@ -43,24 +42,16 @@ public class testBuckets2 {
 		newNode.setAttribute("xyz", 0.2 , 0.2 , 0 );
 		
 		bucketSet.putNode(newNode) ;
-		System.out.println(bucketSet.getBucketsCount() ) ;
-	
-		for ( Node node : graph.getEachNode() ) {
-		//	System.out.println(bucketSet.getListNodeBuffer(node));
-		//	System.out.println(bucketSet.getListNode(node));
-		}
-		Node node = graph.getNode(50) ; 
-	//	System.out.println(bucketSet.getListNodeBuffer(node));
-		
-	//	System.out.println(bucketSet.getListEdge(node, true));
 
-	//	System.out.println(bucketSet.getListEdge(node, false));
-	
+	//	bucketSet.test(n , bucketNeighbor.N);
+	//	System.out.println(bucketSet.getListNodeBucketNeighbor(n, bucketNeighbor.N) );
 		
-			
-			
+//		System.out.println(bucketSet.getSizeBucket(axis.X));
+//		System.out.println(bucketSet.getSizeBucket(axis.Y));
+ 		
+		System.out.println(bucketSet.getListNodeNeighbor( n , 1 ) ) ;
 		
-		
+		System.out.println(bucketSet.getBucketsCount()		) ;
 	
 		
 	}

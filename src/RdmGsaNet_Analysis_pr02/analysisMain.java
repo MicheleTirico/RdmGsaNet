@@ -35,7 +35,7 @@ public  class  analysisMain   {
 	
 	protected static String fileType = ".dgs" ;
 	
-	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius\\circle_8\\pulsatingSolitions\\maxStep_3000_generateNetNodeVectorFieldSplitSeedProb_02_generateNetEdgeInDynamicRadius_04_val_0.25_00\\" ,
+	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord\\circle_20\\pulsatingSolitions\\maxStep_3000_generateNetNodeVectorFieldSplitSeedProbInBuckets_03_generateNetEdgeInDynamicRadiusInBuckets_03_val_0.1_00\\" ,
 							
 							folderMain =   handle.getParent(folder) ,			//"C:\\Users\\frenz\\ownCloud\\RdmGsaNet_exp\\vf_seedProb_multiRDmPoint_01\\holes\\" ,
 							folderMultiSim = folderMain ,

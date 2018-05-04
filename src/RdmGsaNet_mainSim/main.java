@@ -30,6 +30,7 @@ import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_02;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_03;
 import RdmGsaNet_generateGraph.generateNetEdgeDelaunay_04;
 import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadiusInBuckets_02;
+import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadiusInBuckets_03;
 import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadius_01;
 import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadius_02;
 import RdmGsaNet_generateGraph.generateNetEdgeInDynamicRadius_03;
@@ -48,6 +49,7 @@ import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSeedCost;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedGradient;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProbInBuckets_02;
+import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProbInBuckets_03;
 import RdmGsaNet_generateGraph.generateNetNodeVectorFieldSplitSeedProb_02;
 import RdmGsaNet_graphTopology.topologyGraph;
 import RdmGsaNet_graphTopology.topologyGraph.topologyGraphType;
@@ -64,7 +66,7 @@ import RdmGsaNet_setupLayer.setupGs_Inter.gsGridType;
 import RdmGsaNet_setupLayer.setupNetCircle;
 import RdmGsaNet_setupLayer.setupNetFistfulNodes;
 import RdmGsaNet_setupLayer.setupNetFistfulNodes.typeRadius;
-import RdmGsaNet_staticBuckets_02.bucketSet;
+import RdmGsaNet_staticBuckets_03.bucketSet;
 import RdmGsaNet_setupLayer.setupNetMultiGraph;
 import RdmGsaNet_setupLayer.setupNetSeed;
 import RdmGsaNet_setupLayer.setupNetSmallGrid;
@@ -84,15 +86,14 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 500 ;
-	private static double sizeGridEdge ;
+	private static int stopSim = 1500 ;
+	protected static boolean dieBord = true ; 
+	protected static double sizeGridEdge ;
 	
 	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms , waves }
 	private static RdmType type ;
 	
-//	private static Map<Double , Graph > mapStepNetGraph = simulation.getMapStepNetGraph() ;
-//	private static Map<String, ArrayList<Double >> mapMorp0 = simulation.getmapMorp0() ;
-//	private static Map<String, ArrayList<Double >> mapMorp1 = simulation.getmapMorp1() ;
+	private static int stepToStore = 5  ;
 	
 	// STORE DGS PARAMETERS
 	private static boolean 	doStoreStartGs 		= true , 
@@ -103,18 +104,16 @@ public class main {
 							doStoreStepVec 		= true,
 							doStoreStartSeed	= true ,
 							doStoreStepSeed		= true ,
-							doStoreIm			= false ;
-	
-	public static boolean storeGsValues = false ;
+							doStoreIm			= false ,
+							storeGsValues 		= false ;
 	
 	private static String 	fileType   = ".dgs" ,
 							fileTypeIm = "png" ;
 	
-	
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\testBuckets\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord\\circle_20\\pulsatingSolitions\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -151,7 +150,7 @@ public class main {
 	// Initialization object simulation, composed by gsAlgo and growthNet
 	protected static simulation run = new simulation() ;	
 
-	public static bucketSet bucketSet = new bucketSet( true , netGraph ) ;
+	public static bucketSet bucketSet = new bucketSet( true , netGraph, 50 , 50 , 25 , 25 ) ;
 
 	protected static generateNetNode generateNetNode = new generateNetNode (
 //			new generateNetNodeThreshold        					( 12, 11 )  
@@ -165,7 +164,8 @@ public class main {
 //			new generateNetNodeVectorFieldSplitSeedProb				( 5 , layoutSeed.random, interpolation.sumVectors , true , true, 0.2 , 90 , true ) 
 //			new generateNetNodeVectorFieldSplitSeedGradient 		( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.1 )
 //			new generateNetNodeVectorFieldSplitSeedProb_02			( 4 , layoutSeed.allNode , typeInterpolation.sumVectors , true , true , 0 , 45 , true , 5 , .1  ) 
-			new generateNetNodeVectorFieldSplitSeedProbInBuckets_02	( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.0, 45 , true , 5 , .1  )
+//			new generateNetNodeVectorFieldSplitSeedProbInBuckets_02	( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.0, 45 , true , 5 , .1  )
+			new generateNetNodeVectorFieldSplitSeedProbInBuckets_03	( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true ,  dieBord ,  .1  )
 			) ;
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (	
@@ -175,7 +175,8 @@ public class main {
 //			new generateNetEdgeDelaunay_04 ( netGraph , delGraph , true , 0.1 )
 //			new generateNetEdgeInRadiusFather_04 ( genEdgeType.fatherAndNodeInRadius , 0.05 , false )
 //			new generateNetEdgeInDynamicRadius_04 (genEdgeType.fatherAndNodeInRadius )  
-			new generateNetEdgeInDynamicRadiusInBuckets_02 (genEdgeType.fatherAndNodeInRadius , bucketSet )  		
+//			new generateNetEdgeInDynamicRadiusInBuckets_02 (genEdgeType.fatherAndNodeInRadius , bucketSet )  	
+			new generateNetEdgeInDynamicRadiusInBuckets_03 (genEdgeType.fatherAndNodeInRadius , bucketSet )  	
 			) ;
 	
 	private static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
@@ -188,10 +189,7 @@ public class main {
 	
 // RUN SIMULATION -----------------------------------------------------------------------------------------------------------------------------------		
 	public static void main(String[] args) throws IOException, InterruptedException 	{	
-		
-			//		System.out.println(bucketSet.getBucketsCount() ) ;
-		
-		System.out.println(netGraph.getNodeCount());
+
 		delaunayGraph.setParameters();
 		
 		dynamicSymplify.setParameters_Pivot( true , .2 );
@@ -200,7 +198,8 @@ public class main {
 				/* percent of graph					*/ 	1 , 
 				/* num max new seed 				*/	0 , 
 				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , // only percentGradient
-				/* angle							*/	0.25
+				/* angle							*/	.05
+				
 				);		
 		
 		// setup handle name file 
@@ -212,7 +211,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.holes ) ;			
+		setRdType ( RdmType.pulsatingSolitions ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	
@@ -264,7 +263,7 @@ public class main {
 				/* bol		storedDGS		= 	if true , create a dgs file of started graph										*/ doStoreStartNet
 				);
 	
-		bucketSet.createBuketSet( 50, 50 , 50 , 50 ) ;
+		bucketSet.createBuketSet( ) ;
 	
 		sizeGridEdge = Math.pow( gsGraph.getNodeCount() , 0.5 ) - 1 ;
 		
@@ -289,7 +288,7 @@ public class main {
 			/* bol		genNode			= generate nodes in layer net											*/ true ,
 			/* bol		genEdge			= generate edges in layer net											*/ true ,
 			/* bol 		run vec																					*/ true ,
-			/* bol 		run delaunay 																			*/ true ,
+			/* bol 		run delaunay 																			*/ false ,
 			/* bol		storedDgsStep	= if true, export the gsGraph in .dgs format at each step 				*/ doStoreStepGs ,
 			/* string 	path to store step gs file 																*/ pathStepGs ,
 		 	/* bol		storedDgsStep	= if true, export the netGraph in .dgs format at each step 				*/ doStoreStepNet ,
@@ -298,7 +297,8 @@ public class main {
 		 	/* string 	path to store step vec file																*/ pathStepVec ,
 		 	/* bol		store start seed graph ?																*/ doStoreStartSeed ,
 		 	/* bol		store step seed graph ?																	*/ doStoreStepSeed, 
-		 	/* string 	pahh to store step graph 																*/ pathStepSeed 
+		 	/* string 	path to store step graph 																*/ pathStepSeed ,
+		 	/* step to store 																					*/stepToStore
 		 	);
 		
 		
@@ -322,7 +322,7 @@ public class main {
 			netViz.setupIdViz(false , netGraph, 100 , "black");
 			netViz.setupDefaultParam (netGraph, "black", "black", 6 , 0.5 );
 			netViz.setupVizBooleanAtr(true, netGraph, "black", "red" , false , false ) ;
-			netViz.setupFixScaleManual( false  , netGraph, sizeGridEdge , 0);
+			netViz.setupFixScaleManual( true  , netGraph, sizeGridEdge , 0);
 			
 			//  setup viz gsGraph
 			handleVizStype gsViz = new handleVizStype( gsGraph ,stylesheet.viz10Color , "gsInh", 1) ;	

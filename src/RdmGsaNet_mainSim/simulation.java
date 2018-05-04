@@ -8,6 +8,7 @@ import java.util.Map;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
+import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import com.mongodb.client.model.geojson.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
@@ -73,7 +74,7 @@ public class simulation extends main {
 								 boolean doStoreStepNet , String pathStepNet ,
 								 boolean doStoreStepVec , String pathStepVec ,
 								 boolean doStoreStartSeed ,
-								 boolean doStoreStepSeed , String pathStepSeed 
+								 boolean doStoreStepSeed , String pathStepSeed , int stepToStore
 								) 
 								throws IOException, InterruptedException {
 		
@@ -99,11 +100,10 @@ public class simulation extends main {
 		// start simulation, we define the last step in class run
 		for ( step = 1 ; step <= stopSim ; step++ ) {	//	System.out.println(mapNodeNetPoint); 	System.out.println(netGraph.getNodeCount());
 			
-			if ( doStoreStepGs  == true )  	gsGraph.stepBegins(step);   			
-			if ( doStoreStepNet  == true)  	netGraph.stepBegins(step);  	
-			if ( doStoreStepVec  == true)  	vecGraph.stepBegins(step);  	
-			if ( doStoreStepSeed == true)  	seedGraph.stepBegins(step); 
-
+			if ( doStoreStepGs   && isStepToStore( step , stepToStore )  )  	gsGraph.stepBegins(step);   			
+			if ( doStoreStepNet  && isStepToStore( step , stepToStore )  )  	netGraph.stepBegins(step);  	
+			if ( doStoreStepVec  && isStepToStore( step , stepToStore )  )  	vecGraph.stepBegins(step);  	
+			if ( doStoreStepSeed  && isStepToStore( step , stepToStore )  )  	seedGraph.stepBegins(step); 	//	System.out.println(step +" "+ isStepToStore( step , stepToStore ));
 			// print each step
 			System.out.println("------------step " + step + "----------------------------");
 
@@ -124,10 +124,7 @@ public class simulation extends main {
 				delaunayGraph.createLayer( step );
 				delaunayGraph.updateLayer( step ) ;	//	delaunayGraph.computeTest();
 			}
-		
-			
-	//		dynamicSymplify.compute( step );	//	dynamicSymplify.computeTest();
-			
+					
 			if ( genEdge == true) genNetEd.generateEdge( step ); 
 
 			dynamicSymplify.compute( step );	//	dynamicSymplify.computeTest();
@@ -146,25 +143,43 @@ public class simulation extends main {
 			// print values in run
 			if ( printMorp == true) { System.out.println(mapMorp1); }			//	System.out.println("node set " + mapStepIdNet);	
 	
+			
+			// die bords
+			if ( dieBord ) {
+				for ( Node nodeSeed : seedGraph.getEachNode() ) {
+					double[] coordSeed = GraphPosLengthUtils.nodePosition(nodeSeed) ;
+					if ( coordSeed[0] < 1 || coordSeed[1] < 1 || coordSeed[0] > sizeGridEdge -1  || coordSeed[1] > sizeGridEdge - 1  )
+						seedGraph.removeNode(nodeSeed);
+				}
+			}
+			
 			if ( seedGraph.getNodeCount() <= 0 && step > 1 )
-				break ;	
-			
-			
+				break ;		
 		}
 		
 		
 		// stored graph in dgs format
-		if ( doStoreStepGs   == true)  	fsdGs.end();	
-		if ( doStoreStepNet  == true)  	fsdNet.end();	
-		if ( doStoreStepVec  == true)  	fsdVec.end();	
-		if ( doStoreStepSeed == true)  	fsdSeed.end();	
+		if ( doStoreStepGs    )  	fsdGs.end();	
+		if ( doStoreStepNet   )  	fsdNet.end();	
+		if ( doStoreStepVec   )  	fsdVec.end();	
+		if ( doStoreStepSeed   )  	fsdSeed.end();	
 		
 		finalStep = step - 1 ;	
 		
 	}
 		
 // PRIVATE METHODS --------------------------------------------------------------------------------------------------------------
-	/* define first step of simulation 
+	
+ 	public static boolean isStepToStore ( int step , int stepTest ) {
+		if (step == 1 )
+			return true ; 
+		if ( step / (double) stepTest - Math.floor( step / (double) stepTest ) <= 1 / ( 2 * (double) stepTest ) )
+			return true ; 
+		else 
+			return false ; 
+	}
+
+ 	/* define first step of simulation 
 	 	* if we have first step, we keep values from Gs graph
 	 	* else we keep values from mapMorp0  		*/
 	private static void firstStep (int step ) {
@@ -224,7 +239,8 @@ public class simulation extends main {
 	protected static ArrayList<String> createListId (Graph graph ) {
 		
 		ArrayList<String> list = new ArrayList<String>() ; 
-		for ( Node n : graph.getEachNode()) {list.add(n.getId()) ; }	//	System.out.println(list);			
+		for ( Node n : graph.getEachNode()) 
+			list.add(n.getId()) ; //	System.out.println(list);			
 		return list;	
 	}
 	
@@ -238,11 +254,11 @@ public class simulation extends main {
 	}
 	
 	
-	// MAP GRAPH -----------------------------------------------------------------------------------------------------------------	
+// MAP GRAPH -----------------------------------------------------------------------------------------------------------------	
 	private static void updateMapGraph ( Map<Double , Graph > map, double step , Graph graph ) {
 		map.put(step, graph);	
 	}
-	
+
 // GET METHODS -----------------------------------------------------------------------------------------------------------------
 	// get methods
 	public static Map<String, ArrayList<Double>> getmapMorp0 ()				{ return mapMorp0 ; }  

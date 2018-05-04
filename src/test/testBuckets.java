@@ -12,7 +12,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 import RdmGsaNetAlgo.graphGenerator;
 import RdmGsaNetAlgo.graphGenerator.spanningTreeAlgo;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
-import RdmGsaNet_staticBuckets.bucketSet;
+import RdmGsaNet_staticBuckets_01.bucketSet;
 
 public class testBuckets {
 	
@@ -33,7 +33,7 @@ public class testBuckets {
 		Node n = graph.getNode("50")  ;										// System.out.println(graph.getNodeSet() ) ;
 		
 	//	System.out.println(GraphPosLengthUtils.nodePosition(n)[0] + " " + GraphPosLengthUtils.nodePosition(n)[1]);
-		bucketSet.createBuketSet( 10, 10 , 10 , 10 ) ;					// System.out.println(bucketSet.getBuckets().size() ) ;
+		bucketSet.createBuketSet( 10, 10 , 50 , 50 ) ;					// System.out.println(bucketSet.getBuckets().size() ) ;
 		
 		String idNewNode  = Integer.toString(graph.getNodeCount() + 1 ) ;
 		graph.addNode(idNewNode) ;

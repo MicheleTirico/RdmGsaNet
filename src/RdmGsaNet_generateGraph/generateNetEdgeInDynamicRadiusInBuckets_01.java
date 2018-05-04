@@ -18,7 +18,7 @@ import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
 import RdmGsaNet_mainSim.main;
-import RdmGsaNet_staticBuckets.bucketSet;
+import RdmGsaNet_staticBuckets_01.bucketSet;
 
 public class generateNetEdgeInDynamicRadiusInBuckets_01 implements generateNetEdge_Inter {
 

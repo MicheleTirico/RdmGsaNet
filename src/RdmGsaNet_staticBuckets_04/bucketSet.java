@@ -1,4 +1,4 @@
-package RdmGsaNet_staticBuckets_03;
+package RdmGsaNet_staticBuckets_04;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +11,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
+import RdmGsaNet_staticBuckets_04.bucket;
 
 public class bucketSet extends abstractBuckets  { 
 		
@@ -118,6 +119,8 @@ public class bucketSet extends abstractBuckets  {
 		ArrayList<bucket> listBuckets = new ArrayList<bucket> ( bucket.getListBucket(node) ) ;	//	System.out.println(listBuckets);
 		ArrayList<Node> listNodeReturn = new ArrayList<Node> () ;
 		
+	//	listBuckets.parallelStream().forEach(bucket -> testforEach(bucket, listNodeReturn));
+		
 		for ( bucket bucket : listBuckets ) {
 			
 			if ( bucket != null ) {	//	System.out.println(bucket + " "  + bucket.getListNode());
@@ -127,10 +130,9 @@ public class bucketSet extends abstractBuckets  {
 						listNodeReturn.add(n) ;
 			}
 		}
+	
 		return listNodeReturn ;
 	}
-	
-	
 	
 	public  ArrayList<Edge> getListEdge ( Node node , boolean inBuffer ) {	
 		
@@ -142,10 +144,12 @@ public class bucketSet extends abstractBuckets  {
 		else 
 			listNode = getListNode(node) ;
 		
-		for ( Node n : listNode ) {
 		
+		
+		for ( Node n : listNode ) {	
 			if ( n == null)
 				continue ;
+			
 			
 			ArrayList<Edge> listEdgeIntern = new ArrayList<Edge> ( n.getEdgeSet() );
 			for ( Edge e : listEdgeIntern )
@@ -153,6 +157,19 @@ public class bucketSet extends abstractBuckets  {
 					listEdge.add(e) ;
 		}	
 		return listEdge ; 
+	}
+	
+	private static void testforEach (  bucket bucket , ArrayList<Node> listNodeReturn ) {
+	
+		
+		if ( bucket != null ) {	//	System.out.println(bucket + " "  + bucket.getListNode());
+			ArrayList<Node> listNode = new ArrayList<Node> (bucket.getListNode()) ;
+		
+			listNode.parallelStream().forEach( node -> { 
+				if ( ! listNodeReturn.contains(node) ) 
+					listNodeReturn.add(node)  ;
+			}) ;
+		}	
 	}
 		
 	public ArrayList<Edge> getListEdgeNeighbor ( Node node , double radius ) {

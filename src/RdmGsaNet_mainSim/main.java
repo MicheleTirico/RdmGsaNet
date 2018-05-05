@@ -86,7 +86,7 @@ import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
 public class main {
-	private static int stopSim = 1500 ;
+	private static int stopSim = 2000 ;
 	protected static boolean dieBord = true ; 
 	protected static double sizeGridEdge ;
 	
@@ -113,7 +113,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord\\circle_20\\pulsatingSolitions\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord\\circle_20\\mazes\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -165,7 +165,7 @@ public class main {
 //			new generateNetNodeVectorFieldSplitSeedGradient 		( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.1 )
 //			new generateNetNodeVectorFieldSplitSeedProb_02			( 4 , layoutSeed.allNode , typeInterpolation.sumVectors , true , true , 0 , 45 , true , 5 , .1  ) 
 //			new generateNetNodeVectorFieldSplitSeedProbInBuckets_02	( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true , 0.0, 45 , true , 5 , .1  )
-			new generateNetNodeVectorFieldSplitSeedProbInBuckets_03	( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true, true ,  dieBord ,  .1  )
+			new generateNetNodeVectorFieldSplitSeedProbInBuckets_03	( 2, layoutSeed.allNode , typeInterpolation.sumVectors, true , true ,  dieBord ,  .1  )
 			) ;
 
 	protected static generateNetEdge generateNetEdge = 	new generateNetEdge (	
@@ -211,7 +211,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.pulsatingSolitions ) ;			
+		setRdType ( RdmType.mazes ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

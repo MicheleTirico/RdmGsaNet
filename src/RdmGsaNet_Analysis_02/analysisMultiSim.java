@@ -1,14 +1,14 @@
-package RdmGsaNet_Analysis_pr02;
+package RdmGsaNet_Analysis_02;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import RdmGsaNetExport.handleNameFile;
-import RdmGsaNet_Analysis_pr02.analysisDGSmultiSim.layerToAnalyze;
-import RdmGsaNet_Analysis_pr02.analysisDGSmultiSim.typeIndicator;
-import RdmGsaNet_Analysis_pr02.analysisDGSmultiSim.typeMultiSim;
-import RdmGsaNet_Analysis_pr02.analysisLocal.nodeIndicators;
+import RdmGsaNet_Analysis_02.analysisDGSmultiSim.layerToAnalyze;
+import RdmGsaNet_Analysis_02.analysisDGSmultiSim.typeIndicator;
+import RdmGsaNet_Analysis_02.analysisDGSmultiSim.typeMultiSim;
+import RdmGsaNet_Analysis_02.analysisLocal.nodeIndicators;
 
 public class analysisMultiSim extends analysisMain {
 

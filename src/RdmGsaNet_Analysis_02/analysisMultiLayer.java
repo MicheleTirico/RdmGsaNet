@@ -1,4 +1,4 @@
-package RdmGsaNet_Analysis_pr02;
+package RdmGsaNet_Analysis_02;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,8 +12,8 @@ import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
-import RdmGsaNet_Analysis_pr02.analysisDGSmultiLayer.correlationValGs;
-import RdmGsaNet_Analysis_pr02.analysisDGSmultiLayer.correlationValNet;
+import RdmGsaNet_Analysis_02.analysisDGSmultiLayer.correlationValGs;
+import RdmGsaNet_Analysis_02.analysisDGSmultiLayer.correlationValNet;
 
 public class analysisMultiLayer extends analysisMain  {
 	

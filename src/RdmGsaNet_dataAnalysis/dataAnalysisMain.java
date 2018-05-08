@@ -11,7 +11,7 @@ import RdmGsaNetExport.expChart;
 import RdmGsaNetExport.expValues;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.expChart.typeChart;
-import RdmGsaNet_Analysis_pr02.analysisDGSnet;
+import RdmGsaNet_Analysis_02.analysisDGSnet;
 
 public class dataAnalysisMain {
 	
@@ -26,9 +26,6 @@ public class dataAnalysisMain {
 										dataAnalysisNewNodeRel 			= new dataAnalysisGlobal(true) ,
 										dataAnalysisSeedCountRel		= new dataAnalysisGlobal(true) ,
 										dataAnalysisDensityRegularGraph = new dataAnalysisGlobal(true) 
-										
-								//		dataAnalysisMultiLayerGlobalCorrelationDegreeInh = new dataAnalysisGlobal(false) ,
-								//		dataAnalysisMultiLayerGlobalCorrelationSeedInh = new dataAnalysisGlobal(false)
 										; 
 	
 	// Maps to create chart
@@ -37,20 +34,17 @@ public class dataAnalysisMain {
 				mapStepProbAverageDegree  = new HashMap( ) ,
 				mapStepProbNewNodeRel  = new HashMap( ) ,
 				mapStepProbSeedCountRel	 = new HashMap( ) ,
-				mapDensityRegularGraph = new HashMap() ,
-				mapMultiLayerGlobalCorrelationDegreeInh  = new HashMap() ,
-				mapMultiLayerGlobalCorrelationSeedInh  = new HashMap() ;
-	
+				mapDensityRegularGraph = new HashMap() ;
+
 
  	// CREATE CHARTS
 	static expChart xyChart = null ;
-	
-	// COSTANTS 
-	
+
 	// folder
-	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius\\circle_8\\pulsatingSolitions\\multiSimAnalysis\\" ,
-							folderMapToAnayze = "mapToAnalyze\\" ,
-							pathMapToAnalyze = pathMain + folderMapToAnayze ,
+	protected static String pathMain = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius\\circle_8\\mazes\\multiSimAnalysis\\" ,
+							pathMapToAnalyze = pathMain + "mapToAnalyze\\" ,
+							
+							folderChart = "chart\\" ,
 							
 							folderClustering = "netClustering\\",
 							folderDensity = "netDensity\\",
@@ -58,19 +52,13 @@ public class dataAnalysisMain {
 							folderNewNodeRel = "netNewNodeRel\\" ,
 							folderSeedCountRel = "netSeedCountRel\\" ,
 							folderDensityRegularGraph = "netDensityRegularGraph\\" ,
-							folderMultiLayerGlobalCorrelationDegreeInh = "multiLayerGlobalCorrelationDegreeInh\\",
-							folderMultiLayerGlobalCorrelationSeedInh   = "multiLayerGlobalCorrelationSeedInh\\",
-							
-							folderChart = "chart\\" ,
-							
+										
 							pathClustering = pathMapToAnalyze + folderClustering ,
 							pathDensity  = pathMapToAnalyze + folderDensity ,
 							pathAverageDegree = pathMapToAnalyze + folderAverageDegree ,
 							pathNewNodeRel =  pathMapToAnalyze + folderNewNodeRel ,
 							pathSeedCountRel =  pathMapToAnalyze + folderSeedCountRel ,
-							pathDensityRegularGraph = pathMapToAnalyze + folderDensityRegularGraph ,
-							pathmultiLayerGlobalCorrelationDegreeInh = pathMapToAnalyze + folderMultiLayerGlobalCorrelationDegreeInh,
-							pathmultiLayerGlobalCorrelationSeedInh   = pathMapToAnalyze + folderMultiLayerGlobalCorrelationSeedInh
+							pathDensityRegularGraph = pathMapToAnalyze + folderDensityRegularGraph 
 							;
 	
 	public static void main ( String[] args ) throws ClassNotFoundException, IOException {
@@ -89,78 +77,82 @@ public class dataAnalysisMain {
 		dataAnalysisNewNodeRel.computeAnalysis(pathNewNodeRel, mapStepProbNewNodeRel);
 		dataAnalysisSeedCountRel.computeAnalysis(pathSeedCountRel, mapStepProbSeedCountRel);
 		dataAnalysisDensityRegularGraph.computeAnalysis(pathDensityRegularGraph, mapDensityRegularGraph);
-		
-	//	dataAnalysisMultiLayerGlobalCorrelationDegreeInh.computeAnalysis( pathmultiLayerGlobalCorrelationDegreeInh, mapMultiLayerGlobalCorrelationDegreeInh);
-	//	dataAnalysisMultiLayerGlobalCorrelationSeedInh.computeAnalysis( pathmultiLayerGlobalCorrelationSeedInh, mapMultiLayerGlobalCorrelationSeedInh);
-		// System.out.println(mapMultiLayerGlobalCorrelationDegreeInh);
+			
 		
 		createCharts(
-				/* store chart ? 										*/ true, 
-				/* create chart clustering								*/ false , 
-				/* create chart density									*/ false, 
-				/* create chart average Degree							*/ false ,
-				/* create chart New Node Rel							*/ false ,
-				/* create chart Seed Count Rel							*/ false ,
-				/* create chart DensityRegularGraph						*/ false ,
-				/* create chart multiLayerGlobalCorrelation degree inh	*/ true ,
-				/* create chart multiLayerGlobalCorrelation seed inh	*/ false
+				/* store chart ? 										*/ true , 
+				/* create chart clustering								*/ true , 
+				/* create chart density									*/ true , 
+				/* create chart average Degree							*/ true ,
+				/* create chart New Node Rel							*/ true ,
+				/* create chart Seed Count Rel							*/ true ,
+				/* create chart DensityRegularGraph						*/ true 
 				);
-		
 	}
 		private static void createCharts ( boolean storeCharts , 
 				boolean createChartClustering , boolean createChartDensity , boolean createChartAverageDegree ,
-				boolean createChartNewNodeRel , boolean createChartSeedCountRel , boolean createChartDensityRegularGraph,
-				boolean createChartMultiLayerGlobalCorrelationDegreeInh , boolean createChartMultiLayerGlobalCorrelationSeedInh 
+				boolean createChartNewNodeRel , boolean createChartSeedCountRel , boolean createChartDensityRegularGraph
 			 ) 	throws IOException {
 		
 			// exit method 
 			if ( !dataAnalysisGlobal.run  ) return ;
-	
-			if ( createChartClustering ) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "clustering Net", "Step (t)" , " average clustering (n)" , 800, 600 ,	mapStepProbClustering );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "mapProbClustering" );	
-			}
-
-			if ( createChartDensity ) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "density  Net", "Step (t)" , "  density (n)" , 800, 600 ,	mapStepProbDensity );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "ProbDensity" );	
-			}
-			System.out.println("peppe");
-			if ( createChartAverageDegree ) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "average degree Net", "Step (t)" , " average degree (n)" , 800, 600 ,	mapStepProbAverageDegree );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "ProbAverageDegree" );	
-			}
 			
-			if ( createChartNewNodeRel ) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "new node rel Net", "Step (t)" , " average degree (n)" , 800, 600 ,	mapStepProbNewNodeRel );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "ProbNewNodeRel" );	
+			try {
+				if ( createChartClustering ) {
+					xyChart = new expChart(typeChart.XYchartSer_xy , "clustering Net", "Step (t)" , " average clustering (n)" , 800, 600 ,	mapStepProbClustering );
+					xyChart.setVisible(true);
+					xyChart.saveChart( true ,  pathMain + folderChart , "mapProbClustering" );	
+					return ; 
+					
+					
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
 			}
-			
-			if ( createChartSeedCountRel) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "seed rel Net", "Step (t)" , " average degree (n)" , 800, 600 ,	mapStepProbSeedCountRel );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "ProbSeedCountRel" );	
+			try {
+				if ( createChartDensity ) {
+					xyChart = new expChart(typeChart.XYchartSer_xy , "density  Net", "Step (t)" , "  density (n)" , 800, 600 ,	mapStepProbDensity );
+					xyChart.setVisible(true);
+					xyChart.saveChart(false ,  pathMain + folderChart , "ProbDensity" );	
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
 			}
-			if ( createChartDensityRegularGraph) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "density regularg grid Net", "Step (t)" , " regular grid (n)" , 800, 600 ,	mapDensityRegularGraph );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "DensityRegularGraph" );	
+			try {	
+				if ( createChartAverageDegree ) {
+						xyChart = new expChart(typeChart.XYchartSer_xy , "average degree Net", "Step (t)" , " average degree (n)" , 800, 600 ,	mapStepProbAverageDegree );
+						xyChart.setVisible(true);
+						xyChart.saveChart(false ,  pathMain + folderChart , "ProbAverageDegree" );	
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
 			}
-			
-			if ( createChartMultiLayerGlobalCorrelationDegreeInh ) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "multi layer global correlation degree inh", "Step (t)" , " correlation (%)" , 800, 600 ,	mapMultiLayerGlobalCorrelationDegreeInh );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "MultiLayerGlobalCorrelation degree inh" );	
+			try {			
+				if ( createChartNewNodeRel ) {
+					xyChart = new expChart(typeChart.XYchartSer_xy , "new node rel Net", "Step (t)" , " average degree (n)" , 800, 600 ,	mapStepProbNewNodeRel );
+					xyChart.setVisible(true);
+					xyChart.saveChart(false ,  pathMain + folderChart , "ProbNewNodeRel" );	
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
 			}
-			
-			if ( createChartMultiLayerGlobalCorrelationSeedInh ) {
-				xyChart = new expChart(typeChart.XYchartSer_xy , "multi layer global correlation seed inh", "Step (t)" , " correlation (%)" , 800, 600 ,	mapMultiLayerGlobalCorrelationSeedInh );
-				xyChart.setVisible(true);
-				xyChart.saveChart(storeCharts ,  pathMain + folderChart , "MultiLayerGlobalCorrelation seed inh" );	
+			try {			
+				if ( createChartSeedCountRel) {
+					xyChart = new expChart(typeChart.XYchartSer_xy , "seed rel Net", "Step (t)" , " average degree (n)" , 800, 600 ,	mapStepProbSeedCountRel );
+					xyChart.setVisible(true);
+					xyChart.saveChart(false ,  pathMain + folderChart , "ProbSeedCountRel" );	
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+			try {	
+				if ( createChartDensityRegularGraph) {
+					xyChart = new expChart(typeChart.XYchartSer_xy , "density regularg grid Net", "Step (t)" , " regular grid (n)" , 800, 600 ,	mapDensityRegularGraph );
+					xyChart.setVisible(true);
+					xyChart.saveChart(false ,  pathMain + folderChart , "DensityRegularGraph" );	
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
 			}
 		}
 }

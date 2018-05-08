@@ -1,8 +1,12 @@
 package RdmGsaNetExport;
 
 import java.awt.BorderLayout;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -104,27 +108,26 @@ public class expChart extends JFrame  {
 	}
 	
 	// create dataset of values ( which is a map java collection ) 
-		private XYDataset createDatasetMultipleLine_ser_xy (  Map<Double, Map<Double,Double>> mapChart  ) 	{
+	private XYDataset createDatasetMultipleLine_ser_xy (  Map<Double, Map<Double,Double>> mapChart  ) 	{
 			 
-			// create dataset
-			XYSeriesCollection dataset = new XYSeriesCollection();
-		
-			for ( double serName = 0.0 ; serName < mapChart.size() ; serName++ ) {
-				
-				// create series
-				XYSeries ser = new XYSeries(serName) ;
-				Map<Double,Double> map = mapChart.get(serName) ;
-				
-				for ( Entry<Double, Double> entry : map.entrySet()) {
-					double xVal = entry.getKey();
-					double yVal = entry.getValue() ;
-					ser.add(xVal, yVal);
-				}
-				dataset.addSeries(ser);		
-			}
-			return dataset;	 
-		}
+		// create dataset
+		XYSeriesCollection dataset = new XYSeriesCollection();
 	
+		for ( double serName = 0.0 ; serName < mapChart.size() ; serName++ ) {
+			
+			// create series
+			XYSeries ser = new XYSeries(serName) ;
+			Map<Double,Double> map = mapChart.get(serName) ;
+			
+			for ( Entry<Double, Double> entry : map.entrySet()) {
+				double xVal = entry.getKey();
+				double yVal = entry.getValue() ;
+				ser.add(xVal, yVal);
+			}
+			dataset.addSeries(ser);		
+		}
+		return dataset;	 
+	}
 	
 	private JPanel createChartPanelXYMultipleLine ( String chartTitle , String xAxisLabel , String yAxisLabel ,  Map<Double, Map<Double,Double>> map ) {
 		
@@ -238,17 +241,22 @@ public class expChart extends JFrame  {
 	public void saveChart ( boolean saveImage ,  String folder, String nameChart ) throws IOException {
 
 		if (saveImage  ) {
-	
-		
 			// define folder 
-			String path = folder + nameChart +".jpeg" ;		
-			File lineChartFile = new File( path );  
-	    
+			String path = folder + nameChart + ".jpeg"  ;		
+			File lineChartFile = new File ( path );  
+	   
+			OutputStream stream = new FileOutputStream( path ) ;
+		
 			// save image
 			try {
-			ChartUtilities.saveChartAsJPEG(lineChartFile, chart , width , height ) ;
+	//			System.out.println(lineChartFile +"\n"+ chart +"\n"+ width +"\n"+ height );
+				System.out.println(lineChartFile) ; 
+				
+				
+				ChartUtilities.writeChartAsJPEG(stream, chart, width, height);
 			}
 			catch (java.util.ConcurrentModificationException e) {
+		
 			}
 		}
 	}

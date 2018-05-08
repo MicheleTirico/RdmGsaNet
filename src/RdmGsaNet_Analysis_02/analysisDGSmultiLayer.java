@@ -1,4 +1,4 @@
-package RdmGsaNet_Analysis_pr02;
+package RdmGsaNet_Analysis_02;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,9 +27,7 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 						doVecViz ,
 						doSeedViz , 
 						computeGsActivedNodes ,
-						computeGlobalCorrelation ;
-		 
-		
+						computeGlobalCorrelation ;	
 		
 		// parameters of viz 
 		private int setScale ; 

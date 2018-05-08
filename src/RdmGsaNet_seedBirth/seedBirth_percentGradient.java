@@ -155,7 +155,6 @@ public class seedBirth_percentGradient implements seedBirt_inter  {
 		}
 	}
 	
-	
 	private void maxIntenCompute (ArrayList <String> listIdToSplit , ArrayList<String> listIdNet , ArrayList < String > listIdSeed , int numMaxBirth , choiceNodeType choiceNodeType ) {
 		
 		for ( String id : listIdNet ) {

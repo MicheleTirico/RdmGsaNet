@@ -113,7 +113,7 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord\\circle_20\\mazes\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord\\circle_20\\movingSpots\\" ;
 
 	// path
 	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
@@ -198,7 +198,7 @@ public class main {
 				/* percent of graph					*/ 	1 , 
 				/* num max new seed 				*/	0 , 
 				/* type to choice node to add seed 	*/	choiceNodeType.ortoAngleVector  , // only percentGradient
-				/* angle							*/	.05
+				/* angle							*/	.1
 				
 				);		
 		
@@ -211,7 +211,7 @@ public class main {
 				);		
 
 		// setup type RD
-		setRdType ( RdmType.mazes ) ;			
+		setRdType ( RdmType.movingSpots ) ;			
 		
 		// SETUP START VALUES LAYER GS
 		gsAlgo values = new gsAlgo( 	

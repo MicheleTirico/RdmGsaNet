@@ -1,4 +1,4 @@
-package RdmGsaNet_Analysis_pr02;
+package RdmGsaNet_Analysis_02;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.setupViz;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
-import RdmGsaNet_Analysis_pr02.analysisGlobal;
+import RdmGsaNet_Analysis_02.analysisGlobal;
 
 public class analysisDGSgs  extends analysisMain implements analysisDGS  {
 

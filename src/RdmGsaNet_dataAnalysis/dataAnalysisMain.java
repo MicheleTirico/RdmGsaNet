@@ -25,8 +25,7 @@ public class dataAnalysisMain {
 										dataAnalysisAverageDegree 		= new dataAnalysisGlobal(true) ,
 										dataAnalysisNewNodeRel 			= new dataAnalysisGlobal(true) ,
 										dataAnalysisSeedCountRel		= new dataAnalysisGlobal(true) ,
-										dataAnalysisDensityRegularGraph = new dataAnalysisGlobal(true) 
-										; 
+										dataAnalysisDensityRegularGraph = new dataAnalysisGlobal(true) ; 
 	
 	// Maps to create chart
 	static Map  mapStepProbClustering = new HashMap( ) ,

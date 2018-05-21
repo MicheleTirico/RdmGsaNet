@@ -11,6 +11,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNet_vectorField_02.vectorField.typeInterpolation ;
+import RdmGsaNet_mainSim.*;
 
 import RdmGsaNetAlgo.graphToolkit;
 import RdmGsaNetAlgo.gsAlgoToolkit;
@@ -18,30 +19,33 @@ import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
 import RdmGsaNet_generateGraph.generateNetNode.layoutSeed;
+import RdmGsaNet_mainSim.simulation;
 
-public class generateNetNodeVectorFieldSplitSeedProbInBuckets_03 extends generateNetNodeVectorField implements generateNetNode_Inter {
+public class generateNetNodeVectorFieldSplitSeedProbInBucketsStepCompute extends generateNetNodeVectorField implements generateNetNode_Inter {
 	
 	// parameters only this class
 
 	private boolean dieBord ;
-	private double  maxInten , minInten ;
-	
-	
+	private double  maxInten ;
+	private  int stepToCompute  ;
 	// constructor
-	public generateNetNodeVectorFieldSplitSeedProbInBuckets_03 (int numberMaxSeed, layoutSeed setLayoutSeed,
+	public generateNetNodeVectorFieldSplitSeedProbInBucketsStepCompute (int numberMaxSeed, layoutSeed setLayoutSeed,
 			typeInterpolation typeInterpolation, boolean createSeedGraph, boolean updateNetGraph ,
-			 boolean dieBord , double minInten , double maxInten ) {
+			 boolean dieBord , double maxInten , int stepToCompute ) {
 		
 		super(numberMaxSeed, setLayoutSeed, typeInterpolation, createSeedGraph, updateNetGraph);
 		
 		// parameters only this class
 		this.dieBord = dieBord ;
-		this.minInten = minInten ;
 		this.maxInten = maxInten ;	
+		this.stepToCompute = stepToCompute ;
 	}
 
 	@Override
 	public void generateNodeRule(int step) throws IOException {
+		
+//		if ( ! simulation.isStepToStore(step, main.stepToCompute )  ) 			return ;	
+//			System.out.println(step);
 		
 		generateNetNode.setSeedNodes(step, numberMaxSeed, setLayoutSeed);
 		
@@ -51,15 +55,24 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets_03 extends generat
 		ArrayList <Node> listNodeSeed = new ArrayList<Node> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.element));	//	System.out.println(listNodeSeed);	
 		ArrayList<Integer> listIdSeedInt = new ArrayList<Integer>( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;			
 		ArrayList<Integer> listIdNetInt = new ArrayList<Integer>( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;	
-				
+		
+		int idNodeInt = Math.max(graphToolkit.getMaxIdIntElement(netGraph, element.node) , graphToolkit.getMaxIdIntElement(seedGraph, element.node) ) ;
+		
+		// map to update
+		Map< Integer , double[] > mapIdNewSeedCoord = new HashMap< Integer , double[] > ();
+		Map< Integer , String > mapIdNewSeedFather = new HashMap< Integer , String > ();
+		
 		// print
 		System.out.println(seedGraph + " " + listIdSeedInt.size()  /* + " " + listIdSeedInt */ );//		System.out.println(netGraph + " " + listIdNetInt.size() + " " + listIdNetInt );
 	
-//		int idLocal = 0 ;
+		int idLocal = 0 ;
 
 		for ( Node nodeSeed :  listNodeSeed ) {
 		
-			String idSeed = nodeSeed.getId() ;			
+			String idSeed = nodeSeed.getId() ;
+			
+		//	bucketSet.putNode(netGraph.getNode(idSeed)) ;
+			
 			double[] 	nodeCoord = GraphPosLengthUtils.nodePosition(nodeSeed) ,
 						vector = getVector(vecGraph, nodeCoord, typeInterpolation ) ;		
 			
@@ -69,11 +82,6 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets_03 extends generat
 			if ( vectorInten > maxInten) {
 				vector[0]  = vector[0] / vectorInten * maxInten ; 
 				vector[1]  = vector[1] / vectorInten * maxInten ;		
-			}
-			
-			else if ( vectorInten < minInten) {
-				vector[0]  = vector[0] / vectorInten * minInten ; 
-				vector[1]  = vector[1] / vectorInten * minInten ;		
 			}
 			
 			// check vector in grid
@@ -137,66 +145,7 @@ public class generateNetNodeVectorFieldSplitSeedProbInBuckets_03 extends generat
 		for ( int i : listIdSeedInt) //	System.out.println(i);
 			seedGraph.removeNode(Integer.toString(i));	
 	}
-	/*	
-
-	// update father and coord to seedGraph and netGraph
-	for ( int i : mapIdNewSeedCoord.keySet() ) {
-		
-		ArrayList<Integer> listIdNetIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;		//	System.out.println(listIdNetIntLocal);
-		ArrayList<Integer> listIdSeedIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;		//	System.out.println(listIdNetIntLocal);
-		
-		int idInt =  Collections.max(listIdNetIntLocal) ; //Math.max(listIdNetIntLocal, b) ;
-		while ( listIdNetIntLocal.contains(idInt) && listIdSeedIntLocal.contains(idInt) ) 
-			idInt ++ ;
-		
-		String id = Integer.toString(idInt) ;			//	System.out.println(idInt);
-		
-		try {
-			netGraph.addNode(id);
-			seedGraph.addNode(id);
-			bucketSet.putNode(netGraph.getNode(id));
-		}
-		catch (org.graphstream.graph.IdAlreadyInUseException e) {
-			
-			listIdSeedIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.integer)) ;
-			listIdNetIntLocal = new ArrayList<Integer> ( graphToolkit.getListElement(netGraph, element.node, elementTypeToReturn.integer)) ;
-			
-			idInt = Math.max(Collections.max(listIdNetIntLocal) , Collections.max(listIdSeedIntLocal) )     ;
-			idInt ++ ; 
-			while ( listIdNetIntLocal.contains(idInt) &&  listIdSeedIntLocal.contains(idInt))
-				idInt ++ ;
-			
-			id = Integer.toString(idInt) ;			//	System.out.println(idInt);
-			
-			netGraph.addNode(id);
-			seedGraph.addNode(id);
-			bucketSet.putNode(netGraph.getNode(id));			
-		}
-		
-		Node nodeNet = netGraph.getNode(id);
-		Node nodeSeed = seedGraph.getNode(id);
-					
-		double[ ] coord = mapIdNewSeedCoord.get(i);
-		String father = mapIdNewSeedFather.get(i);
-		
-		nodeSeed.addAttribute("xyz", coord[0] , coord[1] , 0 );
-		nodeSeed.addAttribute("father", father );
-		
-		nodeNet.addAttribute("xyz", coord[0] , coord[1] , 0 );
-		nodeNet.addAttribute("father", father );	
-		
-		nodeNet.setAttribute("seedGrad", 1);
-	}
-	
-	// remove old seed
-	for ( int i : listIdSeedInt) //	System.out.println(i);
-		seedGraph.removeNode(Integer.toString(i));	
-	
-	}
-
-	*/
-		
-		
+				
 	@Override
 	public void removeNodeRule(int step) {
 		// TODO Auto-generated method stub		

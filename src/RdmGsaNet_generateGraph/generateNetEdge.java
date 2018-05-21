@@ -14,7 +14,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_mainSim.layerNet;
 import RdmGsaNet_mainSim.main;
-import RdmGsaNet_staticBuckets_02.bucketSet;
+import RdmGsaNet_staticBuckets_03.bucketSet;
 
 public class generateNetEdge extends main {
 	
@@ -89,12 +89,12 @@ public class generateNetEdge extends main {
 					String n1Str = n1.getId();
 					
 					if ( n2.getId() != n1Str ) 	
-						mapDist.put(n2Str, gsAlgoToolkit.getDistGeom(n1, n2)) ; 
-					}
-				return mapDist ;
+						mapDist.put(n2Str, gsAlgoToolkit.getDistGeom(n1, n2)) ; 	
 				}
+				return mapDist ;	
+			}
 			
-			protected static Map <String , Double> getMapIdDistInBucketSet ( Node n1 , bucketSet bucketSet ) {
+			protected static Map <String , Double> getMapIdDistInBucketSet ( Node n1 , RdmGsaNet_staticBuckets_03.bucketSet bucketSet ) {
 				
 				// Initialized map of distances
 				Map <String , Double> mapDist = new HashMap<String, Double> ( ) ; 

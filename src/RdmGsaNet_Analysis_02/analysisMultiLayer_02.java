@@ -24,14 +24,13 @@ public class analysisMultiLayer_02 extends analysisMain  {
 			
 		combinedAnalysis.setParamVizNet(
 				/* setScale					*/ 50 ,
-				/* sizeNode, 				*/ 3.0 ,
+				/* sizeNode, 				*/ 1.0 ,
 				/* sizeEdge, 				*/ .5 ,
 				/* colorStaticNode, 		*/ "black" ,
 				/* colorStaticEdge, 		*/ "black" ,				
-				/* colorBooleanNodeTrue, 	*/ "red" ,
+				/* colorBooleanNodeTrue, 	*/ "black" ,
 				/* colorBooleanNodeFalse	*/ "black"
-				);
-		
+				);		
 		
 		combinedAnalysis.setParamVizGs(
 				/* sizeNode, 				*/ 6.0 ,

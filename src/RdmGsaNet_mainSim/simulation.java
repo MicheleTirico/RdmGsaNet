@@ -113,23 +113,26 @@ public class simulation extends main {
 			// run gs algo to all nodes ( if true, print mapMorp )
 			gsAlgo.gsAlgoMain( false );
 
-			if ( vecRun ) getVectorField().computeVf() ; 
+			if (  simulation.isStepToStore(step, main.stepToCompute )  ) 
+				if ( vecRun ) getVectorField().computeVf() ; 
 			
 			updateMapStepNewNodes ( step , netGraph , mapStepNewNodeId );			//	System.out.println(mapStepNewNodeId) ;
 						
 			// define rules to growth network
-			if ( genNode )  genNetNo.generateNode( step ); 
+			if (  simulation.isStepToStore(step, main.stepToCompute )  ) 
+				if ( genNode )  genNetNo.generateNode( step ); 
 	
 			if ( delRun )  {
 				delaunayGraph.createLayer( step );
 				delaunayGraph.updateLayer( step ) ;	//	delaunayGraph.computeTest();
 			}
-					
-			if ( genEdge == true) genNetEd.generateEdge( step ); 
+			if (  simulation.isStepToStore(step, main.stepToCompute )  ) 		
+				if ( genEdge == true) genNetEd.generateEdge( step ); 
 
 			dynamicSymplify.compute( step );	//	dynamicSymplify.computeTest();
-			
-			seedBirth.compute();				//	seedBirth.computeTest();		
+		
+			if (  simulation.isStepToStore(step, main.stepToComputeBird )  ) 
+				seedBirth.compute();				//	seedBirth.computeTest();		
 	
 			// update net 
 			updateMapStepId ( step , netGraph , mapStepIdNet );

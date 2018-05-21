@@ -11,7 +11,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 public abstract class graphIndicators {
-	private static Map< Node , Double > map = new HashMap< Node , Double > ();
+	private static  Map< Node , Double > map = new HashMap< Node , Double > ();
 	
 	public static Map< Node , Double > getMapCloseness ( Graph graph , String attribute , boolean normalize ) {
 		
@@ -31,7 +31,7 @@ public abstract class graphIndicators {
 		}
 		return map;	
 	}
-
+	
 	public static Map< Node , Double > getMapBetweenness ( Graph graph , String attribute , boolean normalize ) {
 		
 		int nodeCount = graph.getNodeCount() ;
@@ -67,5 +67,62 @@ public abstract class graphIndicators {
 		}
 		return map;
 	}
+
+	public static Map <Node , Double > getMapShortPath  ( Graph graph ,  boolean normalize ) {
+		return map ;
+	}
+
+// global indicators --------------------------------------------------------------------------------------------------------------------------------
 	
+	// alfa index or meshedness coefficient
+	public static double getAlfaIndex ( Graph graph ,  boolean normalize ) {
+		
+		double  n = graph.getNodeCount() , 
+				e = graph.getEdgeCount() ;
+		
+		return ( e - n + 1 ) / ( 2 * n - 5) ;
+	}
+	
+	// organic ratio
+	public static double getOrganicRatio ( Graph graph  ) {
+		
+		double  n1 = 0 , n3 = 0 , nk = 0 ;
+		
+		for (Node n : graph.getEachNode() ) {
+			
+			int degree = n.getDegree();
+		
+			if ( degree == 1 )
+				n1++;
+			
+			else if ( degree == 3 )
+				n3++;
+			
+			else if ( degree >= 4 )
+				nk++;			
+		}
+		
+		if ( n1 + n3 == 0 || nk == 0 )
+			return 0 ;
+		
+		else return ( n1 + n3 ) / nk ;
+	}
+	
+	// gamma index
+	public static double getGammaIndex ( Graph graph , boolean isPlanar ) {
+		
+		double  n = graph.getNodeCount() , 
+				e = graph.getEdgeCount() ,
+				eMax = 0 ;
+		
+		if ( isPlanar )
+			eMax = 3 * n - 6 ; 
+		else 
+			eMax = ( n - 1 ) * n / 2 ;
+		
+		if ( eMax == 0 || e == 0)	
+			return 0 ;
+		else 
+			return e / eMax ;
+	}
 }

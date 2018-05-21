@@ -14,7 +14,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
-import RdmGsaNet_staticBuckets_02.bucketSet;
+import RdmGsaNet_staticBuckets_03.bucketSet;
 
 public class graphToolkit {
 	
@@ -170,8 +170,7 @@ public class graphToolkit {
 		}				
 		return map ;
 	}
-	
-	
+		
 	// list of edges near in radius 
 	public static ArrayList<Edge> getListEdgeInRadius ( Graph graph , String  idNode , double radius , boolean doCeckIntersectionInLine ) {
 	
@@ -450,7 +449,6 @@ public class graphToolkit {
 		return map ;
 	}
 	
-	
 	public static ArrayList getListVertexRoundPoint ( elementTypeToReturn elementTypeToReturn ,  Graph graphVertex ,  double[] nodeCoord ) {
 
 		ArrayList listVertex = new ArrayList();
@@ -582,6 +580,7 @@ public class graphToolkit {
  		
 		return coord ;
 	}
+	
 	// get list of neighbor String
 	public static ArrayList getListNeighbor ( Graph graph , String idNode , elementTypeToReturn elementTypeToReturn ) {
 			

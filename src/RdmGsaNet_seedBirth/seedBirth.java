@@ -8,6 +8,7 @@ import org.graphstream.graph.*;
 
 import RdmGsaNet_mainSim.layerNet;
 import RdmGsaNet_mainSim.main;
+import RdmGsaNet_mainSim.simulation;
 
 public class seedBirth {
 
@@ -44,7 +45,6 @@ public class seedBirth {
 		this.runSeedBirth = runSeedBirth ; 
 		this.setSeedType = setSeedType ;
 		this.generateSeedType =  generateSeedType ;
-		
 
 		switch (setSeedType) {
 			case throwSeed: 				
@@ -58,8 +58,7 @@ public class seedBirth {
 				else if ( generateSeedType.equals(generateSeedType.percentGradient) )
 					sb_inter = new seedBirth_percentGradient( ) ;
 				
-				break;
-		
+				break;	
 			}
 		}
 	}
@@ -78,7 +77,6 @@ public class seedBirth {
 		
 		angleTest = angleTestDecimal * Math.PI / 180 ;
 	}
-
 
 	public void compute ( ) {
 		

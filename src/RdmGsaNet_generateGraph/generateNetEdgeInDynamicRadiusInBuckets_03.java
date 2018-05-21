@@ -1,6 +1,7 @@
 package RdmGsaNet_generateGraph;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.EdgeRejectedException;
@@ -14,7 +15,8 @@ import RdmGsaNetAlgo.graphToolkit.element;
 import RdmGsaNetAlgo.graphToolkit.elementTypeToReturn;
 
 import RdmGsaNet_generateGraph.generateNetEdge.genEdgeType;
-
+import RdmGsaNet_mainSim.main;
+import RdmGsaNet_mainSim.simulation;
 import RdmGsaNet_staticBuckets_03.bucketSet;
 
 public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEdge_Inter {
@@ -32,6 +34,7 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 	
 	@Override
 	public void generateEdgeRule(double step) {
+		
 		switch (genEdgeType) {
 		case onlyFather: 	
 			onlyFather( true ) ;
@@ -75,12 +78,30 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 		
 			// add edge soon - father	
 			Edge edge = null ; 	//	System.out.println( idSeed +" "+ idFather );
-			netGraph.addEdge(idEdge, idSeed, idFather) ; 			
-			edge = netGraph.getEdge(idEdge) ;
-		
-			bucketSet.putEdge(edge) ;
 			
-			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( bucketSet.getListEdgeNeighbor(netGraph.getNode(idSeed), distCeckSeed )  ) ;	//		System.out.println( listEdgeInRadius )  ;	
+			try {
+				netGraph.addEdge(idEdge, idSeed, idFather) ; 
+				bucketSet.putEdge(netGraph.getEdge(idEdge)) ;
+			} catch (ElementNotFoundException | EdgeRejectedException | NullPointerException  e) {
+
+				try {
+					Map <String , Double> mapDistNet = generateNetEdge.getMapIdDist( netGraph , nodeNet ) ;	//	double minDist = mapDistNet.values().stream().mapToDouble(valstat -> valstat).min().getAsDouble();			
+					Map < String , Double > mapTopDist = gsAlgoToolkit.getMapTopValues(mapDistNet, 4 ) ;	//		Set<String> setIdNear = gsAlgoToolkit.getKeysByValue(mapDistNet, minDist ); 
+					netGraph.addEdge(idEdge, idSeed, (String) mapTopDist.keySet().toArray()[0]) ;
+					bucketSet.putEdge(netGraph.getEdge(idEdge)) ;
+					continue ;
+				} catch (ElementNotFoundException | EdgeRejectedException e2) {
+					continue ;
+				}
+			}	
+			
+			edge = netGraph.getEdge(idEdge) ;	
+		//	bucketSet.putEdge(edge) ;
+			
+			if ( edge == null )
+				continue ; 
+			
+			ArrayList<Edge> listEdgeInRadius = new ArrayList<Edge> ( bucketSet.getListEdgeNeighbor(netGraph.getNode(idSeed), distCeckSeed * 2 )  ) ;	//		System.out.println( listEdgeInRadius )  ;	
 			ArrayList<Edge> listXEdges = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius));	
 			
 			if ( ! listXEdges.isEmpty() ) { //				System.out.println(listXEdges);
@@ -108,41 +129,28 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 						continue ;
 					
 					near = netGraph.getNode(idWin) ;					
-				}	
-				
-				try {
-					idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
-					idEdge = Integer.toString(idEdgeInt) ;
 					
-					netGraph.addEdge(idEdge, near.getId(), idFather ) ;	
-					near.addAttribute("father", idFather);
-					
-				//	bucketSet.putNode(near);
-					
-				//	bucketSet.putNode(near);
-				//	bucketSet.putNode(netGraph.getNode(idFather));
-					
-					seedGraph.removeNode(idSeed) ;
-					netGraph.removeNode(idSeed) ;
-					
-					bucketSet.removeNode(nodeNet);
-					
-					continue ; 			
-				}
-				catch (NullPointerException e) 		{
-					
-					// TODO: handle exception 
-				}
-				catch (EdgeRejectedException e) 	{	
-			
-					// TODO: handle exception 
-				}
-				catch (ElementNotFoundException e) 	{ 
-				
-					// TODO: handle exception
+					try {
+						idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
+						idEdge = Integer.toString(idEdgeInt) ;
+						
+						netGraph.addEdge(idEdge, near.getId(), idFather ) ;	
+						near.addAttribute("father", idFather);
+						bucketSet.putNode(near)  ;
+						
+						seedGraph.removeNode(idSeed) ;
+						netGraph.removeNode(idSeed) ;	
+						bucketSet.removeNode(nodeNet);
+						
+						listEdgeInRadius =  bucketSet.getListEdgeNeighbor(netGraph.getNode(idSeed), distCeckSeed * 2 )   ;
+						continue ; 			
+					}
+					catch (NullPointerException | EdgeRejectedException | ElementNotFoundException e1) 		{	
+						continue ;
+						// TODO: handle exception 
+					}			
 				}		
-			}	
-								
+			}
 // compute list of nodes --------------------------------------------------------------------------------------------------------------------------			
 			//	listIdTNodeToConnect = getlistIdTNodeToConnectInBucketSet ( distCeckSeed , nodeNet , idFather );	//			System.out.println(listIdTNodeToConnect);	
 			
@@ -156,11 +164,8 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 					idEdgeInt = graphToolkit.getMaxIdIntElement(netGraph, element.edge) ;
 					idEdge = Integer.toString(idEdgeInt)  ;
 					
-					netGraph.addEdge(idEdge, idSeed , idNear) ;
-					
-					 						
+					netGraph.addEdge(idEdge, idSeed , idNear) ;			 						
 				//	bucketSet.putNode(netGraph.getNode(idNear));
-					
 					seedGraph.removeNode(idSeed);	
 					
 					listIdSeed = graphToolkit.getListElement(seedGraph, element.node, elementTypeToReturn.string) ;
@@ -170,11 +175,10 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 						continue ; 
 					}
 				
-					edge = netGraph.getEdge(idEdge) ;	
-					
+					edge = netGraph.getEdge(idEdge) ;						
 					bucketSet.putEdge(edge) ;
 					
-					ArrayList<Edge> listEdgeInRadius2 = new ArrayList<Edge> ( bucketSet.getListEdgeNeighbor(nodeNet, distCeckSeed ) ) ;		
+					ArrayList<Edge> listEdgeInRadius2 = new ArrayList<Edge> ( bucketSet.getListEdgeNeighbor(nodeNet, distCeckSeed * 2 ) ) ;		
 					ArrayList<Edge> listXEdges2 = new ArrayList<Edge> ( graphToolkit.getListEdgeXInList(edge, listEdgeInRadius2));	
 					
 					if ( ! listXEdges2.isEmpty() ) { //				System.out.println(listXEdges);
@@ -200,7 +204,8 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 							if ( idNear == idWin || idSeed == idWin  )			
 								continue ;
 							
-							nearEdgeX = netGraph.getNode(idWin) ;					
+							nearEdgeX = netGraph.getNode(idWin) ;		
+							bucketSet.putNode(nearEdgeX) ;	
 						}	
 						
 						try {
@@ -208,26 +213,19 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 							idEdge = Integer.toString(idEdgeInt) ;
 							
 							netGraph.addEdge(idEdge, nearEdgeX.getId(), idSeed ) ;	
-							
-							bucketSet.putNode(nearEdgeX) ;
-						//	bucketSet.putNode(nearEdgeX);
-						//	bucketSet.putNode(netGraph.getNode(idSeed));
-							
 							seedGraph.removeNode(idSeed) ;
-							seedGraph.removeNode(idNear) ;								
-								
-							break ; 							
+							seedGraph.removeNode(idNear) ;
+							listEdgeInRadius2 = bucketSet.getListEdgeNeighbor(nodeNet, distCeckSeed * 2 ) ;
+							continue ; 			
+				
 						}
-						catch (NullPointerException e) 		{
+						catch (NullPointerException | EdgeRejectedException | ElementNotFoundException e) 		{
+							continue ;
 							// TODO: handle exception 
 						}
-						catch (EdgeRejectedException e) 	{
-							// TODO: handle exception 
-						}
-						catch (ElementNotFoundException e) 	{
-							// TODO: handle exception 
-						}
-
+						
+						
+										
 					}
 						
 					}
@@ -238,8 +236,9 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 						// TODO: handle exception
 					}
 				}
+			}
 		}
-	}
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------	
 
 	@Override
@@ -289,7 +288,4 @@ public class generateNetEdgeInDynamicRadiusInBuckets_03 implements generateNetEd
 			//		System.out.println(seedGraph + " " + nSeed.getId( ) + " " + father);
 		}
 	}
-	
-	
-
 }

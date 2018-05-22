@@ -102,7 +102,7 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 				return ; 
 			
 		 File path = new File(folderMultiSim );
-		 String[] pathStartArr = null , pathStepArr ; 
+		 String[] pathStartArr = null , pathStepArr ;  
 		 int thread = 1 ;
 		 
 		 File [] files = path.listFiles();							
@@ -314,7 +314,7 @@ public class analysisDGSmultiSim extends analysisMain implements analysisDGS {
 			Map mapNewNodeRel , Map mapSeedCountRel , Map mapDensityRegularGraph
 			) throws IOException {
 	
-	
+	 
 		// get graph through dgsId of graph
 		Graph graph = new SingleGraph(dgsId);
 		handleVizStype netViz  = null ;

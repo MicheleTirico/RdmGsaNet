@@ -151,7 +151,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 		handleVizStype netViz = new handleVizStype( graph ,stylesheet.manual , "seedGrad", 1) ;
 		
 		// run viz
-		if ( runViz )  {
+		if ( runViz )  { 
 			
 			// setup net viz parameters
 			netViz.setupIdViz(false, graph, 1 , "black");
@@ -205,7 +205,7 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 						s1++;
 					}
 					
-					if ( computeStepNewNodeRel) {
+					if ( computeStepNewNodeRel) { 
 						mapNetStepNodeCountRel.put(s2, graph.getNodeCount());
 						try {
 							analysisGlobal.mapNetStepNewNodeRel.put(step,(double) ( graph.getNodeCount() - mapNetStepNodeCountRel.get(s2-1) ) /  graph.getNodeCount() );//		System.out.println(nodeCount0);

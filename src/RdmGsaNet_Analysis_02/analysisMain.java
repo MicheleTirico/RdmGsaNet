@@ -32,7 +32,7 @@ public  class  analysisMain   {
 	protected static FileSource fs , gsFs , netFs , vecFs , seedFs;
 			
 	private static ViewPanel view , gsView , netView ;
-	
+	 
 	protected static String fileType = ".dgs" ;
 	
 	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord_stepCompute\\step_5_stepBird_5\\step_2500\\f055_k062\\maxStep_2500_generateNetNodeVectorFieldSplitSeedProbInBuckets_03_generateNetEdgeInDynamicRadiusInBuckets_03_val_1.0_00\\" ,

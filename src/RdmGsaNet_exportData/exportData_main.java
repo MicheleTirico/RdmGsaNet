@@ -15,7 +15,7 @@ public class exportData_main {
 					netGraph = new SingleGraph ("netGraph") ,
 					gsGraph = new SingleGraph ("gsGraph") ;
 	
-	// HANDLE FILE OBJECT
+	// HANDLE FILE OBJECT 
 	protected static handleNameFile handle ;
 
 	// viz constants
@@ -24,12 +24,14 @@ public class exportData_main {
 	private static ViewPanel view , gsView , netView ;
 	
 	protected static String fileType = ".dgs" ;
-	
-	protected static String folder  = "D:\\dataNoCloud\\vf_seedBirt_DynamicRadius_buckets_dieBord_stepCompute\\step_5_stepBird_5\\step_2500\\chaos\\maxStep_2500_generateNetNodeVectorFieldSplitSeedProbInBuckets_03_generateNetEdgeInDynamicRadiusInBuckets_03_val_0.1_00\\" ,
+
+	protected static String folder  = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord_stepCompute\\step_5_stepBird_5\\step_2500\\chaos\\maxStep_2500_generateNetNodeVectorFieldSplitSeedProbInBuckets_03_generateNetEdgeInDynamicRadiusInBuckets_03_val_0.1_00\\" ,
 							
 							folderMain =   handle.getParent(folder) ,
 							folderMultiSim = folderMain ,
-							folderCommonFiles = folderMain + "commonFiles\\" ;								
+							folderCommonFiles = folderMain + "commonFiles\\" ,
+	
+							pathToStore = "" ;
 	
 	// START FILES
 	// GS graph

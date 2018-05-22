@@ -384,10 +384,10 @@ public class graphAnalysis {
 		}
 		return listAttr.size() ;
 	}
-	
+	 
 	// get map of normal degree distribution // map <degree , normal distribution >  
 	public static Map getNormalDegreeDistribution ( Graph graph ) {
-		
+		 
 		int[] degreeDist = Toolkit.degreeDistribution(graph);
 
 		Map< Double , Double > mapDegreeNormalDistr = new HashMap< Double , Double > ();

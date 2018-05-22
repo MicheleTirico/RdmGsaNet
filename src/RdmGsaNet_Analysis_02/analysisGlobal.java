@@ -13,7 +13,7 @@ import RdmGsaNetViz.handleVizStype.stylesheet;
 
 public class analysisGlobal extends analysisMain {
 	
-	// MAP FOR CHARTS
+	// MAP FOR CHARTS 
 	// MAP NET
 	protected static Map	mapNetFreqDegree = new HashMap () , 
 							mapNetFreqDegreeRel = new HashMap () , 
@@ -21,7 +21,7 @@ public class analysisGlobal extends analysisMain {
 							mapNetStepNewNode = new HashMap () ,
 							mapNetStepNormalDistributionDegree = new HashMap (),
 							mapNetStepNewNodeRel = new HashMap(),												
-							mapNetStepNewSeed = new HashMap(),
+							mapNetStepNewSeed = new HashMap(), 
 							mapNetStepNewSeedRel = new HashMap() , 
 							mapNetStepGlobalClustering  = new HashMap() ,																
 							mapNetStepGlobalDensity = new HashMap() ,
@@ -119,7 +119,7 @@ public class analysisGlobal extends analysisMain {
 		
 		analysisGs.computeGlobalStat	(5000 , 5 , pathStart, pathStep , 1 ); 
 			
-			
+			 
 				
 //	 		System.out.println(mapNetStepNewSeed);
 //			System.out.println(mapNetStepNormalDistributionDegree);

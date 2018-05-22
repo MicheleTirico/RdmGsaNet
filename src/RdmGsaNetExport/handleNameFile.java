@@ -230,7 +230,7 @@ public class handleNameFile {
 	} 
 	
 	public static String getCompletePathInFolder ( String folder , String testName ) {
-		
+		 
 		String nameFileComplete = null ;
 		File path = new File( folder );
 		File [] files = path.listFiles();

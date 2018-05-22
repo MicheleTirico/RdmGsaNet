@@ -65,12 +65,12 @@ public interface analysisDGS  {
 	
 		double avDegree = Toolkit.averageDegree(graph);
 		mapStepAveDegree.put(step, avDegree);
-		}
+		} 
 	
 	//compute normal degree distribution of each step. return the same result of freq degree rel
 	public static void computeStepNormalDegreeDistribution ( Graph graph , double step , Map mapStepNormalDistributionDegree , boolean setNumberLine , int numberLine ) {
 	
-		if ( setNumberLine ) {
+		if ( setNumberLine ) { 
 			Map mapNormDegDist = graphAnalysis.getNormalDegreeDistribution(graph);
 			double numberOfDegreeFreq = mapNormDegDist.size();
 			double maxNewNullVal = numberLine - (double) numberOfDegreeFreq;	//			System.out.println("numberOfDegreeFreq " + numberOfDegreeFreq);			System.out.println("maxNewNullVal " + maxNewNullVal);		System.out.println(mapNormDegDist);

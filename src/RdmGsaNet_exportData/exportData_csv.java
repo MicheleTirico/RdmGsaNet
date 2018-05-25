@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.tools.ant.taskdefs.condition.HasFreeSpace;
 import org.graphstream.algorithm.Toolkit;
@@ -15,6 +16,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSourceFactory;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphIndicators;
@@ -31,12 +33,12 @@ public class exportData_csv extends exportData_main {
 	static String 	pathStart = pathStartNet ,	 
 					pathStep = pathStepNet ; 
 	
-	protected enum typeSimpleIndicator {	density  ,	averageDegree , diameter , averageShortpath , gammaIndex , alfaIndex , organicRatio , averageClustering }	
+	protected enum typeSimpleIndicator {	density  ,	averageDegree , diameter , averageShortpath , gammaIndex , alfaIndex , organicRatio , averageClustering , totNodes, totEdges  }	
 	protected static typeSimpleIndicator typeIndicator ;	
 	
-	protected enum typeMultiLineIndicator {	degreeDistribution , normalDegreeDistribution}	
+	protected enum typeMultiLineIndicator {	degreeDistribution , normalDegreeDistribution }	
 	protected static typeMultiLineIndicator typeMultiLineIndicator ;	
-	
+	 
 	
 	protected static Graph graph ;								
 	
@@ -48,11 +50,14 @@ public class exportData_csv extends exportData_main {
 		graph = new SingleGraph ("graph") ;
 		 
 		String 	header =  "step" ,
-				nameFile = typeIndicator.toString() ;
+				nameFile = "multiLine_" + typeIndicator.toString() ;
 		
 		for ( int x = 1 ; x <= numLine ; x++ )
 			header = header +";" + x ;
 			
+		handleNameFile.createNewGenericFolder(pathDataMain , "analysis" );
+		pathToStore = pathDataMain + "\\analysis\\"  ;
+		
 		FileWriter fileWriter = new FileWriter( pathToStore + nameFile + ".csv" , true );		
 		expCsv.addCsv_header( fileWriter, header ) ;
 		
@@ -87,19 +92,26 @@ public class exportData_csv extends exportData_main {
 					switch (typeIndicator) { 
 				
 					case degreeDistribution : {
-						int[] degreeDistr = Toolkit.degreeDistribution(graph) ;
-						for ( int d : degreeDistr) 
-							listVal.add( Integer.toString(d)) ;	
+						Map<Double , Double> map = new HashMap<Double , Double>(graphAnalysis.getMapFrequencyDegree(graph, numLine, false) ) ;
+						
+						for ( double d : map.keySet() )
+							listVal.add(Double.toString(map.get(d))) ;
+						
 					} break ; 
 					
 					case normalDegreeDistribution : {
-						Map<Double , Double> map = new HashMap<Double , Double>(graphAnalysis.getNormalDegreeDistribution (graph) ) ;
+						Map<Double , Double> map = new HashMap<Double , Double>(graphAnalysis.getMapFrequencyDegree(graph, numLine, true) ) ;
+						
 						for ( double d : map.keySet() )
 							listVal.add(Double.toString(map.get(d))) ;
 					}break ;
 								 
 						
 					}
+					if (listVal.size() <= numLine ) 
+						while(listVal.size() <= numLine )
+							listVal.add("0.0");
+					
 					expCsv.writeLine(fileWriter, listVal , ';' ) ;
 				
 					// stop iteration    			
@@ -122,7 +134,10 @@ public class exportData_csv extends exportData_main {
 		graph = new SingleGraph ("graph") ;
 		 
 		String 	header = "step;" + typeIndicator.toString() ,
-				nameFile = typeIndicator.toString() ;
+				nameFile = "simpleInd_" + typeIndicator.toString() ;
+		
+		handleNameFile.createNewGenericFolder(pathDataMain , "analysis" );
+		pathToStore = pathDataMain + "\\analysis\\"  ;
 		
 		FileWriter fileWriter = new FileWriter( pathToStore + nameFile + ".csv" , true );		
 		expCsv.addCsv_header( fileWriter, header ) ;
@@ -153,42 +168,8 @@ public class exportData_csv extends exportData_main {
 					// add methods to run for each step in incList				
 					System.out.println("----------------step " + step + " ----------------" );					
 					
-					double val = 0 ;
+					double val = getValIndicator ( graph , typeIndicator) ;
 					
-					switch (typeIndicator) {
-					
-					case density: 
-						val = Toolkit.density(graph);									
-						break;
-						
-					case averageDegree : 
-						val = Toolkit.averageDegree(graph);
-						break ;
-					
-					case diameter : 
-						val = Toolkit.diameter(graph);
-						break ;
-					
-					case alfaIndex :
-						val = graphIndicators.getAlfaIndex(graph);
-						break ;
-						
-					case gammaIndex :
-						val = graphIndicators.getGammaIndex(graph, true) ;
-						break;
-						
-					case organicRatio :
-						val = graphIndicators.getOrganicRatio(graph) ;
-						break ;
-						
-					case averageShortpath :
-						break;
-				
-					case averageClustering :
-						Toolkit.averageClusteringCoefficient(graph);
-						break ;						
-						
-					}
 					expCsv.writeLine(fileWriter, Arrays.asList( Double.toString(step) , Double.toString(val) ) , ';' ) ;
 				
 					// stop iteration    			
@@ -208,9 +189,10 @@ public class exportData_csv extends exportData_main {
 		
 		if ( run == false )
 			return ;
+	
 		
-		String 	header = "step;" + typeIndicator.toString() ,
-				nameFile = typeIndicator.toString() ;
+		String 	header = "step;" ,
+				nameFile = "multiSim_" + typeIndicator.toString() ;
 		
 		File extF  ; 
 		File path = new File(folderMain) ;
@@ -219,7 +201,7 @@ public class exportData_csv extends exportData_main {
 		 ArrayList<File> fileArray = new ArrayList<File>(Arrays.asList(files));
 		
 //		 fileArray.forEach(  s -> System.out.print("\n" + s.getName()) );
-		 Map <Double , ArrayList <Double>> mapToStore = new HashMap < Double , ArrayList <Double>>();
+		 Map <Double , ArrayList <Double>> mapToStore = new TreeMap < Double , ArrayList <Double>>();
 		 
 		 for ( File f : fileArray ) {
 			 
@@ -228,25 +210,25 @@ public class exportData_csv extends exportData_main {
 			 String s = f.getAbsolutePath();	 // 	 
 			 System.out.println(f);
 			
-			 String pathStepGs = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_step") ;
-			 String pathStepNet = handle.getCompletePathInFolder(s+"\\",  "layerNet_step") ; 
-			 String pathStartGs = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_start") ;
-			 String pathStartNet = handle.getCompletePathInFolder(folderCommonFiles,  "layerNet_start") ;
+		//	String pathStepGs = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_step") ;
+			String pathStep = handle.getCompletePathInFolder(s+"\\",  "layerNet_step") ; 
+		// 	String pathStartGs = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_start") ;
+			String pathStart = handle.getCompletePathInFolder(folderCommonFiles,  "layerNet_start") ;
 		
 			 handleNameFile.createNewGenericFolder(folderMain , "multiSimAnalysis" );
 			 
 			 graph = new SingleGraph ("graph") ; 
-
-			 String pathFile = folderMain + "\\multiSimAnalysis\\"  + nameFile + ".csv" ;
-			 FileWriter fileWriter = new FileWriter( pathFile , true );		
-			 expCsv.addCsv_header( fileWriter, header ) ;
 		
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
 					
 			// set file Source for file step
-			fs = FileSourceFactory.sourceFor(pathStep);
-			fs.addSink(graph);
+			try {
+				fs = FileSourceFactory.sourceFor(pathStep);
+				fs.addSink(graph);
+			} catch ( java.lang.NullPointerException e) { // e.printStackTrace();	
+				continue ;
+			}
 			
 			// import start graph
 			try 														{	graph.read(pathStart);		} 
@@ -267,11 +249,16 @@ public class exportData_csv extends exportData_main {
 						// add methods to run for each step in incList				
 						System.out.println("----------------step " + step + " ----------------" );					
 						
-						double val = 0 ;
-						expCsv.writeColumn(pathFile, Arrays.asList( Double.toString(step) , Double.toString(val) ) , ';'  );
+						double val = getValIndicator ( graph , typeIndicator) ;				//	System.out.println(val);		//	System.out.println(mapToStore.get(step));
+						ArrayList <Double> arr = new ArrayList <Double> () ;
 						
-						expCsv.writeLine(fileWriter, Arrays.asList( Double.toString(step) , Double.toString(val) ) , ';' ) ;
-					
+						if ( mapToStore.get(step) != null )
+							arr = mapToStore.get(step) ;
+						
+						arr.add(val);
+						mapToStore.put(step, arr) ;
+						
+											
 						// stop iteration    			
 						if ( stepMax == step )  
 							break; 
@@ -279,10 +266,73 @@ public class exportData_csv extends exportData_main {
 				}
 		
 			} catch (IOException e) {		}				
-		
-			fs.end();	
-			fileWriter.close();
+			fs.end();			
 		 }
+		
+		 String pathFile = folderMain + "\\multiSimAnalysis\\"  + nameFile + ".csv" ; 
+		 FileWriter fileWriter = new FileWriter( pathFile , true );		
+		
+		 for ( int i = 1 ; i < fileArray.size() ; i++ )
+			 header = header + ";" + i ;
+
+		 expCsv.addCsv_header( fileWriter, header ) ;
+		 
+		 for ( Double step : mapToStore.keySet()) {		//	 System.out.println(mapToStore);
+
+			ArrayList<String> line = new ArrayList<String> (Arrays.asList(Double.toString(step)));
+			mapToStore.get(step).forEach( (val) -> line.add(Double.toString(val)) ) ;		//	System.out.println(line);
+			expCsv.writeLine(fileWriter, line , ';' ) ;	
+		 }		
+		 
+		 fileWriter.close();		
+	}
+	
+	private static double getValIndicator ( Graph graph , typeSimpleIndicator typeIndicator   ) {
+		double val = 0 ;
+		
+		switch (typeIndicator) {
+		
+		case density: 
+			val = Toolkit.density(graph);									
+			break;
+			
+		case averageDegree : 
+			val = Toolkit.averageDegree(graph);
+			break ;
+		
+		case diameter : 
+			val = Toolkit.diameter(graph);
+			break ;
+		
+		case alfaIndex :
+			val = graphIndicators.getAlfaIndex(graph);
+			break ;
+			
+		case gammaIndex :
+			val = graphIndicators.getGammaIndex(graph, true) ;
+			break;
+			
+		case organicRatio :
+			val = graphIndicators.getOrganicRatio(graph) ;
+			break ;
+			
+		case averageShortpath :
+			break;
+	
+		case averageClustering :
+			val = Toolkit.averageClusteringCoefficient(graph);
+			break ;			
+			
+		case totEdges :
+			val = graph.getEdgeCount() ;
+			break ;
+			
+		case totNodes :
+			val = graph.getNodeCount() ;
+			break ;
+		}
+		return val ;
 	}
 	
 }
+ 

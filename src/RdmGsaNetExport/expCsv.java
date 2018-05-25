@@ -54,7 +54,7 @@ public class expCsv {
     	int pos = 0 ;
     	while ((line = br.readLine() ) != null) {
 //    		
-    		if ( pos = posRow)
+    		if ( pos == posRow)
     			line = line + ";" + values.get(posRow);
     		pos++ ;
     		

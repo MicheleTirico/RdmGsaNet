@@ -10,7 +10,9 @@ import org.graphstream.stream.file.FileSinkImages.OutputType;
 import org.graphstream.stream.file.FileSinkImages.Resolutions;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
-import RdmGsaNet_pr08.*;
+import RdmGsaNet_mainSim.layerGs;
+import RdmGsaNet_mainSim.layerNet;
+
 
 public class setupViz {
 

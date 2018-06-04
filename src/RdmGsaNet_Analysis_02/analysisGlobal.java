@@ -77,11 +77,11 @@ public class analysisGlobal extends analysisMain {
 					);
 			
 		analysisGs.setWhichGlobalAnalysis(
-					/* run Viz 					*/ true ,
-					/* getImage					*/ true ,
-					/* computeStepMaxMorp		*/ true , 
-					/* computeStepMinMorp		*/ true ,
-					/* computeStepAveMorp 		*/ true ,
+					/* run Viz 					*/ false ,
+					/* getImage					*/ false ,
+					/* computeStepMaxMorp		*/ false , 
+					/* computeStepMinMorp		*/ false ,
+					/* computeStepAveMorp 		*/ false ,
 					/* computeGsActivedNodes	*/ false 
 					);
 				
@@ -115,9 +115,9 @@ public class analysisGlobal extends analysisMain {
 			
 		
 // RUN GLOBAL ANALYSIS ------------------------------------------------------------------------------------------------------------------------------
-		analysisNet.computeGlobalStat	(5000 , 5 , pathStart, pathStep , 10 );
+		analysisNet.computeGlobalStat	(50 , 5 , pathStart, pathStep , 10 );
 		
-		analysisGs.computeGlobalStat	(5000 , 5 , pathStart, pathStep , 1 ); 
+		analysisGs.computeGlobalStat	(50 , 5 , pathStart, pathStep , 10 ); 
 			
 			 
 				
@@ -126,7 +126,7 @@ public class analysisGlobal extends analysisMain {
 			
 //	 CREATE CHARTS ---------------------------------------------------------------------------------
 		createChartsNet(
-					/* stored Charts 							*/ true ,
+					/* stored Charts 							*/ false ,
 					/* create Chart Degree 						*/ true ,
 					/* create Chart DegreeRel					*/ true , 
 					/* create chart Average Degree 				*/ true ,
@@ -140,7 +140,7 @@ public class analysisGlobal extends analysisMain {
 					);
 
 		createChartsGs(
-					/* storeCharts 			*/ true  ,
+					/* storeCharts 			*/ false  ,
 					/* createChartMax		*/ true , 
 					/* createChartMin		*/ true ,
 					/* createChartAve		*/ true

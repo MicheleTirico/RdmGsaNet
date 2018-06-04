@@ -12,20 +12,21 @@ import RdmGsaNetViz.setupViz;
 
 public class expImage {
 	
-	public static void  getImage (Graph graph ,String folderIm, String nameIm ) throws IOException {
+	public static void  getImage (Graph graph , String folderIm, String nameIm ) throws IOException {
 		
 		FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);	
 		pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT ); 
 		pic.writeAll(graph, folderIm +"/"+ nameIm);
+		System.out.println(folderIm +"/"+ nameIm);
 	}
 	
 	public static void getImageStep (Graph graph ,String folderIm, String nameIm , int stepIm ) throws IOException {
 		
-		int step = 0;
+		int step = 0 ;
 		if (   step == stepIm ) {
 			FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);	
 			pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT ); 
-			pic.writeAll(graph, folderIm +"/"+ nameIm + "_step_"+stepIm);
+			pic.writeAll(graph, folderIm +"\\"+ nameIm + "_step_"+stepIm);
 		}
 	}
 
@@ -38,13 +39,14 @@ public class expImage {
 			FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
 			pic.setLayoutPolicy(LayoutPolicy.COMPUTED_IN_LAYOUT_RUNNER);
 			pic.writeAll(graph, pathIm );
-			
-
 		}
+		
 		catch (java.lang.NullPointerException e) {
+			e.printStackTrace();
 			// TODO: handle exception
 		}
 		catch (java.util.ConcurrentModificationException e) {
+			e.printStackTrace();
 			// TODO: handle exception
 		}
 		

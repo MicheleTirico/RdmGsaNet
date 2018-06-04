@@ -9,14 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.tools.ant.taskdefs.condition.HasFreeSpace;
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSourceFactory;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+
 
 import RdmGsaNetAlgo.graphAnalysis;
 import RdmGsaNetAlgo.graphIndicators;
@@ -25,8 +24,7 @@ import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNet_Analysis_02.analysisDGS;
 import RdmGsaNet_Analysis_02.analysisMultiSim;
-import graphstream_dev_toolkit.toolkit;
-import scala.Char;
+
 
 public class exportData_csv extends exportData_main {
 	
@@ -38,7 +36,6 @@ public class exportData_csv extends exportData_main {
 	
 	protected enum typeMultiLineIndicator {	degreeDistribution , normalDegreeDistribution }	
 	protected static typeMultiLineIndicator typeMultiLineIndicator ;	
-	 
 	
 	protected static Graph graph ;								
 	

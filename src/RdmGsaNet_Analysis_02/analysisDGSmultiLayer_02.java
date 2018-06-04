@@ -238,6 +238,13 @@ public class analysisDGSmultiLayer_02 extends analysisMain implements analysisDG
 			seedFs.end() ;
 		}
 
+		@Override
+		public void computeLocalStat(int stepMax, int stepInc, String[] pathStartArr, String[] pathStepArr, int thread)
+				throws IOException, InterruptedException {
+			// TODO Auto-generated method stub
+			
+		}
+
 		
 			
 		

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -232,10 +233,12 @@ public  class analysisDGSnet extends analysisMain implements analysisDGS     {
 					if ( runViz ) 	
 						Thread.sleep( thread );
 						
-					if ( getImage ) 	
-						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
-							expImage.getImage(graph, folder + "analysis\\image\\" , "netImage" + step + ".png" );
-					
+//					if ( getImage ) 	
+//						if (  analysisDGS.getListStepToAnalyze( stepIncIm , stepMax).contains(step) ) 
+				//			expImage.getImage(graph, folder + "analysis\\image\\" , "netImage" + step + ".png" );
+//							expImage.getImageStep(graph, folder + "analysis\\image\\" , "netImage" + step + ".png", (int)step);
+					Toolkit.computeLayout(graph);
+					graph.write("D:\\ownCloud\\RdmGsaNet_exp\\test\\test.jpeg");					
 					// stop iteration    
 					if ( stepMax == step ) { break; }
 				}

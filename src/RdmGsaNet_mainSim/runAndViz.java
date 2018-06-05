@@ -1,5 +1,8 @@
 package RdmGsaNet_mainSim;
 
+
+
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -60,7 +63,7 @@ import RdmGsaNet_gsAlgo.gsAlgoDiffusion;
 import RdmGsaNet_gsAlgo.gsAlgoDiffusion.weightType;
 
 import RdmGsaNet_mainSim.layerNet.meanPointPlace;
-
+import RdmGsaNet_mainSim.main.RdmType;
 import RdmGsaNet_setupLayer.setupGsGrid;
 import RdmGsaNet_setupLayer.setupGs_Inter.disMorpType ;
 import RdmGsaNet_setupLayer.setupGs_Inter.gsGridType;
@@ -86,12 +89,13 @@ import RdmGsaNet_seedBirth.seedBirth.setSeedType;
 import dynamicGraphSimplify.dynamicSymplify;
 import dynamicGraphSimplify.dynamicSymplify.simplifyType ;
 
-public class main {
-	private static int stopSim = 50 ;
+
+public class runAndViz {
+	private static int stopSim = 5000 ;
 	protected static boolean dieBord = true ; 
 	protected static double sizeGridEdge ;
 	
-	public static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms , waves }
+	private static enum RdmType { holes , solitions , movingSpots , pulsatingSolitions , mazes , U_SkateWorld , f055_k062 , chaos , spotsAndLoops , worms , waves }
 	private static RdmType type ;
 	
 	
@@ -100,15 +104,15 @@ public class main {
 	
 	
 	// STORE DGS PARAMETERS
-	private static boolean 	doStoreStartGs 		= false , 
-							doStoreStepGs 		= false,
-							doStoreStartNet 	= false , 
-							doStoreStepNet 		= false ,
-							doStoreStartVec 	= false ,
-							doStoreStepVec 		= false,
-							doStoreStartSeed	= false ,
-							doStoreStepSeed		= false ,
-							doStoreIm			= true ,
+	private static boolean 	doStoreStartGs 		= true , 
+							doStoreStepGs 		= true,
+							doStoreStartNet 	= true , 
+							doStoreStepNet 		= true ,
+							doStoreStartVec 	= true ,
+							doStoreStepVec 		= true,
+							doStoreStartSeed	= true ,
+							doStoreStepSeed		= true ,
+							doStoreIm			= false ,
 							storeGsValues 		= false ;
 	
 	private static String 	fileType   = ".dgs" ,
@@ -117,13 +121,11 @@ public class main {
 	private static double 	feed , kill ;
 		
 	// folder
-	static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\" ;
+	private static  String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\vf_seedBirt_DynamicRadius_buckets_dieBord_stepCompute\\step_5_stepBird_5\\step_5000\\solitions\\" ;
 
 	// path
-	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs;
-	static String pathStartVec;
-	private static String pathStepVec;
-	private static String folderNew = handleNameFile.getPath();
+	private static String 	pathStepNet ,	pathStepGs ,	pathStartNet ,	pathStartGs , pathStartVec , pathStepVec ,
+							folderNew = handleNameFile.getPath();
 	
 	//name file
 	private static String 	nameStartGs , nameStartNet , nameStepGs , nameStepNet ;
@@ -186,7 +188,7 @@ public class main {
 			new generateNetEdgeInDynamicRadiusInBuckets_03 (genEdgeType.fatherAndNodeInRadius , bucketSet )  	
 			) ;
 	
-	static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
+	private static vectorField vectorField = new vectorField( gsGraph , "gsInh" , vectorFieldType.spatial  ) ;
 	
 	protected static dynamicSymplify dynamicSymplify = new dynamicSymplify( true , netGraph , seedGraph , 0.1 , simplifyType.kNearestNeighbors ) ; 
 	
@@ -366,12 +368,6 @@ public class main {
 	//		delGraph.display(false) ;
 			netGraph.display(false);
 			
-
-			String 	folder = "D:\\ownCloud\\RdmGsaNet_exp\\test\\" , 
-					nameIm = "test.png" ;
-			
-		
-			
 		//	generateNetEdgeDelaunay_04.testGraph.display(false) ;
 			
 		}
@@ -501,5 +497,4 @@ public class main {
 		main.vectorField = vectorField;
 	}
 }
-
 

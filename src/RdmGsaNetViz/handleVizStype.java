@@ -139,10 +139,7 @@ public class handleVizStype {
 				if ( isViz1 ) 
 					if ( isTrue == 1 ) 
 						n.addAttribute("ui.style", "visibility-mode : hidden;"  	);
-				
-			
-			
-			
+		
 			} catch (java.lang.NullPointerException e) {
 				continue ;
 			}

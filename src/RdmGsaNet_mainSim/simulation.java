@@ -8,14 +8,18 @@ import java.util.Map;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDGS;
+import org.graphstream.stream.file.FileSinkImages;
+import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
+import org.graphstream.stream.file.FileSinkImages.OutputType;
+import org.graphstream.stream.file.FileSinkImages.Resolutions;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
-import com.mongodb.client.model.geojson.MultiLineString;
-import com.vividsolutions.jts.geom.Point;
+
 
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.handleNameFile.typeFile;
 import RdmGsaNetViz.setupViz;
+import RdmGsaNet_exportData.exportData_image;
 import RdmGsaNet_generateGraph.generateNetEdge;
 import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_graphTopology.topologyGraph;
@@ -64,7 +68,7 @@ public class simulation extends main {
 	// map / key = (double) step , values = (list of string ) id of new nodes in net
 	private static Map < Double , ArrayList<String> > mapStepNewNodeId = new HashMap <Double , ArrayList<String> > ()  ;
 	
-	public static Map < Point , Node > mapPointNodeNet = new HashMap < Point , Node >();
+//	public static Map < Point , Node > mapPointNodeNet = new HashMap < Point , Node >();
 	
 	public static int maxStep ;
  	public static void  runSim ( boolean runSim ,
@@ -169,6 +173,11 @@ public class simulation extends main {
 		
 		finalStep = step - 1 ;	
 		
+		FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
+		
+		pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT);
+		pic.setStyleSheet(exportData_image.setVizManual(1,1,"red","red")) ;	
+		pic.writeAll(netGraph, "D:\\ownCloud\\RdmGsaNet_exp\\test\\" + "peppe" + (int) step + ".png");
 	}
 		
 // PRIVATE METHODS --------------------------------------------------------------------------------------------------------------

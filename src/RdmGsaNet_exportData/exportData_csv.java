@@ -89,7 +89,10 @@ public class exportData_csv extends exportData_main {
 					switch (typeIndicator) { 
 				
 					case degreeDistribution : {
-						Map<Double , Double> map = new HashMap<Double , Double>(graphAnalysis.getMapFrequencyDegree(graph, numLine, false) ) ;
+						Map<Double , Double> map = new TreeMap<Double , Double>(graphAnalysis.getMapFrequencyDegree(graph, numLine, false) ) ;
+					//	Map<Double , Double> map = new TreeMap<Double , Double>(graphAnalysis.getMapFrequencyDegree_02(graph, numLine, false) ) ;
+						
+					//	System.out.println(map);
 						
 						for ( double d : map.keySet() )
 							listVal.add(Double.toString(map.get(d))) ;
@@ -97,7 +100,7 @@ public class exportData_csv extends exportData_main {
 					} break ; 
 					
 					case normalDegreeDistribution : {
-						Map<Double , Double> map = new HashMap<Double , Double>(graphAnalysis.getMapFrequencyDegree(graph, numLine, true) ) ;
+						Map<Double , Double> map = new TreeMap<Double , Double>(graphAnalysis.getMapFrequencyDegree(graph, numLine, true) ) ;
 						
 						for ( double d : map.keySet() )
 							listVal.add(Double.toString(map.get(d))) ;
@@ -109,6 +112,7 @@ public class exportData_csv extends exportData_main {
 						while(listVal.size() <= numLine )
 							listVal.add("0.0");
 					
+				//	System.out.println(listVal);
 					expCsv.writeLine(fileWriter, listVal , ';' ) ;
 				
 					// stop iteration    			
@@ -122,6 +126,7 @@ public class exportData_csv extends exportData_main {
 		fs.end();	
 		fileWriter.close();
 	}
+	
 	
 	public static void computeSimpleIndicator ( boolean run , int 	stepInc , int stepMax , typeSimpleIndicator typeIndicator , String pathToStore , String pathDataMain ) throws IOException {
 		

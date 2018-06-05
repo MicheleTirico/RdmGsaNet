@@ -37,13 +37,13 @@ public class analysisGlobal extends analysisMain {
 	// Initialize net analysis
 	private static analysisDGSnet analysisNet = new analysisDGSnet(
 				/* id dgs 					*/		"dgsNet" , 
-				/* run analysis	global		*/		true 
+				/* run analysis	global		*/		false 
 				);
 		
 	// Initialize net analysis
 	private static analysisDGSgs analysisGs = new analysisDGSgs(
 				/* id dgs 					*/		"dgsGs" , 
-				/* run analysis				*/		false 
+				/* run analysis				*/		true 
 				);
  
 // --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ public class analysisGlobal extends analysisMain {
 		
 		// global analysis
 		analysisNet.setWhichGlobalAnalysis(
-					/* run Viz 							*/ true ,
+					/* run Viz 							*/ false ,
 					/* getImage							*/ true ,
 					/* computeDegree					*/ true ,
 					/* computeDegreeRel					*/ true ,	// return the same result of normal degree distribution
@@ -77,8 +77,8 @@ public class analysisGlobal extends analysisMain {
 					);
 			
 		analysisGs.setWhichGlobalAnalysis(
-					/* run Viz 					*/ false ,
-					/* getImage					*/ false ,
+					/* run Viz 					*/ true ,
+					/* getImage					*/ true,
 					/* computeStepMaxMorp		*/ false , 
 					/* computeStepMinMorp		*/ false ,
 					/* computeStepAveMorp 		*/ false ,

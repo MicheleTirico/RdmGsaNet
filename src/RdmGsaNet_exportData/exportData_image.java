@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.stream.file.FileSinkImages;
@@ -28,98 +29,165 @@ import RdmGsaNet_Analysis_02.analysisDGS;
 
 public class exportData_image extends exportData_main {
 	
-	static String  	pathStart = pathStartNet ,	 
-					pathStep = pathStepNet ; 
+	static String  	pathStart  ,	 
+					pathStep  ; 
 
 	protected static Graph graph ;	
 	
 	// parameters of viz 
 	private static int setScale ; 
-	private static double sizeNode , sizeEdge ; 
-	private static String colorStaticNode , colorStaticEdge ;
-		
-	public void setParamViz ( int setScale , double sizeNode , double sizeEdge , 
+	private static double sizeNodeNet , sizeEdgeNet , sizeNodeGs , sizeEdgeGs ; 
+	private static String colorNodeNet , colorEdgeNet , colorNodeGs , colorEdgeGs ;
+	private static palette paletteColor ;
+	
+	private static double sizeNode ,  sizeEdge ;
+	private static String colorNode ,  colorEdge , nameIm ;
+	
+	protected enum layer { gsGraph, netGraph, vecGraph, seedGraph}
+	private layer layer ;
+	
+	public void setParamVizNet ( int setScale , double sizeNode , double sizeEdge , 
 			String colorStaticNode , String colorStaticEdge  
 			) {
 		this.setScale = setScale ; 
-		this.sizeNode = sizeNode ;
-		this.sizeEdge = sizeEdge ;
-		this.colorStaticNode = colorStaticNode ;
-		this.colorStaticEdge = colorStaticEdge ;
+		this.sizeNodeNet = sizeNode ;
+		this.sizeEdgeNet = sizeEdge ;
+		this.colorNodeNet = colorStaticNode ;
+		this.colorEdgeNet = colorStaticEdge ;
 	}
 	
-	public static void createImage ( boolean run , int 	stepInc , int stepMax , String pathToStore , String pathDataMain ) throws IOException {
+	public void setParamVizGs ( int setScale , double sizeNode , double sizeEdge , 
+			String colorStaticNode , String colorStaticEdge  ,
+			 palette paletteColor 
+			) {
+		this.setScale = setScale ; 
+		this.sizeNodeGs = sizeNode ;
+		this.sizeEdgeGs = sizeEdge ;
+		this.colorNodeGs = colorNode ;
+		this.colorEdgeGs = colorEdge ;
+		this.paletteColor = paletteColor ;
+	}
 		
-	Graph graph = new SingleGraph("test") ;
-	
+	public static void createImage ( layer layer , boolean run , int stepInc , int stepMax , String pathToStore , String pathDataMain ) throws IOException {
 
-	// setup net viz parameters
-	handleVizStype netViz = new handleVizStype( graph ,stylesheet.manual , "seedGrad", 1) ;
-	netViz.setupFixScaleManual( true, graph, setScale , 0);
-	
-	FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
-	
-	pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT);
-
-	handleNameFile.createNewGenericFolder(pathDataMain , "image" );
-	pathToStore = pathDataMain + "\\image\\"  ;
-	
-	// create list of step to create images
-	ArrayList<Double> incList = new ArrayList<Double>() ;						//	System.out.println(incList);
-					
-	for ( double n = 1 ; n * stepInc <= stepMax ; n++ ) 	
-		incList.add( n * stepInc );			
+		if ( run != true )
+			return ;
+		
+		Graph graph = new SingleGraph("test") ;
+		
+		switch (layer) {
+			case netGraph :{
+				pathStart = pathStartNet ;	 
+				pathStep = pathStepNet ; 
+				sizeNode = sizeNodeNet ;  sizeEdge = sizeEdgeNet ; colorNode = colorNodeNet ; colorEdge = colorEdgeNet ; 
+				nameIm = "netImage_" ;
+			} break;
 			
-	// set file Source for file step
-	fs = FileSourceFactory.sourceFor(pathStep);
-	fs.addSink(graph);
-	
-	
-	// import start graph
-	try 														{	graph.read(pathStart);		} 
-	catch (	ElementNotFoundException | 
-			GraphParseException | 
-			org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
-	 	
-	// set file Source for file step
-	fs = FileSourceFactory.sourceFor(pathStep);
-	fs.addSink(graph);
-	
-	// import file step
-	try {
-		fs.begin(pathStep);
-		while ( fs.nextStep()) {
-			double step = graph.getStep();							//	System.out.println(step);
-			if ( incList.contains(step)) {
-				// add methods to run for each step in incList				
-				System.out.println("----------------step " + step + " ----------------" );		
+			case gsGraph : {
+				pathStart = pathStartGs ;	 
+				pathStep = pathStepGs ; 
+				sizeNode = sizeNodeGs ;  sizeEdge = sizeEdgeGs ; colorNode = colorNodeGs ; colorEdge = colorEdgeGs ; 
+				nameIm = "gsImage_" ;
+			} break;
 			
-				pic.setStyleSheet(setVizManual());
-				
-				
-				pic.writeAll(graph, pathToStore+"netImage"+step+".png");
-				// stop iteration    			
-				if ( stepMax == step )  
-					break; 
-			}			
+			case seedGraph : {
+				System.out.println("not implem");
+				System.exit(10);	
+			} break;
+			
+			case vecGraph : {
+				System.out.println("not implem");
+				System.exit(10);			
+			} break;
 		}
-
-	} catch (IOException e) {		}				
-
 	
-	fs.end();
+		System.out.println(pathStep);
+		// setup net viz parameters
+		handleVizStype gsViz = new handleVizStype( graph ,stylesheet.viz10Color, "gsInh", 1) ;
+	//	gsViz.setupDefaultParam (graph, "red", "white", sizeNodeGs , sizeEdgeGs );
+		gsViz.setupFixScaleManual( true, graph, setScale , 0);
+		
+		handleVizStype netViz = new handleVizStype( graph ,stylesheet.manual , "seedGrad", 1) ;
+		netViz.setupFixScaleManual( true, graph, setScale , 0);
+		
+		FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
+		
+		pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT);
+	
+		handleNameFile.createNewGenericFolder(pathDataMain , "image" );
+		pathToStore = pathDataMain + "\\image\\"  ;
+		
+		// create list of step to create images
+		ArrayList<Double> incList = new ArrayList<Double>() ;						//	System.out.println(incList);
+						
+		for ( double n = 1 ; n * stepInc <= stepMax ; n++ ) 	
+			incList.add( n * stepInc );			
+				
+		// set file Source for file step
+		fs = FileSourceFactory.sourceFor(pathStep);
+		fs.addSink(graph);
+		
+		
+		// import start graph
+		try 														{	graph.read(pathStart);		} 
+		catch (	ElementNotFoundException | 
+				GraphParseException | 
+				org.graphstream.graph.IdAlreadyInUseException e) 	{	/*e.printStackTrace();*/	}
+		 	
+		// set file Source for file step
+		fs = FileSourceFactory.sourceFor(pathStep);
+		fs.addSink(graph);
+		
+		// import file step
+		try {
+			fs.begin(pathStep);
+			while ( fs.nextStep()) {
+				double step = graph.getStep();							//	System.out.println(step);
+				if ( incList.contains(step)) {
+					// add methods to run for each step in incList				
+					System.out.println("----------------step " + step + " ----------------" );		
+					
+	
+					switch (layer) {
+						case netGraph: {
+						
+					//	System.out.println(graph.getNodeCount());
+							
+							pic.setStyleSheet(setVizManual(sizeNode, sizeEdge, colorNode, colorEdge)) ;				
+		
+							pic.writeAll(graph, pathToStore + nameIm + (int) step + ".png");
+						}	
+						break;
+						
+						case gsGraph : {
+							
+									
+						}break ;
+
+					}
+			
+					
+				
+					// stop iteration    			
+					if ( stepMax == step )  
+						break; 
+				}			
+			}
+	
+		} catch (IOException e) {		}				
+	
+		
+		fs.end();
 	
 
 
 
-}
 
-	
-	
+	}
 	private static String setVizManual() {
 		 return "node {"+
 				"	size: " + sizeNode + "px;"+
-				"	fill-color: "+ colorStaticNode +";"+
+				"	fill-color: "+ colorNode +";"+
 				"	fill-mode: dyn-plain;"+
 				"}"+
 				
@@ -128,10 +196,27 @@ public class exportData_image extends exportData_main {
 				
 				"edge {"+
 				"	size: " + sizeEdge + "px;"+
-				"	fill-color:"+colorStaticEdge+" ;"+
+				"	fill-color:"+colorEdge+" ;"+
 				"}" ;
 	}
 		 
+	
+	public static String setVizManual(double sizeNode , double sizeEdge ,	String colorNode , String colorEdge ) {
+		 return "node {"+
+					"	size: " + sizeNode + "px;"+
+					"	fill-color: "+ colorNode +";"+
+					"	fill-mode: dyn-plain;"+
+					"}"+
+					
+					"node#setScale1 {	size: 0px; }" +
+					"node#setScale2 {	size: 0px; }" +
+					
+					"edge {"+
+					"	size: " + sizeEdge + "px;"+
+					"	fill-color:"+colorEdge+" ;"+
+					"}" ;
+		}
+			 
 	
 
 }

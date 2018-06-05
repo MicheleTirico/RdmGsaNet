@@ -1,22 +1,9 @@
 package RdmGsaNet_exportData;
 
-
-
 import java.io.IOException;
-import java.util.ArrayList;
-
-import org.graphstream.graph.ElementNotFoundException;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.stream.GraphParseException;
-import org.graphstream.stream.file.FileSinkImages;
-import org.graphstream.stream.file.FileSource;
-import org.graphstream.stream.file.FileSourceFactory;
-import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
-import org.graphstream.stream.file.FileSinkImages.OutputType;
-import org.graphstream.stream.file.FileSinkImages.Resolutions;
 
 import RdmGsaNetViz.handleVizStype.palette;
+import RdmGsaNet_exportData.exportData_image.layer;
 
 public class exportData_createImage_03 extends exportData_main {
 	
@@ -24,26 +11,32 @@ public class exportData_createImage_03 extends exportData_main {
 			pathDataMain = folder ;
 
 	
-	static exportData_image exp = new exportData_image() ;
-	
-	
-	
-
-	
-	
+	static exportData_image expNet = new exportData_image() ;
+	static exportData_image expGs = new exportData_image() ;
 	
 	public static void main(String[] args) throws IOException {
 	
-	
-		exp.setParamViz(
+			
+		expNet.setParamVizNet(
 				/* setScale					*/ 50 ,
 				/* sizeNode, 				*/ 0.01 ,
 				/* sizeEdge, 				*/ 0.01 ,
-				/* colorStaticNode, 		*/ "black" ,
-				/* colorStaticEdge, 		*/ "black" 
+				/* colorNode, 				*/ "black" ,
+				/* colorEdge, 				*/ "black" 
 				);
 			
-		exportData_image.createImage(true, 100, 5000, pathToStore, pathDataMain);
+		expGs.setParamVizGs(
+				/* setScale					*/ 50 ,
+				/* sizeNode, 				*/ 5 ,
+				/* sizeEdge, 				*/ 0 ,
+				/* colorNode, 				*/ "black" ,
+				/* colorEdge, 				*/ "white" ,
+				/* palette color 			*/ palette.blue
+				);
+		
+		exportData_image.createImage(layer.netGraph, true , 100, 2500, pathToStore, pathDataMain);
+	//	exportData_image_02.createImage(true , 100, 2500, pathToStore, pathDataMain);
+//		exportData_image.createImage(layer.gsGraph , false , 100, 500, pathToStore, pathDataMain);
 
 	}
 		
@@ -51,5 +44,4 @@ public class exportData_createImage_03 extends exportData_main {
 		
 
 
-	
 }

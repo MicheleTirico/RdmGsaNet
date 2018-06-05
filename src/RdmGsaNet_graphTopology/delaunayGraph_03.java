@@ -31,8 +31,7 @@ import RdmGsaNet_mainSim.main;
 import RdmGsaNet_mainSim.simulation;
 
 
-public class delaunayGraph_03 implements topologyGraph_inter {
-
+public class delaunayGraph_03 implements topologyGraph_inter { 
 	
 	// graphs
 	private Graph 	oriGraph = topologyGraph.getOriGraph() ,
@@ -41,7 +40,7 @@ public class delaunayGraph_03 implements topologyGraph_inter {
 					netGraph = layerNet.getGraph() ,
 					seedGraph = main.getSeedGraph () ; 
 		
-	
+	 
 	// geotools parameters
 	public static  GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 	MultiPoint multiPoint ;

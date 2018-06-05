@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
@@ -326,6 +327,21 @@ public class graphAnalysis {
 			mapFrequency.put( key  ,  freq );
 		}
 		return mapFrequency;		
+	}
+	
+	public static Map getMapFrequencyDegree_02 ( Graph graph ,  int numberFrequency , boolean isRel ) {
+		
+		Map mapFrequency = new TreeMap();
+		int[] degreeDist = Toolkit.degreeDistribution(graph);
+		double pos = 0.0 ;
+		for ( int d : degreeDist ) {
+	
+			mapFrequency.put(pos + 1 , (double) d ) ;
+			pos++ ;
+		}
+//		if ( degreeDist.length < numberFrequency )	for ( int x = degreeDist.length ; numberFrequency - degreeDist.length <= 0 ; x++ ) 				mapFrequency.put(x, 0) ;
+			
+		return mapFrequency ;
 	}
 	
 	public static Map getMapFrequencyDegree ( Graph graph ,  int numberFrequency , boolean isRel ) {

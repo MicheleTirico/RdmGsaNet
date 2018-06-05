@@ -11,7 +11,7 @@ public class exportdata_createImage_02 extends exportData_main {
 
 	public static void main(String[] args) throws IOException {
 		
-		exportData_image.createImage(true, 10, 100, pathToStore, pathDataMain);
+
 
 	}
 

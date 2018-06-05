@@ -65,7 +65,7 @@ public class generateNetNode extends main  {
 		
 		type.generateNodeRule ( step ) ;
 		
-		geographyToolkit.setPointAttributeToNode(netGraph, simulation.mapPointNodeNet);
+	//	geographyToolkit.setPointAttributeToNode(netGraph, simulation.mapPointNodeNet);
 		
 		
 	} 

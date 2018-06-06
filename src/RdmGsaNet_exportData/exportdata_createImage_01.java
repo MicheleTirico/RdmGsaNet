@@ -2,7 +2,7 @@ package RdmGsaNet_exportData;
 
 import java.io.IOException;
 
-public class exportdata_createImage extends exportData_main {
+public class exportdata_createImage_01 extends exportData_main {
 	
 	private static String 	pathToStore = handle.getParent(folder) , 
 			pathDataMain = folder ;

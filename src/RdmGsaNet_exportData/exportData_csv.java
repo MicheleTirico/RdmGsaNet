@@ -126,8 +126,7 @@ public class exportData_csv extends exportData_main {
 		fs.end();	
 		fileWriter.close();
 	}
-	
-	
+		
 	public static void computeSimpleIndicator ( boolean run , int 	stepInc , int stepMax , typeSimpleIndicator typeIndicator , String pathToStore , String pathDataMain ) throws IOException {
 		
 		if ( !run)
@@ -188,12 +187,10 @@ public class exportData_csv extends exportData_main {
 	
 	public static void computeMultiSim ( boolean run , int stepInc , int stepMax , typeSimpleIndicator typeIndicator , String pathToStore , String pathDataMain ) throws IOException {
 		
-		
 		if ( run == false )
-			return ;
-	
+			return ;	
 		
-		String 	header = "step;" ,
+		String 	header = "step" ,
 				nameFile = "multiSim_" + typeIndicator.toString() ;
 		
 		File extF  ; 
@@ -274,7 +271,7 @@ public class exportData_csv extends exportData_main {
 		 String pathFile = folderMain + "\\multiSimAnalysis\\"  + nameFile + ".csv" ; 
 		 FileWriter fileWriter = new FileWriter( pathFile , true );		
 		
-		 for ( int i = 1 ; i < fileArray.size() ; i++ )
+		 for ( int i = 1 ; i < fileArray.size() - 1 ; i++ )
 			 header = header + ";" + i ;
 
 		 expCsv.addCsv_header( fileWriter, header ) ;

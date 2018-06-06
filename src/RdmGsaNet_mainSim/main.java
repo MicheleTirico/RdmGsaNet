@@ -106,7 +106,7 @@ public class main {
 							doStoreStepNet 		= false ,
 							doStoreStartVec 	= false ,
 							doStoreStepVec 		= false,
-							doStoreStartSeed	= false ,
+		 					doStoreStartSeed	= false ,
 							doStoreStepSeed		= false ,
 							doStoreIm			= true ,
 							storeGsValues 		= false ;

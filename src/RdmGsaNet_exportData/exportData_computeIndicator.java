@@ -27,21 +27,21 @@ public class exportData_computeIndicator extends exportData_main {
 		
 	//	handleNameFile.createNewGenericFolder(folderMain , "analysis" );
 		runSimpleIndicators(false);		
-		runMultiLineIndicators(true);	 
-		runMultiSim(false) ;
+		runMultiLineIndicators(false);	 
+		runMultiSim(true) ;
 	} 
 	
 	public static void runMultiSim( boolean run ) throws IOException {
 		
-		exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.alfaIndex, pathToStore , folder );
-		exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.averageClustering, pathToStore , folder );
-		exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.averageDegree, pathToStore , folder );
-		exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.density, pathToStore , folder );
-	//	exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.diameter, pathToStore , folder );
-	//	exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.gammaIndex, pathToStore , folder );
+		exportData_csv.computeMultiSim( true , 5, 2500, typeSimpleIndicator.alfaIndex, pathToStore , folder );
+		exportData_csv.computeMultiSim( true, 5, 2500, typeSimpleIndicator.averageClustering, pathToStore , folder );
+		exportData_csv.computeMultiSim( true , 5, 2500, typeSimpleIndicator.averageDegree, pathToStore , folder );
+		exportData_csv.computeMultiSim( true , 5, 2500, typeSimpleIndicator.density, pathToStore , folder );
+		exportData_csv.computeMultiSim( false, 5, 2500, typeSimpleIndicator.diameter, pathToStore , folder );
+		exportData_csv.computeMultiSim( true, 5, 2500, typeSimpleIndicator.gammaIndex, pathToStore , folder );
 	//	exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.organicRatio, pathToStore , folder );
-		exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.totEdges, pathToStore , folder );
-		exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.totNodes, pathToStore , folder );
+		exportData_csv.computeMultiSim( true , 5, 2500, typeSimpleIndicator.totEdges, pathToStore , folder );
+		exportData_csv.computeMultiSim( true , 5, 2500, typeSimpleIndicator.totNodes, pathToStore , folder );
 	}
 	
 	public static void runMultiLineIndicators ( boolean run ) throws IOException {

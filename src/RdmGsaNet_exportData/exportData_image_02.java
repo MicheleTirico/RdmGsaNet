@@ -33,7 +33,7 @@ public class exportData_image_02 extends exportData_main {
 
 	protected static Graph graph ;	
 	
-	// parameters of viz 
+	// parameters of viz  
 	private static int setScale ; 
 	private static double sizeNode , sizeEdge ; 
 	private static String colorStaticNode , colorStaticEdge ;

@@ -27,7 +27,7 @@ import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
 import RdmGsaNet_Analysis_02.analysisDGS;
 
-public class exportData_image extends exportData_main {
+public class exportData_image_01 extends exportData_main {
 	
 	static String  	pathStart  ,	 
 					pathStep  ; 
@@ -52,7 +52,7 @@ public class exportData_image extends exportData_main {
 		this.setScale = setScale ; 
 		this.sizeNodeNet = sizeNode ;
 		this.sizeEdgeNet = sizeEdge ;
-		this.colorNodeNet = colorStaticNode ;
+		this.colorNodeNet = colorStaticNode ; 
 		this.colorEdgeNet = colorStaticEdge ;
 	}
 	
@@ -137,7 +137,7 @@ public class exportData_image extends exportData_main {
 		// set file Source for file step
 		fs = FileSourceFactory.sourceFor(pathStep);
 		fs.addSink(graph);
-		
+		 
 		// import file step
 		try {
 			fs.begin(pathStep);

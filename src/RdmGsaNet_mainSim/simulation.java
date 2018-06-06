@@ -19,7 +19,7 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNetExport.handleNameFile.typeFile;
 import RdmGsaNetViz.setupViz;
-import RdmGsaNet_exportData.exportData_image;
+import RdmGsaNet_exportData.exportData_image_01;
 import RdmGsaNet_generateGraph.generateNetEdge;
 import RdmGsaNet_generateGraph.generateNetNode;
 import RdmGsaNet_graphTopology.topologyGraph;
@@ -176,7 +176,7 @@ public class simulation extends main {
 		FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
 		
 		pic.setLayoutPolicy(LayoutPolicy.NO_LAYOUT);
-		pic.setStyleSheet(exportData_image.setVizManual(1,1,"red","red")) ;	
+		pic.setStyleSheet(exportData_image_01.setVizManual(1,1,"red","red")) ;	
 		pic.writeAll(netGraph, "D:\\ownCloud\\RdmGsaNet_exp\\test\\" + "peppe" + (int) step + ".png");
 	}
 		

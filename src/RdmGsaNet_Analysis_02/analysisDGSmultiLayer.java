@@ -110,7 +110,7 @@ public class analysisDGSmultiLayer extends analysisMain implements analysisDGS {
 			
 			String pathStartSeed = folderCommonFiles + "layerSeed_start.dgs";
 			String pathStepSeed  = folder + "layerSeed_step.dgs";
-			System.out.println(pathStepSeed);
+	//		System.out.println(pathStepSeed);
 			
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);

@@ -102,8 +102,7 @@ public class handleVizStype {
 	private void setViz10Color ( String attributeToAnalyze , palette mainColor ) {
 	
 		graph.addAttribute("ui.stylesheet", Viz10Color(styleType , mainColor) );
-		for ( Node n : graph.getEachNode()) { 
-			System.out.println(n.getAttributeKeySet());
+		for ( Node n : graph.getEachNode()) { //			System.out.println(n.getAttributeKeySet());
 			double morpColor = n.getAttribute(attributeToAnalyze);
 			double color = 0  ; //grey
 

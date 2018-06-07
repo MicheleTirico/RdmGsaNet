@@ -14,8 +14,6 @@ import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
 
 import RdmGsaNetAlgo.gsAlgoToolkit;
 import RdmGsaNet_staticBuckets_03.bucketSet.bucketNeighbor;
-import demo.CanvasExportTask;
-
 
 class bucket extends abstractBuckets  { 	
 	

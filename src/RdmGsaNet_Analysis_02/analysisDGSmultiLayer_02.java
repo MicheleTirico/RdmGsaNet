@@ -110,7 +110,7 @@ public class analysisDGSmultiLayer_02 extends analysisMain implements analysisDG
 			
 			String pathStartSeed = folderCommonFiles + "layerSeed_start.dgs";
 			String pathStepSeed  = folder + "layerSeed_step.dgs";
-			System.out.println(pathStepSeed);
+	//		System.out.println(pathStepSeed);
 			
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
@@ -119,8 +119,7 @@ public class analysisDGSmultiLayer_02 extends analysisMain implements analysisDG
 					 		gsViz 	= new handleVizStype( gsGraph  , stylesheet.viz10Color , "gsInh", 1) ,
 					 		vecViz 	= new handleVizStype( vecGraph  , stylesheet.viz10Color , "gsInh", 1) ,
 					 		seedViz	= new handleVizStype( seedGraph  , stylesheet.viz10Color , "gsInh", 1) ;
-							
-			
+								
 			netViz.setupFixScaleManual( true , netGraph , setScale , 0 );
 			vecViz.setupFixScaleManual( true , vecGraph , setScale , 0 );
 			seedViz.setupFixScaleManual( true , seedGraph , setScale , 0 );
@@ -220,10 +219,7 @@ public class analysisDGSmultiLayer_02 extends analysisMain implements analysisDG
 							seedViz.setupDefaultParam (seedGraph, "black", "black", sizeNodeSeed , sizeEdgeSeed );
 							seedViz.setupVizBooleanAtr(false, seedGraph, "black", "red" , true, true ) ;
 						}
-							
-						
-						
-							
+														
 						if ( doGsViz | doNetViz | doVecViz | doSeedViz )
 							Thread.sleep(thread);
 						

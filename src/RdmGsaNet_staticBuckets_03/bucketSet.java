@@ -130,8 +130,6 @@ public class bucketSet extends abstractBuckets  {
 		return listNodeReturn ;
 	}
 	
-	
-	
 	public  ArrayList<Edge> getListEdge ( Node node , boolean inBuffer ) {	
 		
 		ArrayList<Edge> listEdge = new ArrayList<Edge> ( );

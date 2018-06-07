@@ -619,4 +619,16 @@ public class graphToolkit {
 		}
 		return idInt ;
 	}
+
+	// get length of edge
+	public static double getLength ( Edge e ) {
+		
+		double[] 	coordN0 = GraphPosLengthUtils.nodePosition(e.getNode0() ) , 
+					coordN1 = GraphPosLengthUtils.nodePosition(e.getNode1() ) ; 
+	
+	//	if ( coordN0[0] != coordN1[0] )			System.out.println(coordN0[0] + "  " + coordN1[0]);
+		return Math.pow( Math.pow(coordN0[0] - coordN1[0], 2) + Math.pow(coordN0[1] - coordN1[1], 2) , 0.5 ) ;
+	
+	}
+
 }

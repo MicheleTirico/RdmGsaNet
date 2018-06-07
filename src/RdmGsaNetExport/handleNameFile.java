@@ -237,14 +237,17 @@ public class handleNameFile {
 		int lengthPath = folder.length();
 	
 		 for (int i = 0; i < files.length; i++){					//	System.out.println(files[i]);
+			
 			 String name = files[i].toString();				// System.out.println(name);
 			 String firstChar = null ;
+			
 			 try {
 			  firstChar = getFirstletterString(name, lengthPath , lengthPath+testName.length());	//	System.out.println(firstChar);
-			} catch (java.lang.StringIndexOutOfBoundsException e) {	continue ;}
+			 } catch (java.lang.StringIndexOutOfBoundsException e) {	continue ;}
 			 boolean test = firstChar.equals(testName);
+			
 			 if ( test ) {
-				nameFileComplete = name;
+				nameFileComplete = name ;
 				break ;
 			 }
 		 }

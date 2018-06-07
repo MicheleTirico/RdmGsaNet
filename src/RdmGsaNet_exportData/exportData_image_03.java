@@ -80,23 +80,17 @@ public class exportData_image_03 extends exportData_main {
 		if ( !run )
 			return ;
 		// read graph 
-		graph = getGraphStep(stepToReturn, pathToStore, pathStart, pathStep);
-	System.out.println(paletteColor);
+		graph = getGraphStep(stepToReturn, pathToStore, pathStart, pathStep);	//	System.out.println(paletteColor);
+		
+		// handle viz
 		handleVizStype	viz  = new handleVizStype( graph , stylesheet , "gsInh", 1) ;		
 		viz.setupDefaultParam (graph, colorStaticNode, colorStaticEdge, sizeNode, sizeEdge);
 		viz.setupIdViz(false, graph, 10 , "black"); 
 		viz.setupViz(true, true, paletteColor);
 		viz.setupFixScaleManual(true, graph, setScale, 0);
 		
-
-		
 		graph.addAttribute("ui.screenshot", pathToStore+nameIm+"_"+stepToReturn+".png");
-		graph.display(false);
-		
-		
-		
-		
-		
+		graph.display(false);		
 	}
 	
 	protected  Graph getGraphStep (  int stepToReturn , String pathToStore , String pathStart , String pathStep ) throws IOException {

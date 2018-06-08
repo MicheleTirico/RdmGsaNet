@@ -50,7 +50,6 @@ public class exportData_csv extends exportData_main {
 	protected enum layerToAnalyze { vecGraph, netGraph , seedGraph , gsGraph }
 	protected static layerToAnalyze layerToAnalyze ;
 	
-	protected static bucketSet bs ;
 	protected static Graph graph , graph1 , graph2 ;								
 	
 	public static void computeMultiLineIndicator (  boolean run , int 	stepInc , int stepMax , typeMultiLineIndicator typeIndicator , String pathToStore , String pathDataMain ,
@@ -166,9 +165,7 @@ public class exportData_csv extends exportData_main {
 		
 		// create list of step to create images
 		ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
-		
-		
-		
+			
 		// set file Source for file step
 		fs = FileSourceFactory.sourceFor(pathStep);
 		fs.addSink(graph);
@@ -219,48 +216,44 @@ public class exportData_csv extends exportData_main {
 		
 		File extF  ; 
 		File path = new File(folderMain) ;
-		File [] files = path.listFiles();							
-		
-		 ArrayList<File> fileArray = new ArrayList<File>(Arrays.asList(files));
-		
-//		 fileArray.forEach(  s -> System.out.print("\n" + s.getName()) );
+		File [] files = path.listFiles();									
+		ArrayList<File> fileArray = new ArrayList<File>(Arrays.asList(files));
+
 		 Map <Double , ArrayList <Double>> mapToStore = new TreeMap < Double , ArrayList <Double>>();
 		
 		 for ( File f : fileArray ) {
 			 
-			 extF = f ;
-			 
+			 extF = f ;			 
 			 String s = f.getAbsolutePath();	 // 	 
-			
+	
 			 System.out.println(f);
 			 String pathStep = null, pathStart = null  ;
-			 
+					 
 			 switch (layer) {
 				case netGraph: {
-					 pathStep = handle.getCompletePathInFolder(s+"\\",  "layerNet_step") ; 
-					 pathStart = handle.getCompletePathInFolder(folderCommonFiles,  "layerNet_start") ;
+					 pathStep = handleNameFile.getCompletePathInFolder(s+"\\",  "layerNet_step") ; 
+					 pathStart = handleNameFile.getCompletePathInFolder(folderCommonFiles,  "layerNet_start") ;
 				} break;
 				
 				case vecGraph : {
-					 pathStep = handle.getCompletePathInFolder(folderCommonFiles,  "layerVec_step") ; 
-					 pathStart = handle.getCompletePathInFolder(folderCommonFiles,  "layerVec_start") ;
+					 pathStep = handleNameFile.getCompletePathInFolder(folderCommonFiles,  "layerVec_step") ; 
+					 pathStart = handleNameFile.getCompletePathInFolder(folderCommonFiles,  "layerVec_start") ;
 				} break ;
 				
 				case gsGraph : {
-					 pathStep = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_step") ; 
-					 pathStart = handle.getCompletePathInFolder(folderCommonFiles,  "layerGs_start") ;
+					 pathStep = handleNameFile.getCompletePathInFolder(folderCommonFiles,  "layerGs_step") ; 
+					 pathStart = handleNameFile.getCompletePathInFolder(folderCommonFiles,  "layerGs_start") ;
 				} break ;
 				
 				case seedGraph : {
-					pathStep = handle.getCompletePathInFolder(s+"\\",  "layerSeed_step") ; 
-					pathStart = handle.getCompletePathInFolder(folderCommonFiles,  "layerSeed_start") ;	
+					pathStep = handleNameFile.getCompletePathInFolder(s+"\\",  "layerSeed_step") ; 
+					pathStart = handleNameFile.getCompletePathInFolder(folderCommonFiles,  "layerSeed_start") ;	
 				} break ;
 			}
 			 	 
 			 handleNameFile.createNewGenericFolder(folderMain , "multiSimAnalysis" );
 			 
-			 graph = new SingleGraph ("graph") ; 
-			
+			 graph = new SingleGraph ("graph") ; 	
 			 
 			// create list of step to create images
 			ArrayList<Double> incList = analysisDGS.getListStepToAnalyze(stepInc, stepMax);						//	System.out.println(incList);
@@ -283,11 +276,7 @@ public class exportData_csv extends exportData_main {
 			fs = FileSourceFactory.sourceFor(pathStep);
 			fs.addSink(graph);
 			
-			// import file step
-			
-			
-			
-			
+			// import file step			
 			try {
 				fs.begin(pathStep);
 				while ( fs.nextStep()) {
@@ -296,8 +285,6 @@ public class exportData_csv extends exportData_main {
 						// add methods to run for each step in incList				
 						System.out.println("----------------step " + step + " ----------------" );					
 						
-						bs = new bucketSet(true, graph, 50, 50, 50, 50) ;
-						 bs.createBuketSet();
 						double val = getValIndicator ( graph , typeIndicator) ;				//	System.out.println(val);		//	System.out.println(mapToStore.get(step));
 						ArrayList <Double> arr = new ArrayList <Double> () ;
 						
@@ -485,9 +472,10 @@ public class exportData_csv extends exportData_main {
 				break ;
 			
 			case buchetActiveCount : {	
-				
-				
+				bucketSet bs = new bucketSet(true, graph, 50, 50, 50, 50);
+				bs.createBuketSet();
 				val = bs.getBucketsCount() ;
+				bs.removeAllBuchets(bs);	//		System.out.println(val);
 			} break ;
 			
 			case vectorActiveCount : {

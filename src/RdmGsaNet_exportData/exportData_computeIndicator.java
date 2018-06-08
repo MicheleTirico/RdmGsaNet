@@ -30,13 +30,15 @@ public class exportData_computeIndicator extends exportData_main {
 	//	handleNameFile.createNewGenericFolder(folderMain , "analysis" );
 		runSimpleIndicators(false);		
 		runMultiLineIndicators(false);	 
-		runMultiSim(true) ;
 		
-		runMultiLayerIndicators(false);
+		runMultiSim(false) ;
+		
+		
+		runMultiLayerIndicators(true);
 	} 
 	
 	public static void runMultiLayerIndicators ( boolean run ) throws IOException {
-		exportData_csv.computeMultiLayerIndicators(false , 5, 2500, typeMultiLayerIndicator.correlationVectorNode , pathToStore , folder , layerToAnalyze.netGraph , layerToAnalyze.vecGraph);
+		exportData_csv.computeMultiLayerIndicators(run, 5, 20, typeMultiLayerIndicator.correlationVectorNode , pathToStore , folder , layerToAnalyze.netGraph , layerToAnalyze.vecGraph);
 	} 
 	
 	public static void runMultiSim( boolean run ) throws IOException {
@@ -50,8 +52,7 @@ public class exportData_computeIndicator extends exportData_main {
 	//	exportData_csv.computeMultiSim( run , 5, 2500, typeSimpleIndicator.organicRatio, pathToStore , folder , layerToAnalyze.netGraph );
 		exportData_csv.computeMultiSim( false , 5, 2500, typeSimpleIndicator.totEdges, pathToStore , folder , layerToAnalyze.netGraph );
 		exportData_csv.computeMultiSim( false , 5, 2500, typeSimpleIndicator.totNodes, pathToStore , folder , layerToAnalyze.netGraph );
-		exportData_csv.computeMultiSim( run , 5, 250, typeSimpleIndicator.buchetActiveCount, pathToStore , folder , layerToAnalyze.netGraph );
-		
+		exportData_csv.computeMultiSim( false, 5, 2500 , typeSimpleIndicator.buchetActiveCount, pathToStore , folder , layerToAnalyze.netGraph );
 	}
 	
 	public static void runMultiLineIndicators ( boolean run ) throws IOException {

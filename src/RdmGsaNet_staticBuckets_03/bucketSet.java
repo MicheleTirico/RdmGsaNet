@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -17,7 +18,6 @@ public class bucketSet extends abstractBuckets  {
 	private boolean createBuckets ;
 	public enum bucketNeighbor { N , S , E , W , NE , NW , SE , SW } 
 	protected bucketNeighbor bucketNeighbor ; 
-	
 	public enum axis { X , Y } 
 	
 	// constructor
@@ -40,10 +40,8 @@ public class bucketSet extends abstractBuckets  {
 		
 		numTotBuckets = numBucketsX * numBucketsY ;	
 		sizeBucketX = sizeGridX / numBucketsX ;
-		sizeBucketY = sizeGridY / numBucketsY ;			//		System.out.println(sizeBucketX +" " + sizeBucketY );
-		
-		//		System.out.println(bucketSet.getBucketsCount() );
-		
+		sizeBucketY = sizeGridY / numBucketsY ;			//		System.out.println(sizeBucketX +" " + sizeBucketY );		//		System.out.println(bucketSet.getBucketsCount() );		
+	
 		for ( Node node : graph.getEachNode() ) {						//		System.out.println(node + " " + graph.getNodeSet());
 			
 			double [] coordBucket = bucket.getCoordBucket ( node ) ;		//	System.out.println("coordBucket " + coordBucket[0] + " " + coordBucket[1]);
@@ -56,14 +54,11 @@ public class bucketSet extends abstractBuckets  {
 				
 				bucket.putNode(node);									//		System.out.println(bucket + " " + bucket.getListNode() ) ;
 				continue ;
-			}
-			
+			}			
 			bucket = new bucket( bucketSet , node ) ;					//		System.out.println(bucket);		
 			bucketsCoord.put(coordBucket, bucket) ;						//		System.out.println(bucket+ " " + bucket.getListNode() ) ;
-		}
-	
+		}	
 	}
-	
 	// put node in bucketSet
 	public void putNode(Node node) {
 		
@@ -97,6 +92,10 @@ public class bucketSet extends abstractBuckets  {
 	public void removeEdge ( Edge edge ) {
 		bucket.getBucket(edge.getNode0()).getListNode().remove(edge.getNode0()) ;
 		bucket.getBucket(edge.getNode1()).getListNode().remove(edge.getNode1()) ;
+	}
+	
+	public void removeAllBuchets ( bucketSet bs ) {
+		bucketsCoord.clear();	
 	}
 	
 // get methods --------------------------------------------------------------------------------------------------------------------------------------		
@@ -242,10 +241,22 @@ public class bucketSet extends abstractBuckets  {
 		return listNode ;	
 	}
 	
-	public static int getBucketsCount ( ) {
+	public int getBucketsCount ( ) {
 		return bucketsCoord.size() ;
 	}
 
+	public Map<Integer , Integer > getMapBucketNodeCount ( bucketSet bucketSet ) {
+		
+		Map<Integer , Integer > map = new TreeMap <Integer , Integer> () ;
+		
+		int idInt = 0 ;
+		for ( bucket b : bucketsCoord.values() ) {
+			map.put(idInt, b.getListNode().size()) ;
+			idInt++ ;
+		}
+		
+		return map ;
+	}
 
 }
 

@@ -43,7 +43,6 @@ class bucket extends abstractBuckets  {
 		return false ; 
 	}
 			
-	
 // put methods --------------------------------------------------------------------------------------------------------------------------------------	
 	public void putNode ( Node node ) {	
 		
@@ -57,7 +56,6 @@ class bucket extends abstractBuckets  {
 		getBucket(edge.getNode0() ).getListNode().add(edge.getNode0() ) ;
 		getBucket(edge.getNode1() ).getListNode().add(edge.getNode1() ) ;
 	}
-	
 	
 // get methods --------------------------------------------------------------------------------------------------------------------------------------	
 	
@@ -184,4 +182,5 @@ class bucket extends abstractBuckets  {
 		
 		return coordBucket ;
 	}	
+
 }

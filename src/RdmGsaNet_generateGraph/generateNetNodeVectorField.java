@@ -89,9 +89,7 @@ public class generateNetNodeVectorField extends main  {
 	}
 	
 	protected static void handleCreateSeedGraph (boolean createSeedGraph , int step) throws IOException {
-		  
-		GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-		
+		  	
 		if ( createSeedGraph ) {
 			if ( step == 1)	{				//		System.out.println("createSeedGraph step1" );
 				ArrayList<String> list = new ArrayList<String> ( graphToolkit.getListElementAttribute( netGraph, element.node, elementTypeToReturn.string, "seedGrad", 1 ) ) ;

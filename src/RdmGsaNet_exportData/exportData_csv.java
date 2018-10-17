@@ -27,7 +27,7 @@ import RdmGsaNetExport.expGraph;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNet_Analysis_02.analysisDGS;
 import RdmGsaNet_Analysis_02.analysisMultiSim;
-import RdmGsaNet_exportData.exportData_csv.layerToAnalyze;
+// import RdmGsaNet_exportData.exportData_csv.layerToAnalyze;
 import RdmGsaNet_exportData.exportData_image_01.layer;
 import RdmGsaNet_staticBuckets_03.bucketSet;
 
@@ -38,6 +38,7 @@ public class exportData_csv extends exportData_main {
 	
 	protected enum typeSimpleIndicator {	density  ,	averageDegree , diameter , averageShortpath , gammaIndex , alfaIndex , organicRatio , averageClustering , totNodes, totEdges ,
 											buchetActiveCount , vectorActiveCount }	
+	
 	protected static typeSimpleIndicator typeIndicator ;	
 	
 	protected enum typeMultiLineIndicator {	degreeDistribution , normalDegreeDistribution }	
@@ -47,13 +48,13 @@ public class exportData_csv extends exportData_main {
 	protected enum typeMultiLayerIndicator { correlationVectorNode   }	
 	protected static typeMultiLayerIndicator typeMultiLayerIndicator;	
 	
-	protected enum layerToAnalyze { vecGraph, netGraph , seedGraph , gsGraph }
-	protected static layerToAnalyze layerToAnalyze ;
+//	protected enum layerToAnalyze { vecGraph, netGraph , seedGraph , gsGraph }
+//	protected static layerToAnalyze layerToAnalyze ;
 	
 	protected static Graph graph , graph1 , graph2 ;								
 	
-	public static void computeMultiLineIndicator (  boolean run , int 	stepInc , int stepMax , typeMultiLineIndicator typeIndicator , String pathToStore , String pathDataMain ,
-			int numLine ) throws IOException {
+	public static void computeMultiLineIndicator (  boolean run , int 	stepInc , int stepMax , typeMultiLineIndicator typeIndicator , String pathToStore , 
+			String pathDataMain , int numLine ) throws IOException {
 		
 		if ( !run)
 			return ;
@@ -68,7 +69,7 @@ public class exportData_csv extends exportData_main {
 			
 		handleNameFile.createNewGenericFolder(pathDataMain , "analysis" );
 		pathToStore = pathDataMain + "\\analysis\\"  ;
-		
+		 
 		FileWriter fileWriter = new FileWriter( pathToStore + nameFile + ".csv" , true );		
 		expCsv.addCsv_header( fileWriter, header ) ;
 		
@@ -388,6 +389,7 @@ public class exportData_csv extends exportData_main {
 	}	
 	
 // private methods ----------------------------------------------------------------------------------------------------------------------------------	
+	/*
 	private static String[] getPath ( String pathDataMain , layerToAnalyze layer ) {
 		
 		String[] path = new String[2] ;
@@ -415,7 +417,8 @@ public class exportData_csv extends exportData_main {
 		}	
 		return path;
 	}
-			
+		*/
+	
 	private static double getValMultiLayer ( Graph graph1 , Graph graph2 , typeMultiLayerIndicator typeIndicator ) {
 		double val = 0 ;
 		switch (typeIndicator) {

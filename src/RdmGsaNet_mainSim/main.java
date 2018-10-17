@@ -98,7 +98,6 @@ public class main {
 	public static int 		stepToCompute = 5 , stepToComputeBird = 5 ;
 	protected static int 	stepToStore = 5 ;
 	
-	
 	// STORE DGS PARAMETERS
 	private static boolean 	doStoreStartGs 		= false , 
 							doStoreStepGs 		= false,
@@ -449,11 +448,8 @@ public class main {
 			case worms :				{ feed = 0.078 ; kill = 0.061 ; } 
 										break ;
 			case waves :				{ feed = 0.014 ; kill = 0.045 ; } 
-										break ;
-	
-				
+										break ;		
 		}
-		
 	}
 
 // GET METHODS --------------------------------------------------------------------------------------------------------------------------------------

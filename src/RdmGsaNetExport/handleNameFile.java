@@ -40,8 +40,7 @@ public class handleNameFile {
 	
 	// CONSTRUCTOR
 	public handleNameFile ( boolean toHandle , String folder , boolean createNewDirectory , String manualNameFolder ) {
-		this.toHandle = toHandle ;
-		
+		this.toHandle = toHandle ;	
 		if ( toHandle = false )
 			return ;
 		

@@ -18,8 +18,10 @@ public class exportData_createImage_03 extends exportData_main {
 			pathDataMain = folder ;
 
 
-	static exportData_image_03 expNet = new exportData_image_03() ;
-	static exportData_image_03 expGs = new exportData_image_03() ;
+	static 	exportData_image_03 expNet = new exportData_image_03() ,
+								expGs = new exportData_image_03() ,
+								expSeed = new exportData_image_03(),
+								expSingleIm = new exportData_image_03() ;
 	
 	public static void main(String[] args) throws IOException {
 			
@@ -44,19 +46,38 @@ public class exportData_createImage_03 extends exportData_main {
 				);
 		
 		handleNameFile.createNewGenericFolder(pathDataMain , "image" );
-		pathToStore = pathDataMain + "\\image\\"  ;
+		pathToStore = pathDataMain + "\\image\\"  ;	
+		pathToStore = "D:\\ownCloud\\TIRICO_publications\\CONF_2018_rdmToGraph\\figures\\matrixRdmStep\\matrixRdmStep_02\\images\\prove\\";
 		
 		exportData_image_03.setParamViz(
 				/* setScale					*/ 50 ,
 				/* sizeNode, 				*/ 1 ,
-				/* sizeEdge, 				*/ 0 ,
-				/* colorNode, 				*/ "red" ,
-				/* colorEdge, 				*/ "white" ,
+				/* sizeEdge, 				*/ 1 ,
+				/* colorNode, 				*/ "black" ,
+				/* colorEdge, 				*/ "black" ,
 				/* palette					*/ palette.blue ,
 				/* stylesheet				*/ stylesheet.manual
 				);
 		
 		expNet.createImage(false, 20, "netImage" , pathToStore, pathStartNet, pathStepNet);
+		
+		expSingleIm.createSingleImage(false , 1500, "netLayer", pathToStore, layerToAnalyze.netGraph);
+	
+		exportData_image_03.setParamViz(
+				/* setScale					*/ 50 ,
+				/* sizeNode, 				*/ 10 ,
+				/* sizeEdge, 				*/ 0 ,
+				/* colorNode, 				*/ "red" ,
+				/* colorEdge, 				*/ "white" ,
+				/* palette					*/ palette.red ,
+				/* stylesheet				*/ stylesheet.viz10Color
+				);
+		
+		expGs.createImage(false, 1500, "gsImage" , pathToStore, pathStartGs, pathStepGs);
+		
+		
+		
+		pathToStore = "D:\\ownCloud\\TIRICO_publications\\CONF_2018_rdmToGraph\\figures\\matrixRdmStep\\matrixRdmStep_02\\images\\prove\\";
 		
 		exportData_image_03.setParamViz(
 				/* setScale					*/ 50 ,
@@ -68,7 +89,34 @@ public class exportData_createImage_03 extends exportData_main {
 				/* stylesheet				*/ stylesheet.viz10Color
 				);
 		
-		expGs.createImage(true, 2500, "gsImage" , pathToStore, pathStartGs, pathStepGs);
+		expSingleIm.createSingleImage(false, 2500, "gsLayer", pathToStore, layerToAnalyze.netGraph);
+		
+		exportData_image_03.setParamViz(
+				/* setScale					*/ 50 ,
+				/* sizeNode, 				*/ 0 ,
+				/* sizeEdge, 				*/ 1 ,
+				/* colorNode, 				*/ "black" ,
+				/* colorEdge, 				*/ "black" ,
+				/* palette					*/ palette.blue ,
+				/* stylesheet				*/ stylesheet.manual
+				);
+		
+		expSingleIm.createSingleImage(false, 2500, "vecLayer", pathToStore, layerToAnalyze.vecGraph);
+		
+		expSeed.setParamVizNet(
+				/* setScale					*/ 50 ,
+				/* sizeNode, 				*/ 0 ,
+				/* sizeEdge, 				*/ .5 ,
+				/* colorNode, 				*/ "black" ,
+				/* colorEdge, 				*/ "black" ,
+				/* palette					*/ palette.blue, 
+				/* stylesheet				*/ stylesheet.viz10Color
+				);
+		
+		pathToStore = "D:\\ownCloud\\TIRICO_publications\\CONF_2018_rdmToGraph\\figures\\layers_01\\";
+		expSeed.createSingleImage(true, 100, "nameIm", pathToStore, layerToAnalyze.gsGraph);
+		
+		
 		
 	//	expGs.createImage(true, 25, pathToStore, pathStartGs, pathStepGs);
 		

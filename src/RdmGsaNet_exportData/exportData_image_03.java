@@ -25,6 +25,7 @@ import RdmGsaNetViz.handleVizStype;
 import RdmGsaNetViz.handleVizStype.palette;
 import RdmGsaNetViz.handleVizStype.stylesheet;
 import RdmGsaNet_Analysis_02.analysisDGS;
+import RdmGsaNet_exportData.exportData_main.layerToAnalyze;
 
 public class exportData_image_03 extends exportData_main {
 
@@ -71,10 +72,7 @@ public class exportData_image_03 extends exportData_main {
 		exportData_image_03.colorStaticEdge = colorStaticEdge ;
 		exportData_image_03.paletteColor = paletteColor ;		
 	}
-	
-	
 		
-	
 	public void createImage ( boolean run , int stepToReturn , String nameIm , String pathToStore , String pathStart , String pathStep ) throws IOException {
 	
 		if ( !run )
@@ -91,6 +89,32 @@ public class exportData_image_03 extends exportData_main {
 		
 		graph.addAttribute("ui.screenshot", pathToStore+nameIm+"_"+stepToReturn+".png");
 		graph.display(false);		
+	}
+	
+	public void createSingleImage ( boolean run , int stepToReturn , String nameIm , String pathToStore , layerToAnalyze layer ) throws IOException  {
+		
+		if ( !run)
+			return ;
+		
+		String[] path = getPath( folderMain , layer );
+		
+		String pathStep = path[1] ;
+		String pathStart = path[0] ;
+				
+		graph = getGraphStep(stepToReturn, pathToStore, pathStart, pathStep);	//	System.out.println(paletteColor);
+		
+		// handle viz
+		handleVizStype	viz  = new handleVizStype( graph , stylesheet , "gsInh", 1) ;		
+		viz.setupDefaultParam (graph, colorStaticNode, colorStaticEdge, sizeNode, sizeEdge);
+		viz.setupIdViz(false, graph, 10 , "black"); 
+		viz.setupViz(true, true, paletteColor);
+		viz.setupFixScaleManual(true, graph, setScale, 0);
+		
+		graph.addAttribute("ui.screenshot", pathToStore+nameIm+"_"+stepToReturn+".png");
+		graph.display(false);	
+	//	System.out.println(pathStart); System.out.println(pathStep);
+		
+		
 	}
 	
 	protected  Graph getGraphStep (  int stepToReturn , String pathToStore , String pathStart , String pathStep ) throws IOException {

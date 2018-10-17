@@ -12,7 +12,6 @@ import org.graphstream.stream.file.FileSourceFactory;
 import RdmGsaNetAlgo.graphIndicators;
 import RdmGsaNetExport.handleNameFile;
 import RdmGsaNet_Analysis_02.analysisDGS;
-import RdmGsaNet_exportData.exportData_csv.layerToAnalyze;
 import RdmGsaNet_exportData.exportData_csv.typeMultiLayerIndicator;
 import RdmGsaNet_exportData.exportData_csv.typeMultiLineIndicator;
 import RdmGsaNet_exportData.exportData_csv.typeSimpleIndicator;
@@ -23,18 +22,18 @@ public class exportData_computeIndicator extends exportData_main {
 	private static String 	pathToStore = handle.getParent(folder) , 
 							pathDataMain = folder ;
 
-	protected static String pathAnalysis = folderMain + "\\analysis\\" ;
+	protected static String pathAnalysis = folderMain + "\\analysis\\" ; 
 	
 	public static void main ( String[] args ) throws IOException {
 		
 	//	handleNameFile.createNewGenericFolder(folderMain , "analysis" );
 		runSimpleIndicators(false);		
-		runMultiLineIndicators(false);	 
+		runMultiLineIndicators(true);	 
 		
 		runMultiSim(false) ;
 		
 		
-		runMultiLayerIndicators(true);
+		runMultiLayerIndicators(false);
 	} 
 	
 	public static void runMultiLayerIndicators ( boolean run ) throws IOException {
